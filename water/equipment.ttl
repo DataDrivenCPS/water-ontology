@@ -27,6 +27,7 @@ equip:Tank a rdfs:Class, sh:NodeShape ;
                 sh:path s223:hasMedium ;
                 sh:hasValue s223:Mix-Fluid ;
             ] ;
+        ] ;
     ] ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
@@ -38,5 +39,6 @@ equip:Tank a rdfs:Class, sh:NodeShape ;
                 sh:path s223:hasMedium ;
                 sh:hasValue s223:Mix-Fluid ;
             ] ;
+        ] ;
     ] ;
 .
