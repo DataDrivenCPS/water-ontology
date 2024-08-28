@@ -1,0 +1,42 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix equip: <urn:nawi-water-ontology/equip#> .
+
+<urn:nawi-water-ontology/equip>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Equipment Ontology" ;
+    rdfs:comment "An ontology for water equipment used in the NAWI project" ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+.
+
+equip:Tank a rdfs:Class, sh:NodeShape ;
+    rdfs:label "Tank" ;
+    rdfs:comment "A tank for storing liquid" ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A tank has an inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A tank has an outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+    ] ;
+.
