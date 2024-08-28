@@ -1,0 +1,18 @@
+[project]
+name = "water-ontology"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyontoenv==0.1.9a6",
+    "rdflib>=7.0.0",
+    "buildingmotif",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }
