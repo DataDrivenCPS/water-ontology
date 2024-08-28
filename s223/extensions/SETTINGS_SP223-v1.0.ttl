@@ -1,0 +1,32 @@
+# baseURI: http://data.ashrae.org/standard223/1.0/extensions/settings
+# imports: http://data.ashrae.org/standard223/1.0/extensions/g36
+# imports: http://data.ashrae.org/standard223/1.0/extensions/g36-inference
+# imports: http://data.ashrae.org/standard223/1.0/extensions/g36-validation
+# imports: http://data.ashrae.org/standard223/1.0/inference/data-rules
+# imports: http://data.ashrae.org/standard223/1.0/inference/model-rules
+# imports: http://data.ashrae.org/standard223/1.0/inference/owl-subset
+# imports: http://data.ashrae.org/standard223/1.0/validation/data
+# imports: http://data.ashrae.org/standard223/1.0/validation/model
+# imports: http://data.ashrae.org/standard223/1.0/validation/schema
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix settings: <http://data.ashrae.org/standard223/extensions/settings#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://data.ashrae.org/standard223/1.0/extensions/settings>
+  a owl:Ontology ;
+  rdfs:comment """This file can be used to control which extensions are to be loaded with the 223 ontology by importing the appropriate graph(s). Options include:
+For validation of the schema, model, or data - http://data.ashrae.org/standard223/1.0/validation/schema (or model or data).  
+For inferred properties - http://data.ashrae.org/standard223/1.0/inference/model-rules (and/or schema-rules, data-rules).
+For G36 extensions - http://data.ashrae.org/standard223/1.0/extensions/g36/core (and/or vav-terminal-unit, multiple-zone-vav-air-handling-unit, etc.).""" ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/extensions/g36/core> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/inference/data-rules> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/inference/model-rules> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/inference/owl-subset> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/validation/data> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/validation/model> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/validation/schema> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.

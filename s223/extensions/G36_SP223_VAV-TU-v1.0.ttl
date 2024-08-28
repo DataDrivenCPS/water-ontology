@@ -1,0 +1,108 @@
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:VAVTerminalCoolingOnly a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "VAVTerminalCoolingOnly" ;
+    rdfs:comment "An air-terminal unit assembly having one ducted air inlet and a damper for regulating the airflow rate." ;
+    rdfs:subClassOf s223:SingleDuctTerminal ;
+    sh:property [ rdfs:comment "The VAVTerminalCoolingOnly shall contain exactly one Damper using the relation contains." ;
+            sh:message "g36: The VAVTerminalCoolingOnly shall contain exactly one Damper using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The VAVTerminalCoolingOnly connects to Domain Space in a Zone with required points" ;
+            sh:class s223:DomainSpace ;
+            sh:message "VAVTerminalCoolingOnly connects to Domain Space in a Zone with required points" ;
+            sh:minCount 1 ;
+            sh:node [ sh:property [ sh:class g36:Zone ;
+                            sh:minCount 1 ;
+                            sh:path [ sh:inversePath s223:contains ] ] ] ;
+            sh:path s223:connectedTo ],
+        [ rdfs:comment "The VAVTerminalCoolingOnly OutletConnectionPoint shall have at least one discharge airflow property using the relation hasProperty." ;
+            sh:message "g36: The VAVTerminalCoolingOnly OutletConnectionPoint shall have at least one discharge airflow property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] ;
+    sh:severity s223:g36 .
+
+g36:VAVTerminalWithReheat a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "VAVTerminalWithReheat" ;
+    rdfs:comment "An air-terminal unit assembly having one ducted air inlet, a damper, and a reheat coil for regulating the airflow rate and discharge air temperature." ;
+    rdfs:subClassOf g36:VAVTerminalCoolingOnly ;
+    sh:property [ rdfs:comment "The VAVTerminalWithReheat shall contain at least one hot water coil or at least one electric heating coil for heating using the relation contains." ;
+            sh:message "g36: The VAVTerminalWithReheat shall contain at least one hot water coil or at least one electric heating coil for heating using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:or ( [ sh:class g36:HotWaterCoil ] [ sh:class g36:ElectricHeatingCoil ] ) ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The VAVTerminalWithReheat OutletConnectionPoint shall have at least one discharge air temperature property using the relation hasProperty." ;
+            sh:message "g36: The VAVTerminalWithReheat OutletConnectionPoint shall have at least one discharge air temperature property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The VAVTerminalWithReheat connects to Domain Space in a Zone with required points" ;
+            sh:class s223:DomainSpace ;
+            sh:message "The VAVTerminalWithReheat connects to Domain Space in a Zone with required points" ;
+            sh:minCount 1 ;
+            sh:node [ sh:property [ sh:class g36:Zone ;
+                            sh:minCount 1 ;
+                            sh:path [ sh:inversePath s223:contains ] ] ] ;
+            sh:path s223:connectedTo ] .
+
+g36:VAVTerminalCoolingOnlyAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:SingleDuctTerminal matches the constraints defined by g36:VAVTerminalCoolingOnly, it will be declared as an instance of that class." ;
+            sh:condition g36:VAVTerminalCoolingOnly ;
+            sh:object g36:VAVTerminalCoolingOnly ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:SingleDuctTerminal .
+
+g36:VAVTerminalWithReheatAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            sh:condition g36:VAVTerminalWithReheat ;
+            sh:object g36:VAVTerminalWithReheat ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:SingleDuctTerminal .
+
+<http://data.ashrae.org/standard223/1.0/extensions/g36/vav-terminal-unit> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings>,
+        <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:versionInfo "Created with TopBraid Composer" .
+

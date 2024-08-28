@@ -1,0 +1,91 @@
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:FanPoweredTerminal a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "FanPoweredTerminal" ;
+    rdfs:comment "An air terminal containing a fan. Airflow may pass through or be parallel to the fan. These units may also have supplemental heating or cooling." ;
+    rdfs:subClassOf s223:FanPoweredTerminal ;
+    sh:property [ rdfs:comment "A FanPoweredTerminal shall have exactly one Damper using the relation contains." ;
+            sh:message "g36: A FanPoweredTerminal shall have exactly one Damper using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "A FanPoweredTerminal shall contain at least one hot water coil or at least one electric heating coil for heating using the relation contains." ;
+            sh:message "g36: A FanPoweredTerminal shall contain at least one hot water coil or at least one electric heating coil for heating using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:or ( [ sh:class g36:HotWaterCoil ] [ sh:class g36:ElectricHeatingCoil ] ) ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The FanPoweredTerminal OutletConnectionPoint shall have at least one discharge air temperature property using the relation hasProperty." ;
+            sh:message "g36: The FanPoweredTerminal OutletConnectionPoint shall have at least one discharge air temperature property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ sh:class s223:DomainSpace ;
+            sh:message "The FanPoweredTerminal connects to Domain Space in a Zone with required points" ;
+            sh:minCount 1 ;
+            sh:node [ sh:property [ sh:class g36:Zone ;
+                            sh:minCount 1 ;
+                            sh:path [ sh:inversePath s223:hasDomainSpace ] ] ] ;
+            sh:path s223:connectedTo ],
+        [ rdfs:comment "A FanPoweredTerminal shall have exactly one Fan or FanWithVFD using the relation contains." ;
+            sh:message "g36: A FanPoweredTerminal shall have exactly one Fan or FanWithVFD using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:or ( [ sh:class g36:Fan ] [ sh:class g36:FanWithVFD ] ) ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The FanPoweredTerminal InletConnectionPoint shall have at least one supply airflow property using the relation hasProperty." ;
+            sh:message "g36: The FanPoweredTerminal InletConnectionPoint shall have at least one supply airflow property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] ;
+    sh:severity s223:g36 .
+
+g36:FanPoweredTerminalAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:FanPoweredTerminal matches the constraints defined by g36:FanPoweredTerminal, it will be declared as an instance of that class." ;
+            sh:condition g36:FanPoweredTerminal ;
+            sh:object g36:FanPoweredTerminal ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:FanPoweredTerminal .
+
+<http://data.ashrae.org/standard223/1.0/extensions/g36/fan-powered-terminal-unit> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings>,
+        <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:versionInfo "Created with TopBraid Composer" .
+

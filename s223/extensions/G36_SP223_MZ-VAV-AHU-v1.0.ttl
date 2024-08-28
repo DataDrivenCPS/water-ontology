@@ -1,0 +1,518 @@
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:MultipleZoneVAVAirHandlingUnit a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "MultipleZoneVAVAirHandlingUnit" ;
+    rdfs:comment "An assembly consisting of sections containing a fan or fans and other necessary equipment to perform one or more of the following functions: circulating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air. It is usually connected to an air-distribution system. This air handling unit serves multiple zones." ;
+    rdfs:subClassOf s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "One MultipleZoneVAVAirHandlingUnit InletConnectionPoint shall have at least one return air temperature property using the relation hasProperty. " ;
+            sh:message "g36: One MultipleZoneVAVAirHandlingUnit InletConnectionPoint shall have at least one return air temperature property using the relation hasProperty. " ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-Return ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The MultipleZoneVAVAirHandlingUnit shall contain at least one supply fan with a VFD that has the role Supply using the relation contains" ;
+            sh:message "g36: The MultipleZoneVAVAirHandlingUnit shall contain at least one supply fan with a VFD that has the role Supply using the relation contains" ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Supply ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "One MultipleZoneVAVAirHandlingUnit OutletConnectionPoint shall have at least one supply air temperature property using the relation hasProperty." ;
+            sh:message "g36: One MultipleZoneVAVAirHandlingUnit OutletConnectionPoint shall have at least one supply air temperature property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-Supply ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The MultipleZoneVAVAirHandlingUnit OutletConnectionPoint shall have at least one supply duct static pressure property using the relation hasProperty." ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-Supply ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The MultipleZoneVAVAirHandlingUnit shall contain at least one return air damper using the relation contains." ;
+            sh:message "g36: The MultipleZoneVAVAirHandlingUnit shall contain at least one return air damper using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Return ;
+                                    sh:maxCount 1 ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The  MultipleZoneVAVAirHandlingUnit shall contain at least one ChilledWaterCoil for cooling using the relation contains." ;
+            sh:message "g36: The  MultipleZoneVAVAirHandlingUnit shall contain at least one ChilledWaterCoil for cooling using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:ChilledWaterCoil ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The  MultipleZoneVAVAirHandlingUnit shall contain at least one HotWaterCoil or at least one ElectricHeatingCoil for heating using the relation contains." ;
+            sh:message "g36: The  MultipleZoneVAVAirHandlingUnit shall contain at least one HotWaterCoil or at least one ElectricHeatingCoil for heating using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:or ( [ sh:class g36:HotWaterCoil ] [ sh:class g36:ElectricHeatingCoil ] ) ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "One MultipleZoneVAVAirHandlingUnit InletConnectionPoint shall have at least one outdoor air temperature property using the relation hasProperty. " ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-OutdoorAirIntake ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] ;
+    sh:severity s223:g36 .
+
+g36:MultipleZoneVAVAirHandlingUnit-CommonDamper a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with a common economizer/minimum OA damper, include the following points" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with a common economizer/minimum OA damper, must have exactly one economizer/minimum outdoor air damper." ;
+            sh:message "g36: For units with a common economizer/minimum OA damper, must have exactly one economizer/minimum outdoor air damper." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-OutdoorAirIntake ] ],
+                                [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Economizer ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a common economizer/minimum OA damper, MultipleZoneVAVAirHandlingUnit InletConnectionPoint must have at least one outdoor airflow property." ;
+            sh:message "g36: For units with a common economizer/minimum OA damper, MultipleZoneVAVAirHandlingUnit InletConnectionPoint must have at least one outdoor airflow property." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:hasValue s223:Role-OutdoorAirIntake ] ] ] ] ] ] ] ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-OADandAFMS a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with a separate minimum outdoor air damper and AFMS" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with a separate minimum outdoor air damper and AFMS, MultipleZoneVAVAirHandlingUnit must contain a modulating outdoor air damper with a minimum airflow property." ;
+            sh:message "g36: For units with a separate minimum outdoor air damper and AFMS, MultipleZoneVAVAirHandlingUnit must contain a modulating outdoor air damper with a minimum airflow property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:not [ sh:property [ sh:minCount 1 ;
+                                            sh:path s223:hasRole ;
+                                            sh:qualifiedMinCount 1 ;
+                                            sh:qualifiedValueShape [ sh:hasValue s223:Role-Economizer ] ] ] ;
+                            sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-OutdoorAirIntake ] ],
+                                [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:hasValue s223:Dimensioned-Minimum ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-OADandDP a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with a separate minimum outdoor air damper and DP sensor" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with a separate minimum outdoor air damper and DP sensor, MultipleZoneVAVAirHandlingUnit must contain a two-position outdoor air damper with a differential pressure property." ;
+            sh:message "g36: For units with a separate minimum outdoor air damper and DP sensor, MultipleZoneVAVAirHandlingUnit must contain a two-position outdoor air damper with a differential pressure property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:TwoPositionDamper ;
+                    sh:node [ sh:not [ sh:property [ sh:minCount 1 ;
+                                            sh:path s223:hasRole ;
+                                            sh:qualifiedMinCount 1 ;
+                                            sh:qualifiedValueShape [ sh:hasValue s223:Role-Economizer ] ] ] ;
+                            sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-OutdoorAirIntake ] ],
+                                [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReliefDamper a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with actuated relief dampers but no relief fan" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with actuated relief dampers but no relief fan, the MultipleZoneVAVAirHandlingUnit must contain a relief air damper with an analog damper command property." ;
+            sh:message "g36: For units with actuated relief dampers but no relief fan, the MultipleZoneVAVAirHandlingUnit must contain a relief air damper with an analog damper command property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Relief ;
+                                    sh:maxCount 1 ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with actuated relief dampers but no relief fan, the MultipleZoneVAVAirHandlingUnit must be connectedTo at least one VAV, which connectedTo at least one HVAC DomainSpace, which is contained by at least one Zone, which has a building static pressure property." ;
+            sh:path ( [ sh:oneOrMorePath s223:connectedTo ] sh:zeroOrOnePath [ sh:inversePath s223:hasDomainSpace ] ) ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:node [ sh:property [ sh:hasValue s223:Domain-HVAC ;
+                                    sh:maxCount 1 ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasDomain ],
+                                [ sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReliefFan a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with a relief fan" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with both a relief air damper and a relief fan, the MultipleZoneVAVAirHandlingUnit must have a relief air damper with a two-position damper command property." ;
+            sh:message "g36: For units with both a relief air damper and a relief fan, the MultipleZoneVAVAirHandlingUnit must have a relief air damper with a two-position damper command property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:TwoPositionDamper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Relief ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with both a relief air damper and a relief fan, the MultipleZoneVAVAirHandlingUnit must have a relief fan with a VFD." ;
+            sh:message "g36: For units with both a relief air damper and a relief fan, the MultipleZoneVAVAirHandlingUnit must have a relief fan with a VFD." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Relief ] ] ] ] ;
+            sh:severity s223:g36 ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReturnFan a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:comment "For units with a return fan" ;
+    rdfs:subClassOf g36:MultipleZoneVAVAirHandlingUnit ;
+    sh:class s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "For units with a return fan, the MultipleZoneVAVAirHandlingUnit must indeed contain a return fan." ;
+            sh:message "g36: For units with a return fan, the MultipleZoneVAVAirHandlingUnit must indeed contain a return fan." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Return ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a return fan, the MultipleZoneVAVAirHandlingUnit must contain an exhaust air damper." ;
+            sh:message "g36: For units with a return fan, the MultipleZoneVAVAirHandlingUnit must contain an exhaust air damper." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Exhaust ;
+                                    sh:maxCount 1 ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a return fan, if airflow tracking logic is used, the OutletConnectionPoint of the supply fan in the MultipleZoneVAVAirHandlingUnit must have a supply airflow property." ;
+            sh:message "g36: For units with a return fan, if airflow tracking logic is used, the OutletConnectionPoint of the supply fan in the MultipleZoneVAVAirHandlingUnit must have a supply airflow property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Supply ;
+                                    sh:path s223:hasRole ] ],
+                        [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasConnectionPoint ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class g36:OutletConnectionPoint ;
+                                            sh:node [ sh:property [ sh:minCount 1 ;
+                                                            sh:path s223:hasProperty ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                                                    sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path qudt:hasQuantityKind ],
+                                                                                [ sh:hasValue s223:Role-Supply ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path s223:hasAspect ] ] ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a return fan, if airflow tracking logic is used, the OutletConnectionPoint of the return fan in the MultipleZoneVAVAirHandlingUnit must have a return airflow property." ;
+            sh:message "g36: For units with a return fan, if airflow tracking logic is used, the OutletConnectionPoint of the return fan in the MultipleZoneVAVAirHandlingUnit must have a return airflow property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Return ;
+                                    sh:path s223:hasRole ] ],
+                        [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasConnectionPoint ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class g36:OutletConnectionPoint ;
+                                            sh:node [ sh:property [ sh:minCount 1 ;
+                                                            sh:path s223:hasProperty ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                                                    sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path qudt:hasQuantityKind ],
+                                                                                [ sh:hasValue s223:Role-Return ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path s223:hasAspect ] ] ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a return fan, if direct building pressure logic is used, the OutletConnectionPoint of the return fan in the MultipleZoneVAVAirHandlingUnit must have a return fan discharge static pressure property." ;
+            sh:message "g36: For units with a return fan, if direct building pressure logic is used, the OutletConnectionPoint of the return fan in the MultipleZoneVAVAirHandlingUnit must have a return fan discharge static pressure property." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Return ;
+                                    sh:path s223:hasRole ] ],
+                        [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasConnectionPoint ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class g36:OutletConnectionPoint ;
+                                            sh:node [ sh:property [ sh:minCount 1 ;
+                                                            sh:path s223:hasProperty ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                                                    sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path qudt:hasQuantityKind ],
+                                                                                [ sh:hasValue s223:Role-Return ;
+                                                                                    sh:maxCount 1 ;
+                                                                                    sh:minCount 1 ;
+                                                                                    sh:path s223:hasAspect ] ] ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "For units with a return fan, if direct building pressure logic is used, the MultipleZoneVAVAirHandlingUnit must be connectedTo at least one VAV, which connectedTo at least one HVAC DomainSpace, which is contained by at least one Zone, which has a building static pressure property." ;
+            sh:message "g36: For units with a return fan, if direct building pressure logic is used, the MultipleZoneVAVAirHandlingUnit must be connectedTo at least one VAV, which connectedTo at least one HVAC DomainSpace, which is contained by at least one Zone, which has a building static pressure property." ;
+            sh:minCount 1 ;
+            sh:path ( s223:connectedTo s223:connectedTo [ sh:inversePath s223:contains ] s223:hasProperty ) ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                    sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                    sh:maxCount 1 ;
+                                    sh:minCount 1 ;
+                                    sh:path qudt:hasQuantityKind ] ] ] ;
+            sh:severity s223:g36 ] .
+
+g36:MultipleZoneVAVAirHandlingUnit-CommonDamperAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit and has a common economizer/minimum outdoor air damper, it will be declared as an instance of this class." ;
+            sh:condition [ sh:property [ rdfs:comment "For units with a common economizer/minimum OA damper, must have exactly one economizer/minimum outdoor air damper." ;
+                            sh:minCount 1 ;
+                            sh:path s223:contains ;
+                            sh:qualifiedMaxCount 1 ;
+                            sh:qualifiedMinCount 1 ;
+                            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                                    sh:node [ sh:property [ sh:minCount 1 ;
+                                                    sh:path s223:hasRole ;
+                                                    sh:qualifiedMinCount 1 ;
+                                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-OutdoorAirIntake ] ],
+                                                [ sh:minCount 1 ;
+                                                    sh:path s223:hasRole ;
+                                                    sh:qualifiedMinCount 1 ;
+                                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Economizer ] ] ] ] ;
+                            sh:severity s223:g36 ]], g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-CommonDamper ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnit-OADandAFMSAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit-OADandAFMS, it will be declared as an instance of that class." ;
+            sh:condition g36:MultipleZoneVAVAirHandlingUnit-OADandAFMS ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-OADandAFMS ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnit-OADandDPAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit-OADandDP, it will be declared as an instance of that class." ;
+            sh:condition g36:MultipleZoneVAVAirHandlingUnit-OADandDP ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-OADandDP ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReliefDamperAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit and has a relief damper, it will be declared as an instance of this class." ;
+            sh:condition [ sh:property [ rdfs:comment "For units with actuated relief dampers but no relief fan, the MultipleZoneVAVAirHandlingUnit must contain a relief air damper with an analog damper command property." ;
+                            sh:minCount 1 ;
+                            sh:path s223:contains ;
+                            sh:qualifiedMinCount 1 ;
+                            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                                    sh:node [ sh:property [ sh:hasValue s223:Role-Relief ;
+                                                    sh:maxCount 1 ;
+                                                    sh:minCount 1 ;
+                                                    sh:path s223:hasRole ] ] ] ;
+                            sh:severity s223:g36 ]], g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-WithReliefDamper ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReliefFanAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit and has a relief fan, it will be declared as an instance of this class." ;
+            sh:condition [ sh:property [ rdfs:comment "For units with both a relief air damper and a relief fan, the MultipleZoneVAVAirHandlingUnit must have a relief fan with a VFD." ;
+                            sh:minCount 1 ;
+                            sh:path s223:contains ;
+                            sh:qualifiedMaxCount 1 ;
+                            sh:qualifiedMinCount 1 ;
+                            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                                    sh:node [ sh:property [ sh:minCount 1 ;
+                                                    sh:path s223:hasRole ;
+                                                    sh:qualifiedMinCount 1 ;
+                                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Relief ] ] ] ] ;
+                            sh:severity s223:g36 ]], g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-WithReliefFan ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnit-WithReturnFanAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit and has a return fan, it will be declared as an instance of this class." ;
+            sh:condition [ sh:property [ rdfs:comment "For units with a return fan, the MultipleZoneVAVAirHandlingUnit must indeed contain a return fan." ;
+                            sh:minCount 1 ;
+                            sh:path s223:contains ;
+                            sh:qualifiedMinCount 1 ;
+                            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                                    sh:node [ sh:property [ sh:hasValue s223:Role-Return ;
+                                                    sh:minCount 1 ;
+                                                    sh:path s223:hasRole ] ] ] ;
+                            sh:severity s223:g36 ]], g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit-WithReturnFan ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+g36:MultipleZoneVAVAirHandlingUnitAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:MultipleZoneVAVAirHandlingUnit, it will be declared as an instance of that class." ;
+            sh:condition g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:object g36:MultipleZoneVAVAirHandlingUnit ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+<http://data.ashrae.org/standard223/1.0/extensions/g36/multiple-zone-vav-air-handling-unit> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings>,
+        <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:versionInfo "Created with TopBraid Composer" .
+

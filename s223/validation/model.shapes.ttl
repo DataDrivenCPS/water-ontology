@@ -1,0 +1,2056 @@
+# baseURI: http://data.ashrae.org/standard223/1.0/validation/model
+# imports: http://data.ashrae.org/standard223/1.0/model/all
+
+@prefix afn: <http://jena.hpl.hp.com/ARQ/function#> .
+@prefix all: <http://data.ashrae.org/standard223/model/all#> .
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+@prefix constant: <http://qudt.org/vocab/constant/> .
+@prefix creativecommons: <http://creativecommons.org/ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix domain: <http://data.ashrae.org/standard223/1.0/vocab/domain#> .
+@prefix dtype: <http://www.linkedmodel.org/schema/dtype#> .
+@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix functions: <http://qudt.org/2.1/schema/extensions/functions#> .
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix graphql: <http://datashapes.org/graphql#> .
+@prefix imports: <http://qudt.org/2.1/schema/extensions/imports#> .
+@prefix mc: <http://www.linkedmodel.org/owl/schema/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prefix: <http://qudt.org/2.1/vocab/prefix/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qkdv: <http://qudt.org/vocab/dimensionvector/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix qudt.type: <http://qudt.org/vocab/type/> .
+@prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix role: <http://data.ashrae.org/standard223/1.0/vocab/role#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix schema: <http://schema.org/> .
+@prefix sdo: <http://schema.org#> .
+@prefix settings: <http://data.ashrae.org/standard223/extensions/settings#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sou: <http://qudt.org/vocab/sou/> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix swa: <http://topbraid.org/swa#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tosh: <http://topbraid.org/tosh#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix voag: <http://voag.linkedmodel.org/schema/voag#> .
+@prefix vs223: <http://data.ashrae.org/standard223/validation/schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+s223:BACnetExternalReference
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:device-identifier ;
+      rdfs:comment "If the relation device-identifier is present it associates the external reference with a BACnet device having the specific device identifier." ;
+      sh:datatype xsd:string ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+      sh:pattern "^[A-Za-z0-9-]+,[1-9][0-9]*$" ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:device-name ;
+      rdfs:comment "If the relation device-name is present it associates the external reference with a BACnet device having the specific device name." ;
+      sh:datatype xsd:string ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:object-identifier ;
+      rdfs:comment "If the relation object-identifier is present it associates the external reference with the BACnet object having the specific object identifier." ;
+      sh:datatype xsd:string ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+      sh:pattern "^[A-Za-z0-9-]+,[1-9][0-9]*$" ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:object-name ;
+      rdfs:comment "If the relation object-name is present it associates the external reference with the BACnet object having the specific object name." ;
+      sh:datatype xsd:string ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:priority-for-writing ;
+      rdfs:comment "If the relation priority-for-writing is present it provides the priority for writing values to the object." ;
+      sh:datatype xsd:nonNegativeInteger ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:property-array-index ;
+      rdfs:comment "If the relation property-array-index is present it provides the index for reading items from a property that is an array." ;
+      sh:datatype xsd:nonNegativeInteger ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+    ] ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path bacnet:property-identifier ;
+      rdfs:comment "If the relation property-identifier is present it is either a decimal number or exactly equal to the ASHRAE 135-2020 Clause 21 identifier text of BACnetPropertyIdentifier. If it is omitted, it defaults to \"present-value\" except for BACnet File objects, where absence of property-identifier refers to the entire content of the file accessed with Stream Access." ;
+      sh:datatype xsd:string ;
+      sh:maxCount 1 ;
+      sh:minCount 0 ;
+    ] ;
+.
+s223:BatteryCPShape
+  a sh:NodeShape ;
+  rdfs:comment "A Battery shall have at least one outlet or bidirectional ConnectionPoint using the medium Electricity." ;
+  rdfs:label "Battery CP Shape" ;
+  sh:message "s223: A Battery shall have at least one outlet or bidirectional ConnectionPoint using the medium Electricity." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Battery shall have at least one outlet or bidirectional ConnectionPoint using the medium Electricity." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Constituent-Electricity ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Battery shall have at least one outlet or bidirectional ConnectionPoint using the medium Electricity." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Constituent-Electricity ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Battery ;
+.
+s223:ClosedWorldShape
+  a sh:NodeShape ;
+  rdfs:comment "Ensure that all instances of an s223 class use only the properties defined for that class. Note that this only applies to s223 and QUDT properties." ;
+  rdfs:label "Closed World Shape" ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment """Ensure that all instances of an s223 class use only the properties defined for that class. Note that
+properties from other namespaces are not checked by this validation.""" ;
+      sh:message "s223: Predicate {?p} is not defined for instance {$this}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this ?p ?o
+WHERE {
+$this ?p ?o .
+FILTER(STRSTARTS (str(?p), \"http://data.ashrae.org/standard223#\") || STRSTARTS (str(?p), \"http://qudt.org/schema/qudt\"))
+FILTER NOT EXISTS {$this a sh:NodeShape}
+FILTER NOT EXISTS {$this a/rdfs:subClassOf* ?class .
+			?class sh:property/sh:path ?p .
+}
+FILTER NOT EXISTS {$this a/rdfs:subClassOf* ?class .
+?class sh:xone/rdf:rest*/rdf:first/sh:property/sh:path ?p .
+}
+FILTER NOT EXISTS {$this a/rdfs:subClassOf* ?class .
+?class sh:or/rdf:rest*/rdf:first/sh:property/sh:path ?p .
+}
+}
+""" ;
+    ] ;
+  sh:targetClass s223:Concept ;
+.
+s223:Concept
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Ensure that any instance that is declared to be an instance of an abstract class must also be declared an instance of at least one subClass of that abstract class" ;
+      sh:message "s223: {$this} cannot be declared an instance of only abstract class {?class}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT DISTINCT $this ?class
+WHERE {
+?class s223:abstract true .
+$this a ?class .
+OPTIONAL {
+?otherClass rdfs:subClassOf+ ?class .
+$this a ?otherClass .
+FILTER (?class != ?otherClass) .
+}
+FILTER (!bound (?otherClass)) .
+}
+""" ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Inconsistent Medium. Case 1: Two pure mediums." ;
+      sh:message "s223: {$this} hasMedium of {?m1}, but is associated with property {?prop} that has ofMedium of {?m2}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this ?m1 ?prop ?m2
+WHERE {
+$this s223:hasMedium ?m1 .
+$this ?p ?prop .
+?prop a/rdfs:subClassOf* s223:Property .
+?prop s223:ofMedium ?m2 .
+FILTER (?m1 != ?m2 ) .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Inconsistent Medium. Case 2: A pure medium and an associated property with constituents." ;
+      sh:message "s223: {$this} hasMedium of {?m1}, but is associated with property {?prop} that has ofMedium of {?m2}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this ?m1 ?prop ?m2
+WHERE {
+$this s223:hasMedium ?m1 .
+$this ?p ?prop .
+?prop a/rdfs:subClassOf* s223:Property .
+?prop s223:ofMedium ?m2 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Inconsistent Medium. Case 3: A medium with constituents and an associated property with a pure medium." ;
+      sh:message "s223: {$this} hasMedium of {?m2}, but is associated with property {?prop} that has ofMedium of {?m1}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this ?m1 ?prop ?m2
+WHERE {
+$this s223:hasMedium ?m2 .
+$this ?p ?prop .
+?prop a/rdfs:subClassOf* s223:Property .
+?prop s223:ofMedium ?m1 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Inconsistent Medium. Case 4: A medium with constituents and an associated property with constituents." ;
+      sh:message "s223: {$this} hasMedium of {?m1}, but is associated with property {?prop} that has ofMedium of {?m2}." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this ?m1 ?prop ?m2
+WHERE {
+$this s223:hasMedium ?m1 .
+$this ?p ?prop .
+?prop a/rdfs:subClassOf* s223:Property .
+?prop s223:ofMedium ?m2 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+    ] ;
+.
+s223:Connectable
+  sh:property [
+      sh:path s223:cnx ;
+      rdfs:comment "If a Connectable has s223:connected or s223:connectedTo (i.e. high-level connection specification), it must also have the supporting cnx relations (low-level connection specification)." ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If a Connectable has s223:connected or s223:connectedTo (i.e. high-level connection specification), it must also have the supporting cnx relations (low-level connection specification)." ;
+          sh:message "s223: {$this} is s223:connected (high-level) to {?otherC} but not connected at the cnx-level." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?otherC
+WHERE {
+$this s223:connected ?otherC .
+FILTER NOT EXISTS {$this s223:cnx+ ?otherC}
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Connection
+  sh:property [
+      sh:path s223:cnx ;
+      rdfs:comment "A Connection must only have a cnx relation with a ConnectionPoint" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "A Connection must only have a cnx relation with a ConnectionPoint" ;
+          sh:message "s223: {$this} cannot have a s223:cnx relation to {?something}, because {?something} is not a ConnectionPoint." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """SELECT $this ?something
+WHERE {
+$this s223:cnx ?something .
+FILTER NOT EXISTS {?something a/rdfs:subClassOf* s223:ConnectionPoint} .
+}""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Connection." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 1: Two pure mediums." ;
+          sh:message "s223: Connection {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m1 .
+$this s223:hasMedium ?m2 .
+FILTER (?m1 != ?m2 ) .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Connection." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 2: A Connection with constituents and an associated ConnectionPoint with a pure Medium." ;
+          sh:message "s223: Connection {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m1 .
+$this s223:hasMedium ?m2 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Connection." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 3: Connection with a pure medium and an associated ConnectionPoint with constituents." ;
+          sh:message "s223: Connection {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m2 .
+$this s223:hasMedium ?m1 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Connection." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 4: A Connection with constituents and an associated ConnectionPoint with constituents." ;
+          sh:message "s223: Connection {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m2 .
+$this s223:hasMedium ?m1 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 1: Two ConnectionPoints with pure mediums." ;
+          sh:message "s223: {?cp1} with Medium {?m1} is incompatible with {?cp2} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m1 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp2 s223:hasMedium ?m2 .
+FILTER (?m1 != ?m2 ) .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 2: A medium with constituents and a pure Medium." ;
+          sh:message "s223: {?cp1} with Medium {?m1} is incompatible with {?cp2} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m1 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+FILTER (?cp1 != ?cp2 ) .
+?cp2 s223:hasMedium ?m2 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 3: Two ConnectionPoints with mediums with constituents." ;
+          sh:message "s223: {?cp1} with Medium {?m2} is incompatible with {?cp2} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m2 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+FILTER (?cp1 != ?cp2 ) .
+?cp2 s223:hasMedium ?m1 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:ConnectionCnxShape
+  a sh:NodeShape ;
+  rdfs:comment "You need either an InletCP and an OutletCP, or at least one BidirectionalCP and another CP of any type." ;
+  rdfs:label "ConnectionCnxShape" ;
+  sh:message "s223: You need either an InletCP and an OutletCP, or at least one BidirectionalCP and another CP of any type." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:connectsAt ;
+            rdfs:comment "A Connection shall have at least two connectsAt relations allowing flow in and out of the Connection." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+            sh:severity sh:Warning ;
+          ] ;
+        sh:property [
+            sh:path s223:connectsAt ;
+            rdfs:comment "A Connection shall have at least two connectsAt relations allowing flow in and out of the Connection." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+            sh:severity sh:Warning ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:connectsAt ;
+            rdfs:comment "A Connection shall have at least two connectsAt relations allowing flow in and out of the Connection." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+            sh:severity sh:Warning ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Connection ;
+.
+s223:ConnectionPoint
+  sh:property [
+      sh:path s223:connectsThrough ;
+      rdfs:comment "If a ConnectionPoint lacks a connectsThrough and mapsTo relation, and is not associated with a Junction or Equipment that is contained by an Equipment, then suggest that the ConnectionPoint probably needs an association with a Connection." ;
+      sh:severity sh:Info ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If a ConnectionPoint lacks a connectsThrough and mapsTo relation, and is not associated with a Junction or Equipment that is contained by an Equipment, then suggest that the ConnectionPoint probably needs an association with a Connection." ;
+          sh:message "s223: ConnectionPoint {$this} probably needs an association with a Connection." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+    SELECT $this 
+    WHERE {
+        FILTER NOT EXISTS {$this s223:connectsThrough ?anything1} .
+        FILTER NOT EXISTS {$this s223:mapsTo ?anything2} .
+        $this s223:isConnectionPointOf ?equipment .
+        FILTER NOT EXISTS {?containerEquipment s223:contains ?equipment} .
+        }
+        """ ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the entity identified by the mapsTo+ relation." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the entity identified by the mapsTo+ relation." ;
+          sh:message "s223: {$this} declares a Medium of {?a}, but the Medium of {?b} is declared by {?target} pointed to by the mapsTo+ relation." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT DISTINCT $this ?a ?b ?target
+WHERE {
+$this s223:hasMedium ?a .
+$this s223:mapsTo+ ?target .
+?target s223:hasMedium ?b .
+?a a/rdfs:subClassOf* s223:EnumerationKind-Medium .
+?b a/rdfs:subClassOf* s223:EnumerationKind-Medium .
+FILTER (?a != ?b ) .
+FILTER (NOT EXISTS {?b a/rdfs:subClassOf* ?a}) .
+FILTER (NOT EXISTS {?a a/rdfs:subClassOf* ?b}) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:mapsTo ;
+      rdfs:comment "A ConnectionPoint must not have both a mapsTo and a connectsThrough relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "A ConnectionPoint must not have both a mapsTo and a connectsThrough relation." ;
+          sh:message "s223: {$this} cannot have both a mapsTo {?uppercp} and a connectsThrough {?connection}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?uppercp ?connection
+WHERE {
+$this s223:mapsTo ?uppercp .
+$this s223:connectsThrough ?connection .
+?connection a/rdfs:subClassOf* s223:Connection .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:mapsTo ;
+      rdfs:comment "If a ConnectionPoint lacks a connectsThrough and mapsTo relation, but is associated with a Junction or Equipment that is contained by an Equipment, then suggest that the ConnectionPoint might need a mapsTo relation to a ConnectionPoint of the containing Equipment." ;
+      sh:severity sh:Info ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If a ConnectionPoint lacks a connectsThrough and mapsTo relation, but is associated with a Junction or Equipment that is contained by an Equipment, then suggest that the ConnectionPoint might need a mapsTo relation to a ConnectionPoint of the containing Equipment." ;
+          sh:message "s223: ConnectionPoint {$this} could be missing a mapsTo relation to a ConnectionPoint of {?containerEquipment} because it is associated with a Junction or Equipment that is contained by {?containerEquipment}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+    SELECT $this ?containerEquipment
+    WHERE {
+        FILTER NOT EXISTS {$this s223:connectsThrough ?anything1} .
+        FILTER NOT EXISTS {$this s223:mapsTo ?anything2} .
+        $this s223:isConnectionPointOf ?equipment .
+        ?containerEquipment s223:contains ?equipment .
+        }
+        """ ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:mapsTo ;
+      rdfs:comment "If a ConnectionPoint mapsTo another ConnectionPoint, the respective Equipment should have a contains relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If a ConnectionPoint mapsTo another ConnectionPoint, the respective Equipment should have a contains relation." ;
+          sh:message "s223: {?otherEquipment} should contain {?equipment} because ConnectionPoint {$this} has a mapsTo relation." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?equipment ?otherEquipment
+WHERE {
+$this s223:mapsTo ?otherCP .
+?equipment s223:hasConnectionPoint $this .
+?otherEquipment s223:hasConnectionPoint ?otherCP .
+FILTER NOT EXISTS {?otherEquipment s223:contains ?equipment}
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:ControllerRoleShape
+  a sh:NodeShape ;
+  rdfs:comment "Equipment that executes a Function must have a s223:hasRole relation to s223:Role-Controller." ;
+  rdfs:label "Controller Role Shape" ;
+  sh:property [
+      a sh:PropertyShape ;
+      sh:path s223:hasRole ;
+      sh:hasValue s223:Role-Controller ;
+      sh:message "s223: Equipment that executes a Function must have a s223:hasRole relation to s223:Role-Controller." ;
+      sh:minCount 1 ;
+    ] ;
+  sh:targetSubjectsOf s223:executes ;
+.
+s223:CoolingCoil
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "Cooling coils will always have the role Role-Cooling" ;
+      sh:object s223:Role-Cooling ;
+      sh:predicate s223:hasRole ;
+      sh:subject sh:this ;
+    ] ;
+.
+s223:CorrelatedColorTemperatureSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "A CorrelatedColorTemperatureSensor must always observe a Property that has a QuantityKind of ThermodynamicTemperature." ;
+      sh:message "s223: A CorrelatedColorTemperatureSensor must always observe a Property that has a QuantityKind of ThermodynamicTemperature." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue qudtqk:ThermodynamicTemperature ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:DomainSpace
+  sh:property [
+      sh:path [
+          sh:inversePath s223:encloses ;
+        ] ;
+      rdfs:comment "A DomainSpace must be enclosed by a PhysicalSpace." ;
+      sh:message "s223: A DomainSpace must be enclosed by a PhysicalSpace." ;
+      sh:minCount 1 ;
+      sh:severity sh:Info ;
+    ] ;
+.
+s223:DuvSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "A DuvSensor must always observe a Property that has a QuantityKind of Duv." ;
+      sh:message "s223: A DuvSensor must always observe a Property that has a QuantityKind of Duv." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue qudtqk:Duv ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:EnumerableProperty
+  sh:property [
+      sh:path s223:hasValue ;
+      rdfs:comment "Checks for valid enumeration value consistent with the stated EnumerationKind." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Checks for valid enumeration value consistent with the stated EnumerationKind." ;
+          sh:message "s223: {$this} has an enumeration value of {?value} which is not a valid {?kind}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?value ?kind
+WHERE {
+$this s223:hasValue ?value .
+$this s223:hasEnumerationKind ?kind .
+FILTER (NOT EXISTS {?value a/rdfs:subClassOf* ?kind}) .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:EnumerationKind-Substance
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "A substance may only have atomic constituents, it may not have a constituent that also composed ofs." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If a substance has a constituent, that constituent may not itself have constituents." ;
+          sh:message "s223: This substance {$this} has a constituent {?constituent} that itself composed ofs {?nextConstituent}. Create new substance with only atomic constituents." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?constituent ?nextConstituent
+WHERE {
+$this s223:composedOf ?constituent .
+?constituent s223:ofConstituent/s223:composedOf ?nextConstituent .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Equipment
+  sh:property [
+      sh:path s223:connectedFrom ;
+      rdfs:comment "Disallow contained equipment from having external incoming connections." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Disallow contained equipment from having external incoming connections." ;
+          sh:message "s223: {$this} should not have a connection from external equipment {?otherDev} because {?container} contains {$this}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?container ?otherDev
+WHERE {
+$this s223:connectedFrom ?otherDev .
+$this ^s223:contains ?container .
+?container a/rdfs:subClassOf* s223:Equipment .
+FILTER NOT EXISTS {?container s223:contains ?otherDev .}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:connectedTo ;
+      rdfs:comment "Disallow contained equipment from having external outgoing connections." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Disallow contained equipment from having external outgoing connections." ;
+          sh:message "s223: {$this} should not have a connection to external equipment {?otherDev} because {?container} contains {$this}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?container ?otherDev
+WHERE {
+$this s223:connectedTo ?otherDev .
+$this ^s223:contains ?container .
+?container a/rdfs:subClassOf* s223:Equipment .
+FILTER NOT EXISTS {?container s223:contains ?otherDev .}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:contains ;
+      rdfs:comment "Warning about a subClass of Equipment of type A containing something that is in the same subClass branch." ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Warning about a subClass of Equipment of type A containing something that is in the same subClass branch." ;
+          sh:message "s223: {$this}, of type {?type1}, contains {?subEquip} of type {?type2}, that could result in double-counting items in the class hierarchy of {?type1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?subEquip ?type1 ?type2
+WHERE {
+  FILTER NOT EXISTS {$this a s223:Equipment} .
+$this s223:contains+ ?subEquip .
+  FILTER NOT EXISTS {?subEquip a s223:Equipment} .
+$this a ?type1 .
+?subEquip a ?type2 .
+{
+?type2 rdfs:subClassOf* ?type1 .
+}
+UNION
+{
+?type1 rdfs:subClassOf* ?type2 .
+}
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Filter
+  sh:property [
+      sh:path s223:hasConnectionPoint ;
+      rdfs:comment "A filter should have one common constituent between the inlet and outlet" ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 2: A medium with constituents and a pure Medium." ;
+          sh:message "s223: {$this} has an incompatible medium {?m1} with any constituent of {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?m1
+WHERE {
+$this s223:cnx ?cp1, ?cp2 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+FILTER (?cp1 != ?cp2) .
+?cp1 s223:hasMedium ?m1 .
+?cp2 s223:hasMedium ?m2 . 
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasConnectionPoint ;
+      rdfs:comment "A filter should have one common constituent between the inlet and outlet" ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 3: Two mediums with constituents." ;
+          sh:message "s223: For Filter {$this} there is no compatible substance between medium {?m2} and medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT ?this ?m2 ?m1
+WHERE {
+  ?this s223:cnx ?cp1, ?cp2 .
+  ?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+  ?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+  FILTER (?cp1 != ?cp2) .
+  ?cp1 s223:hasMedium ?m1 .
+  ?cp2 s223:hasMedium ?m2 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasConnectionPoint ;
+      rdfs:comment "Ensure that the filter inlet and outlet have compatible mediums." ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 1: Two pure mediums." ;
+          sh:message "s223: {$this} with inlet medium {?m2} is incompatible with outlet medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?m1
+WHERE {
+$this s223:cnx ?cp1, ?cp2 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+FILTER (?cp1 != ?cp2) .
+?cp1 s223:hasMedium ?m1 .
+?cp2 s223:hasMedium ?m2 . 
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:FunctionPropertyShape
+  a sh:NodeShape ;
+  rdfs:comment "A Function must be associated with at least one Property using either the relation hasInput or hasOutput." ;
+  rdfs:label "Function Property Shape" ;
+  sh:message "s223: A Function must be associated with at least one Property using either the relation hasInput or hasOutput." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasInput ;
+            rdfs:comment "A Function must be associated with at least one Property using either the relation hasInput or hasOutput." ;
+            sh:class s223:Property ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasOutput ;
+            rdfs:comment "A Function must be associated with at least one Property using either the relation hasInput or hasOutput." ;
+            sh:class s223:Property ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Function ;
+.
+s223:HeatExchanger
+  sh:property [
+      sh:path s223:hasConnectionPoint ;
+      rdfs:comment "Heat Exchangers should have the same number of non-electrical inlet and outlet connection points." ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Heat Exchangers should have the same number of non-electrical inlet and outlet connection points." ;
+          sh:message "s223: Number of inlets {?incount} are not equivalent with number of outlets {?outcount}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT DISTINCT $this ?incount ?outcount
+WHERE {
+{
+SELECT $this (COUNT (?cpin) AS ?incount)
+WHERE {
+?cpin a/rdfs:subClassOf* s223:InletConnectionPoint .
+$this s223:hasConnectionPoint ?cpin .
+?cpin s223:hasMedium ?inmedium .
+FILTER NOT EXISTS {
+    ?inmedium a/rdfs:subClassOf* s223:Constituent-Electricity .
+  }
+}
+GROUP BY $this
+}
+{
+SELECT $this (COUNT (?cpout) AS ?outcount)
+WHERE {
+?cpout a/rdfs:subClassOf* s223:OutletConnectionPoint .
+$this s223:hasConnectionPoint ?cpout .
+?cpout s223:hasMedium ?outmedium .
+FILTER NOT EXISTS {
+    ?outmedium a/rdfs:subClassOf* s223:Constituent-Electricity .
+  }
+}
+GROUP BY $this
+}
+FILTER (?incount != ?outcount)
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:HeatingCoil
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "Heating coils will always have the role Role-Heating" ;
+      sh:object s223:Role-Heating ;
+      sh:predicate s223:hasRole ;
+      sh:subject sh:this ;
+    ] ;
+.
+s223:IlluminanceSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "An IlluminanceSensor will always observe a Property that has a QuantityKind of Illuminance." ;
+      sh:message "s223: An IlluminanceSensor will always observe a Property that has a QuantityKind of Illuminance." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue qudtqk:Illuminance ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:InletConnectionPoint
+  sh:property [
+      sh:path s223:mapsTo ;
+      rdfs:comment "Ensure an InletConnectionPoint has a mapsTo relation to its containing Equipment if it has an external Connection" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Ensure an InletConnectionPoint has a mapsTo relation to its containing Equipment if it has an external Connection" ;
+          sh:message "s223: {$this} must have a mapsTo an InletConnectionPoint of {?parentEquipment} and not an external Connection from {?sourceEquipment}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?parentEquipment ?sourceEquipment
+WHERE {
+?equipment s223:hasConnectionPoint $this .
+?parentEquipment s223:contains ?equipment .
+$this s223:connectsThrough/s223:connectsFrom ?sourceEquipment .
+FILTER NOT EXISTS {?parentEquipment s223:contains ?sourceEquipment} .
+FILTER NOT EXISTS {$this s223:mapsTo ?anything} .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Junction
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Connection." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 3: Junction with a pure medium and an associated ConnectionPoint with constituents." ;
+          sh:message "s223: Junction {$this} with Medium {?m1} is incompatible with {?cp} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m2 .
+$this s223:hasMedium ?m1 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Junction." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 1: Two pure mediums." ;
+          sh:message "s223: Junction {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m1 .
+$this s223:hasMedium ?m2 .
+FILTER (?m1 != ?m2 ) .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Junction." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 2: A Junction with constituents and an associated ConnectionPoint with a pure Medium." ;
+          sh:message "s223: Junction {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m1 .
+$this s223:hasMedium ?m2 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by a ConnectionPoint via the s223:hasMedium relation is compatible with the Medium identified by the associated Junction." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 4: Junction with constituents and an associated ConnectionPoint with constituents." ;
+          sh:message "s223: Junction {$this} with Medium {?m2} is incompatible with {?cp} with Medium {?m1}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?m2 ?cp ?m1
+WHERE {
+$this s223:cnx ?cp .
+?cp a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp s223:hasMedium ?m1 .
+$this s223:hasMedium ?m2 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 1: Two ConnectionPoints with pure mediums." ;
+          sh:message "s223: {?cp1} with Medium {?m1} is incompatible with {?cp2} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m1 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+FILTER (?cp1 != ?cp2 ) .
+?cp2 s223:hasMedium ?m2 .
+FILTER (?m1 != ?m2 ) .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {?m2 s223:composedOf ?c2}
+FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 2: Two ConnectionPoints with a medium with constituents and a pure Medium." ;
+          sh:message "s223: {?cp1} with Medium {?m1} is incompatible with {?cp2} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m1 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp2 s223:hasMedium ?m2 .
+?m2 s223:composedOf/s223:ofConstituent ?s2 .
+FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+FILTER NOT EXISTS {
+  ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+  {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Ensure that the Medium identified by all the associated ConnectionPoints via the s223:hasMedium relation are compatible with one another." ;
+      sh:name "Test for compatible declared Medium" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Inconsistent Medium. Case 3: Two ConnectionPoints with mediums with constituents." ;
+          sh:message "s223: {?cp1} with Medium {?m1} is incompatible with {?cp2} with Medium {?m2}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cp1 ?m1 ?cp2 ?m2
+WHERE {
+$this s223:cnx ?cp1 .
+?cp1 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp1 s223:hasMedium ?m1 .
+$this s223:cnx ?cp2 .
+?cp2 a/rdfs:subClassOf* s223:ConnectionPoint .
+?cp2 s223:hasMedium ?m2 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:JunctionCPShape
+  a sh:NodeShape ;
+  rdfs:comment "A Junction shall have at least two ConnectionPoints including (a) at least one inlet and one outlet, or (b) at least one bidirectional connection point." ;
+  rdfs:label "JunctionCPShape" ;
+  sh:message "s223: A Junction shall have at least two ConnectionPoints including (a) at least one inlet and one outlet, or (b) at least one bidirectional connection point." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Junction shall have at least two ConnectionPoints including (a) at least one inlet and one outlet, or (b) at least one bidirectional connection point." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Junction shall have at least two ConnectionPoints including (a) at least one inlet and one outlet, or (b) at least one bidirectional connection point." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Junction shall have at least two ConnectionPoints including (a) at least one inlet and one outlet, or (b) at least one bidirectional connection point." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Junction ;
+.
+s223:OccupantCounter
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "An OccupantCounter must always observe a QuantifiableObservableProperty that has a QuantityKind of Population and a Unit of unit:NUM." ;
+      sh:class s223:QuantifiableObservableProperty ;
+      sh:message "s223: An OccupantCounter must always observe a QuantifiableObservableProperty that has a QuantityKind of Population and a Unit of unit:NUM." ;
+      sh:minCount 1 ;
+      sh:node [
+          sh:property [
+              sh:path qudt:hasQuantityKind ;
+              sh:hasValue qudtqk:Population ;
+              sh:maxCount 1 ;
+            ] ;
+          sh:property [
+              sh:path qudt:hasUnit ;
+              sh:hasValue unit:NUM ;
+              sh:maxCount 1 ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:OccupantMotionSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "An OccupantMotionSensor must always observe an EnumeratedObservableProperty that has an EnumerationKind of Occupancy-Motion." ;
+      sh:class s223:EnumeratedObservableProperty ;
+      sh:message "s223: An OccupantMotionSensor must always observe an EnumeratedObservableProperty that has an EnumerationKind of Occupancy-Motion." ;
+      sh:minCount 1 ;
+      sh:node [
+          sh:property [
+              sh:path s223:hasEnumerationKind ;
+              sh:class s223:Occupancy-Motion ;
+              sh:maxCount 1 ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:OccupantPresenceSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "An OccupantPresenceSensor will always observe an EnumeratedObservableProperty that has an EnumerationKind of Occupancy-Presence." ;
+      sh:class s223:EnumeratedObservableProperty ;
+      sh:message "s223: An OccupantPresenceSensor will always observe an EnumeratedObservableProperty that has an EnumerationKind of Occupancy-Presence." ;
+      sh:minCount 1 ;
+      sh:node [
+          sh:property [
+              sh:path s223:hasEnumerationKind ;
+              sh:class s223:Occupancy-Presence ;
+              sh:maxCount 1 ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:OutletConnectionPoint
+  sh:property [
+      sh:path s223:mapsTo ;
+      rdfs:comment "Ensure an OutletConnectionPoint has a mapsTo relation to its containing Equipment if it has an external Connection" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Ensure an OutletConnectionPoint has a mapsTo relation to its containing Equipment if it has an external Connection" ;
+          sh:message "s223: {$this} must have a mapsTo an OutletConnectionPoint of {?parentEquipment} and not an external Connection to {?destinationEquipment}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?parentEquipment ?destinationEquipment
+WHERE {
+?equipment s223:hasConnectionPoint $this .
+?parentEquipment s223:contains ?equipment .
+$this s223:connectsThrough/s223:connectsTo ?destinationEquipment .
+FILTER NOT EXISTS {?parentEquipment s223:contains ?destinationEquipment} .
+FILTER NOT EXISTS {$this s223:mapsTo ?anything} .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Property
+  sh:property [
+      sh:path s223:hasInternalReference ;
+      rdfs:comment "A Property must not have both a hasInternalReference and a hasExternalReference relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "A Property must not have both a hasInternalReference and a hasExternalReference relation." ;
+          sh:message "s223: {$this} cannot have both a hasInternalReference and a hasExternalReference relation." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this
+WHERE {
+$this s223:hasInternalReference ?int .
+$this s223:hasExternalReference ?ext .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasInternalReference ;
+      rdfs:comment "A Property must not have both a hasInternalReference and a hasValue relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "A Property must not have both a hasInternalReference and a hasValue relation." ;
+          sh:message "s223: {$this} cannot have both a hasInternalReference and a hasValue relation." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this
+WHERE {
+$this s223:hasInternalReference ?int .
+$this s223:hasValue ?val .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasValue ;
+      rdfs:comment "A Property must not have both a hasExternalReference and a hasValue relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "A Property must not have both a hasExternalReference and a hasValue relation." ;
+          sh:message "s223: {$this} cannot have both a hasExternalReference and a hasValue relation." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this
+WHERE {
+$this s223:hasExternalReference ?ext .
+$this s223:hasValue ?val .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:ofConstituent ;
+      rdfs:comment "" ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "If an incoming relation composedOf exists, then the Property must have a declared substance using the relation ofConstituent." ;
+          sh:message "s223: Property {$this} is referred to by {?something} with s223:composedOf, but the Property has no value for s223:ofConstituent." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?something
+WHERE {
+?something s223:composedOf $this .
+FILTER NOT EXISTS {$this s223:ofConstituent ?someSubstance} .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path [
+          sh:inversePath s223:observes ;
+        ] ;
+      rdfs:comment "An instance of s223:Property must not be observed (set) by more than one entity." ;
+      sh:maxCount 1 ;
+      sh:message "s223: An instance of s223:Property must not be observed (set) by more than one entity." ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "A Property instance cannot be declared an instance of both an ActuatableProperty and an ObservableProperty." ;
+      sh:message "s223: {$this} cannot be declared an instance of both an ActuatableProperty and an ObservableProperty." ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this
+WHERE {
+$this a/rdfs:subClassOf* s223:ActuatableProperty .
+$this a/rdfs:subClassOf* s223:ObservableProperty .
+}
+""" ;
+    ] ;
+.
+s223:Pump
+  a sh:NodeShape ;
+  sh:property [
+      sh:path s223:hasConnectionPoint ;
+      rdfs:comment "The non-electrical ConnectionPoints of a Pump must have compatible Media." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "The non-electrical ConnectionPoints of a Pump must have compatible Media." ;
+          sh:message "s223: {?cpa} and {?cpb} on the Pump {$this} have incompatible Media {$mediuma} and {$mediumb}." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?cpa ?cpb ?mediuma ?mediumb
+WHERE {
+  $this s223:hasConnectionPoint ?cpa .
+  $this s223:hasConnectionPoint ?cpb .
+  FILTER (?cpa != ?cpb) .
+  ?cpa s223:hasMedium ?mediuma .
+  FILTER (NOT EXISTS {?mediuma a/rdfs:subClassOf* s223:Constituent-Electricity}) .
+  ?cpb s223:hasMedium ?mediumb .
+  FILTER (NOT EXISTS {?mediumb a/rdfs:subClassOf* s223:Constituent-Electricity}) .
+  FILTER (?mediuma != ?mediumb) .
+  FILTER (NOT EXISTS {?mediumb a/rdfs:subClassOf* ?mediuma}) .
+  FILTER (NOT EXISTS {?mediuma a/rdfs:subClassOf* ?mediumb}) .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:QuantifiableProperty
+  sh:property [
+      sh:path s223:hasValue ;
+      rdfs:comment "This QuantifiableProperty cannot have a value without a Unit." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty cannot have a value without a Unit." ;
+          sh:message "s223: {$this} referenced by {?subject} has a value of {?v} but does not specify a Unit." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?v ?subject
+WHERE {
+$this s223:hasValue ?v .
+FILTER NOT EXISTS {$this qudt:hasUnit ?u} .
+?subject ?p $this .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:hasValue ;
+      rdfs:comment "This QuantifiableProperty cannot have a value without a Unit." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty cannot have a value without a Unit." ;
+          sh:message "s223: {$this} referenced by {?subject} has a value of {?v} but does not specify a Unit." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?v ?subject
+WHERE {
+$this s223:hasValue ?v .
+FILTER NOT EXISTS {$this qudt:hasUnit ?u} .
+?subject ?p $this .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasAspect ;
+      rdfs:comment "This QuantifiableProperty uses hasSetpoint to reference a Property that lacks an Aspect of Aspect-Setpoint." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty uses hasSetpoint to reference a Property that lacks an Aspect of Aspect-Setpoint." ;
+          sh:message "s223: {$this} uses hasSetpoint to reference {?setpoint} that lacks an Aspect of Aspect-Setpoint." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?setpoint
+WHERE {
+$this s223:hasSetpoint ?setpoint .
+FILTER NOT EXISTS {?setpoint s223:hasAspect s223:Aspect-Setpoint} .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasQuantityKind ;
+      rdfs:comment "This QuantifiableProperty and the Setpoint associated with it have non-commensurate QuantityKinds." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty and the Setpoint associated with it have non-commensurate QuantityKinds." ;
+          sh:message "s223: {$this} uses QuantityKind {?pqk} with DimensionVector {?pdv}, while Setpoint {?setpoint} uses QuantityKind {?sqk} with DimensionVector {?sdv}. These are non-commensurate" ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?setpoint ?pqk ?sqk ?pdv ?sdv
+WHERE {
+$this qudt:hasQuantityKind ?pqk .
+$this s223:hasSetpoint ?setpoint .
+?setpoint qudt:hasQuantityKind ?sqk .
+?pqk qudt:hasDimensionVector ?pdv .
+?sqk qudt:hasDimensionVector ?sdv .
+FILTER (?pqk != ?sqk) .
+FILTER (?pdv != ?sdv) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasSetpoint ;
+      rdfs:comment "This QuantifiableProperty with Aspect-Setpoint is not referenced by any Property using hasSetpoint." ;
+      sh:severity sh:Info ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty with Aspect-Setpoint is not referenced by any Property using hasSetpoint." ;
+          sh:message "s223: {$this} has Aspect-Setpoint but is not referenced by any Property using hasSetpoint." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this 
+WHERE {
+$this s223:hasAspect s223:Aspect-Setpoint .
+FILTER NOT EXISTS {?anything s223:hasSetpoint $this} .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasUnit ;
+      rdfs:comment "This QuantifiableProperty and the associated Setpoint use non-commensurate Units." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty and the associated Setpoint use non-commensurate Units." ;
+          sh:message "s223: {$this} uses Unit {?punit}, while Setpoint {?setpoint} uses Unit {?sunit}. These are non-commensurate." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?setpoint ?punit ?sunit
+WHERE {
+$this qudt:hasUnit ?punit .
+$this s223:hasSetpoint ?setpoint .
+?setpoint qudt:hasUnit ?sunit .
+?punit qudt:hasDimensionVector ?pdv .
+?sunit qudt:hasDimensionVector ?sdv .
+FILTER (?punit != ?sunit) .
+FILTER (?pdv != ?sdv) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasUnit ;
+      rdfs:comment "This QuantifiableProperty uses a different Unit than the Setpoint associated with it." ;
+      sh:severity sh:Info ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "This QuantifiableProperty uses a different Unit than the Setpoint associated with it." ;
+          sh:message "s223: {$this} uses Unit {?punit}, while Setpoint {?setpoint} uses Unit {?sunit}. Be careful." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?setpoint ?punit ?sunit
+WHERE {
+$this qudt:hasUnit ?punit .
+$this s223:hasSetpoint ?setpoint .
+?setpoint qudt:hasUnit ?sunit .
+?punit qudt:hasDimensionVector ?pdv .
+?sunit qudt:hasDimensionVector ?sdv .
+FILTER (?punit != ?sunit) .
+FILTER (?pdv = ?sdv) .
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path qudt:value ;
+      rdfs:comment "A QuantifiableProperty should use s223:hasValue instead of qudt:value." ;
+      sh:maxCount 0 ;
+      sh:message "A QuantifiableProperty should use s223:hasValue instead of qudt:value." ;
+    ] ;
+  sh:property [
+      sh:path qudt:value ;
+      rdfs:comment "A QuantifiableProperty should use s223:hasValue instead of qudt:value." ;
+      sh:maxCount 0 ;
+      sh:message "A QuantifiableProperty should use s223:hasValue instead of qudt:value." ;
+    ] ;
+  sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Checks for consistent dimension vectors for a QuantityKind and the Unit" ;
+      sh:message "s223: Inconsistent dimensionalities among the Property's Unit and Property's Quantity Kind" ;
+      sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+      sh:select """
+SELECT $this
+   WHERE 
+{
+      $this qudt:hasQuantityKind/qudt:hasDimensionVector ?qkdv1 .
+      $this qudt:hasUnit/qudt:hasDimensionVector ?qkdv2 .
+FILTER (?qkdv1 != ?qkdv2) .
+}
+""" ;
+    ] ;
+.
+s223:RadiantPanelInletShape
+  a sh:NodeShape ;
+  rdfs:comment "A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+  rdfs:label "Radiant panel inlet shape" ;
+  sh:message "s223: A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Constituent-Electricity ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Fluid-NaturalGas ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Fluid-Water ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A radiant panel shall have at least one inlet using the medium Electricity, NaturalGas, or inlet and outlet of Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Fluid-Water ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:RadiantPanel ;
+.
+s223:RadiatorInletShape
+  a sh:NodeShape ;
+  rdfs:comment "A Radiator shall have at least one inlet using the medium Electricity or inlet and outlet of Water." ;
+  rdfs:label "Radiator" ;
+  sh:message "s223: A Radiator shall have at least one inlet using the medium Electricity or inlet and outlet of Water." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Radiator shall have at least one inlet using the medium Electricity or inlet and outlet of Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Constituent-Electricity ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Radiator shall have at least one inlet using the medium Electricity or Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Fluid-Water ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Radiator shall have at least one outlet using the medium Water." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasMedium ;
+                        sh:class s223:Fluid-Water ;
+                      ] ;
+                  ] ;
+              ] ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Radiator ;
+.
+s223:Sensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "s223: If the hasReferenceLocation relation exists, the observed Property must have isDeltaQuantity true." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "s223: If the hasReferenceLocation relation exists, the observed Property must have isDeltaQuantity true." ;
+          sh:message "s223: Sensor {$this} has a reference location, but its Property lacks isDeltaQuantity true." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+          SELECT $this
+          WHERE {
+$this s223:hasReferenceLocation ?y .
+$this s223:observes ?x .
+?x a/rdfs:subClassOf* s223:QuantifiableProperty .
+FILTER NOT EXISTS {$this s223:observes/qudt:isDeltaQuantity true}
+}
+""" ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "s223: If the observed Property has isDeltaQuantity true, the Sensor must have a hasReferenceLocation relation." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "s223: If the observed Property has isDeltaQuantity true, the Sensor must have a hasReferenceLocation relation." ;
+          sh:message "s223: Sensor {$this} has Property {?x} with isDeltaQuantity true, but the Sensor lacks a reference location." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+          SELECT $this ?x
+          WHERE {
+$this s223:observes/qudt:isDeltaQuantity true .
+$this s223:observes ?x .
+?x a/rdfs:subClassOf* s223:QuantifiableProperty .
+FILTER NOT EXISTS {$this s223:hasReferenceLocation ?y}
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:SensorObservationLocationShape
+  a sh:NodeShape ;
+  rdfs:comment "A Sensor must be associated with exactly 1 of Connectable, Connection, or ConnectionPoint using the relation hasObservationLocation." ;
+  rdfs:label "Valve" ;
+  sh:message "s223: A Sensor must be associated with exactly 1 of Connectable, Connection, or ConnectionPoint using the relation hasObservationLocation." ;
+  sh:targetClass s223:Sensor ;
+  sh:xone (
+      [
+        sh:property [
+            sh:path s223:hasObservationLocation ;
+            rdfs:comment "A Sensor must be associated with exactly 1 of Connectable, Connection, or ConnectionPoint using the relation hasObservationLocation." ;
+            sh:class s223:Connectable ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasObservationLocation ;
+            rdfs:comment "A Sensor must be associated with exactly 1 of Connectable, Connection, or ConnectionPoint using the relation hasObservationLocation." ;
+            sh:class s223:Connection ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasObservationLocation ;
+            rdfs:comment "A Sensor must be associated with exactly 1 of Connectable, Connection, or ConnectionPoint using the relation hasObservationLocation." ;
+            sh:class s223:ConnectionPoint ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+    ) ;
+.
+s223:SensorObservesShape
+  a sh:NodeShape ;
+  rdfs:comment "A Sensor must be associated with exactly 1 of QuantifiableObservableProperty or EnumeratedObservableProperty using the relation observes." ;
+  rdfs:label "Valve" ;
+  sh:message "s223: A Sensor must be associated with exactly 1 of QuantifiableObservableProperty or EnumeratedObservableProperty using the relation observes." ;
+  sh:targetClass s223:Sensor ;
+  sh:xone (
+      [
+        sh:property [
+            sh:path s223:observes ;
+            rdfs:comment "A Sensor must be associated with exactly 1 of QuantifiableObservableProperty or EnumeratedObservableProperty using the relation observes." ;
+            sh:class s223:QuantifiableObservableProperty ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:observes ;
+            rdfs:comment "A Sensor must be associated with exactly 1 of QuantifiableObservableProperty or EnumeratedObservableProperty using the relation observes." ;
+            sh:class s223:EnumeratedObservableProperty ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+          ] ;
+      ]
+    ) ;
+.
+s223:SensorReferenceLocationShape
+  a sh:NodeShape ;
+  rdfs:comment "A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+  rdfs:label "Valve" ;
+  sh:message "s223: A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasReferenceLocation ;
+            rdfs:comment "A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+            sh:class s223:Connectable ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasReferenceLocation ;
+            rdfs:comment "A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+            sh:class s223:Connection ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasReferenceLocation ;
+            rdfs:comment "A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+            sh:class s223:ConnectionPoint ;
+          ] ;
+      ]
+    ) ;
+  sh:property [
+      sh:path s223:hasReferenceLocation ;
+      rdfs:comment "A Sensor can be associated with a maximum of one Connectable, Connection, or ConnectionPoint using the relation hasReferenceLocation." ;
+      sh:maxCount 1 ;
+    ] ;
+  sh:targetClass s223:Sensor ;
+.
+s223:TemperatureSensor
+  sh:property [
+      sh:path s223:observes ;
+      rdfs:comment "A TemperatureSensor must always observe a Property that has a QuantityKind of Temperature." ;
+      sh:message "s223: A TemperatureSensor must always observe a Property that has a QuantityKind of Temperature." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue qudtqk:Temperature ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:ValveCPShape
+  a sh:NodeShape ;
+  rdfs:comment "A Valve shall have at least one inlet and one outlet or two bidirectional connection points." ;
+  rdfs:label "Valve" ;
+  sh:message "s223: A Valve shall have at least one inlet and one outlet or two bidirectional connection points." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Valve shall have at least one inlet and one outlet or two bidirectional connection points." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Valve shall have at least one inlet and one outlet or two bidirectional connection points." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A Valve shall have at least one inlet and one outlet or two bidirectional connection points." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+              ] ;
+            sh:qualifiedValueShapesDisjoint true ;
+          ] ;
+      ]
+    ) ;
+  sh:severity sh:Warning ;
+  sh:targetClass s223:Valve ;
+.
+s223:Zone
+  a sh:NodeShape ;
+  sh:property [
+      sh:path s223:hasDomain ;
+      rdfs:comment "The associated Domain of a Zone and the Domain of the DomainSpaces it contains must be the same." ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "The associated Domain of a Zone and the Domain of the DomainSpaces it contains must be the same." ;
+          sh:message "s223: Zone {$this} has a Domain of {?domain}, but it contains a DomainSpace {?ds} which has a Domain of {?dsdomain}. These should be the same." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT DISTINCT $this ?domain ?ds ?dsdomain
+WHERE {
+$this a s223:Zone .
+$this s223:hasDomain ?domain .
+$this s223:contains ?ds .
+?ds s223:hasDomain ?dsdomain .
+FILTER (?domain != ?dsdomain)
+}
+""" ;
+        ] ;
+    ] ;
+.
+<http://data.ashrae.org/standard223/1.0/validation/model>
+  a owl:Ontology ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+  sh:declare [
+      sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ;
+      sh:prefix "s223" ;
+    ] ;
+  sh:declare [
+      sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ;
+      sh:prefix "qudt" ;
+    ] ;
+  sh:declare [
+      sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+      sh:prefix "rdf" ;
+    ] ;
+  sh:declare [
+      sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+      sh:prefix "rdfs" ;
+    ] ;
+  sh:declare [
+      sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ;
+      sh:prefix "sh" ;
+    ] ;
+.

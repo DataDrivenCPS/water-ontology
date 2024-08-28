@@ -1,0 +1,174 @@
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:DualDuctTerminalWithDischargeSensor a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "DualDuctTerminalWithDischargeSensor" ;
+    rdfs:comment "A dual duct air terminal mixes two independent sources of primary air. This terminal uses one discharge sensor." ;
+    rdfs:subClassOf s223:DualDuctTerminal ;
+    sh:property [ rdfs:comment "The DualDuctTerminalWithDischargeSensor shall contain 2 dampers using the relation contains." ;
+            sh:message "g36: The DualDuctTerminalWithDischargeSensor shall contain 2 dampers using the relation contains." ;
+            sh:minCount 2 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "In the DualDuctTerminalWithDischargeSensor, one Damper has Role Heating using the relation hasRole." ;
+            sh:message "g36: In the DualDuctTerminalWithDischargeSensor, one Damper has Role Heating using the relation hasRole." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Heating ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "In the DualDuctTerminalWithDischargeSensor, one Damper has Role Cooling using the relation hasRole." ;
+            sh:message "g36: In the DualDuctTerminalWithDischargeSensor, one Damper has Role Cooling using the relation hasRole." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Cooling ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The DualDuctTerminalWithDischargeSensor OutletConnectionPoint shall have at least one discharge airflow property using the relation hasProperty." ;
+            sh:message "g36: The DualDuctTerminalWithDischargeSensor OutletConnectionPoint shall have at least one discharge airflow property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ sh:class s223:DomainSpace ;
+            sh:message "The DualDuctTerminalWithDischargeSensor connects to Domain Space in a Zone with the required points" ;
+            sh:minCount 1 ;
+            sh:node [ sh:property [ sh:class g36:Zone ;
+                            sh:minCount 1 ;
+                            sh:path [ sh:inversePath s223:hasDomainSpace ] ] ] ;
+            sh:path s223:connectedTo ] ;
+    sh:severity s223:g36 .
+
+g36:DualDuctTerminalWithInletSensors a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "DualDuctTerminalWithInletSensors" ;
+    rdfs:comment "A dual duct air terminal mixes two independent sources of primary air. This terminal uses two inlet sensors." ;
+    rdfs:subClassOf s223:DualDuctTerminal ;
+    sh:property [ rdfs:comment "DualDuctTerminalWithInletSensors shall contain 2 dampers using the relation contains" ;
+            sh:message "g36: DualDuctTerminalWithInletSensors shall contain 2 dampers using the relation contains" ;
+            sh:minCount 2 ;
+            sh:path s223:contains ;
+            sh:qualifiedMaxCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The DualDuctTerminalWithInletSensors InletConnectionPoint shall have at least one cooling supply airflow property using the relation hasProperty." ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:hasValue s223:Role-Cooling ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The DualDuctTerminalWithInletSensors InletConnectionPoint shall have at least one heating supply airflow property using the relation hasProperty." ;
+            sh:message "g36: The DualDuctTerminalWithInletSensors InletConnectionPoint shall have at least one heating supply airflow property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:VolumeFlowRate ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ;
+                                                            sh:qualifiedMinCount 1 ;
+                                                            sh:qualifiedValueShape [ sh:hasValue s223:Role-Heating ] ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "DualDuctTerminalWithInletSensors shall contain 1 damper that has the Role Heating using the relation contains." ;
+            sh:message "g36: DualDuctTerminalWithInletSensors shall contain 1 damper that has the Role Heating using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Heating ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ sh:class s223:DomainSpace ;
+            sh:message "The DualDuctTerminalWithInletSensors connects to Domain Space in a Zone with the required points" ;
+            sh:minCount 1 ;
+            sh:node [ sh:property [ sh:class g36:Zone ;
+                            sh:minCount 1 ;
+                            sh:path [ sh:inversePath s223:hasDomainSpace ] ] ] ;
+            sh:path s223:connectedTo ],
+        [ rdfs:comment "DualDuctTerminalWithInletSensors shall contain 1 damper that has the Role Cooling using the relation contains." ;
+            sh:message "g36: DualDuctTerminalWithInletSensors shall contain 1 damper that has the Role Cooling using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:Damper ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasRole ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:hasValue s223:Role-Cooling ] ] ] ] ;
+            sh:severity s223:g36 ] ;
+    sh:severity s223:g36 .
+
+g36:DualDuctTerminalWithDischargeSensorAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:DualDuctTerminal matches the constraints defined by g36:DualDuctTerminalWithDischargeSensor, it will be declared as an instance of that class." ;
+            sh:condition g36:DualDuctTerminalWithDischargeSensor ;
+            sh:object g36:DualDuctTerminalWithDischargeSensor ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:DualDuctTerminal .
+
+g36:DualDuctTerminalWithInletSensorsAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:DualDuctTerminal matches the constraints defined by g36:DualDuctTerminalWithInletSensors, it will be declared as an instance of that class." ;
+            sh:condition g36:DualDuctTerminalWithInletSensors ;
+            sh:object g36:DualDuctTerminalWithInletSensors ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:DualDuctTerminal .
+
+<http://data.ashrae.org/standard223/1.0/extensions/g36/dual-duct-terminal-unit> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings>,
+        <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:versionInfo "Created with TopBraid Composer" .
+

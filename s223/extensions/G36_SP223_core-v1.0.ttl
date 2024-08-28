@@ -1,0 +1,720 @@
+# baseURI: http://data.ashrae.org/standard223/1.0/extensions/g36/core
+# imports: http://data.ashrae.org/standard223/1.0/extensions/settings
+# imports: http://data.ashrae.org/standard223/1.0/model/all
+
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:ChilledWaterCoil
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A cooling element made of pipe or tube that may or may not be finned and formed into helical or serpentine shape." ;
+  rdfs:label "ChilledWaterCoil" ;
+  rdfs:subClassOf s223:CoolingCoil ;
+  sh:property [
+      sh:path s223:connectedTo ;
+      rdfs:comment "The ChilledWaterCoil shall be connected to a ChilledWaterValve using the relation connectedTo." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class g36:ChilledWaterValve ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:ChilledWaterCoilAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:CoolingCoil matches the constraints defined by g36:ChilledWaterCoil, it will be declared as an instance of that class." ;
+      sh:condition g36:ChilledWaterCoil ;
+      sh:object g36:ChilledWaterCoil ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:CoolingCoil ;
+.
+g36:ChilledWaterValve
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A device to regulate or stop the flow of cold fluid in a pipe or a duct by throttling." ;
+  rdfs:label "Chilled Water Valve" ;
+  rdfs:subClassOf s223:Valve ;
+  sh:severity s223:g36 ;
+.
+g36:ChilledWaterValveAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Valve matches the constraints defined by g36:ChilledWaterValve, it will be declared as an instance of that class." ;
+      sh:condition g36:ChilledWaterValve ;
+      sh:condition g36:ChilledWaterValveOrShape1 ;
+      sh:object g36:ChilledWaterValve ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Valve ;
+.
+g36:ChilledWaterValveOrShape1
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A ChilledWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+  rdfs:label "Chilled Water Valve Or Shape 1" ;
+  sh:message "g36: A ChilledWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A ChilledWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:QuantifiableActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path qudt:hasQuantityKind ;
+                        sh:hasValue quantitykind:DimensionlessRatio ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A ChilledWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [
+                sh:class s223:EnumeratedActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path s223:hasEnumerationKind ;
+                        sh:hasValue s223:EnumerationKind-Binary ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+    ) ;
+  sh:severity s223:g36 ;
+  sh:targetClass g36:ChilledWaterValve ;
+.
+g36:Damper
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "An element inserted into an air-distribution system or element of an air-distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow." ;
+  rdfs:label "Damper" ;
+  rdfs:subClassOf s223:Damper ;
+  sh:severity s223:g36 ;
+.
+g36:DamperAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Damper matches the constraints defined by g36:Damper, it will be declared as an instance of that class." ;
+      sh:condition g36:Damper ;
+      sh:condition g36:DamperOrShape1 ;
+      sh:object g36:Damper ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Damper ;
+.
+g36:DamperOrShape1
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A damper shall have at least one analog damper command property or at least two binary damper command properties using the relation hasProperty." ;
+  rdfs:label "Damper Or Shape 1" ;
+  sh:message "g36: A damper shall have at least one analog damper command property or at least two binary damper command properties using the relation hasProperty." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A damper shall have at least one analog damper command property or at least two binary damper command properties using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:QuantifiableActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path qudt:hasQuantityKind ;
+                        sh:hasValue quantitykind:DimensionlessRatio ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A damper shall have at least one analog damper command property or at least two binary damper command properties using the relation hasProperty." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [
+                sh:class s223:EnumeratedActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path s223:hasEnumerationKind ;
+                        sh:hasValue s223:EnumerationKind-Binary ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+    ) ;
+  sh:severity s223:g36 ;
+  sh:targetClass g36:Damper ;
+.
+g36:ElectricHeatingCoil
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A heating element that forms into a helical or serpentine shape and uses electricity to perform heating." ;
+  rdfs:label "Electric Heating Coil" ;
+  rdfs:subClassOf s223:ResistanceHeater ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "An electric heating coil shall have at least one analog heating command property using a relation hasProperty." ;
+      sh:message "g36: An electric heating coil shall have at least one analog heating command property using a relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableActuatableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue quantitykind:DimensionlessRatio ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:ElectricHeatingCoilAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:ResistanceHeater matches the constraints defined by g36:ElectricHeatingCoil, it will be declared as an instance of that class." ;
+      sh:condition g36:ElectricHeatingCoil ;
+      sh:object g36:ElectricHeatingCoil ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:ResistanceHeater ;
+.
+g36:Fan
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A machine used to create flow within a gas such as air." ;
+  rdfs:label "Fan" ;
+  rdfs:subClassOf s223:Fan ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Fan shall have at least one Start/Stop command using the relation hasProperty." ;
+      sh:message "g36: A Fan shall have at least one Start/Stop command using the relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:EnumeratedActuatableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasEnumerationKind ;
+                  sh:class s223:EnumerationKind-OnOff ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:FanAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Fan matches the constraints defined by g36:Fan, it will be declared as an instance of that class." ;
+      sh:condition g36:Fan ;
+      sh:object g36:Fan ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Fan ;
+.
+g36:FanWithVFD
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A machine used to create flow within a gas such as air. This machine can be controlled to vary in speed." ;
+  rdfs:label "FanWithVFD" ;
+  rdfs:subClassOf g36:Fan ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A fan with VFD shall have at least one fan speed command using the relation hasProperty." ;
+      sh:message "g36: A fan with VFD shall have at least one fan speed command using the relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableActuatableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasAspect ;
+                  sh:hasValue s223:EnumerationKind-Speed ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue quantitykind:DimensionlessRatio ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:FanWithVFDAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Fan matches the constraints defined by g36:FanWithVFD, it will be declared as an instance of that class." ;
+      sh:condition g36:FanWithVFD ;
+      sh:object g36:FanWithVFD ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Fan ;
+.
+g36:HotWaterCoil
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A heating element made of pipe or tube that may or may not be finned and formed into helical or serpentine shape." ;
+  rdfs:label "HotWater/ReheatCoil" ;
+  rdfs:subClassOf s223:HeatingCoil ;
+  sh:property [
+      sh:path s223:connectedTo ;
+      rdfs:comment "The HotWaterCoil shall be connected to a HotWaterValve using the relation connectedTo." ;
+      sh:message "g36: The HotWaterCoil shall be connected to a HotWaterValve using the relation connectedTo." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class g36:HotWaterValve ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:HotWaterCoilAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:HeatingCoil matches the constraints defined by g36:HotWaterCoil, it will be declared as an instance of that class." ;
+      sh:condition g36:HotWaterCoil ;
+      sh:object g36:HotWaterCoil ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:HeatingCoil ;
+.
+g36:HotWaterValve
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A device to regulate or stop the flow of hot fluid in a pipe or a duct by throttling." ;
+  rdfs:label "Hot Water Valve" ;
+  rdfs:subClassOf s223:Valve ;
+  sh:severity s223:g36 ;
+.
+g36:HotWaterValveAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Valve matches the constraints defined by g36:HotWaterValve, it will be declared as an instance of that class." ;
+      sh:condition g36:HotWaterValve ;
+      sh:condition g36:HotWaterValveOrShape1 ;
+      sh:object g36:HotWaterValve ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Valve ;
+.
+g36:HotWaterValveOrShape1
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A HotWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+  rdfs:label "Hot Water Valve Or Shape 1" ;
+  sh:message "g36: A HotWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+  sh:or (
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A HotWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:QuantifiableActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path qudt:hasQuantityKind ;
+                        sh:hasValue quantitykind:DimensionlessRatio ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+      [
+        sh:property [
+            sh:path s223:hasProperty ;
+            rdfs:comment "A HotWaterValve shall have at least one analog valve command property or at least two binary valve command properties using the relation hasProperty." ;
+            sh:minCount 2 ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [
+                sh:class s223:EnumeratedActuatableProperty ;
+                sh:node [
+                    sh:property [
+                        sh:path s223:hasAspect ;
+                        sh:hasValue s223:EnumerationKind-Position ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                    sh:property [
+                        sh:path s223:hasEnumerationKind ;
+                        sh:hasValue s223:EnumerationKind-Binary ;
+                        sh:maxCount 1 ;
+                        sh:minCount 1 ;
+                      ] ;
+                  ] ;
+              ] ;
+            sh:severity s223:g36 ;
+          ] ;
+      ]
+    ) ;
+  sh:severity s223:g36 ;
+  sh:targetClass g36:HotWaterValve ;
+.
+g36:TwoPositionDamper
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "An element inserted into an air-distribution system or element of an air-distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow. This element only has two positions: fully open and fully closed." ;
+  rdfs:label "Two Position Damper" ;
+  rdfs:subClassOf s223:Damper ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Two Position Damper shall have at least one open-and-close damper command property using the relation hasProperty." ;
+      sh:message "g36: A Two Position Damper shall have at least one open-and-close damper command property using the relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:EnumeratedActuatableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasAspect ;
+                  sh:hasValue s223:EnumerationKind-Position ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+              sh:property [
+                  sh:path s223:hasEnumerationKind ;
+                  sh:class s223:EnumerationKind-Binary ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:TwoPositionDamperAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Damper matches the constraints defined by g36:TwoPositionDamper, it will be declared as an instance of that class." ;
+      sh:condition g36:TwoPositionDamper ;
+      sh:object g36:TwoPositionDamper ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Damper ;
+.
+g36:Zone
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A Zone is a generic thermal zone, with the points required for Guideline 36 controls. It is a collection of s223:DomainSpace instances." ;
+  rdfs:label "Zone" ;
+  rdfs:subClassOf s223:Zone ;
+  sh:property [
+      sh:path s223:hasDomain ;
+      rdfs:comment "A Zone shall have at least one Domain-HVAC using the relation hasDomain. " ;
+      sh:hasValue s223:Domain-HVAC ;
+      sh:message "g36: A Zone shall have at least one Domain-HVAC using the relation hasDomain. " ;
+      sh:minCount 1 ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have a zone temperature setpoint adjustment property using the relation hasProperty, if applicable." ;
+      sh:message "g36: A Zone shall have a zone temperature setpoint adjustment property using the relation hasProperty, if applicable." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasAspect ;
+                  sh:hasValue s223:Dimensioned-Delta ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue quantitykind:Temperature ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:qualifiedValueShapesDisjoint true ;
+      sh:severity sh:Info ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have at least a zone CO2 concentration property using the relation hasProperty, if applicable control is used." ;
+      sh:message "g36: A Zone shall have at least a zone CO2 concentration property using the relation hasProperty, if applicable control is used." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:ofConstituent ;
+                  sh:hasValue s223:Constituent-CO2 ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue quantitykind:DimensionlessRatio ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity sh:Info ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have at least one binary zone occupancy property using the relation hasProperty" ;
+      sh:message "g36: A Zone shall have at least one binary zone occupancy property using the relation hasProperty" ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:EnumeratedObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasEnumerationKind ;
+                  sh:class s223:EnumerationKind-Occupancy ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity sh:Info ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have at least one window switch on-off property using the relation hasProperty." ;
+      sh:message "g36: A Zone shall have at least one window switch on-off property using the relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:EnumeratedObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasEnumerationKind ;
+                  sh:class s223:EnumerationKind-OnOff ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+              sh:property [
+                  sh:path [
+                      sh:alternativePath (
+                          (
+                            [
+                              sh:inversePath s223:observes ;
+                            ]
+                            s223:hasMeasurementLocation
+                          )
+                          [
+                            sh:inversePath s223:hasProperty ;
+                          ]
+                        ) ;
+                    ] ;
+                  rdfs:comment "Property shall be measured at a window." ;
+                  sh:class s223:Window ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity sh:Info ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have at least one zone temperature property using the relation hasProperty. " ;
+      sh:message "g36: A Zone shall have at least one zone temperature property using the relation hasProperty. " ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  sh:hasValue quantitykind:Temperature ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:qualifiedValueShapesDisjoint true ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:property [
+      sh:path s223:hasProperty ;
+      rdfs:comment "A Zone shall have at least one zone thermostat override switch property using the relation hasProperty." ;
+      sh:message "g36: A Zone shall have at least one zone thermostat override switch property using the relation hasProperty." ;
+      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:EnumeratedObservableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:hasEnumerationKind ;
+                  sh:class s223:EnumerationKind-Override ;
+                  sh:maxCount 1 ;
+                  sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+      sh:severity sh:Info ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:ZoneAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:Zone matches the constraints defined by g36:Zone, it will be declared as an instance of that class." ;
+      sh:condition g36:Zone ;
+      sh:object g36:Zone ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:Zone ;
+.
+g36:ZoneGroup
+  a s223:Class ;
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in section 3.1.3 of Guideline 36." ;
+  rdfs:label "Zone Group" ;
+  rdfs:subClassOf s223:ZoneGroup ;
+  sh:property [
+      sh:path s223:contains ;
+      rdfs:comment "A ZoneGroup shall contain at least one Zone using the relation contains." ;
+      sh:class g36:Zone ;
+      sh:message "g36: A ZoneGroup shall contain at least one Zone using the relation contains." ;
+      sh:minCount 1 ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:property [
+      sh:path s223:hasDomain ;
+      rdfs:comment "A ZoneGroup shall have the Domain HVAC using the relation hasDomain." ;
+      sh:hasValue s223:Domain-HVAC ;
+      sh:message "g36: A ZoneGroup shall have the Domain HVAC using the relation hasDomain." ;
+      sh:minCount 1 ;
+      sh:severity s223:g36 ;
+    ] ;
+  sh:severity s223:g36 ;
+.
+g36:ZoneGroupAnnotation
+  a sh:NodeShape ;
+  sh:rule [
+      a sh:TripleRule ;
+      rdfs:comment "If an instance of s223:ZoneGroup matches the constraints defined by g36:ZoneGroup, it will be declared as an instance of that class." ;
+      sh:condition g36:ZoneGroup ;
+      sh:object g36:ZoneGroup ;
+      sh:predicate rdf:type ;
+      sh:subject sh:this ;
+    ] ;
+  sh:targetClass s223:ZoneGroup ;
+.
+<http://data.ashrae.org/standard223/1.0/extensions/g36/core>
+  a owl:Ontology ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.

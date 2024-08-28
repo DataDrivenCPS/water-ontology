@@ -1,0 +1,1797 @@
+# baseURI: http://data.ashrae.org/standard223/1.0/vocab/enumeration
+# imports: http://data.ashrae.org/standard223/1.0/model/all
+# imports: http://data.ashrae.org/standard223/1.0/vocab/electricity
+
+@prefix dtype: <http://www.linkedmodel.org/schema/dtype#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+s223:Aspect-Alarm
+  a s223:Aspect-Alarm ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Alarm" ;
+  rdfs:label "Aspect-Alarm" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-CatalogNumber
+  a s223:Aspect-CatalogNumber ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the catalog number." ;
+  rdfs:label "Aspect-CatalogNumber" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Command
+  a s223:Aspect-Command ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Command" ;
+  rdfs:label "Aspect-Command" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-DayOfWeek
+  a s223:Aspect-DayOfWeek ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday. The Weekend and Weekday EnumerationKinds define subsets of this EnumerationKind for Mon-Fri and Sat,Sun, respectively" ;
+  rdfs:label "Day of Week" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Deadband
+  a s223:Aspect-Deadband ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Deadband" ;
+  rdfs:label "Aspect-Deadband" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Delta
+  a s223:Aspect-Delta ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Used to signify the associated Property has a delta (difference) value." ;
+  rdfs:label "Aspect-Delta" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-DryBulb
+  a s223:Aspect-DryBulb ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The associated Property is a DryBulb temperature." ;
+  rdfs:label "Aspect-DryBulb" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Effectiveness
+  a s223:Aspect-Effectiveness ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "This class enumerates the possible states of effectiveness" ;
+  rdfs:label "Aspect-Effectiveness" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Efficiency
+  a s223:Aspect-Efficiency ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The efficiency of something characterized by a dimensionless value of this Property." ;
+  rdfs:label "Aspect-Efficiency" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-ElectricalPhaseIdentifier
+  a s223:Aspect-ElectricalPhaseIdentifier ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase of the Connection." ;
+  rdfs:label "Aspect-Electrical phase identifier" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-ElectricalVoltagePhases
+  a s223:Aspect-ElectricalVoltagePhases ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "This class enumerates the relevant electrical phases for a voltage difference for AC electricity inside a Connection." ;
+  rdfs:label "Aspect-Electrical Voltage Phases" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Face
+  a s223:Aspect-Face ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies a property related to a face, e.g. Coil Face Velocity." ;
+  rdfs:label "Aspect-Face" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Fault
+  a s223:Aspect-Fault ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Fault" ;
+  rdfs:label "Aspect-Fault" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-HighLimit
+  a s223:Aspect-HighLimit ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-High limit" ;
+  rdfs:label "Aspect-High limit" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Latent
+  a s223:Aspect-Latent ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The latent value of something characterized by this Property." ;
+  rdfs:label "Aspect-Latent" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Loss
+  a s223:Aspect-Loss ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The magnitude of loss of something characterized by this Property." ;
+  rdfs:label "Aspect-Loss" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-LowLimit
+  a s223:Aspect-LowLimit ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Low limit" ;
+  rdfs:label "Aspect-Low limit" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Manufacturer
+  a s223:Aspect-Manufacturer ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the manufacturer." ;
+  rdfs:label "Aspect-Manufacturer" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Maximum
+  a s223:Aspect-Maximum ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The maximum allowable level of something characterized by this Property." ;
+  rdfs:label "Aspect-Maximum" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Minimum
+  a s223:Aspect-Minimum ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The minimum allowable level of something characterized by this Property." ;
+  rdfs:label "Aspect-Minimum" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Model
+  a s223:Aspect-Model ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the model." ;
+  rdfs:label "Aspect-Model" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Nominal
+  a s223:Aspect-Nominal ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The nominal level of something characterized by this Property." ;
+  rdfs:label "Aspect-Nominal" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-NominalFrequency
+  a s223:Aspect-NominalFrequency ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the nominal frequency of the medium" ;
+  rdfs:label "Aspect-Nominal Frequency" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-PhaseAngle
+  a s223:Aspect-PhaseAngle ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Phase angle" ;
+  rdfs:label "Aspect-Phase angle" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-PowerFactor
+  a s223:Aspect-PowerFactor ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The power factor of something characterized by a dimensionless value of this Property." ;
+  rdfs:label "Aspect-PowerFactor" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Rated
+  a s223:Aspect-Rated ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The rated value of something characterized by this Property." ;
+  rdfs:label "Aspect-Rated" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Sensible
+  a s223:Aspect-Sensible ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The sensible value of something characterized by this Property." ;
+  rdfs:label "Aspect-Sensible" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-SerialNumber
+  a s223:Aspect-SerialNumber ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the serial number." ;
+  rdfs:label "Aspect-SerialNumber" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-ServiceFactor
+  a s223:Aspect-ServiceFactor ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The service factor of something characterized by a dimensionless value of this Property." ;
+  rdfs:label "Aspect-ServiceFactor" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Setpoint
+  a s223:Aspect-Setpoint ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Aspect-Setpoint" ;
+  rdfs:label "Aspect-Setpoint" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-StandardConditions
+  a s223:Aspect-StandardConditions ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Indicates the Property applies under standard conditions (such as standard temperature and pressure)." ;
+  rdfs:label "Aspect-StandardConditions" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Standby
+  a s223:Aspect-Standby ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The standby value of something characterized by this Property." ;
+  rdfs:label "Aspect-Standby" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-StartupValue
+  a s223:Aspect-StartupValue ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The startup value of something characterized by this Property." ;
+  rdfs:label "Aspect-StartupValue" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Threshold
+  a s223:Aspect-Threshold ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The threshold value of something characterized by this Property." ;
+  rdfs:label "Aspect-Threshold" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Total
+  a s223:Aspect-Total ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The total amount of something characterized by this Property." ;
+  rdfs:label "Aspect-Total" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-WetBulb
+  a s223:Aspect-WetBulb ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The associated Property is a WetBulb temperature." ;
+  rdfs:label "Aspect-WetBulb" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Aspect-Year
+  a s223:Aspect-Year ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the year of manufacture." ;
+  rdfs:label "Aspect-Year" ;
+  rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+s223:Binary-False
+  a s223:Binary-False ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Binary False" ;
+  rdfs:label "Binary False" ;
+  rdfs:subClassOf s223:EnumerationKind-Binary ;
+.
+s223:Binary-True
+  a s223:Binary-True ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Binary True" ;
+  rdfs:label "Binary True" ;
+  rdfs:subClassOf s223:EnumerationKind-Binary ;
+.
+s223:Binary-Unknown
+  a s223:Binary-Unknown ;
+  a s223:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "Binary Unknown" ;
+  rdfs:label "Binary Unknown" ;
+  rdfs:subClassOf s223:EnumerationKind-Binary ;
+.
+s223:Constituent-CO
+  a s223:Class ;
+  a s223:Constituent-CO ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-CO" ;
+  rdfs:label "Constituent-CO" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Constituent-CO2
+  a s223:Class ;
+  a s223:Constituent-CO2 ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-CO2" ;
+  rdfs:label "Constituent-CO2" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Constituent-EM
+  a s223:Class ;
+  a s223:Constituent-EM ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of electromagnetic energy at any frequency range." ;
+  rdfs:label "Electromagnetic Wave" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Constituent-Electricity
+  a s223:Class ;
+  a s223:Constituent-Electricity ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of all forms of electricity, including AC and DC." ;
+  rdfs:label "Electricity" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Constituent-Glycol
+  a s223:Class ;
+  a s223:Constituent-Glycol ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-Glycol" ;
+  rdfs:label "Constituent-Glycol" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Constituent-H2O
+  a s223:Class ;
+  a s223:Constituent-H2O ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-H2O" ;
+  rdfs:label "Constituent-H2O" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:DayOfWeek-Weekday
+  a s223:Class ;
+  a s223:DayOfWeek-Weekday ;
+  a sh:NodeShape ;
+  rdfs:comment "This class defines the EnumerationKind values of Monday, Tuesday, Wednesday, Thursday, and Friday" ;
+  rdfs:label "Day of week-Weekday" ;
+  rdfs:label "Weekday" ;
+  rdfs:subClassOf s223:Aspect-DayOfWeek ;
+.
+s223:DayOfWeek-Weekend
+  a s223:Class ;
+  a s223:DayOfWeek-Weekend ;
+  a sh:NodeShape ;
+  rdfs:comment "This class defines the EnumerationKind values of Saturday and Sunday" ;
+  rdfs:label "Day of week-Weekend" ;
+  rdfs:label "Weekend" ;
+  rdfs:subClassOf s223:Aspect-DayOfWeek ;
+.
+s223:Direction-Bidirectional
+  a s223:Class ;
+  a s223:Direction-Bidirectional ;
+  a sh:NodeShape ;
+  rdfs:comment "One of the  set of enumeration values for the hasDirection property used to characterize the direction of flow associated with an instance of a ConnectionPoint. The value Bidirectional indicates that the flow direction is not fixed in one direction. It depends on the status of some other part of the system, such as a valve position, that is expected to change during operation." ;
+  rdfs:label "Direction-Bidirectional" ;
+  rdfs:subClassOf s223:EnumerationKind-Direction ;
+.
+s223:Direction-Inlet
+  a s223:Class ;
+  a s223:Direction-Inlet ;
+  a sh:NodeShape ;
+  rdfs:comment "One of the set of enumeration values for the hasDirection property used to characterize the direction of flow associated with an instance of a ConnectionPoint. The value Inlet indicates that the direction of flow is into the Equipment." ;
+  rdfs:label "Direction-Inlet"@en ;
+  rdfs:subClassOf s223:EnumerationKind-Direction ;
+.
+s223:Direction-Outlet
+  a s223:Class ;
+  a s223:Direction-Outlet ;
+  a sh:NodeShape ;
+  rdfs:comment "One member of the enumerated valid values to characterize the hasDirection property. It is an instance of the Direction class." ;
+  rdfs:label "Direction-Outlet"@en ;
+  rdfs:label "Direction-Sortie"@fr ;
+  rdfs:subClassOf s223:EnumerationKind-Direction ;
+.
+s223:Domain-ConveyanceSystems
+  a s223:Class ;
+  a s223:Domain-ConveyanceSystems ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain ConveyanceSystems represents equipment used to move people or things from one place in a building to another. Example equipment that might fall within a ConveyanceSystems domain include elevators, escalators, and conveyer belts." ;
+  rdfs:label "Domain-ConveyanceSystems" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Electrical
+  a s223:Class ;
+  a s223:Domain-Electrical ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Electrical represents equipment used to provide electrical power within a building. Example equipment that might fall within an Electrical domain include breaker panels, switchgear, photovoltaic panels, and generators. " ;
+  rdfs:label "Domain-Electrical" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Fire
+  a s223:Class ;
+  a s223:Domain-Fire ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Fire represents equipment used to provide fire detection and protection within a building. Example equipment that might be fall within a Fire domain include smoke detectors, alarm annunciators, and emergency public address systems. " ;
+  rdfs:label "Domain-Fire" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-HVAC
+  a s223:Class ;
+  a s223:Domain-HVAC ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain HVAC represents equipment used to provide space conditioning and ventilation within a building. Example equipment that might fall within an HVAC domain include fans, pumps, air-handling units, and variable air volume boxes. " ;
+  rdfs:label "Domain-HVAC" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Lighting
+  a s223:Class ;
+  a s223:Domain-Lighting ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Lighting represents equipment used to provide illumination within or outside a building. Example equipment that might fall within a Lighting domain includes luminaires, daylight sensors, and movable sun shades." ;
+  rdfs:label "Domain-Lighting" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Networking
+  a s223:Class ;
+  a s223:Domain-Networking ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Networking represents equipment used to provide information technology communication for a building." ;
+  rdfs:label "Domain-Networking" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Occupancy
+  a s223:Class ;
+  a s223:Domain-Occupancy ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Occupancy represents equipment used to determine if people are present in a space or count the number of people in a space." ;
+  rdfs:label "Domain-Occupancy" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-PhysicalSecurity
+  a s223:Class ;
+  a s223:Domain-PhysicalSecurity ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Security represents equipment that provides physical access control within or outside a building. Example equipment that might fall within a PhysicalSecurity domain include cameras, keycard sensors, and biometric scanners." ;
+  rdfs:label "Domain-PhysicalSecurity" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Plumbing
+  a s223:Class ;
+  a s223:Domain-Plumbing ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Plumbing represents equipment used to provide domestic water within or outside a building. Example equipment that might fall within a Plumbing domain includes water meters, domestic hot water tanks, and sinks." ;
+  rdfs:label "Domain-Plumbing" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:Domain-Refrigeration
+  a s223:Class ;
+  a s223:Domain-Refrigeration ;
+  a sh:NodeShape ;
+  rdfs:comment "The domain Refrigeration represents equipment used to provide cooling for a purpose other than space conditioning in a building." ;
+  rdfs:label "Domain-Refrigeration" ;
+  rdfs:subClassOf s223:EnumerationKind-Domain ;
+.
+s223:EM-Light
+  a s223:Class ;
+  a s223:EM-Light ;
+  a sh:NodeShape ;
+  rdfs:comment "The EM-Light class has enumerated subclasses of what are considered visible or near-visible light." ;
+  rdfs:label "EM-Light" ;
+  rdfs:subClassOf s223:Constituent-EM ;
+.
+s223:EM-Microwave
+  a s223:Class ;
+  a s223:EM-Microwave ;
+  a sh:NodeShape ;
+  rdfs:comment "EM-Microwave" ;
+  rdfs:label "EM-Microwave" ;
+  rdfs:subClassOf s223:Constituent-EM ;
+.
+s223:EM-RF
+  a s223:Class ;
+  a s223:EM-RF ;
+  a sh:NodeShape ;
+  rdfs:comment "EM-RF" ;
+  rdfs:label "EM-RF" ;
+  rdfs:subClassOf s223:Constituent-EM ;
+.
+s223:Effectiveness-Active
+  a s223:Class ;
+  a s223:Effectiveness-Active ;
+  a sh:NodeShape ;
+  rdfs:comment "Active" ;
+  rdfs:label "Active" ;
+  rdfs:subClassOf s223:Aspect-Effectiveness ;
+.
+s223:ElectricalPhaseIdentifier-A
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-A ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase A of the Connection." ;
+  rdfs:label "Electrical Phase Identifier A" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-AB
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-AB ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase AB of the Connection." ;
+  rdfs:label "Electrical Phase Identifier AB" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-ABC
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-ABC ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase ABC of the Connection." ;
+  rdfs:label "Electrical Phase Identifier ABC" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-B
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-B ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase B of the Connection." ;
+  rdfs:label "Electrical Phase Identifier B" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-BC
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-BC ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase BC of the Connection." ;
+  rdfs:label "Electrical Phase Identifier BC" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-C
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-C ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase C of the Connection." ;
+  rdfs:label "Electrical Phase Identifier C" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:ElectricalPhaseIdentifier-CA
+  a s223:Class ;
+  a s223:ElectricalPhaseIdentifier-CA ;
+  a sh:NodeShape ;
+  rdfs:comment "The value of the associated Property identifies the electrical phase CA of the Connection." ;
+  rdfs:label "Electrical Phase Identifier CA" ;
+  rdfs:subClassOf s223:Aspect-ElectricalPhaseIdentifier ;
+.
+s223:Electricity-Earth
+  a s223:Class ;
+  a s223:Electricity-Earth ;
+  a sh:NodeShape ;
+  rdfs:comment "Electricity-Earth" ;
+  rdfs:label "Electricity-Earth" ;
+  rdfs:subClassOf s223:Constituent-Electricity ;
+.
+s223:Electricity-Neutral
+  a s223:Class ;
+  a s223:Electricity-Neutral ;
+  a sh:NodeShape ;
+  rdfs:comment "Electricity-Neutral" ;
+  rdfs:label "Electricity-Neutral" ;
+  rdfs:subClassOf s223:Constituent-Electricity ;
+.
+s223:Electricity-Signal
+  a s223:Class ;
+  a s223:Electricity-Signal ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of common communication protocols." ;
+  rdfs:label "Electricity Signal" ;
+  rdfs:subClassOf s223:Constituent-Electricity ;
+.
+s223:EnumerationKind
+  a s223:Class ;
+  a s223:EnumerationKind ;
+  a sh:NodeShape ;
+  rdfs:comment """This is the encapsulating class for all EnumerationKinds. 
+  EnumerationKinds define the (closed) set of permissible values for a given purpose. 
+  For example, the DayOfWeek EnumerationKind enumerates the days of the week and allows no other values.
+
+EnumerationKinds are arranged in a class hierarchy tree, with the root class named EnumerationKind. Each subclass is named 
+starting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes. 
+Each class is also an instance of itself. This unusual modeling pattern was used to achieve:
+
+- The ability to set an EnumerationKind value that is more general, or not yet fully specified 
+at the time of modeling, such as s223:Electricity-AC without having to state exactly what voltage or frequency it is.
+
+- The ability to use the sh:class SHACL predicate at any level in the EnumerationKind hierarchy 
+to constrain a value in the s223 specification, even if it is a more general one such as s223:Electricity-AC in the above example.
+
+Certain validation constraints exist in the standard that evaluate compatibility of EnumerationKinds. 
+Two values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other, 
+or if they are mixtures sharing at least one constituent.""" ;
+  rdfs:label "Enumeration kind" ;
+  rdfs:subClassOf s223:Concept ;
+.
+s223:EnumerationKind-Aspect
+  a s223:Class ;
+  a s223:EnumerationKind-Aspect ;
+  a sh:NodeShape ;
+  rdfs:comment """This class has enumerated subclasses usually used to specify the context of a s223:Property. The following table lists all of the defined enumerations for Aspect. 
+  Some Aspect enumerations have subclasses for more specific use. Those subclasses are not shown in the table but each of them are defined in `s223:Aspect-DayOfWeek` - `s223:Aspect-ElectricalVoltagePhases`. 
+  The following table lists all of the defined enumerations for Aspect.""" ;
+  rdfs:label "EnumerationKind Aspect" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Binary
+  a s223:Class ;
+  a s223:EnumerationKind-Binary ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of True, False and Unknown used to describe the possible values of a binary property" ;
+  rdfs:label "EnumerationKind Binary" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Direction
+  a s223:Class ;
+  a s223:EnumerationKind-Direction ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of Bidirectional, Inlet and Outlet used to qualify ConnectionPoints." ;
+  rdfs:label "Direction" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Domain
+  a s223:Class ;
+  a s223:EnumerationKind-Domain ;
+  a sh:NodeShape ;
+  rdfs:comment "A Domain represents a categorization of building services or specialization used to characterize equipment or spaces in a building. Example domains include HVAC, Lighting, and Plumbing." ;
+  rdfs:label "EnumerationKind Domain" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-HVACOperatingMode
+  a s223:Class ;
+  a s223:EnumerationKind-HVACOperatingMode ;
+  a sh:NodeShape ;
+  rdfs:comment "HVACOperatingMode has enumerated subclasses of the policy under which the HVAC system or equipment is operating." ;
+  rdfs:label "HVAC operating mode" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-HVACOperatingStatus
+  a s223:Class ;
+  a s223:EnumerationKind-HVACOperatingStatus ;
+  a sh:NodeShape ;
+  rdfs:comment "HVACOperatingStatus has enumerated subclasses of the HVAC system/equipment operating status." ;
+  rdfs:label "HVAC operating status" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Numerical
+  a s223:Class ;
+  a s223:EnumerationKind-Numerical ;
+  a sh:NodeShape ;
+  qudt:hasQuantityKind qudtqk:Unknown ;
+  qudt:hasUnit unit:UNKNOWN ;
+  rdfs:comment "Numerical enumeration kinds are used to support the definitions of the Electricity medium. The enumerations instances in these classes have names that are recognizable by humans but are just a string for a computer application. To avoid the need to parse strings, each of these enumeration kinds have properties associated with the enumeration that represent electrical phase, voltage, and frequency. The purpose of these properties is to enable a machine to query them and obtain the same information that a person would associate with the sting" ;
+  rdfs:label "EnumerationKind Numerical" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+  sh:property [
+      sh:path s223:hasValue ;
+      rdfs:comment "An EnumerationKind-Numerical can be associated with a decimal value using the relation hasValue." ;
+      sh:datatype xsd:decimal ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasQuantityKind ;
+      rdfs:comment "An EnumerationKind-Numerical must be associated with at least one QuantityKind using the relation hasQuantityKind." ;
+      sh:class qudt:QuantityKind ;
+      sh:minCount 1 ;
+    ] ;
+  sh:property [
+      sh:path qudt:hasUnit ;
+      rdfs:comment "An EnumerationKind-Numerical must be associated with at least one Unit using the relation hasUnit." ;
+      sh:class qudt:Unit ;
+      sh:minCount 1 ;
+      sh:severity sh:Info ;
+    ] ;
+.
+s223:EnumerationKind-Occupancy
+  a s223:Class ;
+  a s223:EnumerationKind-Occupancy ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of occupancy status, i.e. the state of being used or occupied. Some Occupancy enumerations have subclasses for more specific use." ;
+  rdfs:label "Occupancy status" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-OnOff
+  a s223:Class ;
+  a s223:EnumerationKind-OnOff ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of states of either on or off." ;
+  rdfs:label "OnOff enumeration" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Phase
+  a s223:Class ;
+  a s223:EnumerationKind-Phase ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of thermodynamic phase, i.e. states of matter." ;
+  rdfs:label "EnumerationKind Phase" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Position
+  a s223:Class ;
+  a s223:EnumerationKind-Position ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of position such as closed or open." ;
+  rdfs:label "Position" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Role
+  a s223:Class ;
+  a s223:EnumerationKind-Role ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of roles played by entities, such as cooling, generator, relief, return." ;
+  rdfs:label "Role" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-RunStatus
+  a s223:Class ;
+  a s223:EnumerationKind-RunStatus ;
+  a sh:NodeShape ;
+  rdfs:comment "This class is a more general form of EnumerationKind-OnOff, allowing for additional status values beyond on or off." ;
+  rdfs:label "Run status" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Speed
+  a s223:Class ;
+  a s223:EnumerationKind-Speed ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of speed settings of High, Medium, Low (plus Off)." ;
+  rdfs:label "Speed" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+.
+s223:EnumerationKind-Substance
+  a s223:Class ;
+  a s223:EnumerationKind-Substance ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of the substances that are consumed, produced, transported, sensed, controlled or otherwise interacted with (e.g. water, air, etc.)." ;
+  rdfs:label "Substance" ;
+  rdfs:subClassOf s223:EnumerationKind ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment """If the relation composedOf is present, it must associate an EnumerationKind-Substance with one or more Properties that 
+identify and characterize its constituents. The Property identifies the constituent using the relation ofConstituent. If appropriate, a 
+QuantifiableProperty may be used to also specify the amount of the constituent using the relations qudt:hasQuantityKind, qudt:hasUnit, and s223:hasValue.  
+For example, see `s223:GlycolSolution-15Percent`.""" ;
+      sh:class s223:Property ;
+    ] ;
+.
+s223:Fluid-Air
+  a s223:Class ;
+  a s223:Fluid-Air ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of Air in various states." ;
+  rdfs:label "Fluid-Air" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+.
+s223:Fluid-NaturalGas
+  a s223:Class ;
+  a s223:Fluid-NaturalGas ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of natural gas in various states." ;
+  rdfs:label "Fluid-NaturalGas" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+.
+s223:Fluid-Oil
+  a s223:Class ;
+  a s223:Fluid-Oil ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of oil." ;
+  rdfs:label "Fluid-Oil" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+.
+s223:Fluid-Refrigerant
+  a s223:Class ;
+  a s223:Fluid-Refrigerant ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of commonly used refrigerants." ;
+  rdfs:label "Fluid-Refrigerant" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+.
+s223:Fluid-Water
+  a s223:Class ;
+  a s223:Fluid-Water ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  rdfs:comment "This class has enumerated subclasses of water and aqueous solutions in various states." ;
+  rdfs:label "Fluid-Water" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+.
+s223:Gas-SuperHeated
+  a s223:Class ;
+  a s223:Gas-SuperHeated ;
+  a sh:NodeShape ;
+  rdfs:comment "Gas-Super heated" ;
+  rdfs:label "Gas-Super heated" ;
+  rdfs:subClassOf s223:Phase-Gas ;
+.
+s223:GlycolSolution-15Percent
+  a s223:Class ;
+  a s223:GlycolSolution-15Percent ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "15"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-Glycol ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Glycol conc" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "85"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  s223:hasFreezingPoint [
+      a s223:QuantifiableProperty ;
+      qudt:hasQuantityKind qudtqk:Temperature ;
+      rdfs:label "Freezing point" ;
+    ] ;
+  rdfs:comment "GlycolSolution-15Percent" ;
+  rdfs:label "GlycolSolution-15Percent" ;
+  rdfs:subClassOf s223:Water-GlycolSolution ;
+.
+s223:GlycolSolution-30Percent
+  a s223:Class ;
+  a s223:GlycolSolution-30Percent ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "30"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-Glycol ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Glycol conc" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "70"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  s223:hasFreezingPoint [
+      a s223:QuantifiableProperty ;
+      qudt:hasQuantityKind qudtqk:Temperature ;
+      rdfs:label "Freezing point" ;
+    ] ;
+  rdfs:comment "GlycolSolution-30Percent" ;
+  rdfs:label "GlycolSolution-30Percent" ;
+  rdfs:subClassOf s223:Water-GlycolSolution ;
+.
+s223:HVACOperatingMode-Auto
+  a s223:Class ;
+  a s223:HVACOperatingMode-Auto ;
+  a sh:NodeShape ;
+  rdfs:comment "Auto" ;
+  rdfs:label "Auto" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingMode ;
+.
+s223:HVACOperatingMode-CoolOnly
+  a s223:Class ;
+  a s223:HVACOperatingMode-CoolOnly ;
+  a sh:NodeShape ;
+  rdfs:comment "CoolOnly" ;
+  rdfs:label "CoolOnly" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingMode ;
+.
+s223:HVACOperatingMode-FanOnly
+  a s223:Class ;
+  a s223:HVACOperatingMode-FanOnly ;
+  a sh:NodeShape ;
+  rdfs:comment "FanOnly" ;
+  rdfs:label "FanOnly" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingMode ;
+.
+s223:HVACOperatingMode-HeatOnly
+  a s223:Class ;
+  a s223:HVACOperatingMode-HeatOnly ;
+  a sh:NodeShape ;
+  rdfs:comment "HeatOnly" ;
+  rdfs:label "HeatOnly" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingMode ;
+.
+s223:HVACOperatingMode-Off
+  a s223:Class ;
+  a s223:HVACOperatingMode-Off ;
+  a sh:NodeShape ;
+  rdfs:comment "Off" ;
+  rdfs:label "Off" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingMode ;
+.
+s223:HVACOperatingStatus-Cooling
+  a s223:Class ;
+  a s223:HVACOperatingStatus-Cooling ;
+  a sh:NodeShape ;
+  rdfs:comment "Cooling" ;
+  rdfs:label "Cooling" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingStatus ;
+.
+s223:HVACOperatingStatus-Dehumidifying
+  a s223:Class ;
+  a s223:HVACOperatingStatus-Dehumidifying ;
+  a sh:NodeShape ;
+  rdfs:comment "Dehumidifying" ;
+  rdfs:label "Dehumidifying" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingStatus ;
+.
+s223:HVACOperatingStatus-Heating
+  a s223:Class ;
+  a s223:HVACOperatingStatus-Heating ;
+  a sh:NodeShape ;
+  rdfs:comment "Heating" ;
+  rdfs:label "Heating" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingStatus ;
+.
+s223:HVACOperatingStatus-Off
+  a s223:Class ;
+  a s223:HVACOperatingStatus-Off ;
+  a sh:NodeShape ;
+  rdfs:comment "Off" ;
+  rdfs:label "Off" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingStatus ;
+.
+s223:HVACOperatingStatus-Ventilating
+  a s223:Class ;
+  a s223:HVACOperatingStatus-Ventilating ;
+  a sh:NodeShape ;
+  rdfs:comment "Ventilating" ;
+  rdfs:label "Ventilating" ;
+  rdfs:subClassOf s223:EnumerationKind-HVACOperatingStatus ;
+.
+s223:Light-Infrared
+  a s223:Class ;
+  a s223:Light-Infrared ;
+  a sh:NodeShape ;
+  rdfs:comment "Light-Infrared" ;
+  rdfs:label "Light-Infrared" ;
+  rdfs:subClassOf s223:EM-Light ;
+.
+s223:Light-Ultraviolet
+  a s223:Class ;
+  a s223:Light-Ultraviolet ;
+  a sh:NodeShape ;
+  rdfs:comment "Light-Ultraviolet" ;
+  rdfs:label "Light-Ultraviolet" ;
+  rdfs:subClassOf s223:EM-Light ;
+.
+s223:Light-Visible
+  a s223:Class ;
+  a s223:Light-Visible ;
+  a sh:NodeShape ;
+  rdfs:comment "Light-Visible" ;
+  rdfs:label "Light-Visible" ;
+  rdfs:subClassOf s223:EM-Light ;
+.
+s223:Liquid-SubCooled
+  a s223:Class ;
+  a s223:Liquid-SubCooled ;
+  a sh:NodeShape ;
+  rdfs:comment "Liquid-Sub cooled" ;
+  rdfs:label "Liquid-Sub cooled" ;
+  rdfs:subClassOf s223:Phase-Liquid ;
+.
+s223:Medium-Constituent
+  a s223:Class ;
+  a s223:Medium-Constituent ;
+  a sh:NodeShape ;
+  rdfs:comment "Medium-Constituent" ;
+  rdfs:label "Medium-Constituent" ;
+  rdfs:subClassOf s223:Substance-Medium ;
+.
+s223:Medium-Mix
+  a s223:Class ;
+  a s223:Medium-Mix ;
+  a sh:NodeShape ;
+  rdfs:comment "Medium-Mix" ;
+  rdfs:label "Medium-Mix" ;
+  rdfs:subClassOf s223:Substance-Medium ;
+.
+s223:Mix-Fluid
+  a s223:Class ;
+  a s223:Mix-Fluid ;
+  a sh:NodeShape ;
+  rdfs:comment "Mix-Fluid" ;
+  rdfs:label "Mix-Fluid" ;
+  rdfs:subClassOf s223:Medium-Mix ;
+.
+s223:Mix-PowerAndSignal
+  a s223:Class ;
+  a s223:Mix-PowerAndSignal ;
+  a sh:NodeShape ;
+  rdfs:comment "Mix-Power and signal" ;
+  rdfs:label "Mix-Power and signal" ;
+  rdfs:subClassOf s223:Medium-Mix ;
+.
+s223:Modulated-0-10V
+  a s223:Class ;
+  a s223:Modulated-0-10V ;
+  a sh:NodeShape ;
+  rdfs:comment "Modulated 0-10V" ;
+  rdfs:label "Modulated 0-10V" ;
+  rdfs:subClassOf s223:Signal-Modulated ;
+.
+s223:Modulated-4-20mA
+  a s223:Class ;
+  a s223:Modulated-4-20mA ;
+  a sh:NodeShape ;
+  rdfs:comment "Modulated 4-20mA" ;
+  rdfs:label "Modulated 4-20mA" ;
+  rdfs:subClassOf s223:Signal-Modulated ;
+.
+s223:Motion-False
+  a s223:Class ;
+  a s223:Motion-False ;
+  a sh:NodeShape ;
+  rdfs:comment "Motion-False" ;
+  rdfs:label "Motion-False" ;
+  rdfs:subClassOf s223:Occupancy-Motion ;
+.
+s223:Motion-True
+  a s223:Class ;
+  a s223:Motion-True ;
+  a sh:NodeShape ;
+  rdfs:comment "Motion-True" ;
+  rdfs:label "Motion-True" ;
+  rdfs:subClassOf s223:Occupancy-Motion ;
+.
+s223:Occupancy-Motion
+  a s223:Class ;
+  a s223:Occupancy-Motion ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses indicating whether motion is detected or not." ;
+  rdfs:label "Occupancy Motion" ;
+  rdfs:subClassOf s223:EnumerationKind-Occupancy ;
+.
+s223:Occupancy-Occupied
+  a s223:Class ;
+  a s223:Occupancy-Occupied ;
+  a sh:NodeShape ;
+  rdfs:comment "Occupied" ;
+  rdfs:label "Occupied" ;
+  rdfs:subClassOf s223:EnumerationKind-Occupancy ;
+.
+s223:Occupancy-Presence
+  a s223:Class ;
+  a s223:Occupancy-Presence ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses indicating whether physical presence is detected or not." ;
+  rdfs:label "Occupancy Presence" ;
+  rdfs:subClassOf s223:EnumerationKind-Occupancy ;
+.
+s223:Occupancy-Unknown
+  a s223:Class ;
+  a s223:Occupancy-Unknown ;
+  a sh:NodeShape ;
+  rdfs:comment "Unknown" ;
+  rdfs:label "Unknown" ;
+  rdfs:subClassOf s223:EnumerationKind-Occupancy ;
+.
+s223:Occupancy-Unoccupied
+  a s223:Class ;
+  a s223:Occupancy-Unoccupied ;
+  a sh:NodeShape ;
+  rdfs:comment "Unoccupied" ;
+  rdfs:label "Unoccupied" ;
+  rdfs:subClassOf s223:EnumerationKind-Occupancy ;
+.
+s223:OnOff-Off
+  a s223:Class ;
+  a s223:OnOff-Off ;
+  a sh:NodeShape ;
+  rdfs:comment "Off" ;
+  rdfs:label "Off" ;
+  rdfs:subClassOf s223:EnumerationKind-OnOff ;
+.
+s223:OnOff-On
+  a s223:Class ;
+  a s223:OnOff-On ;
+  a sh:NodeShape ;
+  rdfs:comment "On" ;
+  rdfs:label "On" ;
+  rdfs:subClassOf s223:EnumerationKind-OnOff ;
+.
+s223:OnOff-Unknown
+  a s223:Class ;
+  a s223:OnOff-Unknown ;
+  a sh:NodeShape ;
+  rdfs:comment "Unknown" ;
+  rdfs:label "Unknown" ;
+  rdfs:subClassOf s223:EnumerationKind-OnOff ;
+.
+<http://data.ashrae.org/standard223#Particulate-PM1.0>
+  a s223:Class ;
+  a <http://data.ashrae.org/standard223#Particulate-PM1.0> ;
+  a sh:NodeShape ;
+  rdfs:comment "Particulate-PM1.0" ;
+  rdfs:label "Particulate-PM1.0" ;
+  rdfs:subClassOf s223:Substance-Particulate ;
+.
+<http://data.ashrae.org/standard223#Particulate-PM10.0>
+  a s223:Class ;
+  a <http://data.ashrae.org/standard223#Particulate-PM10.0> ;
+  a sh:NodeShape ;
+  rdfs:comment "Particulate-PM10.0" ;
+  rdfs:label "Particulate-PM10.0" ;
+  rdfs:subClassOf s223:Substance-Particulate ;
+.
+<http://data.ashrae.org/standard223#Particulate-PM2.5>
+  a s223:Class ;
+  a <http://data.ashrae.org/standard223#Particulate-PM2.5> ;
+  a sh:NodeShape ;
+  rdfs:comment "Particulate-PM2.5" ;
+  rdfs:label "Particulate-PM2.5" ;
+  rdfs:subClassOf s223:Substance-Particulate ;
+.
+s223:Phase-Gas
+  a s223:Class ;
+  a s223:Phase-Gas ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of gas in various thermodynamic states." ;
+  rdfs:label "Phase-Gas" ;
+  rdfs:subClassOf s223:EnumerationKind-Phase ;
+.
+s223:Phase-Liquid
+  a s223:Class ;
+  a s223:Phase-Liquid ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of liquid in various thermodynamic states." ;
+  rdfs:label "Phase-Liquid" ;
+  rdfs:subClassOf s223:EnumerationKind-Phase ;
+.
+s223:Phase-Solid
+  a s223:Class ;
+  a s223:Phase-Solid ;
+  a sh:NodeShape ;
+  rdfs:comment "Phase-Solid" ;
+  rdfs:label "Phase-Solid" ;
+  rdfs:subClassOf s223:EnumerationKind-Phase ;
+.
+s223:Phase-Vapor
+  a s223:Class ;
+  a s223:Phase-Vapor ;
+  a sh:NodeShape ;
+  rdfs:comment "Phase-Vapor" ;
+  rdfs:label "Phase-Vapor" ;
+  rdfs:subClassOf s223:EnumerationKind-Phase ;
+.
+s223:Position-Closed
+  a s223:Class ;
+  a s223:Position-Closed ;
+  a sh:NodeShape ;
+  rdfs:comment "Closed" ;
+  rdfs:label "Closed" ;
+  rdfs:subClassOf s223:EnumerationKind-Position ;
+.
+s223:Position-Open
+  a s223:Class ;
+  a s223:Position-Open ;
+  a sh:NodeShape ;
+  rdfs:comment "Open" ;
+  rdfs:label "Open" ;
+  rdfs:subClassOf s223:EnumerationKind-Position ;
+.
+s223:Position-Unknown
+  a s223:Class ;
+  a s223:Position-Unknown ;
+  a sh:NodeShape ;
+  rdfs:comment "Unknown" ;
+  rdfs:label "Unknown" ;
+  rdfs:subClassOf s223:EnumerationKind-Position ;
+.
+s223:PowerAndSignal-PoE
+  a s223:Class ;
+  a s223:PowerAndSignal-PoE ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:Property ;
+      s223:ofConstituent s223:Electricity-DC ;
+      rdfs:label "Unspecified" ;
+    ] ;
+  s223:composedOf [
+      a s223:Property ;
+      s223:ofConstituent s223:Signal-Ethernet ;
+      rdfs:label "Unspecified" ;
+    ] ;
+  rdfs:comment "This class has enumerated subclasses of Power over Ethernet." ;
+  rdfs:label "Power over Ethernet" ;
+  rdfs:subClassOf s223:Mix-PowerAndSignal ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "One of the constituents of PoE must be DC electrical power." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path s223:ofConstituent ;
+                  rdfs:comment "One of the constituents of PoE must be DC electrical power." ;
+                  sh:class s223:Electricity-DC ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "One of the constituents of PoE must be Ethernet." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:Property ;
+          sh:node [
+              sh:property [
+                  sh:path s223:ofConstituent ;
+                  rdfs:comment "One of the constituents of PoE must be Ethernet." ;
+                  sh:class s223:Signal-Ethernet ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "There must be at least two Properties that characterize the constituents of Power over Ethernet." ;
+      sh:class s223:Property ;
+      sh:minCount 2 ;
+    ] ;
+.
+s223:Presence-False
+  a s223:Class ;
+  a s223:Presence-False ;
+  a sh:NodeShape ;
+  rdfs:comment "Presence-False" ;
+  rdfs:label "Presence-False" ;
+  rdfs:subClassOf s223:Occupancy-Presence ;
+.
+s223:Presence-True
+  a s223:Class ;
+  a s223:Presence-True ;
+  a sh:NodeShape ;
+  rdfs:comment "Presence-True" ;
+  rdfs:label "Presence-True" ;
+  rdfs:subClassOf s223:Occupancy-Presence ;
+.
+s223:Refrigerant-R-22
+  a s223:Class ;
+  a s223:Refrigerant-R-22 ;
+  a sh:NodeShape ;
+  rdfs:comment "Refrigerant-R-22" ;
+  rdfs:label "Refrigerant-R-22" ;
+  rdfs:subClassOf s223:Fluid-Refrigerant ;
+.
+s223:Refrigerant-R-410A
+  a s223:Class ;
+  a s223:Refrigerant-R-410A ;
+  a sh:NodeShape ;
+  rdfs:comment "Refrigerant-R-410A" ;
+  rdfs:label "Refrigerant-R-410A" ;
+  rdfs:subClassOf s223:Fluid-Refrigerant ;
+.
+s223:Role-Condenser
+  a s223:Class ;
+  a s223:Role-Condenser ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Condenser" ;
+  rdfs:label "Role-Condenser" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Controller
+  a s223:Class ;
+  a s223:Role-Controller ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Controller" ;
+  rdfs:label "Role-Controller" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Cooling
+  a s223:Class ;
+  a s223:Role-Cooling ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Cooling" ;
+  rdfs:label "Role-Cooling" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Discharge
+  a s223:Class ;
+  a s223:Role-Discharge ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Discharge" ;
+  rdfs:label "Role-Discharge" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Economizer
+  a s223:Class ;
+  a s223:Role-Economizer ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Economizer" ;
+  rdfs:label "Role-Economizer" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Evaporator
+  a s223:Class ;
+  a s223:Role-Evaporator ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Evaporator" ;
+  rdfs:label "Role-Evaporator" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Exhaust
+  a s223:Class ;
+  a s223:Role-Exhaust ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Exhaust" ;
+  rdfs:label "Role-Exhaust" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Expansion
+  a s223:Class ;
+  a s223:Role-Expansion ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Expansion" ;
+  rdfs:label "Role-Expansion" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Generator
+  a s223:Class ;
+  a s223:Role-Generator ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Generator" ;
+  rdfs:label "Role-Generator" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-HeatRecovery
+  a s223:Class ;
+  a s223:Role-HeatRecovery ;
+  a sh:NodeShape ;
+  rdfs:comment "Heat Recovery" ;
+  rdfs:label "Heat Recovery" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Heating
+  a s223:Class ;
+  a s223:Role-Heating ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Heating" ;
+  rdfs:label "Role-Heating" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Load
+  a s223:Class ;
+  a s223:Role-Load ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Load" ;
+  rdfs:label "Role-Load" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-OutdoorAirIntake
+  a s223:Class ;
+  a s223:Role-OutdoorAirIntake ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-OutdoorAirIntake" ;
+  rdfs:label "Role-OutdoorAirIntake" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+  sh:property [
+      sh:path s223:hasMedium ;
+      rdfs:comment "Role-OutdoorAirIntake should only be associated with a Connectable directly connecting to Outdoor Air, or properties of this Connectable." ;
+      sh:severity sh:Warning ;
+      sh:sparql [
+          a sh:SPARQLConstraint ;
+          rdfs:comment "Ensure that Role-OutdoorAirIntake is associated with a Connectable directly connecting to Outdoor Air, or properties of this Connectable." ;
+          sh:message "{?this} is associated with {$entity}, which does not directly connect to outdoor air." ;
+          sh:prefixes <http://data.ashrae.org/standard223/1.0/validation/model> ;
+          sh:select """
+SELECT $this ?entity
+WHERE {
+?entity (s223:hasRole | (s223:hasProperty/s223:hasAspect)) $this .
+?outdoorSpace a/rdfs:subClassOf* s223:OutdoorPhysicalSpace .
+?outdoorSpace s223:encloses ?outdoorAir  .
+?outdoorAir s223:hasDomain s223:Domain-HVAC .
+FILTER NOT EXISTS {?entity s223:connectedFrom ?outdoorAir} .
+}
+""" ;
+        ] ;
+    ] ;
+.
+s223:Role-Primary
+  a s223:Class ;
+  a s223:Role-Primary ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Primary" ;
+  rdfs:label "Role-Primary" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Recirculating
+  a s223:Class ;
+  a s223:Role-Recirculating ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Recirculating" ;
+  rdfs:label "Role-Recirculating" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Relief
+  a s223:Class ;
+  a s223:Role-Relief ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Relief" ;
+  rdfs:label "Role-Relief" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Return
+  a s223:Class ;
+  a s223:Role-Return ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Return" ;
+  rdfs:label "Role-Return" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Secondary
+  a s223:Class ;
+  a s223:Role-Secondary ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Secondary" ;
+  rdfs:label "Role-Secondary" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:Role-Supply
+  a s223:Class ;
+  a s223:Role-Supply ;
+  a sh:NodeShape ;
+  rdfs:comment "Role-Supply" ;
+  rdfs:label "Role-Supply" ;
+  rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+s223:RunStatus-Off
+  a s223:Class ;
+  a s223:RunStatus-Off ;
+  a sh:NodeShape ;
+  rdfs:comment "Off" ;
+  rdfs:label "Off" ;
+  rdfs:subClassOf s223:EnumerationKind-RunStatus ;
+.
+s223:RunStatus-On
+  a s223:Class ;
+  a s223:RunStatus-On ;
+  a sh:NodeShape ;
+  rdfs:comment "On" ;
+  rdfs:label "On" ;
+  rdfs:subClassOf s223:EnumerationKind-RunStatus ;
+.
+s223:RunStatus-Unknown
+  a s223:Class ;
+  a s223:RunStatus-Unknown ;
+  a sh:NodeShape ;
+  rdfs:comment "Unknown" ;
+  rdfs:label "Unknown" ;
+  rdfs:subClassOf s223:EnumerationKind-RunStatus ;
+.
+s223:Signal-EIA485
+  a s223:Class ;
+  a s223:Signal-EIA485 ;
+  a sh:NodeShape ;
+  rdfs:comment "Signal EIA485" ;
+  rdfs:label "Signal EIA485" ;
+  rdfs:subClassOf s223:Electricity-Signal ;
+.
+s223:Signal-Ethernet
+  a s223:Class ;
+  a s223:Signal-Ethernet ;
+  a sh:NodeShape ;
+  rdfs:comment "Signal Ethernet" ;
+  rdfs:label "Signal Ethernet" ;
+  rdfs:subClassOf s223:Electricity-Signal ;
+.
+s223:Signal-IEC14908
+  a s223:Class ;
+  a s223:Signal-IEC14908 ;
+  a sh:NodeShape ;
+  rdfs:comment "Signal IEC14908" ;
+  rdfs:label "Signal IEC14908" ;
+  rdfs:subClassOf s223:Electricity-Signal ;
+.
+s223:Signal-Modulated
+  a s223:Class ;
+  a s223:Signal-Modulated ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of electric signals at various voltage ranges." ;
+  rdfs:label "Signal-Modulated" ;
+  rdfs:subClassOf s223:Electricity-Signal ;
+.
+s223:Signal-USB
+  a s223:Class ;
+  a s223:Signal-USB ;
+  a sh:NodeShape ;
+  rdfs:comment "Signal USB" ;
+  rdfs:label "Signal USB" ;
+  rdfs:subClassOf s223:Electricity-Signal ;
+.
+s223:Speed-High
+  a s223:Class ;
+  a s223:Speed-High ;
+  a sh:NodeShape ;
+  rdfs:comment "High" ;
+  rdfs:label "High" ;
+  rdfs:subClassOf s223:EnumerationKind-Speed ;
+.
+s223:Speed-Low
+  a s223:Class ;
+  a s223:Speed-Low ;
+  a sh:NodeShape ;
+  rdfs:comment "Low" ;
+  rdfs:label "Low" ;
+  rdfs:subClassOf s223:EnumerationKind-Speed ;
+.
+s223:Speed-Medium
+  a s223:Class ;
+  a s223:Speed-Medium ;
+  a sh:NodeShape ;
+  rdfs:comment "Medium" ;
+  rdfs:label "Medium" ;
+  rdfs:subClassOf s223:EnumerationKind-Speed ;
+.
+s223:Speed-Off
+  a s223:Class ;
+  a s223:Speed-Off ;
+  a sh:NodeShape ;
+  rdfs:comment "Off" ;
+  rdfs:label "Off" ;
+  rdfs:subClassOf s223:EnumerationKind-Speed ;
+.
+s223:Substance-Medium
+  a s223:Class ;
+  a s223:Substance-Medium ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of a physical substance or anything that allows for the transfer of energy or information." ;
+  rdfs:label "Medium" ;
+  rdfs:subClassOf s223:EnumerationKind-Substance ;
+.
+s223:Substance-Particulate
+  a s223:Class ;
+  a s223:Substance-Particulate ;
+  a sh:NodeShape ;
+  rdfs:comment "This class has enumerated subclasses of particulates in various size ranges." ;
+  rdfs:label "Particulate" ;
+  rdfs:subClassOf s223:EnumerationKind-Substance ;
+.
+s223:Substance-Soot
+  a s223:Class ;
+  a s223:Substance-Soot ;
+  a sh:NodeShape ;
+  rdfs:comment "Substance-Soot" ;
+  rdfs:label "Substance-Soot" ;
+  rdfs:subClassOf s223:EnumerationKind-Substance ;
+.
+s223:Water-ChilledWater
+  a s223:Class ;
+  a s223:Water-ChilledWater ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  rdfs:comment "Water-Chilled water" ;
+  rdfs:label "Water-Chilled water" ;
+  rdfs:subClassOf s223:Fluid-Water ;
+.
+s223:Water-GlycolSolution
+  a s223:Class ;
+  a s223:Water-GlycolSolution ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-Glycol ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Unspecified" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Unspecified" ;
+    ] ;
+  s223:hasFreezingPoint [
+      a s223:QuantifiableProperty ;
+      qudt:hasQuantityKind qudtqk:Temperature ;
+      rdfs:label "Freezing point" ;
+    ] ;
+  rdfs:comment "This class has enumerated subclasses of water-glycol solutions in various concentrations." ;
+  rdfs:label "Water-GlycolSolution" ;
+  rdfs:subClassOf s223:Fluid-Water ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "One of the constituents of a Water-GlycolSolution must be Constituent-Glycol." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:ofConstituent ;
+                  rdfs:comment "One of the constituents of a Water-GlycolSolution must be Constituent-Glycol." ;
+                  sh:hasValue s223:Constituent-Glycol ;
+                ] ;
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  rdfs:comment "The quantity kind of the constituent must be VolumeFraction." ;
+                  sh:hasValue qudtqk:VolumeFraction ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "One of the constituents of a Water-GlycolSolution must be Constituent-H2O." ;
+      sh:qualifiedMinCount 1 ;
+      sh:qualifiedValueShape [
+          sh:class s223:QuantifiableProperty ;
+          sh:node [
+              sh:property [
+                  sh:path s223:ofConstituent ;
+                  rdfs:comment "One of the constituents of a Water-GlycolSolution must be Constituent-H2O." ;
+                  sh:hasValue s223:Constituent-H2O ;
+                ] ;
+              sh:property [
+                  sh:path qudt:hasQuantityKind ;
+                  rdfs:comment "The quantity kind of the constituent must be VolumeFraction." ;
+                  sh:hasValue qudtqk:VolumeFraction ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+  sh:property [
+      sh:path s223:composedOf ;
+      rdfs:comment "There must be at least two QuantifiableProperties that characterize the constituents of a Water-GlycolSolution." ;
+      sh:class s223:QuantifiableProperty ;
+      sh:minCount 2 ;
+    ] ;
+  sh:property [
+      sh:path s223:hasFreezingPoint ;
+      rdfs:comment "If the relation hasFreezingPoint is used, the object must be a QuantifiableProperty with a quantity kind of Temperature." ;
+      sh:class s223:QuantifiableProperty ;
+      sh:message "The object must be a QuantifiableProperty with a quantity kind of Temperature." ;
+      sh:node [
+          sh:property [
+              sh:path qudt:hasQuantityKind ;
+              sh:hasValue qudtqk:Temperature ;
+            ] ;
+        ] ;
+    ] ;
+.
+s223:Water-HotWater
+  a s223:Class ;
+  a s223:Water-HotWater ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  rdfs:comment "Water-Hot water" ;
+  rdfs:label "Water-Hot water" ;
+  rdfs:subClassOf s223:Fluid-Water ;
+.
+s223:Water-Steam
+  a s223:Class ;
+  a s223:Water-Steam ;
+  a sh:NodeShape ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind qudtqk:VolumeFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water conc" ;
+    ] ;
+  rdfs:comment "Steam" ;
+  rdfs:label "Steam" ;
+  rdfs:subClassOf s223:Fluid-Water ;
+.
+s223:Weekday-Friday
+  a s223:Class ;
+  a s223:Weekday-Friday ;
+  a sh:NodeShape ;
+  rdfs:comment "Friday" ;
+  rdfs:label "Friday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekday ;
+.
+s223:Weekday-Monday
+  a s223:Class ;
+  a s223:Weekday-Monday ;
+  a sh:NodeShape ;
+  rdfs:comment "Monday" ;
+  rdfs:label "Monday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekday ;
+.
+s223:Weekday-Thursday
+  a s223:Class ;
+  a s223:Weekday-Thursday ;
+  a sh:NodeShape ;
+  rdfs:comment "Thursday" ;
+  rdfs:label "Thursday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekday ;
+.
+s223:Weekday-Tuesday
+  a s223:Class ;
+  a s223:Weekday-Tuesday ;
+  a sh:NodeShape ;
+  rdfs:comment "Tuesday" ;
+  rdfs:label "Tuesday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekday ;
+.
+s223:Weekday-Wednesday
+  a s223:Class ;
+  a s223:Weekday-Wednesday ;
+  a sh:NodeShape ;
+  rdfs:comment "Wednesday" ;
+  rdfs:label "Wednesday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekday ;
+.
+s223:Weekend-Saturday
+  a s223:Class ;
+  a s223:Weekend-Saturday ;
+  a sh:NodeShape ;
+  rdfs:comment "Saturday" ;
+  rdfs:label "Saturday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekend ;
+.
+s223:Weekend-Sunday
+  a s223:Class ;
+  a s223:Weekend-Sunday ;
+  a sh:NodeShape ;
+  rdfs:comment "Sunday" ;
+  rdfs:label "Sunday" ;
+  rdfs:subClassOf s223:DayOfWeek-Weekend ;
+.
+<http://data.ashrae.org/standard223/1.0/vocab/enumeration>
+  a owl:Ontology ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+  owl:imports <http://data.ashrae.org/standard223/1.0/vocab/electricity> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.

@@ -1,0 +1,86 @@
+@prefix g36: <http://data.ashrae.org/standard223/1.0/extensions/g36#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+g36:DualFanDualDuctAirHandlingUnit a s223:Class,
+        rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "DualFanDualDuctAirHandlingUnit" ;
+    rdfs:comment "DualFanDualDuctAirHandlingUnit" ;
+    rdfs:subClassOf s223:AirHandlingUnit ;
+    sh:property [ rdfs:comment "The DualFanDualDuctAirHandlingUnit shall contain at least one supply fan with a VFD that has the role Supply using the relation contains." ;
+            sh:message "g36: The DualFanDualDuctAirHandlingUnit shall contain at least one supply fan with a VFD that has the role Supply using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class g36:FanWithVFD ;
+                    sh:node [ sh:property [ sh:hasValue s223:Role-Supply ;
+                                    sh:path s223:hasRole ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "A DualFanDualDuctAirHandlingUnit OutletConnectionPoint shall have at least one supply duct static pressure property using the relation hasProperty." ;
+            sh:message "g36: A DualFanDualDuctAirHandlingUnit OutletConnectionPoint shall have at least one supply duct static pressure property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Pressure ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-Supply ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "A DualFanDualDuctAirHandlingUnit OutletConnectionPoint shall have at least one supply air temperature property using the relation hasProperty." ;
+            sh:message "g36: A DualFanDualDuctAirHandlingUnit OutletConnectionPoint shall have at least one supply air temperature property using the relation hasProperty." ;
+            sh:minCount 1 ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:node [ sh:property [ sh:minCount 1 ;
+                                    sh:path s223:hasProperty ;
+                                    sh:qualifiedMinCount 1 ;
+                                    sh:qualifiedValueShape [ sh:class s223:QuantifiableObservableProperty ;
+                                            sh:node [ sh:property [ sh:hasValue quantitykind:Temperature ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path qudt:hasQuantityKind ],
+                                                        [ sh:hasValue s223:Role-Supply ;
+                                                            sh:maxCount 1 ;
+                                                            sh:minCount 1 ;
+                                                            sh:path s223:hasAspect ] ] ] ] ] ] ;
+            sh:severity s223:g36 ],
+        [ rdfs:comment "The DualFanDualDuctAirHandlingUnit shall contain at least one HotWaterCoil or at least one ElectricHeatingCoil for heating using the relation contains." ;
+            sh:message "g36: The DualFanDualDuctAirHandlingUnit shall contain at least one HotWaterCoil or at least one ElectricHeatingCoil for heating using the relation contains." ;
+            sh:minCount 1 ;
+            sh:path s223:contains ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:or ( [ sh:class g36:HotWaterCoil ] [ sh:class g36:ElectricHeatingCoil ] ) ] ;
+            sh:severity s223:g36 ] ;
+    sh:severity s223:g36 .
+
+g36:DualFanDualDuctAirHandlingUnitAnnotation a sh:NodeShape ;
+    sh:rule [ a sh:TripleRule ;
+            rdfs:comment "If an instance of s223:AirHandlingUnit matches the constraints defined by g36:DualFanDualDuctAirHandlingUnit, it will be declared as an instance of that class." ;
+            sh:condition g36:DualFanDualDuctAirHandlingUnit ;
+            sh:object g36:DualFanDualDuctAirHandlingUnit ;
+            sh:predicate rdf:type ;
+            sh:subject sh:this ] ;
+    sh:targetClass s223:AirHandlingUnit .
+
+<http://data.ashrae.org/standard223/1.0/extensions/g36/dual-duct-ahu> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/extensions/settings>,
+        <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:versionInfo "Created with TopBraid Composer" .
+

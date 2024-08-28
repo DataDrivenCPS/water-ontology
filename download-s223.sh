@@ -13,9 +13,5 @@ popd
 rm -rf s223
 
 # copy inference, extensions, collections, models, validation, vocab folders to s223/
-cp -r 223standard/inference s223/
-cp -r 223standard/extensions s223/
-cp -r 223standard/collections s223/
-cp -r 223standard/models s223/
-cp -r 223standard/validation s223/
-cp -r 223standard/vocab s223/
+mkdir s223
+cp -r 223standard/inference 223standard/extensions 223standard/collections 223standard/models 223standard/validation 223standard/vocab s223
