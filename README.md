@@ -4,7 +4,7 @@
 
 - `s223/` contains ontology files from the 223P ontology
 - `water/` contains our ontology files
-- `build.py` is the script to build the ontology
+- `src/` contains the Python code for building the ontology
 
 ## Development Setup
 
@@ -14,4 +14,4 @@
 
 ## Building the Ontology
 
-1. Build the ontology with `uv run python build.py` . This generates a `water.ttl` in the current directory
+1. Build the ontology with `uv run python src/water_ontology/build.py` . This generates a `water.ttl` in the current directory
