@@ -6,3 +6,6 @@
 
 # built ontology
 water.ttl
+
+# ignore uv.lock
+uv.lock
