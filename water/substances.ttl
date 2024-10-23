@@ -1,0 +1,177 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix equip: <urn:nawi-water-ontology/equip#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+
+
+<urn:nawi-water-ontology/substances>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Substances Ontology" ;
+    rdfs:comment "An ontology for water substances used in the NAWI project" ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+.
+s223:Constituent-Metals
+  a s223:Class ;
+  a s223:Constituent-Metals ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-Metals" ;
+  rdfs:label "Constituent-Metals" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+# Is it useful to have generic Salt? 
+s223:Constituent-Salt
+  a s223:Class ;
+  a s223:Constituent-Salt ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-Salt" ;
+  rdfs:label "Constituent-Salt" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+s223:Salt-NaCl
+  a s223:Class ;
+  a s223:Salt-NaCl ;
+  a sh:NodeShape ;
+  rdfs:comment "Salt-NaCl" ;
+  rdfs:label "Salt-NaCl" ;
+  rdfs:subClassOf s223:Constituent-Salt ;
+.
+s223:Water-Brine
+  a s223:Class ;
+  a s223:Water-Brine ;
+  a sh:NodeShape ;
+  rdfs:comment "Water-Brine" ;
+  rdfs:label "Water-Brine" ;
+  rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-LowLimit ;
+      s223:hasValue "3.5"^^xsd:decimal ;
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "Minimum Salt Concentration in Brine" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-HighLimit ;
+      s223:hasValue "26"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "Maximum Salt Concentration in Brine" ;
+    ] ;
+# range based on google first result
+.
+s223:Water-Brine
+  # Possible constraint so subclasses are within allowed concentration ranges
+  # tried writing rule to use the existing composedOf high and low limit - not a good idea - too messy 
+  sh:property [
+    sh:path s223:composedOf ;
+    rdfs:comment "Making sure brine in salt concentration range" ;
+    sh:sparql [
+      a sh:SPARQLConstraint ;
+      rdfs:comment "Constraint for Brine Salinity" ;
+      sh:message "Substance {$this} has a salt concentration, {?conc}, outside of range of brine." ;
+      sh:select """
+        SELECT $this ?conc
+        WHERE {
+          $this s223:composedOf ?constituent .
+          ?constituent s223:hasValue ?conc ;
+            s223:ofConstituent s223:Salt-NaCl .
+          FILTER(?conc < 3.5 || ?conc > 26) .
+          }
+        """ ;
+    ] ;
+  ] ;
+.
+s223:Brine-15Percent
+  a s223:Class ;
+  a s223:Brine-15Percent ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-15Percent" ;
+  rdfs:label "Brine-15Percent" ;
+  rdfs:subClassOf s223:Water-Brine;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "15"^^xsd:decimal ;
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "salt concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "85"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "Water concentration" ;
+    ] ;
+  rdfs:comment "Brine-15Percent" ;
+  rdfs:label "Brine-15Percent" ;
+.
+# Wonder how we should express a range, property like error or min/max properties? Use SHACL minexclusive/inclusive
+# Can do with existing 223 properties.
+s223:Brine-5t10Percent
+  a s223:Class ;
+  a s223:Brine-2to5Percent ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-2to5Percent" ;
+  rdfs:label "Brine-2to5Percent" ;
+  rdfs:subClassOf s223:Water-Brine;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-LowLimit ;
+      s223:hasValue "5"^^xsd:decimal ;
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "low salt concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-HighLimit ;
+      s223:hasValue "10"^^xsd:decimal ;
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "salt concentration" ;
+    ] ;
+  rdfs:comment "Brine-2to5Percent" ;
+  rdfs:label "Brine-2to5Percent" ;
+.
+
+s223:Brine-Invalid
+  a s223:Class ;
+  a s223:Brine-Invalid ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-Invalid" ;
+  rdfs:label "Brine-Invalid" ;
+  rdfs:subClassOf s223:Water-Brine;
+  s223:v 1 ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-LowLimit ;
+      s223:hasValue 0.1 ;
+      # Invalid because 0 salt content is not Brine 
+      # Is this a useful constraint ?
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "low salt concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-HighLimit ;
+      s223:hasValue 20 ;
+      s223:ofConstituent s223:Salt-NaCl ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+      rdfs:label "salt concentration" ;
+    ] ;
+.
