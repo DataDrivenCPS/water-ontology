@@ -9,3 +9,8 @@ water.ttl
 
 # ignore uv.lock
 uv.lock
+
+# Having xcode issues with new computer, need to fix before using uv
+# - using venv while figuring out
+venv
+__pycache__
