@@ -235,6 +235,11 @@ equip:ReverseOsmosisMembrane
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf equip:Filter .
+    
+equip:ReverseOsmosisMembrane
+    rdfs:label "ReverseOsmosisMembrane" ;
+    rdfs:comment "A membrane used for reverse osmosis" ;
+    rdfs:subClassOf equip:Filter .
 
 equip:TricklingFilter
     rdfs:label "TricklingFilter" ;
