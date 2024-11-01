@@ -14,3 +14,6 @@ uv.lock
 # - using venv while figuring out
 venv
 __pycache__
+.DS_Store
+# ignore logs?
+*.log
