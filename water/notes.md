@@ -1,39 +1,58 @@
 Notes on modeling of equipment
-
+- Fletch: Separator and Reactor are basic ways to distinguish between things
 - Used an LLM for the descriptions, and checked some against pypes. Not sure exactly what the water-domain definitions for all of these things are
 - Many equipment are named for the process they perform. Added "Unit" to several entries in the list to make them equipment rather than referring to a process. 
 - We may want an alias system like brick for synonymous equipment types. In brick, has this been helpful? I think we can skip it or just note it in the description as well
+    - A: We choose one name and make people use it
+    - A: May need feedback from pilot projects on these decisions
 - Should screen, sedimentation tank, and grit chamber be a subclass of some higher level class like Separator?
-    - Could alternatively be described by a role like Role-Separator, like how in 223 we have roles like Condensor and Evaporator, to describe what is accomplished by heat-exchangers. I think we may want to avoid this. 
+    - Could alternatively be described by a role like Role-Separator, like how in 223 we have roles like Condensor and Evaporator, to describe what is accomplished by heat-exchangers. I think we may want to avoid this.
+    - A: Deciding when to make a subclass will be important, through discussion with teams
 - Is UV light a specific UV light unit? Or could UV light be installed in some other kind of equipment?
+    - UV Light, air compression, go inside reactors but should be treated as their own pieces of euqipment
 - For pond, should we talk about aeration?
+  - Ponds can be used for different things- e.g. aeration, settling, unsure if these deserve subclass
 - Some things like a cogenerator seem a bit niche, what does a cogenerator look like, how many components does it have? Is it just an engine with a heat exchanger?
+    - A: Common in wastewater, worth having
 - Several are already represented in 223 like battery. Adding the water version as a subclass of the 223 version for now
     - Lots of baggage comes with the s223 version of Filter (and for that matter, several other s223 equipment classes) we probably need our own version of filter to accommodate different mediums.
 - Should all of the filters be named with "filter"? Like NanofiltrationFilter? I think we are referring to something larger than the filter (which will in itself just be a membrane). So a NanofiltrationUnit will be it's own equipment, and it will contain a filter.
+    - A: dependent on situation
+    - A: Want to distinguish different columns
+    - A: Could make superclass separator, then have all filters and related things under that - Fletch and Scott approved
+    - A: may be distinguished based on particle size, other relevant properties.
+    - A: next step to look at Zahi 
 - Should we separate units and membranes for certain filteration systems? Should we have several types of membranes be defined like RO and Ion Exchange, or should we just define the relevant filter system?
     - A bioactive filter both reacts and separates, should it be a subclass of reactor and separator? Do we want multi-parent subclassing like brick? or single parent like 223.
         - Single parent is my opinion if the equipment list does not grow too much beyond this.
+        - A: may want roles, multiple inheritance also fine, can cross bridge when we get there
 - Should we call everything equipment, system, unit? 
     - Should I avoid words like "system" in the rdfs:comments?
     - We have this issue in 223P too, should the parent to everything be s223:Equipment? 
     - some things like pond and resevoir really don't make sense to call equipment.
+    - A: Scott- Asset as superclass
 - Some things like evaporator have relevant roles in 223P, will we be adopting roles in addition to other features?
 - We haven't really subclassed sensors in 223P. 223P relies on property information.
+    - A: May want some subclass sensors, not exactly what is in Pypes most likely 
 - Not sure how to describe level sensor - this is about water level in a tank? Is it a kind of volume sensor?
+    - A: Would be a float sensor, could be linked to the actual property measured (e.g. volume based on dimension of tank)
 - Renamed thermometer to temperature sensor.
 - Are Run Time and Run Status real sensors? In 223 sensors all represent the physical sensors rather than a virtual point (like they can in brick).
     - Are we using the brick representation of sensors in this ontology, or the 223?
+    - A: Sensors in pypes are not all necessarily real sensors, these are SCADA data from controllers
 - Are Humidity Sensors used?
 - In 223 we have separate particulate and concentration sensors. Does this also fit conventions in the water industry?
 - In 223P oxygen meter would just be a concentration center that measures oxygen. Modeling it as a subclass of concentration sensor here. 
     - Do we want to have subclasses of sensors, and all sorts of validation rules to assert how they should be modeled using 223?
 - I need more info on COD/BOD sensor. Is it a single sensor? is it something only done by Sentry?
     - Changed COD/BOD to OxygenDemandSensor.
+- Need to model human/manual measurements
+    - A: ManualMeasurementPort, or something similar, will also want external reference flavor
 - pH also a subclass of concentration sensor.
 - Should all Sensors be named sensor (not meter)?
 - Are Rotation, Efficiency, StateOfCharge, Speed, and Frequency true sensors?
     - What is a rotation sensor? Is it about rotational speed? What quantitykind would it have?
+    - A: Will not have own sensor class, reported by controllers
 - since we aren't using sameAs, all equipment borrowed from s223 should be redeclaired in nawi namespace to make querying easier.
     - Not sure if we should do something similar for properties or other concepts, since it's a little unclear what does what
     - Definitely want to reduce namespace annoyances for people querying - may want to just redeclare everything...
