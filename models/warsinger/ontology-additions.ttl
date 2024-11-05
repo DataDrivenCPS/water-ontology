@@ -46,7 +46,14 @@ nw:Membrane
     a s223:Class ;
     rdfs:subClassOf s223:Filter 
 .
-
+nw:Valve 
+    a s223:Class; 
+    rdfs:subClassOf s223:Valve 
+.
+nw:VariableFrequencyDrive
+    a s223:Class ;
+    rdfs:subClassOf s223:VariableFrequencyDrive
+.
 nw:ThreeWayValve 
     a s223:Class; 
     rdfs:subClassOf s223:Valve 
@@ -55,4 +62,9 @@ nw:ThreeWayValve
 nw:CheckValve
     a s223:Class; 
     rdfs:subClassOf s223:valve
+.
+
+nw:Controller 
+    a s223:Class ;
+    rdfs:subClassOf s223:Controller ;
 .

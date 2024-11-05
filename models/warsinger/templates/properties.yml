@@ -63,3 +63,26 @@ opening-ratio:
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:OpeningRatio .
 
+on-off-command:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:EnumeratedActuatableProperty ;
+      s223:hasEnumerationKind s223:EnumerationKind-OnOff .
+
+speed-command:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableActuatableProperty ;
+      qudt:hasQuantityKind quantitykind:SpeedRatio ;
+      qudt:hasUnit unit:PERCENT .
+  

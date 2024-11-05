@@ -34,3 +34,8 @@ Notes on modeling of equipment
 - Should all Sensors be named sensor (not meter)?
 - Are Rotation, Efficiency, StateOfCharge, Speed, and Frequency true sensors?
     - What is a rotation sensor? Is it about rotational speed? What quantitykind would it have?
+- since we aren't using sameAs, all equipment borrowed from s223 should be redeclaired in nawi namespace to make querying easier.
+    - Not sure if we should do something similar for properties or other concepts, since it's a little unclear what does what
+    - Definitely want to reduce namespace annoyances for people querying - may want to just redeclare everything...
+
+- is there a way to do some string processing inside templates in buildingMotif, so that I can optionally expose less inputs for the dictionary? 

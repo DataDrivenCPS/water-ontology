@@ -112,7 +112,7 @@ pump:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix equip: <urn:nawi-water-ontology/equip#> .
 
-    P:name a equip:Filter ;
+    P:name a equip:Pump ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -137,3 +137,73 @@ check-valve:
     - template: outlet-cp
       args: {"name": "out"}
   optional: ["role"]
+vfd:
+# can either just have a vfd, or make a vfd with a pump 
+# make connectionpoints optional for VFD, since we don't really do elecricity for controls
+# In s223 VFD's have required electrical connection points, would probably be easier to make a vfd with a pump template
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix equip: <urn:nawi-water-ontology/equip#> .
+
+    P:name a equip:VariableFrequencyDrive ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+pump-with-vfd:
+# I don't recall if this was the agreed upon modeling convention
+# Took a first guess at properties
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix equip: <urn:nawi-water-ontology/equip#> .
+
+    P:name a equip:Pump ;
+      s223:hasConnectionPoint P:in, P:out, P:elec-in ;
+      s223:contains P:vfd-name, P:pump-name ; 
+      s223:hasProperty P:on-off-command, P:speed-command .
+
+    P:pump-in s223:mapsTo P:in .
+    P:pump-out s223:mapsTo P:out .
+
+    P:pump-name s223:hasConnectionPoint P:pump-elec-in ;
+      s223:cnx P:pump-elec-in ;
+      s223:hasMedium P:elec-medium . 
+    
+    P:vfd-name s223:mapsTo P:elec-in ;
+      s223:connectsTo P:pump-name .
+    
+    P:vfd-in s223:mapsTo P:elec-in .
+    P:vfd-out s223:cnx P:pump-elec-in .
+
+  dependencies:
+  - template: inlet-cp
+    args: {"name": "in"}
+  - template: inlet-cp
+    args: {"name": "elec-in"}
+  - template: outlet-cp
+    args: {"name": "out"}
+  - template: on-off-command
+    args: {"name": "on-off-command"}
+  - template: speed-command
+    args: {"name": "speed-command"}
+  - template: pump
+    args: {"name": "pump-name", "in":"pump-in", "out":"pump-out"}
+  - template: vfd
+    args: {"name": "vfd-name", "in":"vfd-in", "out":"vfd-out"}
+
+controller:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix equip: <urn:nawi-water-ontology/equip#> .
+
+    P:name a equip:Controller .
+
+      
