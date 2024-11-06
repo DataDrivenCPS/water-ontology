@@ -39,6 +39,8 @@ jobs:
         run: uv sync --all-extras --dev
       - name: build docs
         run: |
+          # need to build twice for now...
+          uv run jupyter-book build docs
           uv run jupyter-book build docs
       - name: Setup Pages
         uses: actions/configure-pages@v5
