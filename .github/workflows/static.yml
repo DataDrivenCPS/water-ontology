@@ -39,8 +39,7 @@ jobs:
         run: uv sync --all-extras --dev
       - name: build docs
         run: |
-          uv run jupyter-book config sphinx ./docs/
-          sphinx-build ./docs/ docs/_build/html -b html
+          uv run jupyter-book build docs
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
