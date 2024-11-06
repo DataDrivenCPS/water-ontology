@@ -2,9 +2,9 @@ tank:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Tank ;
+    P:name a nawi:Tank ;
       s223:hasConnectionPoint P:in, P:out, P:bi-cp ;
       s223:cnx P:in, P:out, P:bi-cp ;
       s223:hasRole P:role .
@@ -21,9 +21,9 @@ bladder:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Tank ;
+    P:name a nawi:Tank ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -38,9 +38,9 @@ valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Valve ;
+    P:name a nawi:Valve ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -55,9 +55,9 @@ filter:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Filter ;
+    P:name a nawi:Filter ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -71,9 +71,9 @@ membrane:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Membrane ;
+    P:name a nawi:Membrane ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -88,9 +88,9 @@ membrane-module:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Equipment ;
+    P:name a nawi:Equipment ;
       s223:contains P:membrane ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -110,9 +110,9 @@ pump:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Pump ;
+    P:name a nawi:Pump ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -125,9 +125,9 @@ check-valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:CheckValve ;
+    P:name a nawi:CheckValve ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -144,9 +144,9 @@ vfd:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:VariableFrequencyDrive ;
+    P:name a nawi:VariableFrequencyDrive ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -162,9 +162,9 @@ pump-with-vfd:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Pump ;
+    P:name a nawi:Pump ;
       s223:hasConnectionPoint P:in, P:out, P:elec-in ;
       s223:contains P:vfd-name, P:pump-name ; 
       s223:hasProperty P:on-off-command, P:speed-command .
@@ -202,8 +202,8 @@ controller:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix equip: <urn:nawi-water-ontology/equip#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a equip:Controller .
+    P:name a nawi:Controller .
 
       

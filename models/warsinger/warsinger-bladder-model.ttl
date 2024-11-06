@@ -1,3 +1,4 @@
+@prefix nawi: <urn:nawi-water-ontology#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
@@ -9,173 +10,21 @@
 
 wbs: a owl:Ontology .
 
-wbs:bladder a <urn:nawi-water-ontology/equip#Tank> ;
-    s223:cnx wbs:bladder-bidirectional-cp,
-        wbs:bladder-in,
-        wbs:bladder-out ;
-    s223:hasConnectionPoint wbs:bladder-bidirectional-cp,
-        wbs:bladder-in,
-        wbs:bladder-out .
-
-wbs:bladder-valve a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:bladder-valve-bidirectional-cp,
-        wbs:bladder-valve-in,
-        wbs:bladder-valve-out ;
-    s223:hasConnectionPoint wbs:bladder-valve-bidirectional-cp,
-        wbs:bladder-valve-in,
-        wbs:bladder-valve-out .
-
-wbs:brine-tank a <urn:nawi-water-ontology/equip#Tank> ;
-    s223:cnx wbs:brine-tank-in,
-        wbs:brine-tank-out ;
-    s223:hasConnectionPoint wbs:brine-tank-in,
-        wbs:brine-tank-out .
-
-wbs:check-valve a <urn:nawi-water-ontology/equip#CheckValve> ;
-    s223:cnx wbs:check-valve-in,
-        wbs:check-valve-out ;
-    s223:hasConnectionPoint wbs:check-valve-in,
-        wbs:check-valve-out .
-
-wbs:check-valve-2 a <urn:nawi-water-ontology/equip#CheckValve> ;
-    s223:cnx wbs:check-valve-2-in,
-        wbs:check-valve-2-out ;
-    s223:hasConnectionPoint wbs:check-valve-2-in,
-        wbs:check-valve-2-out .
-
-wbs:check-valve-bladder-to-makeup a <urn:nawi-water-ontology/equip#CheckValve> ;
-    s223:cnx wbs:check-valve-bladder-to-makeup-in,
-        wbs:check-valve-bladder-to-makeup-out ;
-    s223:hasConnectionPoint wbs:check-valve-bladder-to-makeup-in,
-        wbs:check-valve-bladder-to-makeup-out .
-
-wbs:check-valve-makeup-to-bladder a <urn:nawi-water-ontology/equip#CheckValve> ;
-    s223:cnx wbs:check-valve-makeup-to-bladder-in,
-        wbs:check-valve-makeup-to-bladder-out ;
-    s223:hasConnectionPoint wbs:check-valve-makeup-to-bladder-in,
-        wbs:check-valve-makeup-to-bladder-out .
-
-wbs:circulation-pump a <urn:nawi-water-ontology/equip#Pump> ;
-    s223:contains wbs:circulation-pump-pump,
-        wbs:circulation-pump-vfd ;
-    s223:hasConnectionPoint wbs:circulation-pump-elec-in,
-        wbs:circulation-pump-in,
-        wbs:circulation-pump-out ;
-    s223:hasProperty wbs:circulation-pump-on-off-command,
-        wbs:circulation-pump-pressure,
-        wbs:circulation-pump-speed-command .
-
-wbs:high-pressure-pump a <urn:nawi-water-ontology/equip#Pump> ;
-    s223:contains wbs:high-pressure-pump-pump,
-        wbs:high-pressure-pump-vfd ;
-    s223:hasConnectionPoint wbs:high-pressure-pump-elec-in,
-        wbs:high-pressure-pump-in,
-        wbs:high-pressure-pump-out ;
-    s223:hasProperty wbs:high-pressure-pump-on-off-command,
-        wbs:high-pressure-pump-speed-command .
-
-wbs:high-pressure-pump-relief-valve a <urn:nawi-water-ontology/equip#Pump> ;
-    s223:hasConnectionPoint wbs:high-pressure-pump-relief-valve-in,
-        wbs:high-pressure-pump-relief-valve-out ;
-    s223:hasRole <http://data.ashrae.org/standard223#http://data.ashrae.org/standard223#Role-Relief> .
-
-wbs:makeup-tank a <urn:nawi-water-ontology/equip#Tank> ;
-    s223:cnx wbs:makeup-tank-in,
-        wbs:makeup-tank-out ;
-    s223:hasConnectionPoint wbs:makeup-tank-in,
-        wbs:makeup-tank-out ;
-    s223:hasRole <http://data.ashrae.org/standard223#http://data.ashrae.org/standard223#Role-Makeup> .
-
-wbs:makeup-tank-filter a <urn:nawi-water-ontology/equip#Filter> ;
-    s223:hasConnectionPoint wbs:makeup-tank-filter-in,
-        wbs:makeup-tank-filter-out .
-
-wbs:makeup-tank-valve a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:makeup-tank-valve-in,
-        wbs:makeup-tank-valve-out ;
-    s223:hasConnectionPoint wbs:makeup-tank-valve-in,
-        wbs:makeup-tank-valve-out .
-
-wbs:membrane-module a <urn:nawi-water-ontology/equip#Equipment> ;
-    s223:cnx wbs:membrane-module-outlet-cp ;
-    s223:hasConnectionPoint wbs:membrane-module-in,
-        wbs:membrane-module-out,
-        wbs:membrane-module-outlet-cp ;
-    s223:hasProperty wbs:membrane-module-pressure .
-
-wbs:permeate-tank a <urn:nawi-water-ontology/equip#Tank> ;
-    s223:cnx wbs:permeate-tank-in,
-        wbs:permeate-tank-out ;
-    s223:hasConnectionPoint wbs:permeate-tank-in,
-        wbs:permeate-tank-out .
-
-wbs:permeate-valve a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:permeate-valve-in,
-        wbs:permeate-valve-out ;
-    s223:hasConnectionPoint wbs:permeate-valve-in,
-        wbs:permeate-valve-out .
-
-wbs:pump-controller a <urn:nawi-water-ontology/equip#Controller> ;
-    s223:cnx wbs:pump-controller-outlet-cp,
-        wbs:pump-controller-outlet-cp-2 ;
-    s223:hasConnectionPoint wbs:pump-controller-outlet-cp,
-        wbs:pump-controller-outlet-cp-2 .
-
-wbs:relief-valve a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:relief-valve-in,
-        wbs:relief-valve-out ;
-    s223:hasConnectionPoint wbs:relief-valve-in,
-        wbs:relief-valve-out ;
-    s223:hasRole <http://data.ashrae.org/standard223#http://data.ashrae.org/standard223#Role-Relief> .
-
-wbs:supply-filter a <urn:nawi-water-ontology/equip#Filter> ;
-    s223:hasConnectionPoint wbs:supply-filter-in,
-        wbs:supply-filter-out .
-
-wbs:supply-tank a <urn:nawi-water-ontology/equip#Tank> ;
-    s223:cnx wbs:supply-tank-in,
-        wbs:supply-tank-out ;
-    s223:hasConnectionPoint wbs:supply-tank-in,
-        wbs:supply-tank-out ;
-    s223:hasRole <http://data.ashrae.org/standard223#http://data.ashrae.org/standard223#Role-Supply> .
-
-wbs:supply-valve a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:supply-valve-in,
-        wbs:supply-valve-out ;
-    s223:hasConnectionPoint wbs:supply-valve-in,
-        wbs:supply-valve-out .
-
-wbs:three-way-valve-1 a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:three-way-valve-1-in,
-        wbs:three-way-valve-1-inlet-cp,
-        wbs:three-way-valve-1-out ;
-    s223:hasConnectionPoint wbs:three-way-valve-1-in,
-        wbs:three-way-valve-1-inlet-cp,
-        wbs:three-way-valve-1-out .
-
-wbs:three-way-valve-2 a <urn:nawi-water-ontology/equip#Valve> ;
-    s223:cnx wbs:three-way-valve-2-in,
-        wbs:three-way-valve-2-out,
-        wbs:three-way-valve-2-outlet-cp ;
-    s223:hasConnectionPoint wbs:three-way-valve-2-in,
-        wbs:three-way-valve-2-out,
-        wbs:three-way-valve-2-outlet-cp .
-
 wbs:brine-0.05 a s223:Class,
         wbs:brine-0.05 ;
     rdfs:label "Brine-VariablePercent" ;
     s223:composedOf wbs:salt-0.05,
-        wbs:water-0.95 ;
+        wbs:water-99.95 ;
     rdfs:subClassOf s223:Fluid-Water,
-        s223:Water-Brine .
+        nawi:Water-Brine .
 
 wbs:brine-3.5 a s223:Class,
         wbs:brine-3.5 ;
     rdfs:label "Brine-VariablePercent" ;
     s223:composedOf wbs:salt-3.5,
-        wbs:water--2.5 ;
+        wbs:water-96.5 ;
     rdfs:subClassOf s223:Fluid-Water,
-        s223:Water-Brine .
+        nawi:Water-Brine .
 
 wbs:brine-tank-in-conductivity a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Conductivity .
@@ -186,6 +35,15 @@ wbs:brine-tank-in-ph a s223:QuantifiableObservableProperty ;
 
 wbs:check-valve-in-flow-rate a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:VolumeFlowRate .
+
+wbs:check-valve-makeup-to-bladder a nawi:CheckValve ;
+    s223:cnx wbs:check-valve-makeup-to-bladder-in,
+        wbs:check-valve-makeup-to-bladder-out ;
+    s223:connected wbs:bladder-valve ;
+    s223:connectedThrough wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
+    s223:connectedTo wbs:bladder-valve ;
+    s223:hasConnectionPoint wbs:check-valve-makeup-to-bladder-in,
+        wbs:check-valve-makeup-to-bladder-out .
 
 wbs:check-valve-makeup-to-bladder-in-flow-rate a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:VolumeFlowRate .
@@ -211,7 +69,7 @@ wbs:circulation-pump-speed-command a s223:QuantifiableActuatableProperty ;
     qudt:hasQuantityKind qudtqk:SpeedRatio ;
     qudt:hasUnit unit:PERCENT .
 
-wbs:circulation-pump-vfd a <urn:nawi-water-ontology/equip#VariableFrequencyDrive> ;
+wbs:circulation-pump-vfd a nawi:VariableFrequencyDrive ;
     s223:connectsTo wbs:circulation-pump-pump ;
     s223:hasConnectionPoint wbs:circulation-pump-vfd-in,
         wbs:circulation-pump-vfd-out ;
@@ -224,98 +82,6 @@ wbs:circulation-pump-vfd-in a s223:InletConnectionPoint ;
 wbs:circulation-pump-vfd-out a s223:OutletConnectionPoint ;
     s223:cnx wbs:circulation-pump-pump-elec-in ;
     s223:hasMedium s223:Medium-Electricity .
-
-wbs:conn-bladder-to-bladder-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:bladder-valve-bidirectional-cp .
-
-wbs:conn-bladder-to-check-valve-2 a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:check-valve-2-in .
-
-wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:check-valve-bladder-to-makeup-in .
-
-wbs:conn-check-valve-2-to-membrane-module a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:membrane-module-in .
-
-wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:bladder-valve-in .
-
-wbs:conn-check-valve-to-bladder a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:bladder-in .
-
-wbs:conn-circulation-pump-to-check-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:check-valve-in .
-
-wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:high-pressure-pump-relief-valve-in .
-
-wbs:conn-makeup-tank-filter-to-high-pressure-pump a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:high-pressure-pump-in .
-
-wbs:conn-makeup-tank-to-makeup-tank-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:makeup-tank-valve-in .
-
-wbs:conn-makeup-tank-valve-to-makeup-tank-filter a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:makeup-tank-filter-in .
-
-wbs:conn-membrane-module-to-permeate-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:permeate-valve-in .
-
-wbs:conn-membrane-module-to-relief-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:relief-valve-in .
-
-wbs:conn-permeate-valve-to-permeate-tank a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:permeate-tank-in .
-
-wbs:conn-pump-controller-to-circulation-pump a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:circulation-pump-elec-in .
-
-wbs:conn-pump-controller-to-high-pressure-pump a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:high-pressure-pump-elec-in .
-
-wbs:conn-relief-valve-to-three-way-valve-2 a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:three-way-valve-2-in .
-
-wbs:conn-supply-filter-to-three-way-valve-1 a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:three-way-valve-1-in .
-
-wbs:conn-supply-tank-to-supply-valve a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:supply-valve-in .
-
-wbs:conn-supply-valve-to-supply-filter a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:supply-filter-in .
-
-wbs:conn-three-way-valve-1-to-brine-tank a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:brine-tank-in .
-
-wbs:conn-three-way-valve-1-to-circulation-pump a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:circulation-pump-in .
-
-wbs:conn-three-way-valve-2-to-three-way-valve-1 a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:three-way-valve-1-inlet-cp .
 
 wbs:high-pressure-pump-on-off-command a s223:EnumeratedActuatableProperty ;
     s223:hasEnumerationKind s223:EnumerationKind-OnOff .
@@ -335,7 +101,7 @@ wbs:high-pressure-pump-speed-command a s223:QuantifiableActuatableProperty ;
     qudt:hasQuantityKind qudtqk:SpeedRatio ;
     qudt:hasUnit unit:PERCENT .
 
-wbs:high-pressure-pump-vfd a <urn:nawi-water-ontology/equip#VariableFrequencyDrive> ;
+wbs:high-pressure-pump-vfd a nawi:VariableFrequencyDrive ;
     s223:connectsTo wbs:high-pressure-pump-pump ;
     s223:hasConnectionPoint wbs:high-pressure-pump-vfd-in,
         wbs:high-pressure-pump-vfd-out ;
@@ -349,13 +115,15 @@ wbs:high-pressure-pump-vfd-out a s223:OutletConnectionPoint ;
     s223:cnx wbs:high-pressure-pump-pump-elec-in ;
     s223:hasMedium s223:Medium-Electricity .
 
-wbs:makeup-tank-filter-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:membrane-module-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-membrane-module-to-relief-valve ;
-    s223:hasMedium wbs:brine-20 .
+wbs:makeup-tank a nawi:Tank ;
+    s223:cnx wbs:makeup-tank-in,
+        wbs:makeup-tank-out ;
+    s223:connected wbs:makeup-tank-valve ;
+    s223:connectedThrough wbs:conn-makeup-tank-to-makeup-tank-valve ;
+    s223:connectedTo wbs:makeup-tank-valve ;
+    s223:hasConnectionPoint wbs:makeup-tank-in,
+        wbs:makeup-tank-out ;
+    s223:hasRole s223:Role-Makeup .
 
 wbs:membrane-module-pressure a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Pressure .
@@ -376,30 +144,36 @@ wbs:relief-valve-out-temperature a s223:QuantifiableObservableProperty ;
 wbs:salt-0.05 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 5e-02 ;
-    s223:ofConstituent s223:Constituent-NaCl ;
+    s223:ofConstituent nawi:Constituent-NaCl ;
     qudt:hasUnit qudt:PERCENT .
 
 wbs:salt-10 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 10 ;
-    s223:ofConstituent s223:Constituent-NaCl ;
+    s223:ofConstituent nawi:Constituent-NaCl ;
     qudt:hasUnit qudt:PERCENT .
 
 wbs:salt-20 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 20 ;
-    s223:ofConstituent s223:Constituent-NaCl ;
+    s223:ofConstituent nawi:Constituent-NaCl ;
     qudt:hasUnit qudt:PERCENT .
 
 wbs:salt-3.5 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 3.5e+00 ;
-    s223:ofConstituent s223:Constituent-NaCl ;
+    s223:ofConstituent nawi:Constituent-NaCl ;
     qudt:hasUnit qudt:PERCENT .
 
-wbs:supply-filter-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-supply-filter-to-three-way-valve-1 ;
-    s223:hasMedium s223:Medium-Water .
+wbs:supply-tank a nawi:Tank ;
+    s223:cnx wbs:supply-tank-in,
+        wbs:supply-tank-out ;
+    s223:connected wbs:supply-valve ;
+    s223:connectedThrough wbs:conn-supply-tank-to-supply-valve ;
+    s223:connectedTo wbs:supply-valve ;
+    s223:hasConnectionPoint wbs:supply-tank-in,
+        wbs:supply-tank-out ;
+    s223:hasRole s223:Role-Supply .
 
 wbs:supply-tank-out-conductivity a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Conductivity .
@@ -411,56 +185,40 @@ wbs:supply-tank-out-ph a s223:QuantifiableObservableProperty ;
 wbs:supply-tank-out-temperature a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Temperature .
 
-wbs:water--19 a s223:QuantifiableProperty ;
+wbs:water-80 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 80 ;
     s223:ofConstituent s223:Constituent-H20 ;
     qudt:hasUnit qudt:PERCENT .
 
-wbs:water--2.5 a s223:QuantifiableProperty ;
-    s223:hasQuantityKind qudtqk:MassFraction ;
-    s223:hasValue 9.65e+01 ;
-    s223:ofConstituent s223:Constituent-H20 ;
-    qudt:hasUnit qudt:PERCENT .
-
-wbs:water--9 a s223:QuantifiableProperty ;
+wbs:water-90 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 90 ;
     s223:ofConstituent s223:Constituent-H20 ;
     qudt:hasUnit qudt:PERCENT .
 
-wbs:water-0.95 a s223:QuantifiableProperty ;
+wbs:water-96.5 a s223:QuantifiableProperty ;
+    s223:hasQuantityKind qudtqk:MassFraction ;
+    s223:hasValue 9.65e+01 ;
+    s223:ofConstituent s223:Constituent-H20 ;
+    qudt:hasUnit qudt:PERCENT .
+
+wbs:water-99.95 a s223:QuantifiableProperty ;
     s223:hasQuantityKind qudtqk:MassFraction ;
     s223:hasValue 9.995e+01 ;
     s223:ofConstituent s223:Constituent-H20 ;
     qudt:hasUnit qudt:PERCENT .
 
-wbs:bladder-bidirectional-cp a s223:BidirectionalConnectionPoint ;
-    s223:cnx wbs:conn-bladder-to-bladder-valve ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:bladder-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-bladder-to-check-valve-2 ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:bladder-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
-    s223:hasMedium s223:Medium-Water .
-
 wbs:brine-10 a s223:Class,
         wbs:brine-10 ;
     rdfs:label "Brine-VariablePercent" ;
     s223:composedOf wbs:salt-10,
-        wbs:water--9 ;
+        wbs:water-90 ;
     rdfs:subClassOf s223:Fluid-Water,
-        s223:Water-Brine .
+        nawi:Water-Brine .
 
 wbs:brine-tank-out a s223:OutletConnectionPoint ;
     s223:hasMedium wbs:brine-20 .
-
-wbs:check-valve-2-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-check-valve-2-to-membrane-module ;
-    s223:hasMedium s223:Medium-Water .
 
 wbs:check-valve-bladder-to-makeup-out a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
@@ -470,177 +228,686 @@ wbs:check-valve-makeup-to-bladder-in a s223:InletConnectionPoint ;
     s223:hasProperty wbs:check-valve-makeup-to-bladder-in-flow-rate,
         wbs:check-valve-makeup-to-bladder-in-pressure .
 
-wbs:check-valve-makeup-to-bladder-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:check-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-check-valve-to-bladder ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:circulation-pump-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-circulation-pump-to-check-valve ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:circulation-pump-pump a <urn:nawi-water-ontology/equip#Pump> ;
+wbs:circulation-pump-pump a nawi:Pump ;
     s223:cnx wbs:circulation-pump-pump-elec-in ;
     s223:hasConnectionPoint wbs:circulation-pump-pump-elec-in,
         wbs:circulation-pump-pump-in,
         wbs:circulation-pump-pump-out ;
     s223:hasMedium s223:Medium-Electricity .
 
-wbs:high-pressure-pump-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:high-pressure-pump-pump a <urn:nawi-water-ontology/equip#Pump> ;
+wbs:high-pressure-pump-pump a nawi:Pump ;
     s223:cnx wbs:high-pressure-pump-pump-elec-in ;
     s223:hasConnectionPoint wbs:high-pressure-pump-pump-elec-in,
         wbs:high-pressure-pump-pump-in,
         wbs:high-pressure-pump-pump-out ;
     s223:hasMedium s223:Medium-Electricity .
 
-wbs:high-pressure-pump-relief-valve-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:makeup-tank-filter-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
-
 wbs:makeup-tank-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:makeup-tank-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-makeup-tank-to-makeup-tank-valve ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:makeup-tank-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:membrane-module-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:membrane-module-outlet-cp a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-membrane-module-to-permeate-valve ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:permeate-tank-out a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:permeate-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-permeate-valve-to-permeate-tank ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:pump-controller-outlet-cp a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-pump-controller-to-circulation-pump ;
-    s223:hasMedium s223:Medium-Electricity .
-
-wbs:pump-controller-outlet-cp-2 a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-pump-controller-to-high-pressure-pump ;
-    s223:hasMedium s223:Medium-Electricity .
-
-wbs:relief-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-relief-valve-to-three-way-valve-2 ;
-    s223:hasMedium s223:Medium-Water ;
-    s223:hasProperty wbs:relief-valve-out-temperature .
-
-wbs:supply-filter-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
+wbs:pump-controller a nawi:Controller ;
+    s223:cnx wbs:pump-controller-outlet-cp,
+        wbs:pump-controller-outlet-cp-2 ;
+    s223:connected wbs:circulation-pump,
+        wbs:high-pressure-pump ;
+    s223:connectedThrough wbs:conn-pump-controller-to-circulation-pump,
+        wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:connectedTo wbs:circulation-pump,
+        wbs:high-pressure-pump ;
+    s223:hasConnectionPoint wbs:pump-controller-outlet-cp,
+        wbs:pump-controller-outlet-cp-2 .
 
 wbs:supply-tank-in a s223:InletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:supply-tank-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-supply-tank-to-supply-valve ;
-    s223:hasMedium s223:Medium-Water ;
-    s223:hasProperty wbs:supply-tank-out-conductivity,
-        wbs:supply-tank-out-ph,
-        wbs:supply-tank-out-temperature .
-
-wbs:supply-valve-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-supply-valve-to-supply-filter ;
-    s223:hasMedium s223:Medium-Water .
-
-wbs:three-way-valve-1-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-three-way-valve-1-to-brine-tank,
-        wbs:conn-three-way-valve-1-to-circulation-pump ;
-    s223:hasMedium wbs:brine-10 .
-
 wbs:three-way-valve-2-out a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:three-way-valve-2-outlet-cp a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+wbs:bladder-bidirectional-cp a s223:BidirectionalConnectionPoint ;
+    s223:cnx wbs:conn-bladder-to-bladder-valve ;
+    s223:connectsAt wbs:conn-bladder-to-bladder-valve ;
+    s223:connectsThrough wbs:conn-bladder-to-bladder-valve ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:bladder-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-check-valve-to-bladder ;
+    s223:connectsThrough wbs:conn-check-valve-to-bladder ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:bladder-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-bladder-to-check-valve-2 ;
+    s223:connectsAt wbs:conn-bladder-to-check-valve-2 ;
+    s223:connectsThrough wbs:conn-bladder-to-check-valve-2 ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:bladder-valve-bidirectional-cp a s223:BidirectionalConnectionPoint ;
+    s223:connectsAt wbs:conn-bladder-to-bladder-valve ;
+    s223:connectsThrough wbs:conn-bladder-to-bladder-valve ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:bladder-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
+    s223:connectsThrough wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:bladder-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
+    s223:connectsAt wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
+    s223:connectsThrough wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:brine-tank a nawi:Tank ;
+    s223:cnx wbs:brine-tank-in,
+        wbs:brine-tank-out ;
+    s223:connectedThrough wbs:conn-three-way-valve-1-to-brine-tank ;
+    s223:hasConnectionPoint wbs:brine-tank-in,
+        wbs:brine-tank-out .
+
 wbs:brine-tank-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-three-way-valve-1-to-brine-tank ;
+    s223:connectsThrough wbs:conn-three-way-valve-1-to-brine-tank ;
     s223:hasMedium wbs:brine-20 ;
     s223:hasProperty wbs:brine-tank-in-conductivity,
         wbs:brine-tank-in-ph .
 
 wbs:check-valve-2-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-bladder-to-check-valve-2 ;
+    s223:connectsThrough wbs:conn-bladder-to-check-valve-2 ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:check-valve-2-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-check-valve-2-to-membrane-module ;
+    s223:connectsAt wbs:conn-check-valve-2-to-membrane-module ;
+    s223:connectsThrough wbs:conn-check-valve-2-to-membrane-module ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:check-valve-bladder-to-makeup a nawi:CheckValve ;
+    s223:cnx wbs:check-valve-bladder-to-makeup-in,
+        wbs:check-valve-bladder-to-makeup-out ;
+    s223:connectedThrough wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
+    s223:hasConnectionPoint wbs:check-valve-bladder-to-makeup-in,
+        wbs:check-valve-bladder-to-makeup-out .
+
 wbs:check-valve-bladder-to-makeup-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
+    s223:connectsThrough wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:check-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-circulation-pump-to-check-valve ;
+    s223:connectsThrough wbs:conn-circulation-pump-to-check-valve ;
     s223:hasMedium s223:Medium-Water ;
     s223:hasProperty wbs:check-valve-in-flow-rate .
 
-wbs:circulation-pump-in a s223:InletConnectionPoint ;
+wbs:check-valve-makeup-to-bladder-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
+    s223:connectsAt wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
+    s223:connectsThrough wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:high-pressure-pump-in a s223:InletConnectionPoint ;
+wbs:check-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-check-valve-to-bladder ;
+    s223:connectsAt wbs:conn-check-valve-to-bladder ;
+    s223:connectsThrough wbs:conn-check-valve-to-bladder ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:high-pressure-pump-relief-valve a nawi:Pump ;
+    s223:cnx wbs:high-pressure-pump-relief-valve-in ;
+    s223:connectedThrough wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:hasConnectionPoint wbs:high-pressure-pump-relief-valve-in,
+        wbs:high-pressure-pump-relief-valve-out ;
+    s223:hasRole s223:Role-Relief .
+
+wbs:high-pressure-pump-relief-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:connectsThrough wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:makeup-tank-filter-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:connectsThrough wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:makeup-tank-filter-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
+    s223:connectsAt wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
+    s223:connectsThrough wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:makeup-tank-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-makeup-tank-to-makeup-tank-valve ;
+    s223:connectsAt wbs:conn-makeup-tank-to-makeup-tank-valve ;
+    s223:connectsThrough wbs:conn-makeup-tank-to-makeup-tank-valve ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:makeup-tank-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-makeup-tank-to-makeup-tank-valve ;
+    s223:connectsThrough wbs:conn-makeup-tank-to-makeup-tank-valve ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:makeup-tank-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:connectsAt wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:connectsThrough wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:membrane-module-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-check-valve-2-to-membrane-module ;
+    s223:connectsThrough wbs:conn-check-valve-2-to-membrane-module ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:membrane-module-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-membrane-module-to-relief-valve ;
+    s223:connectsAt wbs:conn-membrane-module-to-relief-valve ;
+    s223:connectsThrough wbs:conn-membrane-module-to-relief-valve ;
+    s223:hasMedium wbs:brine-20 .
+
+wbs:membrane-module-outlet-cp a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-membrane-module-to-permeate-valve ;
+    s223:connectsAt wbs:conn-membrane-module-to-permeate-valve ;
+    s223:connectsThrough wbs:conn-membrane-module-to-permeate-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:permeate-tank a nawi:Tank ;
+    s223:cnx wbs:permeate-tank-in,
+        wbs:permeate-tank-out ;
+    s223:connectedThrough wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:hasConnectionPoint wbs:permeate-tank-in,
+        wbs:permeate-tank-out .
+
 wbs:permeate-tank-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:connectsThrough wbs:conn-permeate-valve-to-permeate-tank ;
     s223:hasMedium s223:Medium-Water ;
     s223:hasProperty wbs:permeate-tank-in-conductivity,
         wbs:permeate-tank-in-flow-rate,
         wbs:permeate-tank-in-ph .
 
 wbs:permeate-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-membrane-module-to-permeate-valve ;
+    s223:connectsThrough wbs:conn-membrane-module-to-permeate-valve ;
     s223:hasMedium s223:Medium-Water .
+
+wbs:permeate-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:connectsAt wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:connectsThrough wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:pump-controller-outlet-cp a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-pump-controller-to-circulation-pump ;
+    s223:connectsAt wbs:conn-pump-controller-to-circulation-pump ;
+    s223:connectsThrough wbs:conn-pump-controller-to-circulation-pump ;
+    s223:hasMedium s223:Medium-Electricity .
+
+wbs:pump-controller-outlet-cp-2 a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:connectsAt wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:connectsThrough wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:hasMedium s223:Medium-Electricity .
 
 wbs:relief-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-membrane-module-to-relief-valve ;
+    s223:connectsThrough wbs:conn-membrane-module-to-relief-valve ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:relief-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:connectsAt wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:connectsThrough wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:hasMedium s223:Medium-Water ;
+    s223:hasProperty wbs:relief-valve-out-temperature .
+
+wbs:supply-filter-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-supply-valve-to-supply-filter ;
+    s223:connectsThrough wbs:conn-supply-valve-to-supply-filter ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:supply-filter-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-supply-filter-to-three-way-valve-1 ;
+    s223:connectsAt wbs:conn-supply-filter-to-three-way-valve-1 ;
+    s223:connectsThrough wbs:conn-supply-filter-to-three-way-valve-1 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:supply-tank-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-supply-tank-to-supply-valve ;
+    s223:connectsAt wbs:conn-supply-tank-to-supply-valve ;
+    s223:connectsThrough wbs:conn-supply-tank-to-supply-valve ;
+    s223:hasMedium s223:Medium-Water ;
+    s223:hasProperty wbs:supply-tank-out-conductivity,
+        wbs:supply-tank-out-ph,
+        wbs:supply-tank-out-temperature .
+
 wbs:supply-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-supply-tank-to-supply-valve ;
+    s223:connectsThrough wbs:conn-supply-tank-to-supply-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:supply-valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-supply-valve-to-supply-filter ;
+    s223:connectsAt wbs:conn-supply-valve-to-supply-filter ;
+    s223:connectsThrough wbs:conn-supply-valve-to-supply-filter ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:three-way-valve-1-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-supply-filter-to-three-way-valve-1 ;
+    s223:connectsThrough wbs:conn-supply-filter-to-three-way-valve-1 ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:three-way-valve-1-inlet-cp a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+    s223:connectsThrough wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:three-way-valve-2-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:connectsThrough wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:three-way-valve-2-outlet-cp a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+    s223:connectsAt wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+    s223:connectsThrough wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:brine-20 a s223:Class,
         wbs:brine-20 ;
     rdfs:label "Brine-VariablePercent" ;
     s223:composedOf wbs:salt-20,
-        wbs:water--19 ;
+        wbs:water-80 ;
     rdfs:subClassOf s223:Fluid-Water,
-        s223:Water-Brine .
+        nawi:Water-Brine .
+
+wbs:check-valve a nawi:CheckValve ;
+    s223:cnx wbs:check-valve-in,
+        wbs:check-valve-out ;
+    s223:connected wbs:bladder ;
+    s223:connectedThrough wbs:conn-check-valve-to-bladder,
+        wbs:conn-circulation-pump-to-check-valve ;
+    s223:connectedTo wbs:bladder ;
+    s223:hasConnectionPoint wbs:check-valve-in,
+        wbs:check-valve-out .
+
+wbs:check-valve-2 a nawi:CheckValve ;
+    s223:cnx wbs:check-valve-2-in,
+        wbs:check-valve-2-out ;
+    s223:connected wbs:membrane-module ;
+    s223:connectedThrough wbs:conn-bladder-to-check-valve-2,
+        wbs:conn-check-valve-2-to-membrane-module ;
+    s223:connectedTo wbs:membrane-module ;
+    s223:hasConnectionPoint wbs:check-valve-2-in,
+        wbs:check-valve-2-out .
+
+wbs:circulation-pump-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:connectsThrough wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:circulation-pump-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-circulation-pump-to-check-valve ;
+    s223:connectsAt wbs:conn-circulation-pump-to-check-valve ;
+    s223:connectsThrough wbs:conn-circulation-pump-to-check-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:high-pressure-pump-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
+    s223:connectsThrough wbs:conn-makeup-tank-filter-to-high-pressure-pump ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:high-pressure-pump-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:connectsAt wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:connectsThrough wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:makeup-tank-filter a nawi:Filter ;
+    s223:cnx wbs:makeup-tank-filter-in,
+        wbs:makeup-tank-filter-out ;
+    s223:connected wbs:high-pressure-pump ;
+    s223:connectedThrough wbs:conn-makeup-tank-filter-to-high-pressure-pump,
+        wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:connectedTo wbs:high-pressure-pump ;
+    s223:hasConnectionPoint wbs:makeup-tank-filter-in,
+        wbs:makeup-tank-filter-out .
+
+wbs:makeup-tank-valve a nawi:Valve ;
+    s223:cnx wbs:makeup-tank-valve-in,
+        wbs:makeup-tank-valve-out ;
+    s223:connected wbs:makeup-tank-filter ;
+    s223:connectedThrough wbs:conn-makeup-tank-to-makeup-tank-valve,
+        wbs:conn-makeup-tank-valve-to-makeup-tank-filter ;
+    s223:connectedTo wbs:makeup-tank-filter ;
+    s223:hasConnectionPoint wbs:makeup-tank-valve-in,
+        wbs:makeup-tank-valve-out .
+
+wbs:permeate-valve a nawi:Valve ;
+    s223:cnx wbs:permeate-valve-in,
+        wbs:permeate-valve-out ;
+    s223:connected wbs:permeate-tank ;
+    s223:connectedThrough wbs:conn-membrane-module-to-permeate-valve,
+        wbs:conn-permeate-valve-to-permeate-tank ;
+    s223:connectedTo wbs:permeate-tank ;
+    s223:hasConnectionPoint wbs:permeate-valve-in,
+        wbs:permeate-valve-out .
+
+wbs:relief-valve a nawi:Valve ;
+    s223:cnx wbs:relief-valve-in,
+        wbs:relief-valve-out ;
+    s223:connected wbs:three-way-valve-2 ;
+    s223:connectedThrough wbs:conn-membrane-module-to-relief-valve,
+        wbs:conn-relief-valve-to-three-way-valve-2 ;
+    s223:connectedTo wbs:three-way-valve-2 ;
+    s223:hasConnectionPoint wbs:relief-valve-in,
+        wbs:relief-valve-out ;
+    s223:hasRole s223:Role-Relief .
+
+wbs:supply-filter a nawi:Filter ;
+    s223:cnx wbs:supply-filter-in,
+        wbs:supply-filter-out ;
+    s223:connected wbs:three-way-valve-1 ;
+    s223:connectedThrough wbs:conn-supply-filter-to-three-way-valve-1,
+        wbs:conn-supply-valve-to-supply-filter ;
+    s223:connectedTo wbs:three-way-valve-1 ;
+    s223:hasConnectionPoint wbs:supply-filter-in,
+        wbs:supply-filter-out .
+
+wbs:supply-valve a nawi:Valve ;
+    s223:cnx wbs:supply-valve-in,
+        wbs:supply-valve-out ;
+    s223:connected wbs:supply-filter ;
+    s223:connectedThrough wbs:conn-supply-tank-to-supply-valve,
+        wbs:conn-supply-valve-to-supply-filter ;
+    s223:connectedTo wbs:supply-filter ;
+    s223:hasConnectionPoint wbs:supply-valve-in,
+        wbs:supply-valve-out .
+
+wbs:three-way-valve-1-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-three-way-valve-1-to-brine-tank,
+        wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:connectsAt wbs:conn-three-way-valve-1-to-brine-tank,
+        wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:connectsThrough wbs:conn-three-way-valve-1-to-brine-tank,
+        wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:hasMedium wbs:brine-10 .
+
+wbs:three-way-valve-2 a nawi:Valve ;
+    s223:cnx wbs:three-way-valve-2-in,
+        wbs:three-way-valve-2-out,
+        wbs:three-way-valve-2-outlet-cp ;
+    s223:connected wbs:three-way-valve-1 ;
+    s223:connectedThrough wbs:conn-relief-valve-to-three-way-valve-2,
+        wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+    s223:connectedTo wbs:three-way-valve-1 ;
+    s223:hasConnectionPoint wbs:three-way-valve-2-in,
+        wbs:three-way-valve-2-out,
+        wbs:three-way-valve-2-outlet-cp .
+
+wbs:bladder a nawi:Tank ;
+    s223:cnx wbs:bladder-bidirectional-cp,
+        wbs:bladder-in,
+        wbs:bladder-out ;
+    s223:connected wbs:bladder-valve,
+        wbs:check-valve-2 ;
+    s223:connectedThrough wbs:conn-bladder-to-bladder-valve,
+        wbs:conn-bladder-to-check-valve-2,
+        wbs:conn-check-valve-to-bladder ;
+    s223:connectedTo wbs:bladder-valve,
+        wbs:check-valve-2 ;
+    s223:hasConnectionPoint wbs:bladder-bidirectional-cp,
+        wbs:bladder-in,
+        wbs:bladder-out .
 
 wbs:circulation-pump-elec-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-pump-controller-to-circulation-pump ;
+    s223:connectsThrough wbs:conn-pump-controller-to-circulation-pump ;
     s223:hasMedium s223:Medium-Electricity .
 
 wbs:high-pressure-pump-elec-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:connectsThrough wbs:conn-pump-controller-to-high-pressure-pump ;
     s223:hasMedium s223:Medium-Electricity .
+
+wbs:membrane-module a nawi:Equipment ;
+    s223:cnx wbs:membrane-module-in,
+        wbs:membrane-module-out,
+        wbs:membrane-module-outlet-cp ;
+    s223:connected wbs:permeate-valve,
+        wbs:relief-valve ;
+    s223:connectedThrough wbs:conn-check-valve-2-to-membrane-module,
+        wbs:conn-membrane-module-to-permeate-valve,
+        wbs:conn-membrane-module-to-relief-valve ;
+    s223:connectedTo wbs:permeate-valve,
+        wbs:relief-valve ;
+    s223:hasConnectionPoint wbs:membrane-module-in,
+        wbs:membrane-module-out,
+        wbs:membrane-module-outlet-cp ;
+    s223:hasProperty wbs:membrane-module-pressure .
+
+wbs:bladder-valve a nawi:Valve ;
+    s223:cnx wbs:bladder-valve-bidirectional-cp,
+        wbs:bladder-valve-in,
+        wbs:bladder-valve-out ;
+    s223:connected wbs:check-valve-bladder-to-makeup ;
+    s223:connectedThrough wbs:conn-bladder-to-bladder-valve,
+        wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup,
+        wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve ;
+    s223:connectedTo wbs:check-valve-bladder-to-makeup ;
+    s223:hasConnectionPoint wbs:bladder-valve-bidirectional-cp,
+        wbs:bladder-valve-in,
+        wbs:bladder-valve-out .
+
+wbs:circulation-pump a nawi:Pump ;
+    s223:cnx wbs:circulation-pump-elec-in,
+        wbs:circulation-pump-in,
+        wbs:circulation-pump-out ;
+    s223:connected wbs:check-valve ;
+    s223:connectedThrough wbs:conn-circulation-pump-to-check-valve,
+        wbs:conn-pump-controller-to-circulation-pump,
+        wbs:conn-three-way-valve-1-to-circulation-pump ;
+    s223:connectedTo wbs:check-valve ;
+    s223:contains wbs:circulation-pump-pump,
+        wbs:circulation-pump-vfd ;
+    s223:hasConnectionPoint wbs:circulation-pump-elec-in,
+        wbs:circulation-pump-in,
+        wbs:circulation-pump-out ;
+    s223:hasProperty wbs:circulation-pump-on-off-command,
+        wbs:circulation-pump-pressure,
+        wbs:circulation-pump-speed-command .
+
+wbs:conn-bladder-to-bladder-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:bladder-bidirectional-cp,
+        wbs:bladder-valve-bidirectional-cp ;
+    s223:connectsFrom wbs:bladder ;
+    s223:connectsTo wbs:bladder-valve .
+
+wbs:conn-bladder-to-check-valve-2 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:bladder-out,
+        wbs:check-valve-2-in ;
+    s223:connectsFrom wbs:bladder ;
+    s223:connectsTo wbs:check-valve-2 .
+
+wbs:conn-bladder-valve-to-check-valve-bladder-to-makeup a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:bladder-valve-out,
+        wbs:check-valve-bladder-to-makeup-in ;
+    s223:connectsFrom wbs:bladder-valve ;
+    s223:connectsTo wbs:check-valve-bladder-to-makeup .
+
+wbs:conn-check-valve-2-to-membrane-module a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:check-valve-2-out,
+        wbs:membrane-module-in ;
+    s223:connectsFrom wbs:check-valve-2 ;
+    s223:connectsTo wbs:membrane-module .
+
+wbs:conn-check-valve-makeup-to-bladder-to-bladder-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:bladder-valve-in,
+        wbs:check-valve-makeup-to-bladder-out ;
+    s223:connectsFrom wbs:check-valve-makeup-to-bladder ;
+    s223:connectsTo wbs:bladder-valve .
+
+wbs:conn-check-valve-to-bladder a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:bladder-in,
+        wbs:check-valve-out ;
+    s223:connectsFrom wbs:check-valve ;
+    s223:connectsTo wbs:bladder .
+
+wbs:conn-circulation-pump-to-check-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:check-valve-in,
+        wbs:circulation-pump-out ;
+    s223:connectsFrom wbs:circulation-pump ;
+    s223:connectsTo wbs:check-valve .
+
+wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:high-pressure-pump-out,
+        wbs:high-pressure-pump-relief-valve-in ;
+    s223:connectsFrom wbs:high-pressure-pump ;
+    s223:connectsTo wbs:high-pressure-pump-relief-valve .
+
+wbs:conn-makeup-tank-filter-to-high-pressure-pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:high-pressure-pump-in,
+        wbs:makeup-tank-filter-out ;
+    s223:connectsFrom wbs:makeup-tank-filter ;
+    s223:connectsTo wbs:high-pressure-pump .
+
+wbs:conn-makeup-tank-to-makeup-tank-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:makeup-tank-out,
+        wbs:makeup-tank-valve-in ;
+    s223:connectsFrom wbs:makeup-tank ;
+    s223:connectsTo wbs:makeup-tank-valve .
+
+wbs:conn-makeup-tank-valve-to-makeup-tank-filter a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:makeup-tank-filter-in,
+        wbs:makeup-tank-valve-out ;
+    s223:connectsFrom wbs:makeup-tank-valve ;
+    s223:connectsTo wbs:makeup-tank-filter .
+
+wbs:conn-membrane-module-to-permeate-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:membrane-module-outlet-cp,
+        wbs:permeate-valve-in ;
+    s223:connectsFrom wbs:membrane-module ;
+    s223:connectsTo wbs:permeate-valve .
+
+wbs:conn-membrane-module-to-relief-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:membrane-module-out,
+        wbs:relief-valve-in ;
+    s223:connectsFrom wbs:membrane-module ;
+    s223:connectsTo wbs:relief-valve .
+
+wbs:conn-permeate-valve-to-permeate-tank a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:permeate-tank-in,
+        wbs:permeate-valve-out ;
+    s223:connectsFrom wbs:permeate-valve ;
+    s223:connectsTo wbs:permeate-tank .
+
+wbs:conn-pump-controller-to-circulation-pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:circulation-pump-elec-in,
+        wbs:pump-controller-outlet-cp ;
+    s223:connectsFrom wbs:pump-controller ;
+    s223:connectsTo wbs:circulation-pump .
+
+wbs:conn-pump-controller-to-high-pressure-pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:high-pressure-pump-elec-in,
+        wbs:pump-controller-outlet-cp-2 ;
+    s223:connectsFrom wbs:pump-controller ;
+    s223:connectsTo wbs:high-pressure-pump .
+
+wbs:conn-relief-valve-to-three-way-valve-2 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:relief-valve-out,
+        wbs:three-way-valve-2-in ;
+    s223:connectsFrom wbs:relief-valve ;
+    s223:connectsTo wbs:three-way-valve-2 .
+
+wbs:conn-supply-filter-to-three-way-valve-1 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:supply-filter-out,
+        wbs:three-way-valve-1-in ;
+    s223:connectsFrom wbs:supply-filter ;
+    s223:connectsTo wbs:three-way-valve-1 .
+
+wbs:conn-supply-tank-to-supply-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:supply-tank-out,
+        wbs:supply-valve-in ;
+    s223:connectsFrom wbs:supply-tank ;
+    s223:connectsTo wbs:supply-valve .
+
+wbs:conn-supply-valve-to-supply-filter a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:supply-filter-in,
+        wbs:supply-valve-out ;
+    s223:connectsFrom wbs:supply-valve ;
+    s223:connectsTo wbs:supply-filter .
+
+wbs:conn-three-way-valve-1-to-brine-tank a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:brine-tank-in,
+        wbs:three-way-valve-1-out ;
+    s223:connectsFrom wbs:three-way-valve-1 ;
+    s223:connectsTo wbs:brine-tank .
+
+wbs:conn-three-way-valve-1-to-circulation-pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:circulation-pump-in,
+        wbs:three-way-valve-1-out ;
+    s223:connectsFrom wbs:three-way-valve-1 ;
+    s223:connectsTo wbs:circulation-pump .
+
+wbs:conn-three-way-valve-2-to-three-way-valve-1 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:three-way-valve-1-inlet-cp,
+        wbs:three-way-valve-2-outlet-cp ;
+    s223:connectsFrom wbs:three-way-valve-2 ;
+    s223:connectsTo wbs:three-way-valve-1 .
+
+wbs:high-pressure-pump a nawi:Pump ;
+    s223:cnx wbs:high-pressure-pump-elec-in,
+        wbs:high-pressure-pump-in,
+        wbs:high-pressure-pump-out ;
+    s223:connected wbs:high-pressure-pump-relief-valve ;
+    s223:connectedThrough wbs:conn-high-pressure-pump-to-high-pressure-pump-relief-valve,
+        wbs:conn-makeup-tank-filter-to-high-pressure-pump,
+        wbs:conn-pump-controller-to-high-pressure-pump ;
+    s223:connectedTo wbs:high-pressure-pump-relief-valve ;
+    s223:contains wbs:high-pressure-pump-pump,
+        wbs:high-pressure-pump-vfd ;
+    s223:hasConnectionPoint wbs:high-pressure-pump-elec-in,
+        wbs:high-pressure-pump-in,
+        wbs:high-pressure-pump-out ;
+    s223:hasProperty wbs:high-pressure-pump-on-off-command,
+        wbs:high-pressure-pump-speed-command .
+
+wbs:three-way-valve-1 a nawi:Valve ;
+    s223:cnx wbs:three-way-valve-1-in,
+        wbs:three-way-valve-1-inlet-cp,
+        wbs:three-way-valve-1-out ;
+    s223:connected wbs:brine-tank,
+        wbs:circulation-pump ;
+    s223:connectedThrough wbs:conn-supply-filter-to-three-way-valve-1,
+        wbs:conn-three-way-valve-1-to-brine-tank,
+        wbs:conn-three-way-valve-1-to-circulation-pump,
+        wbs:conn-three-way-valve-2-to-three-way-valve-1 ;
+    s223:connectedTo wbs:brine-tank,
+        wbs:circulation-pump ;
+    s223:hasConnectionPoint wbs:three-way-valve-1-in,
+        wbs:three-way-valve-1-inlet-cp,
+        wbs:three-way-valve-1-out .
 

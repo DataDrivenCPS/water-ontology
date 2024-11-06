@@ -4,8 +4,7 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix equip: <urn:nawi-water-ontology/equip#> .
-@prefix nw: <urn:nawi-water-ontology/warsinger-additions> .
+@prefix nawi: <urn:nawi-water-ontology#> .
 
 # TODO: Rethink how I'm namespacing
 <urn:nawi-water-ontology/warsinger-additions>
@@ -16,7 +15,7 @@
 .
 
 # Not sure we need all these rolls 
-nw:Role-MakeUp 
+nawi:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Makeup ;
@@ -25,7 +24,7 @@ nw:Role-MakeUp
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-nw:Role-Feed 
+nawi:Role-Feed 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Feed ;
@@ -33,7 +32,7 @@ nw:Role-Feed
     rdfs:label "Feed" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
-nw:Role-Permeate 
+nawi:Role-Permeate 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Permeate ;
@@ -42,29 +41,29 @@ nw:Role-Permeate
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 # I just forgot this one originally I think
-nw:Membrane
+nawi:Membrane
     a s223:Class ;
     rdfs:subClassOf s223:Filter 
 .
-nw:Valve 
+nawi:Valve 
     a s223:Class; 
     rdfs:subClassOf s223:Valve 
 .
-nw:VariableFrequencyDrive
+nawi:VariableFrequencyDrive
     a s223:Class ;
     rdfs:subClassOf s223:VariableFrequencyDrive
 .
-nw:ThreeWayValve 
+nawi:ThreeWayValve 
     a s223:Class; 
     rdfs:subClassOf s223:Valve 
 .
 
-nw:CheckValve
+nawi:CheckValve
     a s223:Class; 
     rdfs:subClassOf s223:valve
 .
 
-nw:Controller 
+nawi:Controller 
     a s223:Class ;
     rdfs:subClassOf s223:Controller ;
 .
