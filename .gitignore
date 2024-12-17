@@ -13,7 +13,7 @@ uv.lock
 # Having xcode issues with new computer, need to fix before using uv
 # - using venv while figuring out
 venv
-__pycache__
+__pycache__/
 .DS_Store
 # ignore logs?
 *.log

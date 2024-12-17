@@ -145,3 +145,163 @@ nawi:Brine-5to10Percent
   rdfs:comment "Brine-5to10Percent" ;
   rdfs:label "Brine-5to10Percent" ;
 .
+
+# Base Class for Wastewater Treatment Chemicals
+nawi:WastewaterTreatmentChemical
+  a s223:Class ;
+  a nawi:WastewaterTreatmentChemical ;
+  a sh:NodeShape ;
+  rdfs:comment "Base class for all chemicals used in wastewater treatment" ;
+  rdfs:label "Wastewater Treatment Chemical" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+
+# Coagulants
+nawi:Coagulant
+  a s223:Class ;
+  a nawi:Coagulant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for coagulants used in wastewater treatment" ;
+  rdfs:label "Coagulant" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+
+nawi:Coagulant-Alum
+  a s223:Class ;
+  a nawi:Coagulant-Alum ;
+  a sh:NodeShape ;
+  rdfs:comment "Aluminum sulfate (alum), a common coagulant" ;
+  rdfs:label "Alum" ;
+  rdfs:subClassOf nawi:Coagulant ;
+.
+
+nawi:Coagulant-FerricChloride
+  a s223:Class ;
+  a nawi:Coagulant-FerricChloride ;
+  a sh:NodeShape ;
+  rdfs:comment "Ferric chloride, a coagulant for wastewater treatment" ;
+  rdfs:label "Ferric Chloride" ;
+  rdfs:subClassOf nawi:Coagulant ;
+.
+
+nawi:Coagulant-PolyaluminumChloride
+  a s223:Class ;
+  a nawi:Coagulant-PolyaluminumChloride ;
+  a sh:NodeShape ;
+  rdfs:comment "Polyaluminum chloride (PAC), a coagulant" ;
+  rdfs:label "Polyaluminum Chloride" ;
+  rdfs:subClassOf nawi:Coagulant ;
+.
+
+# Flocculants
+nawi:Flocculant
+  a s223:Class ;
+  a nawi:Flocculant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for flocculants used in wastewater treatment" ;
+  rdfs:label "Flocculant" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+
+nawi:Flocculant-Polyacrylamide
+  a s223:Class ;
+  a nawi:Flocculant-Polyacrylamide ;
+  a sh:NodeShape ;
+  rdfs:comment "Polyacrylamide, a common flocculant" ;
+  rdfs:label "Polyacrylamide" ;
+  rdfs:subClassOf nawi:Flocculant ;
+.
+
+# pH Adjusters
+nawi:pHAdjuster
+  a s223:Class ;
+  a nawi:pHAdjuster ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for pH adjusters used in wastewater treatment" ;
+  rdfs:label "pH Adjuster" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+
+nawi:pHAdjuster-Lime
+  a s223:Class ;
+  a nawi:pHAdjuster-Lime ;
+  a sh:NodeShape ;
+  rdfs:comment "Calcium hydroxide (lime), used to increase pH" ;
+  rdfs:label "Lime" ;
+  rdfs:subClassOf nawi:pHAdjuster ;
+.
+
+nawi:pHAdjuster-SulfuricAcid
+  a s223:Class ;
+  a nawi:pHAdjuster-SulfuricAcid ;
+  a sh:NodeShape ;
+  rdfs:comment "Sulfuric acid, used to decrease pH" ;
+  rdfs:label "Sulfuric Acid" ;
+  rdfs:subClassOf nawi:pHAdjuster ;
+.
+
+# Disinfectants
+nawi:Disinfectant
+  a s223:Class ;
+  a nawi:Disinfectant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for disinfectants used in wastewater treatment" ;
+  rdfs:label "Disinfectant" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+
+nawi:Disinfectant-Chlorine
+  a s223:Class ;
+  a nawi:Disinfectant-Chlorine ;
+  a sh:NodeShape ;
+  rdfs:comment "Chlorine, a common disinfectant" ;
+  rdfs:label "Chlorine" ;
+  rdfs:subClassOf nawi:Disinfectant ;
+.
+
+nawi:Disinfectant-Ozone
+  a s223:Class ;
+  a nawi:Disinfectant-Ozone ;
+  a sh:NodeShape ;
+  rdfs:comment "Ozone, an advanced disinfectant" ;
+  rdfs:label "Ozone" ;
+  rdfs:subClassOf nawi:Disinfectant ;
+.
+
+# Odor Control Agents
+nawi:OdorControlAgent
+  a s223:Class ;
+  a nawi:OdorControlAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for chemicals used for odor control" ;
+  rdfs:label "Odor Control Agent" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+
+nawi:OdorControlAgent-ActivatedCarbon
+  a s223:Class ;
+  a nawi:OdorControlAgent-ActivatedCarbon ;
+  a sh:NodeShape ;
+  rdfs:comment "Activated carbon, used to absorb odors" ;
+  rdfs:label "Activated Carbon" ;
+  rdfs:subClassOf nawi:OdorControlAgent ;
+.
+
+# Heavy Metal Removal Agents
+nawi:HeavyMetalRemovalAgent
+  a s223:Class ;
+  a nawi:HeavyMetalRemovalAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for chemicals used to remove heavy metals" ;
+  rdfs:label "Heavy Metal Removal Agent" ;
+  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+.
+# Could rename to chelator
+nawi:HeavyMetalRemovalAgent-SodiumSulfide
+  a s223:Class ;
+  a nawi:HeavyMetalRemovalAgent-SodiumSulfide ;
+  a sh:NodeShape ;
+  rdfs:comment "Sodium sulfide, used to precipitate heavy metals" ;
+  rdfs:label "Sodium Sulfide" ;
+  rdfs:subClassOf nawi:HeavyMetalRemovalAgent ;
+.
