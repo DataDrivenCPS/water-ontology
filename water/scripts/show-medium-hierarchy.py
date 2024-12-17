@@ -41,7 +41,9 @@ def build_tree(g, class_uri, subclass_data):
     add_children(tree, local_name)
     return tree
 
-class_uri = 's223:EnumerationKind-Substance'
+# class_uri = 's223:EnumerationKind-Substance'
+# testing out with other enumerationkinds
+class_uri = 's223:EnumerationKind'
 graph = Graph()
 parse_ttl_files_in_directory('../../s223/vocab', graph)
 
