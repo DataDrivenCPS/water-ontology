@@ -9,6 +9,7 @@
     - `templates` contains some water-specific templates
     - `223p.ttl` is a recent copy of the 223P ontology
     - `water.ttl` is the water ontology we are developing in this repository
+- `notebooks/` contains code showing how to build and query models.
 
 ## Development Setup
 
