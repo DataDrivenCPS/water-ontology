@@ -1,7 +1,7 @@
 
-.. autotemplatedoc:: docs/source/templates docs/libraries/
+.. autotemplatedoc:: libraries/templates docs/libraries/
 
-.. autotemplatedoc:: docs/source/nrel-223p-templates docs/libraries/
+.. autotemplatedoc:: libraries/nrel-223p-templates docs/libraries/
 
 .. toctree::
    :maxdepth: 2
