@@ -1,7 +1,7 @@
 .PHONY: install-jupyter-venv local-docs clean
 
 libraries/water.ttl:
-	ontoenv init water libraries
+	ontoenv init --offline water libraries
 	ontoenv get-closure urn:nawi-water-ontology libraries/water.ttl
 
 install-jupyter-venv:

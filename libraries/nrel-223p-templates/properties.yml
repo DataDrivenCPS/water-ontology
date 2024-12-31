@@ -1,3 +1,14 @@
+property:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:Property .
+    P:owner s223:hasProperty P:name .
+  optional: ["owner"]
+
 static-pressure:
   body: >
     @prefix P: <urn:___param___#> .
@@ -124,6 +135,9 @@ water-flow:
         s223:ofMedium s223:Fluid-Water ;
         qudt:hasQuantityKind quantitykind:VolumeFlowRate;
         qudt:hasUnit unit:FT3-PER-MIN .
+  dependencies:
+    - template: property
+      args: {"name": "name"}
 
 start-command:
   body: >
