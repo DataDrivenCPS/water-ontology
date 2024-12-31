@@ -365,47 +365,6 @@ differential-sensor:
       s223:observes P:property .
   optional: ["whereA", "whereB"]
 
-evaporative-cooler:
-  body: >
-    @prefix P: <urn:___param___#> .
-    @prefix s223: <http://data.ashrae.org/standard223#> .
-    P:name a s223:HeatExchanger ;
-      s223:hasRole s223:Role-Evaporator ;
-      s223:hasConnectionPoint P:in, P:out, P:water-in, P:water-out ;
-      s223:hasProperty P:entering-air-temp, P:leaving-air-temp, P:leaving-air-humidity ;
-      s223:contains P:evap-cool-pump-2stage, P:evap-cool-sump-tank, P:evap-cool-fill-valve .
-    P:in s223:hasProperty P:entering-air-temp .
-    P:out s223:hasProperty P:leaving-air-temp, P:leaving-air-humidity .
-  dependencies:
-    - template: air-inlet-cp
-      args: {"name": "in"}
-    - template: air-outlet-cp
-      args: {"name": "out"}
-    - template: water-outlet-cp
-      args: {"name": "water-in"}
-    - template: water-inlet-cp
-      args: {"name": "water-out"}
-    - template: air-temperature
-      args: {"name": "entering-air-temp"}
-    - template: air-temperature
-      args: {"name": "leaving-air-temp"}
-    - template: relative-humidity
-      args: {"name": "leaving-air-humidity"}
-    - template: chw-pump
-      args: {"name": "evap-cool-pump-2stage"}
-    - template: chw-valve
-      args: {"name": "evap-cool-fill-valve"}
-    - template: tank
-      args: {"name": "evap-cool-sump-tank"}
-
-tank:
-  body: >
-    @prefix P: <urn:___param___#> .
-    @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    P:name a s223:Equipment ;
-      rdfs:label "Tank" .
-    # TODO: high-level and low-level statuses
 
 heat-exchanger:
   body: >

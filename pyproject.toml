@@ -12,7 +12,7 @@ dependencies = [
     "jupyterlab-rise>=0.42.0",
     "ipykernel>=6.29.5",
     "jupyter-book>=1.0.3",
-    "sphinx-autodoc-bmotif==0.1.5",
+    "sphinx-autodoc-bmotif==0.1.6",
     "sphinx-toolbox>=3.8.1",
     "sphinx-tabs>=3.4.5",
 ]
