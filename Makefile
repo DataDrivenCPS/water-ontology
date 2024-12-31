@@ -1,7 +1,8 @@
-.PHONY: install-jupyter-venv
+.PHONY: install-jupyter-venv local-docs clean
 
-water.ttl:
-	uv run python src/water_ontology/build.py
+libraries/water.ttl:
+	ontoenv init water libraries
+	ontoenv get-closure urn:nawi-water-ontology libraries/water.ttl
 
 install-jupyter-venv:
 	uv add ipykernel
@@ -12,5 +13,6 @@ local-docs:
 	uv run jupyter-book build docs
 
 clean:
+	ontoenv reset
 	uv run jupyter-book clean docs
-	rm water.ttl
+	rm -f libraries/water.ttl
