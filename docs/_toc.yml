@@ -2,7 +2,7 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: intro.md
+root: index
 parts: 
 - caption: Explanation
   chapters:
@@ -17,6 +17,6 @@ parts:
   - file: guides/todo.md
 - caption: Reference
   chapters:
-  - file: libraries/index.rst
   - file: reference/equipment_documentation.md
   - file: reference/substances_documentation.md
+  - file: libraries/index.rst
