@@ -1,0 +1,209 @@
+tank:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Tank ;
+      s223:hasConnectionPoint P:in, P:out, P:bi-cp ;
+      s223:cnx P:in, P:out, P:bi-cp ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+    - template: bidirectional-cp
+      args: {"name": "bi-cp"}
+  optional: ["role", "bi-cp", "in", "out"]
+
+bladder:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Tank ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:cnx P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+valve:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Valve ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:cnx P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+filter:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Filter ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+membrane:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Membrane ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+membrane-module:
+# Membrane module may in reality contain many membranes 
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Equipment ;
+      s223:contains P:membrane ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+    P:membrane-in s223:mapsTo P:in .
+    P:membrane-out s223:mapsTo P:out .
+
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+    - template: membrane
+      args: {"name": "membrane", "in":"membrane-in", "out":"membrane-out"}
+  optional: ["role"]
+
+pump:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Pump ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+check-valve:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:CheckValve ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:cnx P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+vfd:
+# can either just have a vfd, or make a vfd with a pump 
+# make connectionpoints optional for VFD, since we don't really do elecricity for controls
+# In s223 VFD's have required electrical connection points, would probably be easier to make a vfd with a pump template
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:VariableFrequencyDrive ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+pump-with-vfd:
+# I don't recall if this was the agreed upon modeling convention
+# Took a first guess at properties
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Pump ;
+      s223:hasConnectionPoint P:in, P:out, P:elec-in ;
+      s223:contains P:vfd-name, P:pump-name ; 
+      s223:hasProperty P:on-off-command, P:speed-command .
+
+    P:pump-in s223:mapsTo P:in .
+    P:pump-out s223:mapsTo P:out .
+
+    P:pump-name s223:hasConnectionPoint P:pump-elec-in ;
+      s223:cnx P:pump-elec-in ;
+      s223:hasMedium P:elec-medium . 
+    
+    P:vfd-name s223:mapsTo P:elec-in ;
+      s223:connectsTo P:pump-name .
+    
+    P:vfd-in s223:mapsTo P:elec-in .
+    P:vfd-out s223:cnx P:pump-elec-in .
+
+  dependencies:
+  - template: inlet-cp
+    args: {"name": "in"}
+  - template: inlet-cp
+    args: {"name": "elec-in"}
+  - template: outlet-cp
+    args: {"name": "out"}
+  - template: on-off-command
+    args: {"name": "on-off-command"}
+  - template: speed-command
+    args: {"name": "speed-command"}
+  - template: pump
+    args: {"name": "pump-name", "in":"pump-in", "out":"pump-out"}
+  - template: vfd
+    args: {"name": "vfd-name", "in":"vfd-in", "out":"vfd-out"}
+
+controller:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:Controller .
+
+      

@@ -5,14 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pyontoenv==0.1.10a1",
+    "pyontoenv==0.1.10a4",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
     "jupyterlab>=4.2.5",
     "jupyterlab-rise>=0.42.0",
     "ipykernel>=6.29.5",
     "jupyter-book>=1.0.3",
-    "sphinx-autodoc-bmotif==0.1.4",
+    "sphinx-autodoc-bmotif==0.1.6",
     "sphinx-toolbox>=3.8.1",
     "sphinx-tabs>=3.4.5",
 ]
