@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NAWI Water Equipment Ontology &#8212; Water Treatment Ontology Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-toolbox-code.css?v=4ee5d529" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/ontology_documentation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+<aside class="bd-header-announcement" aria-label="Announcement">
+  <div class="bd-header-announcement__content"> 🏗️ this site is under active development ⚠️</div>
+</aside>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Water Treatment Ontology Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Water Treatment Ontology Documentation
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="equipment_documentation.html">Equipment Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="substances_documentation.html">Substances Classes</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/DataDrivenCPS/water-ontology" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/DataDrivenCPS/water-ontology/issues/new?title=Issue%20on%20page%20%2Freference/ontology_documentation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/reference/ontology_documentation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NAWI Water Equipment Ontology</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">NAWI Water Equipment Ontology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tank">Tank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reactor">Reactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequencingbatchreactor">SequencingBatchReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plugflowreactor">PlugFlowReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuouslystirredtankreactor">ContinuouslyStirredTankReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#staticmixer">StaticMixer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aerationbasin">AerationBasin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digester">Digester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anaerobicdigester">AnaerobicDigester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aerobicdigester">AerobicDigester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disinfection">Disinfection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ultravioletlightunit">UltravioletlightUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chlorinationbasin">ChlorinationBasin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sedimentationtank">SedimentationTank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#screen">Screen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grit-chamber">Grit Chamber</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir">Reservoir</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pond">Pond</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#battery">Battery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cogenerator">Cogenerator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boiler">Boiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditioner">Conditioner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flare">Flare</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pump">Pump</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressureexchanger">PressureExchanger</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dewatering">Dewatering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thickener">Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dissolvedairflotationthickener">DissolvedAirFlotationThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centrifugalthickener">CentrifugalThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravitythickener">GravityThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beltthickener">BeltThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravity-belt-thickener">Gravity Belt Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-drum-thickener">Rotary Drum Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter">Filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverseosmosismembrane">ReverseOsmosisMembrane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tricklingfilter">TricklingFilter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#membranebioreactor">MembraneBioreactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#microfiltrationunit">MicrofiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ultrafiltrationunit">UltrafiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nanofiltrationunit">NanofiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mediafiltrationunit">MediaFiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cartridgefiltrationunit">CartridgeFiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ionexchangemembrane">IonExchangeMembrane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electrodialysis">Electrodialysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electrolyzer">Electrolyzer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crystallizer">Crystallizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compressor">Compressor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaporator">Evaporator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#condenser">Condenser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flowsensor">FlowSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volumesensor">VolumeSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#levelsensor">LevelSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressuresensor">PressureSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperaturesensor">TemperatureSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtimesensor">RunTimeSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runstatussensor">RunStatusSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concentrationsensor">ConcentrationSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oxygen-meter">Oxygen Meter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oxygendemandsensor">OxygenDemandSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phsensor">pHSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conductivitysensor">ConductivitySensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turbiditymeter">TurbidityMeter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotationsensor">RotationSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiencysensor">EfficiencySensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-of-charge-sensor">State of Charge Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-sensor">Speed Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-sensor">Frequency Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nawi-water-substances-ontology">NAWI Water Substances Ontology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constituent-metals">Constituent-Metals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constituent-salt">Constituent-Salt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#salt-nacl">Salt-NaCl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#water-brine">Water-Brine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brine-15percent">Brine-15Percent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brine-5to10percent">Brine-5to10Percent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wastewater-treatment-chemical">Wastewater Treatment Chemical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coagulant">Coagulant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alum">Alum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ferric-chloride">Ferric Chloride</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polyaluminum-chloride">Polyaluminum Chloride</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flocculant">Flocculant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polyacrylamide">Polyacrylamide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ph-adjuster">pH Adjuster</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lime">Lime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sulfuric-acid">Sulfuric Acid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disinfectant">Disinfectant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chlorine">Chlorine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ozone">Ozone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odor-control-agent">Odor Control Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activated-carbon">Activated Carbon</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-metal-removal-agent">Heavy Metal Removal Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sodium-sulfide">Sodium Sulfide</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="nawi-water-equipment-ontology">
+<h1>NAWI Water Equipment Ontology<a class="headerlink" href="#nawi-water-equipment-ontology" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>NAWI Water Equipment Ontology<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An ontology for water equipment used in the NAWI project</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology/equip</p>
+</section>
+<section id="tank">
+<h2>Tank<a class="headerlink" href="#tank" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A tank for storing liquid</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Tank</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="reactor">
+<h2>Reactor<a class="headerlink" href="#reactor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment used for chemical reaction</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Reactor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Tank</p>
+</section>
+<section id="sequencingbatchreactor">
+<h2>SequencingBatchReactor<a class="headerlink" href="#sequencingbatchreactor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A type of activated sludge process for wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#SequencingBatchReactor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Reactor</p>
+</section>
+<section id="plugflowreactor">
+<h2>PlugFlowReactor<a class="headerlink" href="#plugflowreactor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A type of reactor where the fluid flows in one direction through the tube</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#PlugFlowReactor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Reactor</p>
+</section>
+<section id="continuouslystirredtankreactor">
+<h2>ContinuouslyStirredTankReactor<a class="headerlink" href="#continuouslystirredtankreactor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A reactor in which contents are well mixed and reactants are added continuously</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ContinuouslyStirredTankReactor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Reactor</p>
+</section>
+<section id="staticmixer">
+<h2>StaticMixer<a class="headerlink" href="#staticmixer" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device for mixing liquids without moving components</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#StaticMixer</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Reactor</p>
+</section>
+<section id="aerationbasin">
+<h2>AerationBasin<a class="headerlink" href="#aerationbasin" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A tank where water is aerated to remove gases and volatile organic compounds</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#AerationBasin</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Reactor</p>
+</section>
+<section id="digester">
+<h2>Digester<a class="headerlink" href="#digester" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A container to promote decomposition of organic waste</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Digester</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Tank</p>
+</section>
+<section id="anaerobicdigester">
+<h2>AnaerobicDigester<a class="headerlink" href="#anaerobicdigester" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A container to promote decomposition of organic waste in anaerobic conditions</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#AnaerobicDigester</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Digester</p>
+</section>
+<section id="aerobicdigester">
+<h2>AerobicDigester<a class="headerlink" href="#aerobicdigester" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A container to promote decomposition of organic waste in aerobic conditions</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#AerobicDigester</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Digester</p>
+</section>
+<section id="disinfection">
+<h2>Disinfection<a class="headerlink" href="#disinfection" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A unit used to eliminate or reduce harmful microorganisms</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#DisinfectionUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Tank</p>
+</section>
+<section id="ultravioletlightunit">
+<h2>UltravioletlightUnit<a class="headerlink" href="#ultravioletlightunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A unit using ultraviolet light for disinfection</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#UltravioletLightUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Disinfection</p>
+</section>
+<section id="chlorinationbasin">
+<h2>ChlorinationBasin<a class="headerlink" href="#chlorinationbasin" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A basin where chlorine is added for disinfection</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ChlorinationBasin</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Disinfection</p>
+</section>
+<section id="sedimentationtank">
+<h2>SedimentationTank<a class="headerlink" href="#sedimentationtank" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A tank used to remove solids from liquids through sedimentation</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#SedimentationTank</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Tank</p>
+</section>
+<section id="screen">
+<h2>Screen<a class="headerlink" href="#screen" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment used for separation</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Screen</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="grit-chamber">
+<h2>Grit Chamber<a class="headerlink" href="#grit-chamber" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A chamber used to remove grit from wastewater</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#GritChamber</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="reservoir">
+<h2>Reservoir<a class="headerlink" href="#reservoir" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A large natural or artificial body of water used for water supply</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Reservoir</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="pond">
+<h2>Pond<a class="headerlink" href="#pond" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A body of still water smaller than a lake, used for treatment or storage</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Pond</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="battery">
+<h2>Battery<a class="headerlink" href="#battery" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device that stores energy for later use</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Battery</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Battery">http://data.ashrae.org/standard223#Battery</a></p>
+</section>
+<section id="cogenerator">
+<h2>Cogenerator<a class="headerlink" href="#cogenerator" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment that produces both electricity and heat from the same energy source</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Cogenerator</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="boiler">
+<h2>Boiler<a class="headerlink" href="#boiler" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device for heating water</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Boiler</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Boiler">http://data.ashrae.org/standard223#Boiler</a></p>
+</section>
+<section id="conditioner">
+<h2>Conditioner<a class="headerlink" href="#conditioner" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment used to prepare raw biogas from a digester by removing impurities</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Conditioner</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="flare">
+<h2>Flare<a class="headerlink" href="#flare" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to burn off unwanted gas</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Flare</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="pump">
+<h2>Pump<a class="headerlink" href="#pump" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to move fluids by mechanical action</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Pump</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Pump">http://data.ashrae.org/standard223#Pump</a></p>
+</section>
+<section id="pressureexchanger">
+<h2>PressureExchanger<a class="headerlink" href="#pressureexchanger" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to transfer pressure energy from one fluid to another</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#PressureExchanger</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="dewatering">
+<h2>Dewatering<a class="headerlink" href="#dewatering" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A unit used to remove water from solid material</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#DewateringUnit</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="thickener">
+<h2>Thickener<a class="headerlink" href="#thickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to increase the solids concentration of a slurry</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Thickener</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="dissolvedairflotationthickener">
+<h2>DissolvedAirFlotationThickener<a class="headerlink" href="#dissolvedairflotationthickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that uses dissolved air to separate solids from liquids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#DissolvedAirFlotationThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Thickener</p>
+</section>
+<section id="centrifugalthickener">
+<h2>CentrifugalThickener<a class="headerlink" href="#centrifugalthickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that uses centrifugal force to separate solids from liquids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#CentrifugalThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Thickener</p>
+</section>
+<section id="gravitythickener">
+<h2>GravityThickener<a class="headerlink" href="#gravitythickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that uses gravity to separate solids from liquids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#GravityThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Thickener</p>
+</section>
+<section id="beltthickener">
+<h2>BeltThickener<a class="headerlink" href="#beltthickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that uses a belt system to separate solids from liquids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#BeltThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Thickener</p>
+</section>
+<section id="gravity-belt-thickener">
+<h2>Gravity Belt Thickener<a class="headerlink" href="#gravity-belt-thickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that combines gravity separation with a belt system</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#GravityBeltThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#BeltThickener</p>
+</section>
+<section id="rotary-drum-thickener">
+<h2>Rotary Drum Thickener<a class="headerlink" href="#rotary-drum-thickener" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A thickener that uses a rotating drum to separate solids from liquids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#RotaryDrumThickener</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Thickener</p>
+</section>
+<section id="filter">
+<h2>Filter<a class="headerlink" href="#filter" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment used to remove impurities from liquids or gases</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Filter</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Filter">http://data.ashrae.org/standard223#Filter</a></p>
+</section>
+<section id="reverseosmosismembrane">
+<h2>ReverseOsmosisMembrane<a class="headerlink" href="#reverseosmosismembrane" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A membrane used for reverse osmosis</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ReverseOsmosisMembrane</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="tricklingfilter">
+<h2>TricklingFilter<a class="headerlink" href="#tricklingfilter" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system that treats wastewater by trickling it over a bed of rocks or plastic</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#TricklingFilter</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="membranebioreactor">
+<h2>MembraneBioreactor<a class="headerlink" href="#membranebioreactor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system that combines a membrane process like microfiltration with a biological reactor</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#MembraneBioreactor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="microfiltrationunit">
+<h2>MicrofiltrationUnit<a class="headerlink" href="#microfiltrationunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system which removes contaminants from a liquid by passing it through a microporous membrane</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#MicrofiltrationUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="ultrafiltrationunit">
+<h2>UltrafiltrationUnit<a class="headerlink" href="#ultrafiltrationunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#UltrafiltrationUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="nanofiltrationunit">
+<h2>NanofiltrationUnit<a class="headerlink" href="#nanofiltrationunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system that uses a membrane to soften water and remove organic contaminants</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#NanofiltrationUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="mediafiltrationunit">
+<h2>MediaFiltrationUnit<a class="headerlink" href="#mediafiltrationunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system that uses a bed of material to filter out contaminants</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#MediaFiltration</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="cartridgefiltrationunit">
+<h2>CartridgeFiltrationUnit<a class="headerlink" href="#cartridgefiltrationunit" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A filter system using a cartridge to remove contaminants from fluids</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#CartridgeFiltrationUnit</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Filter</p>
+</section>
+<section id="ionexchangemembrane">
+<h2>IonExchangeMembrane<a class="headerlink" href="#ionexchangemembrane" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A membrane that selectively allows ions to pass through while blocking other substances</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#IonExchangeMembrane</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="electrodialysis">
+<h2>Electrodialysis<a class="headerlink" href="#electrodialysis" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A unit that uses electricity to drive ion movement through a membrane</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ElectrodialysisUnit</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="electrolyzer">
+<h2>Electrolyzer<a class="headerlink" href="#electrolyzer" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment that uses electricity to split liquids into constituent elements</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Electrolyzer</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="crystallizer">
+<h2>Crystallizer<a class="headerlink" href="#crystallizer" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment used to produce solid crystals from a solution</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Crystallizer</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Equipment">http://data.ashrae.org/standard223#Equipment</a></p>
+</section>
+<section id="compressor">
+<h2>Compressor<a class="headerlink" href="#compressor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An equipment that increases the pressure of a gas</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Compressor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Compressor">http://data.ashrae.org/standard223#Compressor</a></p>
+</section>
+<section id="evaporator">
+<h2>Evaporator<a class="headerlink" href="#evaporator" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to turn the liquid form of a substance into its gaseous form</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Evaporator</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#HeatExchanger">http://data.ashrae.org/standard223#HeatExchanger</a></p>
+</section>
+<section id="condenser">
+<h2>Condenser<a class="headerlink" href="#condenser" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A device used to condense a gaseous substance back into a liquid</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Condenser</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#HeatExchanger">http://data.ashrae.org/standard223#HeatExchanger</a></p>
+</section>
+<section id="flowsensor">
+<h2>FlowSensor<a class="headerlink" href="#flowsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the flow rate of liquids or gases</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#FlowSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#FlowSensor">http://data.ashrae.org/standard223#FlowSensor</a></p>
+</section>
+<section id="volumesensor">
+<h2>VolumeSensor<a class="headerlink" href="#volumesensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the volume of a substance</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#VolumeSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="levelsensor">
+<h2>LevelSensor<a class="headerlink" href="#levelsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to detect the level of liquids or solids in a tank</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#LevelSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="pressuresensor">
+<h2>PressureSensor<a class="headerlink" href="#pressuresensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure pressure</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#PressureSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#PressureSensor">http://data.ashrae.org/standard223#PressureSensor</a></p>
+</section>
+<section id="temperaturesensor">
+<h2>TemperatureSensor<a class="headerlink" href="#temperaturesensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure temperature</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#TemperatureSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#TemperatureSensor">http://data.ashrae.org/standard223#TemperatureSensor</a></p>
+</section>
+<section id="runtimesensor">
+<h2>RunTimeSensor<a class="headerlink" href="#runtimesensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the operating time of equipment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#RunTimeSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="runstatussensor">
+<h2>RunStatusSensor<a class="headerlink" href="#runstatussensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to monitor the operational status of equipment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#RunStatusSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="concentrationsensor">
+<h2>ConcentrationSensor<a class="headerlink" href="#concentrationsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ConcentrationSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#ConcentrationSensor">http://data.ashrae.org/standard223#ConcentrationSensor</a></p>
+</section>
+<section id="oxygen-meter">
+<h2>Oxygen Meter<a class="headerlink" href="#oxygen-meter" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the concentration of oxygen</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#OxygenMeter</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#ConcentrationSensor">http://data.ashrae.org/standard223#ConcentrationSensor</a></p>
+</section>
+<section id="oxygendemandsensor">
+<h2>OxygenDemandSensor<a class="headerlink" href="#oxygendemandsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#OxygenDemandSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="phsensor">
+<h2>pHSensor<a class="headerlink" href="#phsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the pH of a solution</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#pHSensor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#ConcentrationSensor</p>
+</section>
+<section id="conductivitysensor">
+<h2>ConductivitySensor<a class="headerlink" href="#conductivitysensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the electrical conductivity of a solution</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#ConductivitySensor</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Sensor</p>
+</section>
+<section id="turbiditymeter">
+<h2>TurbidityMeter<a class="headerlink" href="#turbiditymeter" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the turbidity (clarity) of a fluid</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#TurbidityMeter</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Sensor</p>
+</section>
+<section id="rotationsensor">
+<h2>RotationSensor<a class="headerlink" href="#rotationsensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the rotational speed or position of an object</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#RotationSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="efficiencysensor">
+<h2>EfficiencySensor<a class="headerlink" href="#efficiencysensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the efficiency of a system or equipment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#EfficiencySensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="state-of-charge-sensor">
+<h2>State of Charge Sensor<a class="headerlink" href="#state-of-charge-sensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the remaining charge in a battery or energy storage system</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#StateOfChargeSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="speed-sensor">
+<h2>Speed Sensor<a class="headerlink" href="#speed-sensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the speed of an object or fluid</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#SpeedSensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="frequency-sensor">
+<h2>Frequency Sensor<a class="headerlink" href="#frequency-sensor" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> A sensor used to measure the frequency of a signal or mechanical vibration</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#FrequencySensor</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Sensor">http://data.ashrae.org/standard223#Sensor</a></p>
+</section>
+<section id="nawi-water-substances-ontology">
+<h2>NAWI Water Substances Ontology<a class="headerlink" href="#nawi-water-substances-ontology" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> An ontology for water substances used in the NAWI project</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology/substances</p>
+</section>
+<section id="constituent-metals">
+<h2>Constituent-Metals<a class="headerlink" href="#constituent-metals" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Constituent-Metals</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Constituent-Metals</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Medium-Constituent">http://data.ashrae.org/standard223#Medium-Constituent</a></p>
+</section>
+<section id="constituent-salt">
+<h2>Constituent-Salt<a class="headerlink" href="#constituent-salt" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Constituent-Salt</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Constituent-Salt</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Medium-Constituent">http://data.ashrae.org/standard223#Medium-Constituent</a></p>
+</section>
+<section id="salt-nacl">
+<h2>Salt-NaCl<a class="headerlink" href="#salt-nacl" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Salt-NaCl</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Salt-NaCl</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Constituent-Salt</p>
+</section>
+<section id="water-brine">
+<h2>Water-Brine<a class="headerlink" href="#water-brine" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Water-Brine</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Water-Brine</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Fluid-Water">http://data.ashrae.org/standard223#Fluid-Water</a></p>
+</section>
+<section id="brine-15percent">
+<h2>Brine-15Percent<a class="headerlink" href="#brine-15percent" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Brine-15Percent</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Brine-15Percent</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Water-Brine</p>
+</section>
+<section id="brine-5to10percent">
+<h2>Brine-5to10Percent<a class="headerlink" href="#brine-5to10percent" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Brine-5to10Percent</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Brine-5to10Percent</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Water-Brine</p>
+</section>
+<section id="wastewater-treatment-chemical">
+<h2>Wastewater Treatment Chemical<a class="headerlink" href="#wastewater-treatment-chemical" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Base class for all chemicals used in wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+<p><strong>Superclass URI :</strong> <a class="reference external" href="http://data.ashrae.org/standard223#Medium-Constituent">http://data.ashrae.org/standard223#Medium-Constituent</a></p>
+</section>
+<section id="coagulant">
+<h2>Coagulant<a class="headerlink" href="#coagulant" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for coagulants used in wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Coagulant</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="alum">
+<h2>Alum<a class="headerlink" href="#alum" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Aluminum sulfate (alum), a common coagulant</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Coagulant-Alum</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Coagulant</p>
+</section>
+<section id="ferric-chloride">
+<h2>Ferric Chloride<a class="headerlink" href="#ferric-chloride" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Ferric chloride, a coagulant for wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Coagulant-FerricChloride</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Coagulant</p>
+</section>
+<section id="polyaluminum-chloride">
+<h2>Polyaluminum Chloride<a class="headerlink" href="#polyaluminum-chloride" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Polyaluminum chloride (PAC), a coagulant</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Coagulant-PolyaluminumChloride</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Coagulant</p>
+</section>
+<section id="flocculant">
+<h2>Flocculant<a class="headerlink" href="#flocculant" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for flocculants used in wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Flocculant</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="polyacrylamide">
+<h2>Polyacrylamide<a class="headerlink" href="#polyacrylamide" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Polyacrylamide, a common flocculant</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Flocculant-Polyacrylamide</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Flocculant</p>
+</section>
+<section id="ph-adjuster">
+<h2>pH Adjuster<a class="headerlink" href="#ph-adjuster" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for pH adjusters used in wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#pHAdjuster</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="lime">
+<h2>Lime<a class="headerlink" href="#lime" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Calcium hydroxide (lime), used to increase pH</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#pHAdjuster-Lime</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#pHAdjuster</p>
+</section>
+<section id="sulfuric-acid">
+<h2>Sulfuric Acid<a class="headerlink" href="#sulfuric-acid" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Sulfuric acid, used to decrease pH</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#pHAdjuster-SulfuricAcid</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#pHAdjuster</p>
+</section>
+<section id="disinfectant">
+<h2>Disinfectant<a class="headerlink" href="#disinfectant" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for disinfectants used in wastewater treatment</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Disinfectant</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="chlorine">
+<h2>Chlorine<a class="headerlink" href="#chlorine" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Chlorine, a common disinfectant</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Disinfectant-Chlorine</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Disinfectant</p>
+</section>
+<section id="ozone">
+<h2>Ozone<a class="headerlink" href="#ozone" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Ozone, an advanced disinfectant</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#Disinfectant-Ozone</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#Disinfectant</p>
+</section>
+<section id="odor-control-agent">
+<h2>Odor Control Agent<a class="headerlink" href="#odor-control-agent" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for chemicals used for odor control</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#OdorControlAgent</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="activated-carbon">
+<h2>Activated Carbon<a class="headerlink" href="#activated-carbon" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Activated carbon, used to absorb odors</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#OdorControlAgent-ActivatedCarbon</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#OdorControlAgent</p>
+</section>
+<section id="heavy-metal-removal-agent">
+<h2>Heavy Metal Removal Agent<a class="headerlink" href="#heavy-metal-removal-agent" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Class for chemicals used to remove heavy metals</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#HeavyMetalRemovalAgent</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#WastewaterTreatmentChemical</p>
+</section>
+<section id="sodium-sulfide">
+<h2>Sodium Sulfide<a class="headerlink" href="#sodium-sulfide" title="Link to this heading">#</a></h2>
+<p><strong>Description:</strong> Sodium sulfide, used to precipitate heavy metals</p>
+<p><strong>URI:</strong> urn:nawi-water-ontology#HeavyMetalRemovalAgent-SodiumSulfide</p>
+<p><strong>Superclass URI :</strong> urn:nawi-water-ontology#HeavyMetalRemovalAgent</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./reference"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">NAWI Water Equipment Ontology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tank">Tank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reactor">Reactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequencingbatchreactor">SequencingBatchReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plugflowreactor">PlugFlowReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuouslystirredtankreactor">ContinuouslyStirredTankReactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#staticmixer">StaticMixer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aerationbasin">AerationBasin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digester">Digester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anaerobicdigester">AnaerobicDigester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aerobicdigester">AerobicDigester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disinfection">Disinfection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ultravioletlightunit">UltravioletlightUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chlorinationbasin">ChlorinationBasin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sedimentationtank">SedimentationTank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#screen">Screen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grit-chamber">Grit Chamber</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir">Reservoir</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pond">Pond</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#battery">Battery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cogenerator">Cogenerator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boiler">Boiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditioner">Conditioner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flare">Flare</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pump">Pump</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressureexchanger">PressureExchanger</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dewatering">Dewatering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thickener">Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dissolvedairflotationthickener">DissolvedAirFlotationThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centrifugalthickener">CentrifugalThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravitythickener">GravityThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beltthickener">BeltThickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravity-belt-thickener">Gravity Belt Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-drum-thickener">Rotary Drum Thickener</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter">Filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverseosmosismembrane">ReverseOsmosisMembrane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tricklingfilter">TricklingFilter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#membranebioreactor">MembraneBioreactor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#microfiltrationunit">MicrofiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ultrafiltrationunit">UltrafiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nanofiltrationunit">NanofiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mediafiltrationunit">MediaFiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cartridgefiltrationunit">CartridgeFiltrationUnit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ionexchangemembrane">IonExchangeMembrane</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electrodialysis">Electrodialysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electrolyzer">Electrolyzer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crystallizer">Crystallizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compressor">Compressor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaporator">Evaporator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#condenser">Condenser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flowsensor">FlowSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volumesensor">VolumeSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#levelsensor">LevelSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressuresensor">PressureSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperaturesensor">TemperatureSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtimesensor">RunTimeSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runstatussensor">RunStatusSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concentrationsensor">ConcentrationSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oxygen-meter">Oxygen Meter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oxygendemandsensor">OxygenDemandSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phsensor">pHSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conductivitysensor">ConductivitySensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turbiditymeter">TurbidityMeter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotationsensor">RotationSensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiencysensor">EfficiencySensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-of-charge-sensor">State of Charge Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-sensor">Speed Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-sensor">Frequency Sensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nawi-water-substances-ontology">NAWI Water Substances Ontology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constituent-metals">Constituent-Metals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constituent-salt">Constituent-Salt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#salt-nacl">Salt-NaCl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#water-brine">Water-Brine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brine-15percent">Brine-15Percent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brine-5to10percent">Brine-5to10Percent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wastewater-treatment-chemical">Wastewater Treatment Chemical</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coagulant">Coagulant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alum">Alum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ferric-chloride">Ferric Chloride</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polyaluminum-chloride">Polyaluminum Chloride</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flocculant">Flocculant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polyacrylamide">Polyacrylamide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ph-adjuster">pH Adjuster</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lime">Lime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sulfuric-acid">Sulfuric Acid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disinfectant">Disinfectant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chlorine">Chlorine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ozone">Ozone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odor-control-agent">Odor Control Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activated-carbon">Activated Carbon</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-metal-removal-agent">Heavy Metal Removal Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sodium-sulfide">Sodium Sulfide</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By NAWI Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

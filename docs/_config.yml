@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Water Ontology Templates
+title: Water Treatment Ontology Documentation
 author: NAWI Project Team
 #logo: logo.png
 
@@ -30,6 +30,7 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
+  announcement              : " 🏗️ this site is under active development ⚠️"
 
 # add sphinx extensions
 sphinx:

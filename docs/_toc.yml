@@ -2,6 +2,21 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: README.md
-chapters:
-- file: libraries/index.rst
+root: intro.md
+parts: 
+- caption: Explanation
+  chapters:
+  - file: explanation/purpose_scope.md
+  - file: explanation/overview.md
+  - file: explanation/definitions.md
+- caption: Tutorials
+  chapters:
+  - file: tutorials/creating-models.md
+- caption: Guides
+  chapters:
+  - file: guides/todo.md
+- caption: Reference
+  chapters:
+  - file: libraries/index.rst
+  - file: reference/equipment_documentation.md
+  - file: reference/substances_documentation.md
