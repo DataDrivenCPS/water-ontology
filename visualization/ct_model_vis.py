@@ -6,7 +6,7 @@ import click
 import pyvis
 from rdflib import Graph, Literal
 
-from .rdf2html_classification import (
+from rdf2html_classification import (
     EdgesConfig,
     bacnet_labels,
     is_wanted_node,

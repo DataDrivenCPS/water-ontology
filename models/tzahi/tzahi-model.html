@@ -1,0 +1,933 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/css/tom-select.min.css" integrity="sha512-43fHB3GLgZfz8QXl1RPQ8O66oIgv3po9cJ5erMt1c4QISq9dYb195T3vr5ImnJPXuVroKcGBPXBFKETW8jrPNQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/js/tom-select.complete.js" integrity="sha512-jeF9CfnvzDiw9G9xiksVjxR2lib44Gnovvkv+3CgCG6NXCD4gqlA5nDAVW5WjpA+i+/zKsUWV5xNEbW1X/HH0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="urn:ex/uf-bypass">urn:ex/uf-bypass</option>
+                                
+                                    <option value="urn:ex/uf-bypass-outlet-cp">urn:ex/uf-bypass-outlet-cp</option>
+                                
+                                    <option value="urn:ex/uf-out-valve-in">urn:ex/uf-out-valve-in</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve">urn:ex/uf_bypass_valve</option>
+                                
+                                    <option value="urn:ex/conn-feed-pump-to-b3w2-valve">urn:ex/conn-feed-pump-to-b3w2-valve</option>
+                                
+                                    <option value="urn:ex/feed-pump">urn:ex/feed-pump</option>
+                                
+                                    <option value="urn:ex/air_valve-in">urn:ex/air_valve-in</option>
+                                
+                                    <option value="urn:ex/b3w2-valve-out">urn:ex/b3w2-valve-out</option>
+                                
+                                    <option value="urn:ex/conn-of_pump-to-waste">urn:ex/conn-of_pump-to-waste</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank">urn:ex/uf-feed-tank</option>
+                                
+                                    <option value="urn:ex/uf-unit">urn:ex/uf-unit</option>
+                                
+                                    <option value="urn:ex/v1_valve">urn:ex/v1_valve</option>
+                                
+                                    <option value="urn:ex/s2_valve">urn:ex/s2_valve</option>
+                                
+                                    <option value="urn:ex/s2_valve-in">urn:ex/s2_valve-in</option>
+                                
+                                    <option value="urn:ex/b1-valve">urn:ex/b1-valve</option>
+                                
+                                    <option value="urn:ex/b3w1_valve">urn:ex/b3w1_valve</option>
+                                
+                                    <option value="urn:ex/conn-uf_backwash_pump-to-h1_valve">urn:ex/conn-uf_backwash_pump-to-h1_valve</option>
+                                
+                                    <option value="urn:ex/b3w2-valve">urn:ex/b3w2-valve</option>
+                                
+                                    <option value="urn:ex/feed-valve">urn:ex/feed-valve</option>
+                                
+                                    <option value="urn:ex/feed-pump-electric-current">urn:ex/feed-pump-electric-current</option>
+                                
+                                    <option value="urn:ex/reject_valve">urn:ex/reject_valve</option>
+                                
+                                    <option value="urn:ex/reject_valve-outlet-cp">urn:ex/reject_valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/uf-out-valve-out">urn:ex/uf-out-valve-out</option>
+                                
+                                    <option value="urn:ex/supply-tank">urn:ex/supply-tank</option>
+                                
+                                    <option value="urn:ex/feed-pump-out">urn:ex/feed-pump-out</option>
+                                
+                                    <option value="urn:ex/uf-bypass-in">urn:ex/uf-bypass-in</option>
+                                
+                                    <option value="urn:ex/uf-unit-out">urn:ex/uf-unit-out</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve_to_waste">urn:ex/uf_bypass_valve_to_waste</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve_to_waste-out">urn:ex/uf_bypass_valve_to_waste-out</option>
+                                
+                                    <option value="urn:ex/conn-uf-feed-tank-to-feed-valve">urn:ex/conn-uf-feed-tank-to-feed-valve</option>
+                                
+                                    <option value="urn:ex/sv8_valve">urn:ex/sv8_valve</option>
+                                
+                                    <option value="urn:ex/b1-valve-in">urn:ex/b1-valve-in</option>
+                                
+                                    <option value="urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste">urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste</option>
+                                
+                                    <option value="urn:ex/v1_valve-in">urn:ex/v1_valve-in</option>
+                                
+                                    <option value="urn:ex/supply-tank-out-flow-rate">urn:ex/supply-tank-out-flow-rate</option>
+                                
+                                    <option value="urn:ex/conn-b3w2-valve-to-b1-valve">urn:ex/conn-b3w2-valve-to-b1-valve</option>
+                                
+                                    <option value="urn:ex/conn-b3w1_valve-to-uf_bypass_valve">urn:ex/conn-b3w1_valve-to-uf_bypass_valve</option>
+                                
+                                    <option value="urn:ex/ufd_valve-in">urn:ex/ufd_valve-in</option>
+                                
+                                    <option value="urn:ex/uf-out-valve">urn:ex/uf-out-valve</option>
+                                
+                                    <option value="urn:ex/b3w1_valve-in">urn:ex/b3w1_valve-in</option>
+                                
+                                    <option value="urn:ex/conn-uf-out-valve-to-b3w1_valve">urn:ex/conn-uf-out-valve-to-b3w1_valve</option>
+                                
+                                    <option value="urn:ex/ufd_valve">urn:ex/ufd_valve</option>
+                                
+                                    <option value="urn:ex/waste-out">urn:ex/waste-out</option>
+                                
+                                    <option value="urn:ex/s2_valve-out">urn:ex/s2_valve-out</option>
+                                
+                                    <option value="urn:ex/ac_valve">urn:ex/ac_valve</option>
+                                
+                                    <option value="urn:ex/ac_valve-out">urn:ex/ac_valve-out</option>
+                                
+                                    <option value="urn:ex/waste-in">urn:ex/waste-in</option>
+                                
+                                    <option value="urn:ex/h1_valve-in">urn:ex/h1_valve-in</option>
+                                
+                                    <option value="urn:ex/conn-uf_bypass_valve-to-ufd_valve">urn:ex/conn-uf_bypass_valve-to-ufd_valve</option>
+                                
+                                    <option value="urn:ex/">urn:ex/</option>
+                                
+                                    <option value="urn:ex/v1_valve-inlet-cp">urn:ex/v1_valve-inlet-cp</option>
+                                
+                                    <option value="urn:ex/conn-b1-valve-to-v1_valve">urn:ex/conn-b1-valve-to-v1_valve</option>
+                                
+                                    <option value="urn:ex/of_pump-out">urn:ex/of_pump-out</option>
+                                
+                                    <option value="urn:ex/supply-tank-in">urn:ex/supply-tank-in</option>
+                                
+                                    <option value="urn:ex/reject_valve-in">urn:ex/reject_valve-in</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank-in">urn:ex/uf-feed-tank-in</option>
+                                
+                                    <option value="urn:ex/air_valve">urn:ex/air_valve</option>
+                                
+                                    <option value="urn:ex/conn-uf-feed-tank-to-of_pump">urn:ex/conn-uf-feed-tank-to-of_pump</option>
+                                
+                                    <option value="urn:ex/of_pump">urn:ex/of_pump</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank-outlet-cp">urn:ex/uf-feed-tank-outlet-cp</option>
+                                
+                                    <option value="urn:ex/conn-h1_valve-to-b3w1_valve">urn:ex/conn-h1_valve-to-b3w1_valve</option>
+                                
+                                    <option value="urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve">urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve</option>
+                                
+                                    <option value="urn:ex/conn-v1_valve-to-uf-unit">urn:ex/conn-v1_valve-to-uf-unit</option>
+                                
+                                    <option value="urn:ex/feed-valve-outlet-cp">urn:ex/feed-valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/supply-tank-out">urn:ex/supply-tank-out</option>
+                                
+                                    <option value="urn:ex/ufd_valve-status">urn:ex/ufd_valve-status</option>
+                                
+                                    <option value="urn:ex/uf-out-valve-outlet-cp">urn:ex/uf-out-valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/b1-valve-out">urn:ex/b1-valve-out</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve_to_waste-outlet-cp">urn:ex/uf_bypass_valve_to_waste-outlet-cp</option>
+                                
+                                    <option value="urn:ex/uf-unit-out-turbidity">urn:ex/uf-unit-out-turbidity</option>
+                                
+                                    <option value="urn:ex/sv8_valve-in">urn:ex/sv8_valve-in</option>
+                                
+                                    <option value="urn:ex/ufd_valve-outlet-cp">urn:ex/ufd_valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/b3w2-valve-status">urn:ex/b3w2-valve-status</option>
+                                
+                                    <option value="http://data.ashrae.org/standard223#EnumerationKind-Status">http://data.ashrae.org/standard223#EnumerationKind-Status</option>
+                                
+                                    <option value="urn:ex/b3w1_valve-status">urn:ex/b3w1_valve-status</option>
+                                
+                                    <option value="urn:ex/ac_valve-in">urn:ex/ac_valve-in</option>
+                                
+                                    <option value="urn:ex/waste">urn:ex/waste</option>
+                                
+                                    <option value="urn:ex/h1_valve-out">urn:ex/h1_valve-out</option>
+                                
+                                    <option value="urn:ex/uf-unit-in">urn:ex/uf-unit-in</option>
+                                
+                                    <option value="urn:ex/s2_valve-status">urn:ex/s2_valve-status</option>
+                                
+                                    <option value="urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm">urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm</option>
+                                
+                                    <option value="urn:ex/conn-supply-tank-to-uf-bypass">urn:ex/conn-supply-tank-to-uf-bypass</option>
+                                
+                                    <option value="http://data.ashrae.org/standard223#Role-Bypass">http://data.ashrae.org/standard223#Role-Bypass</option>
+                                
+                                    <option value="urn:ex/b3w1_valve-outlet-cp">urn:ex/b3w1_valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/reject_valve-out">urn:ex/reject_valve-out</option>
+                                
+                                    <option value="urn:ex/conn-feed-valve-to-feed-pump">urn:ex/conn-feed-valve-to-feed-pump</option>
+                                
+                                    <option value="urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure">urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure</option>
+                                
+                                    <option value="urn:ex/v1_valve-out">urn:ex/v1_valve-out</option>
+                                
+                                    <option value="urn:ex/feed-pump-in">urn:ex/feed-pump-in</option>
+                                
+                                    <option value="urn:ex/conn-ac_valve-to-v1_valve">urn:ex/conn-ac_valve-to-v1_valve</option>
+                                
+                                    <option value="urn:ex/uf-bypass-out">urn:ex/uf-bypass-out</option>
+                                
+                                    <option value="urn:ex/supply-tank-out-speed-command">urn:ex/supply-tank-out-speed-command</option>
+                                
+                                    <option value="urn:ex/uf_backwash_pump">urn:ex/uf_backwash_pump</option>
+                                
+                                    <option value="urn:ex/conn-reject_valve-to-air_valve">urn:ex/conn-reject_valve-to-air_valve</option>
+                                
+                                    <option value="urn:ex/of_pump-in">urn:ex/of_pump-in</option>
+                                
+                                    <option value="urn:ex/supply-tank-out-pressure">urn:ex/supply-tank-out-pressure</option>
+                                
+                                    <option value="urn:ex/b3w2-valve-in">urn:ex/b3w2-valve-in</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve-inlet-cp">urn:ex/uf_bypass_valve-inlet-cp</option>
+                                
+                                    <option value="urn:ex/conn-uf-bypass-to-uf-feed-tank">urn:ex/conn-uf-bypass-to-uf-feed-tank</option>
+                                
+                                    <option value="urn:ex/feed-valve-in">urn:ex/feed-valve-in</option>
+                                
+                                    <option value="urn:ex/uf_backwash_pump-out">urn:ex/uf_backwash_pump-out</option>
+                                
+                                    <option value="urn:ex/feed-pump-out-pressure">urn:ex/feed-pump-out-pressure</option>
+                                
+                                    <option value="http://data.ashrae.org/standard223#Role-Supply">http://data.ashrae.org/standard223#Role-Supply</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank-out">urn:ex/uf-feed-tank-out</option>
+                                
+                                    <option value="urn:ex/conn-reject_valve-to-s2_valve">urn:ex/conn-reject_valve-to-s2_valve</option>
+                                
+                                    <option value="urn:ex/uf_backwash_pump-status">urn:ex/uf_backwash_pump-status</option>
+                                
+                                    <option value="urn:ex/h1_valve">urn:ex/h1_valve</option>
+                                
+                                    <option value="urn:ex/conn-uf-unit-to-reject_valve">urn:ex/conn-uf-unit-to-reject_valve</option>
+                                
+                                    <option value="urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph">urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph</option>
+                                
+                                    <option value="http://qudt.org/vocab/unit/PH">http://qudt.org/vocab/unit/PH</option>
+                                
+                                    <option value="urn:ex/feed-pump-speed-command">urn:ex/feed-pump-speed-command</option>
+                                
+                                    <option value="urn:ex/uf_backwash_pump-in">urn:ex/uf_backwash_pump-in</option>
+                                
+                                    <option value="urn:ex/air_valve-opening-command">urn:ex/air_valve-opening-command</option>
+                                
+                                    <option value="urn:ex/conn-uf-unit-to-reject_valve-pressure">urn:ex/conn-uf-unit-to-reject_valve-pressure</option>
+                                
+                                    <option value="urn:ex/b3w1_valve-out">urn:ex/b3w1_valve-out</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve_to_waste-in">urn:ex/uf_bypass_valve_to_waste-in</option>
+                                
+                                    <option value="urn:ex/b3w2-valve-outlet-cp">urn:ex/b3w2-valve-outlet-cp</option>
+                                
+                                    <option value="urn:ex/feed-pump-out-flow-rate">urn:ex/feed-pump-out-flow-rate</option>
+                                
+                                    <option value="urn:ex/ufd_valve-out">urn:ex/ufd_valve-out</option>
+                                
+                                    <option value="urn:ex/feed-valve-out">urn:ex/feed-valve-out</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve-out">urn:ex/uf_bypass_valve-out</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank-temperature">urn:ex/uf-feed-tank-temperature</option>
+                                
+                                    <option value="urn:ex/uf-feed-tank-volume">urn:ex/uf-feed-tank-volume</option>
+                                
+                                    <option value="urn:ex/uf-unit-outlet-cp">urn:ex/uf-unit-outlet-cp</option>
+                                
+                                    <option value="urn:ex/ac_valve-status">urn:ex/ac_valve-status</option>
+                                
+                                    <option value="urn:ex/uf_bypass_valve-in">urn:ex/uf_bypass_valve-in</option>
+                                
+                                    <option value="urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate">urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate</option>
+                                
+                                    <option value="urn:ex/sv8_valve-out">urn:ex/sv8_valve-out</option>
+                                
+                                    <option value="urn:ex/b1-valve-status">urn:ex/b1-valve-status</option>
+                                
+                                    <option value="urn:ex/air_valve-out">urn:ex/air_valve-out</option>
+                                
+                                    <option value="bob:legend/System">bob:legend/System</option>
+                                
+                                    <option value="bob:legend/Equipment">bob:legend/Equipment</option>
+                                
+                                    <option value="bob:legend/Connection">bob:legend/Connection</option>
+                                
+                                    <option value="bob:legend/InletConnectionPoint">bob:legend/InletConnectionPoint</option>
+                                
+                                    <option value="bob:legend/OutletConnectionPoint">bob:legend/OutletConnectionPoint</option>
+                                
+                                    <option value="bob:legend/Function">bob:legend/Function</option>
+                                
+                                    <option value="bob:legend/DomainSpace">bob:legend/DomainSpace</option>
+                                
+                                    <option value="bob:legend/Default">bob:legend/Default</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"borderWidth": null, "group": 0, "id": "urn:ex/uf-bypass", "label": "urn:ex/uf-bypass", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-bypass\nNamespaces : \nTypes: \n=======\n  - roles : s223:Role-Bypass"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-bypass-outlet-cp", "label": "urn:ex/uf-bypass-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-bypass-outlet-cp\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf-out-valve-in", "label": "urn:ex/uf-out-valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-out-valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf_bypass_valve", "label": "urn:ex/uf_bypass_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-feed-pump-to-b3w2-valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-feed-pump-to-b3w2-valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-pump", "label": "urn:ex/feed-pump", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/air_valve-in", "label": "urn:ex/air_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/air_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/b3w2-valve-out", "label": "urn:ex/b3w2-valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w2-valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-of_pump-to-waste", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-of_pump-to-waste\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n=======\n\nComment : Waste Connections\n=======\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-feed-tank", "label": "urn:ex/uf-feed-tank", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank\nNamespaces : \nTypes: \n=======\n  - roles : s223:Role-Supply"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-unit", "label": "urn:ex/uf-unit", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-unit\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/v1_valve", "label": "urn:ex/v1_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/v1_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/s2_valve", "label": "urn:ex/s2_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/s2_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/s2_valve-in", "label": "urn:ex/s2_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/s2_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/b1-valve", "label": "urn:ex/b1-valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b1-valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/b3w1_valve", "label": "urn:ex/b3w1_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w1_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf_backwash_pump-to-h1_valve\nNamespaces : s223, http://data.ashrae.org/standard223#Pipe\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/b3w2-valve", "label": "urn:ex/b3w2-valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w2-valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-valve", "label": "urn:ex/feed-valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-valve\nNamespaces : \nTypes: \n=======\n  - roles : s223:Role-Supply"}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-pump-electric-current", "label": "urn:ex/feed-pump-electric-current", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-electric-current\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:ElectricCurrent\n  - unit : unit:A"}, {"borderWidth": null, "group": 0, "id": "urn:ex/reject_valve", "label": "urn:ex/reject_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/reject_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/reject_valve-outlet-cp", "label": "urn:ex/reject_valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/reject_valve-outlet-cp\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-out-valve-out", "label": "urn:ex/uf-out-valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-out-valve-out\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/supply-tank", "label": "urn:ex/supply-tank", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank\nNamespaces : \nTypes: \n=======\n  - roles : s223:Role-Supply"}, {"borderWidth": null, "group": 4, "id": "urn:ex/feed-pump-out", "label": "urn:ex/feed-pump-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf-bypass-in", "label": "urn:ex/uf-bypass-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-bypass-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-unit-out", "label": "urn:ex/uf-unit-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-unit-out\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf_bypass_valve_to_waste", "label": "urn:ex/uf_bypass_valve_to_waste", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve_to_waste\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf_bypass_valve_to_waste-out", "label": "urn:ex/uf_bypass_valve_to_waste-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve_to_waste-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-feed-tank-to-feed-valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-feed-tank-to-feed-valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/sv8_valve", "label": "urn:ex/sv8_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/sv8_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/b1-valve-in", "label": "urn:ex/b1-valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b1-valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/v1_valve-in", "label": "urn:ex/v1_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/v1_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/supply-tank-out-flow-rate", "label": "urn:ex/supply-tank-out-flow-rate", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank-out-flow-rate\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:VolumeFlowRate"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-b3w2-valve-to-b1-valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-b3w2-valve-to-b1-valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-b3w1_valve-to-uf_bypass_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/ufd_valve-in", "label": "urn:ex/ufd_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ufd_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-out-valve", "label": "urn:ex/uf-out-valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-out-valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/b3w1_valve-in", "label": "urn:ex/b3w1_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w1_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-out-valve-to-b3w1_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/ufd_valve", "label": "urn:ex/ufd_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ufd_valve\nNamespaces : urn:nawi-water-ontology#Valve\nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/waste-out", "label": "urn:ex/waste-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/waste-out\nNamespaces : s223\nTypes: s223:Medium-Water, s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/s2_valve-out", "label": "urn:ex/s2_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/s2_valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/ac_valve", "label": "urn:ex/ac_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ac_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/ac_valve-out", "label": "urn:ex/ac_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ac_valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/waste-in", "label": "urn:ex/waste-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/waste-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/h1_valve-in", "label": "urn:ex/h1_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/h1_valve-in\nNamespaces : s223, http://data.ashrae.org/standard223#InletConnectionPoint\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf_bypass_valve-to-ufd_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n=======\n\nComment : Permeate to GAC\n=======\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/", "label": "urn:ex/", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/\nNamespaces : owl, http://www.w3.org/2002/07/owl#Ontology\nTypes: owl:Ontology\n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/v1_valve-inlet-cp", "label": "urn:ex/v1_valve-inlet-cp", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/v1_valve-inlet-cp\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-b1-valve-to-v1_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-b1-valve-to-v1_valve\nNamespaces : s223, http://data.ashrae.org/standard223#Connection\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/of_pump-out", "label": "urn:ex/of_pump-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/of_pump-out\nNamespaces : s223\nTypes: s223:Medium-Water, s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/supply-tank-in", "label": "urn:ex/supply-tank-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/reject_valve-in", "label": "urn:ex/reject_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/reject_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf-feed-tank-in", "label": "urn:ex/uf-feed-tank-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/air_valve", "label": "urn:ex/air_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/air_valve\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-feed-tank-to-of_pump", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-feed-tank-to-of_pump\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/of_pump", "label": "urn:ex/of_pump", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/of_pump\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-feed-tank-outlet-cp", "label": "urn:ex/uf-feed-tank-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank-outlet-cp\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-h1_valve-to-b3w1_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-h1_valve-to-b3w1_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve\nNamespaces : s223, http://data.ashrae.org/standard223#Pipe\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-v1_valve-to-uf-unit", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-v1_valve-to-uf-unit\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/feed-valve-outlet-cp", "label": "urn:ex/feed-valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-valve-outlet-cp\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/supply-tank-out", "label": "urn:ex/supply-tank-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank-out\nNamespaces : s223\nTypes: s223:Medium-Water, s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/ufd_valve-status", "label": "urn:ex/ufd_valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ufd_valve-status\nNamespaces : s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-out-valve-outlet-cp", "label": "urn:ex/uf-out-valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-out-valve-outlet-cp\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/b1-valve-out", "label": "urn:ex/b1-valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b1-valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf_bypass_valve_to_waste-outlet-cp", "label": "urn:ex/uf_bypass_valve_to_waste-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve_to_waste-outlet-cp\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-unit-out-turbidity", "label": "urn:ex/uf-unit-out-turbidity", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-unit-out-turbidity\nNamespaces : s223, quantitykind\nTypes: quantitykind:Turbidity, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Turbidity\n  - unit : unit:NTU"}, {"borderWidth": null, "group": 3, "id": "urn:ex/sv8_valve-in", "label": "urn:ex/sv8_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/sv8_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/ufd_valve-outlet-cp", "label": "urn:ex/ufd_valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ufd_valve-outlet-cp\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n\nComment : UF Permeate to Waste\n=======\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/b3w2-valve-status", "label": "urn:ex/b3w2-valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w2-valve-status\nNamespaces : s223\nTypes: s223:EnumerationKind-Status, s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 0, "id": "http://data.ashrae.org/standard223#EnumerationKind-Status", "label": "http://data.ashrae.org/standard223#EnumerationKind-Status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : http://data.ashrae.org/standard223#EnumerationKind-Status\nNamespaces : s223\nTypes: s223:EnumerationKind-Status\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/b3w1_valve-status", "label": "urn:ex/b3w1_valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w1_valve-status\nNamespaces : s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 3, "id": "urn:ex/ac_valve-in", "label": "urn:ex/ac_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ac_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/waste", "label": "urn:ex/waste", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/waste\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/h1_valve-out", "label": "urn:ex/h1_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/h1_valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf-unit-in", "label": "urn:ex/uf-unit-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-unit-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/s2_valve-status", "label": "urn:ex/s2_valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/s2_valve-status\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 0, "id": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm", "label": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm\nNamespaces : s223\nTypes: s223:QuantifiableObservableProperty\n=======\n\nComment : Mult-TOC-1,46\n=======\n=======\n  - quantityKind : quantitykind:Concentration\n  - unit : unit:PPM"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-supply-tank-to-uf-bypass", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-supply-tank-to-uf-bypass\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "http://data.ashrae.org/standard223#Role-Bypass", "label": "http://data.ashrae.org/standard223#Role-Bypass", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : http://data.ashrae.org/standard223#Role-Bypass\nNamespaces : s223\nTypes: s223:Role-Bypass\n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/b3w1_valve-outlet-cp", "label": "urn:ex/b3w1_valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w1_valve-outlet-cp\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/reject_valve-out", "label": "urn:ex/reject_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/reject_valve-out\nNamespaces : s223\nTypes: s223:Medium-Water, s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-feed-valve-to-feed-pump", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-feed-valve-to-feed-pump\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure", "label": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure\nNamespaces : s223, quantitykind\nTypes: quantitykind:Pressure, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Pressure"}, {"borderWidth": null, "group": 4, "id": "urn:ex/v1_valve-out", "label": "urn:ex/v1_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/v1_valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/feed-pump-in", "label": "urn:ex/feed-pump-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-ac_valve-to-v1_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-ac_valve-to-v1_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-bypass-out", "label": "urn:ex/uf-bypass-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-bypass-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/supply-tank-out-speed-command", "label": "urn:ex/supply-tank-out-speed-command", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank-out-speed-command\nNamespaces : s223, quantitykind\nTypes: s223:QuantifiableActuatableProperty, quantitykind:SpeedRatio\n=======\n  - quantityKind : quantitykind:SpeedRatio\n  - unit : unit:PERCENT"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf_backwash_pump", "label": "urn:ex/uf_backwash_pump", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_backwash_pump\nNamespaces : \nTypes: \n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-reject_valve-to-air_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-reject_valve-to-air_valve\nNamespaces : s223, http://data.ashrae.org/standard223#Pipe\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/of_pump-in", "label": "urn:ex/of_pump-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/of_pump-in\nNamespaces : s223, http://data.ashrae.org/standard223#InletConnectionPoint\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/supply-tank-out-pressure", "label": "urn:ex/supply-tank-out-pressure", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/supply-tank-out-pressure\nNamespaces : s223, quantitykind\nTypes: quantitykind:Pressure, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Pressure"}, {"borderWidth": null, "group": 3, "id": "urn:ex/b3w2-valve-in", "label": "urn:ex/b3w2-valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w2-valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf_bypass_valve-inlet-cp", "label": "urn:ex/uf_bypass_valve-inlet-cp", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve-inlet-cp\nNamespaces : s223\nTypes: s223:InletConnectionPoint, s223:Medium-Water\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-bypass-to-uf-feed-tank\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 3, "id": "urn:ex/feed-valve-in", "label": "urn:ex/feed-valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf_backwash_pump-out", "label": "urn:ex/uf_backwash_pump-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_backwash_pump-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-pump-out-pressure", "label": "urn:ex/feed-pump-out-pressure", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-out-pressure\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Pressure"}, {"borderWidth": null, "group": 0, "id": "http://data.ashrae.org/standard223#Role-Supply", "label": "http://data.ashrae.org/standard223#Role-Supply", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : http://data.ashrae.org/standard223#Role-Supply\nNamespaces : s223\nTypes: s223:Role-Supply\n======="}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-feed-tank-out", "label": "urn:ex/uf-feed-tank-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-reject_valve-to-s2_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-reject_valve-to-s2_valve\nNamespaces : s223\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf_backwash_pump-status", "label": "urn:ex/uf_backwash_pump-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_backwash_pump-status\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 0, "id": "urn:ex/h1_valve", "label": "urn:ex/h1_valve", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/h1_valve\nNamespaces : urn:nawi-water-ontology#Valve\nTypes: \n======="}, {"borderWidth": null, "group": 2, "id": "urn:ex/conn-uf-unit-to-reject_valve", "label": "Connection", "shape": "diamond", "size": 15, "title": "Label : Connection\n=======\nURI : urn:ex/conn-uf-unit-to-reject_valve\nNamespaces : s223, http://data.ashrae.org/standard223#Pipe\nTypes: s223:Pipe, s223:Connection\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph", "label": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph\nNamespaces : unit, s223\nTypes: unit:PH, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Acidity\n  - unit : unit:PH"}, {"borderWidth": null, "group": 0, "id": "http://qudt.org/vocab/unit/PH", "label": "http://qudt.org/vocab/unit/PH", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : http://qudt.org/vocab/unit/PH\nNamespaces : unit\nTypes: unit:PH\n======="}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-pump-speed-command", "label": "urn:ex/feed-pump-speed-command", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-speed-command\nNamespaces : s223, quantitykind\nTypes: s223:QuantifiableActuatableProperty, quantitykind:SpeedRatio\n=======\n  - quantityKind : quantitykind:SpeedRatio\n  - unit : unit:PERCENT"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf_backwash_pump-in", "label": "urn:ex/uf_backwash_pump-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_backwash_pump-in\nNamespaces : s223, http://data.ashrae.org/standard223#InletConnectionPoint\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/air_valve-opening-command", "label": "urn:ex/air_valve-opening-command", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/air_valve-opening-command\nNamespaces : http://data.ashrae.org/standard223#QuantifiableActuatableProperty, s223\nTypes: s223:QuantifiableActuatableProperty\n=======\n  - quantityKind : quantitykind:OpeningRatio"}, {"borderWidth": null, "group": 0, "id": "urn:ex/conn-uf-unit-to-reject_valve-pressure", "label": "urn:ex/conn-uf-unit-to-reject_valve-pressure", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/conn-uf-unit-to-reject_valve-pressure\nNamespaces : s223, quantitykind\nTypes: quantitykind:Pressure, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Pressure"}, {"borderWidth": null, "group": 4, "id": "urn:ex/b3w1_valve-out", "label": "urn:ex/b3w1_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w1_valve-out\nNamespaces : s223\nTypes: s223:Medium-Water, s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf_bypass_valve_to_waste-in", "label": "urn:ex/uf_bypass_valve_to_waste-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve_to_waste-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/b3w2-valve-outlet-cp", "label": "urn:ex/b3w2-valve-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b3w2-valve-outlet-cp\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/feed-pump-out-flow-rate", "label": "urn:ex/feed-pump-out-flow-rate", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-pump-out-flow-rate\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:VolumeFlowRate"}, {"borderWidth": null, "group": 4, "id": "urn:ex/ufd_valve-out", "label": "urn:ex/ufd_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ufd_valve-out\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/feed-valve-out", "label": "urn:ex/feed-valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/feed-valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf_bypass_valve-out", "label": "urn:ex/uf_bypass_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve-out\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-feed-tank-temperature", "label": "urn:ex/uf-feed-tank-temperature", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank-temperature\nNamespaces : s223, quantitykind\nTypes: s223:QuantifiableObservableProperty, quantitykind:Temperature\n=======\n  - quantityKind : quantitykind:Temperature"}, {"borderWidth": null, "group": 0, "id": "urn:ex/uf-feed-tank-volume", "label": "urn:ex/uf-feed-tank-volume", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-feed-tank-volume\nNamespaces : unit, s223\nTypes: unit:GAL, s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:Volume\n  - unit : unit:GAL"}, {"borderWidth": null, "group": 4, "id": "urn:ex/uf-unit-outlet-cp", "label": "urn:ex/uf-unit-outlet-cp", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf-unit-outlet-cp\nNamespaces : s223\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/ac_valve-status", "label": "urn:ex/ac_valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/ac_valve-status\nNamespaces : s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 3, "id": "urn:ex/uf_bypass_valve-in", "label": "urn:ex/uf_bypass_valve-in", "shape": "triangle", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/uf_bypass_valve-in\nNamespaces : s223\nTypes: s223:InletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate", "label": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - quantityKind : quantitykind:VolumeFlowRate"}, {"borderWidth": null, "group": 4, "id": "urn:ex/sv8_valve-out", "label": "urn:ex/sv8_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/sv8_valve-out\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "group": 0, "id": "urn:ex/b1-valve-status", "label": "urn:ex/b1-valve-status", "shape": "dot", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/b1-valve-status\nNamespaces : http://data.ashrae.org/standard223#QuantifiableObservableProperty, s223\nTypes: s223:QuantifiableObservableProperty\n=======\n  - enumerationKind : s223:EnumerationKind-Status"}, {"borderWidth": null, "group": 4, "id": "urn:ex/air_valve-out", "label": "urn:ex/air_valve-out", "shape": "triangleDown", "size": 15, "title": "Label : None\n=======\nURI : urn:ex/air_valve-out\nNamespaces : s223, http://data.ashrae.org/standard223#OutletConnectionPoint\nTypes: s223:OutletConnectionPoint\n=======\n  - medium : s223:Medium-Water"}, {"borderWidth": null, "font": {"size": 20}, "group": 1, "id": "bob:legend/System", "label": "Legend / System", "physics": false, "shape": "box", "size": 40, "widthConstraint": 500, "x": 2000, "y": "-900px"}, {"borderWidth": null, "font": {"size": 20}, "group": 1, "id": "bob:legend/Equipment", "label": "Legend / Equipment", "physics": false, "shape": "square", "size": 20, "widthConstraint": 500, "x": 2000, "y": "-900px"}, {"borderWidth": null, "font": {"size": 20}, "group": 2, "id": "bob:legend/Connection", "label": "Legend / Connection", "physics": false, "shape": "diamond", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-800px"}, {"borderWidth": null, "font": {"size": 20}, "group": 3, "id": "bob:legend/InletConnectionPoint", "label": "Legend / InletConnectionPoint", "physics": false, "shape": "triangle", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-700px"}, {"borderWidth": null, "font": {"size": 20}, "group": 4, "id": "bob:legend/OutletConnectionPoint", "label": "Legend / OutletConnectionPoint", "physics": false, "shape": "triangleDown", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-600px"}, {"borderWidth": null, "font": {"size": 20}, "group": 4, "id": "bob:legend/Function", "label": "Legend / Function|Producer", "physics": false, "shape": "star", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-600px"}, {"borderWidth": 2, "font": {"size": 20}, "group": 4, "id": "bob:legend/DomainSpace", "label": "Legend / DomainSpace", "physics": false, "shape": "box", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-600px"}, {"borderWidth": null, "font": {"size": 20}, "group": 0, "id": "bob:legend/Default", "label": "Legend / Default", "physics": false, "shape": "dot", "size": 15, "widthConstraint": 500, "x": 2000, "y": "-1000px"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-bypass-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:connectedTo", "to": "urn:ex/ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-feed-pump-to-b3w2-valve", "title": "s223:connectsFrom", "to": "urn:ex/feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:connectedTo", "to": "urn:ex/reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/s2_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/reject_valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve_to_waste-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-feed-tank-to-feed-valve", "title": "s223:connectsTo", "to": "urn:ex/feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/sv8_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/v1_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:connectsTo", "to": "urn:ex/uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-out-valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/ac_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/v1_valve-inlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank", "title": "s223:hasConnectionPoint", "to": "urn:ex/supply-tank-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-feed-tank-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w2-valve-to-b1-valve", "title": "s223:connectsFrom", "to": "urn:ex/b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-feed-tank-to-of_pump", "title": "s223:connectsTo", "to": "urn:ex/of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsFrom", "to": "urn:ex/b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:hasProperty", "to": "urn:ex/ufd_valve-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/sv8_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/sv8_valve-in", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/b3w2-valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-feed-pump-to-b3w2-valve", "title": "s223:connectsTo", "to": "urn:ex/b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-out-valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:hasProperty", "to": "urn:ex/b3w1_valve-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank-out", "title": "s223:hasProperty", "to": "urn:ex/supply-tank-out-flow-rate", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-unit-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/sv8_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:hasRole", "to": "http://data.ashrae.org/standard223#Role-Bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:connectedTo", "to": "urn:ex/feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-out-valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:connectedTo", "to": "urn:ex/b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve", "title": "s223:hasProperty", "to": "urn:ex/s2_valve-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b1-valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-in", "title": "s223:connectsAt", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-inlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:connectedTo", "to": "urn:ex/uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "title": "s223:connectsFrom", "to": "urn:ex/uf-out-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-bypass-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:hasProperty", "to": "urn:ex/feed-pump-electric-current", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "title": "s223:connectsFrom", "to": "urn:ex/uf_backwash_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:connectedThrough", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:connectedTo", "to": "urn:ex/feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "title": "s223:connectsTo", "to": "urn:ex/uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b1-valve-to-v1_valve", "title": "s223:connectsFrom", "to": "urn:ex/b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-reject_valve-to-air_valve", "title": "s223:connectsFrom", "to": "urn:ex/reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_backwash_pump-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve-inlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank", "title": "s223:hasRole", "to": "http://data.ashrae.org/standard223#Role-Supply", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-feed-tank-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-reject_valve-to-s2_valve", "title": "s223:connectsTo", "to": "urn:ex/s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "title": "s223:connectsTo", "to": "urn:ex/uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-in", "title": "s223:connectsAt", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:connectedThrough", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "title": "s223:connectsFrom", "to": "urn:ex/uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "title": "s223:connectsTo", "to": "urn:ex/b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank-out", "title": "s223:hasProperty", "to": "urn:ex/supply-tank-out-speed-command", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph", "title": "qudt:unit", "to": "http://qudt.org/vocab/unit/PH", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/h1_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/reject_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w1_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:connectedTo", "to": "urn:ex/v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:connectedTo", "to": "urn:ex/uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:connectedTo", "to": "urn:ex/s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve", "title": "s223:connectedTo", "to": "urn:ex/b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:hasProperty", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-ph", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "title": "s223:connectsFrom", "to": "urn:ex/uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:hasProperty", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-pressure", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:connectedTo", "to": "urn:ex/of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-v1_valve-to-uf-unit", "title": "s223:connectsTo", "to": "urn:ex/uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-feed-tank-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b1-valve-to-v1_valve", "title": "s223:connectsTo", "to": "urn:ex/v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w2-valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve_to_waste-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "title": "s223:connectsTo", "to": "urn:ex/uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsFrom", "to": "urn:ex/ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-feed-valve-to-feed-pump", "title": "s223:connectsFrom", "to": "urn:ex/feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:connectedThrough", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/waste-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump", "title": "s223:connectedTo", "to": "urn:ex/h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/waste-in", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/feed-valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:connectedTo", "to": "urn:ex/uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:connectedTo", "to": "urn:ex/uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/s2_valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/ufd_valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve", "title": "s223:hasProperty", "to": "urn:ex/air_valve-opening-command", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-feed-valve-to-feed-pump", "title": "s223:connectsTo", "to": "urn:ex/feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasRole", "to": "http://data.ashrae.org/standard223#Role-Supply", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "title": "s223:connectsFrom", "to": "urn:ex/uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/feed-valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:hasProperty", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-toc-ppm", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/h1_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-out-valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:hasRole", "to": "http://data.ashrae.org/standard223#Role-Supply", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/feed-valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-unit-to-reject_valve", "title": "s223:connectsFrom", "to": "urn:ex/uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:connectedTo", "to": "urn:ex/uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-unit-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/waste", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit-out", "title": "s223:hasProperty", "to": "urn:ex/uf-unit-out-turbidity", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve", "title": "s223:hasProperty", "to": "urn:ex/ac_valve-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/waste", "title": "s223:hasConnectionPoint", "to": "urn:ex/waste-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasProperty", "to": "urn:ex/uf-feed-tank-volume", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-inlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank-out", "title": "s223:hasProperty", "to": "urn:ex/supply-tank-out-pressure", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve", "title": "s223:connectedTo", "to": "urn:ex/v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/ufd_valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-v1_valve-to-uf-unit", "title": "s223:connectsFrom", "to": "urn:ex/v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-ac_valve-to-v1_valve", "title": "s223:connectsFrom", "to": "urn:ex/ac_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-reject_valve-to-s2_valve", "title": "s223:connectsFrom", "to": "urn:ex/reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsFrom", "to": "urn:ex/uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ac_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/ac_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank", "title": "s223:connectedThrough", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank", "title": "s223:connectedTo", "to": "urn:ex/uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-unit-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-out", "title": "s223:hasProperty", "to": "urn:ex/feed-pump-out-flow-rate", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-h1_valve-to-b3w1_valve", "title": "s223:connectsFrom", "to": "urn:ex/h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-ac_valve-to-v1_valve", "title": "s223:connectsTo", "to": "urn:ex/v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/of_pump-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:hasProperty", "to": "urn:ex/b1-valve-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump", "title": "s223:hasProperty", "to": "urn:ex/uf_backwash_pump-status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-feed-tank-to-of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-supply-tank-to-uf-bypass", "title": "s223:connectsFrom", "to": "urn:ex/supply-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-out", "title": "s223:connectsAt", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w2-valve-to-b1-valve", "title": "s223:connectsTo", "to": "urn:ex/b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump-out", "title": "s223:hasProperty", "to": "urn:ex/feed-pump-out-pressure", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/feed-pump-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_bypass_valve_to_waste-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-ac_valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w1_valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/ufd_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-h1_valve-to-b3w1_valve", "title": "s223:connectsTo", "to": "urn:ex/b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/ufd_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/of_pump-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve", "title": "s223:connectedTo", "to": "urn:ex/b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-supply-tank-to-uf-bypass", "title": "s223:connectsTo", "to": "urn:ex/uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf_backwash_pump-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:connectedTo", "to": "urn:ex/b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/s2_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w1_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "title": "s223:connectsFrom", "to": "urn:ex/uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit-in", "title": "s223:connectsAt", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:connectedTo", "to": "urn:ex/air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump-out", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:hasProperty", "to": "urn:ex/feed-pump-speed-command", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/sv8_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/sv8_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-unit-to-reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/v1_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-unit-to-reject_valve", "title": "s223:connectsTo", "to": "urn:ex/reject_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:hasConnectionPoint", "to": "urn:ex/feed-pump-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:hasConnectionPoint", "to": "urn:ex/uf-bypass-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-out", "title": "s223:connectsAt", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "title": "s223:connectsTo", "to": "urn:ex/h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-inlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-unit-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-v1_valve-to-uf-unit", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "title": "s223:connectsTo", "to": "urn:ex/ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-unit-to-reject_valve", "title": "s223:hasProperty", "to": "urn:ex/conn-uf-unit-to-reject_valve-pressure", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/v1_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-b1-valve-to-v1_valve", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/ac_valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve-inlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w2-valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:connectsFrom", "to": "urn:ex/b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b3w2-valve-outlet-cp", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-b3w2-valve-to-b1-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsTo", "to": "urn:ex/waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/s2_valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-reject_valve-to-s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-bypass-to-uf_bypass_valve_to_waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "title": "s223:hasProperty", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve-flow-rate", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/h1_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-h1_valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/b3w1_valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/reject_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-feed-tank-to-feed-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/waste", "title": "s223:hasConnectionPoint", "to": "urn:ex/waste-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-feed-tank-to-of_pump", "title": "s223:connectsFrom", "to": "urn:ex/uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "title": "s223:connectsTo", "to": "urn:ex/sv8_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsFrom", "to": "urn:ex/s2_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b1-valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/b1-valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/sv8_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-uf-out-valve-to-b3w1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-of_pump-to-waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/ufd_valve", "title": "s223:connectedThrough", "to": "urn:ex/conn-uf_bypass_valve-to-ufd_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-valve-out", "title": "s223:connectsThrough", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank", "title": "s223:hasConnectionPoint", "to": "urn:ex/supply-tank-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve-in", "title": "s223:connectsThrough", "to": "urn:ex/conn-feed-pump-to-b3w2-valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_backwash_pump-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_backwash_pump-to-h1_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w2-valve", "title": "s223:hasProperty", "to": "urn:ex/b3w2-valve-status", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/uf_backwash_pump-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve-in", "title": "s223:connectsAt", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf_bypass_valve_to_waste-out", "title": "s223:connectsAt", "to": "urn:ex/conn-uf_bypass_valve_to_waste-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/reject_valve-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-reject_valve-to-air_valve", "width": 1}, {"arrows": "to", "dashes": true, "from": "urn:ex/b1-valve-status", "title": "qudt:hasEnumerationKind", "to": "http://data.ashrae.org/standard223#EnumerationKind-Status", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-of_pump-to-waste", "title": "s223:connectsFrom", "to": "urn:ex/of_pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/b3w1_valve-outlet-cp", "title": "s223:connectsAt", "to": "urn:ex/conn-b3w1_valve-to-uf_bypass_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/air_valve-in", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/air_valve", "title": "s223:hasConnectionPoint", "to": "urn:ex/air_valve-out", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/of_pump", "title": "s223:connectedTo", "to": "urn:ex/waste", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-uf-feed-tank-to-feed-valve", "title": "s223:connectsFrom", "to": "urn:ex/uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/feed-pump", "title": "s223:connectedThrough", "to": "urn:ex/conn-feed-valve-to-feed-pump", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/supply-tank-out", "title": "s223:connectsAt", "to": "urn:ex/conn-supply-tank-to-uf-bypass", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/conn-reject_valve-to-air_valve", "title": "s223:connectsTo", "to": "urn:ex/air_valve", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-bypass-outlet-cp", "title": "s223:connectsThrough", "to": "urn:ex/conn-uf-bypass-to-uf-feed-tank", "width": 1}, {"arrows": "to", "dashes": false, "from": "urn:ex/uf-feed-tank", "title": "s223:hasProperty", "to": "urn:ex/uf-feed-tank-temperature", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
