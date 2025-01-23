@@ -20,55 +20,69 @@ wbs:ac_valve a nawi:Valve ;
     s223:hasProperty wbs:ac_valve-status .
 
 wbs:ac_valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "126" .
 
 wbs:air_valve-opening-command a s223:QuantifiableActuatableProperty ;
-    qudt:hasQuantityKind qudtqk:OpeningRatio .
+    qudt:hasQuantityKind qudtqk:OpeningRatio ;
+    rdfs:comment "Manual Valve Property" .
 
 wbs:b1-valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "116" .
 
 wbs:b3w1_valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "117" .
 
 wbs:b3w2-valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "118" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-flow-rate a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:VolumeFlowRate .
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "19" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-ph a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Acidity ;
-    qudt:unit unit:PH .
+    qudt:unit unit:PH ;
+    rdfs:comment "48" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-pressure a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:Pressure .
+    qudt:hasQuantityKind qudtqk:Pressure ;
+    rdfs:comment "15" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-toc-ppm a s223:QuantifiableObservableProperty ;
     s223:ofSubstance nawi:Constituent-Organics ;
     qudt:hasQuantityKind qudtqk:Concentration ;
     qudt:hasUnit unit:PPM ;
-    rdfs:comment "Mult-TOC-1,46" .
+    rdfs:comment "46" .
 
 wbs:conn-uf-unit-to-reject_valve-pressure a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:Pressure .
+    qudt:hasQuantityKind qudtqk:Pressure ;
+    rdfs:comment "16" .
 
 wbs:feed-pump-electric-current a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:ElectricCurrent ;
-    qudt:hasUnit unit:A .
+    qudt:hasUnit unit:A ;
+    rdfs:comment "21" .
 
 wbs:feed-pump-out-flow-rate a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:VolumeFlowRate .
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "18" .
 
 wbs:feed-pump-out-pressure a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:Pressure .
+    qudt:hasQuantityKind qudtqk:Pressure ;
+    rdfs:comment "14" .
 
 wbs:feed-pump-speed-command a s223:QuantifiableActuatableProperty ;
     qudt:hasQuantityKind qudtqk:SpeedRatio ;
-    qudt:hasUnit unit:PERCENT .
+    qudt:hasUnit unit:PERCENT ;
+    rdfs:comment "59" .
 
 wbs:s2_valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "127" .
 
 wbs:supply-tank a nawi:Tank ;
     s223:cnx wbs:supply-tank-in,
@@ -81,14 +95,13 @@ wbs:supply-tank a nawi:Tank ;
     s223:hasRole s223:Role-Supply .
 
 wbs:supply-tank-out-flow-rate a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:VolumeFlowRate .
-
-wbs:supply-tank-out-pressure a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:Pressure .
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "92" .
 
 wbs:supply-tank-out-speed-command a s223:QuantifiableActuatableProperty ;
     qudt:hasQuantityKind qudtqk:SpeedRatio ;
-    qudt:hasUnit unit:PERCENT .
+    qudt:hasUnit unit:PERCENT ;
+    rdfs:comment "66" .
 
 wbs:sv8_valve a nawi:Valve ;
     s223:cnx wbs:sv8_valve-in,
@@ -98,11 +111,13 @@ wbs:sv8_valve a nawi:Valve ;
         wbs:sv8_valve-out .
 
 wbs:uf-feed-tank-temperature a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:Temperature .
+    qudt:hasQuantityKind qudtqk:Temperature ;
+    rdfs:comment "22" .
 
 wbs:uf-feed-tank-volume a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Volume ;
-    qudt:hasUnit unit:GAL .
+    qudt:hasUnit unit:GAL ;
+    rdfs:comment "17" .
 
 wbs:uf-out-valve a nawi:Valve ;
     s223:cnx wbs:uf-out-valve-in,
@@ -117,7 +132,8 @@ wbs:uf-out-valve a nawi:Valve ;
 
 wbs:uf-unit-out-turbidity a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Turbidity ;
-    qudt:hasUnit unit:NTU .
+    qudt:hasUnit unit:NTU ;
+    rdfs:comment "34" .
 
 wbs:uf_backwash_pump a nawi:Pump ;
     s223:cnx wbs:uf_backwash_pump-out ;
@@ -132,10 +148,12 @@ wbs:uf_backwash_pump-in a s223:InletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:uf_backwash_pump-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "119" .
 
 wbs:ufd_valve-status a s223:QuantifiableObservableProperty ;
-    qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "143" .
 
 wbs:ac_valve-in a s223:InletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
@@ -294,7 +312,6 @@ wbs:supply-tank-out a s223:OutletConnectionPoint ;
     s223:connectsThrough wbs:conn-supply-tank-to-uf-bypass ;
     s223:hasMedium s223:Medium-Water ;
     s223:hasProperty wbs:supply-tank-out-flow-rate,
-        wbs:supply-tank-out-pressure,
         wbs:supply-tank-out-speed-command .
 
 wbs:sv8_valve-in a s223:InletConnectionPoint ;

@@ -174,7 +174,7 @@ class ModelBuilder:
             self.bm.graph.add((target, S223['hasProperty'], prop_uri))
             if comments:
                 if comments[i]:
-                    self.bm.graph.add((prop_uri, RDFS['comment'], Literal(comments[i])))
+                    self.bm.graph.add((prop_uri, RDFS['comment'], Literal(str(comments[i]))))
         return prop_dict
 
     def make_brine(self, salt_percent):
