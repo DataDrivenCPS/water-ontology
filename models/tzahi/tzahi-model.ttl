@@ -39,6 +39,34 @@ wbs:b3w2-valve-status a s223:QuantifiableObservableProperty ;
     qudt:hasEnumerationKind s223:EnumerationKind-Status ;
     rdfs:comment "118" .
 
+wbs:backwash_dosing_pump a nawi:Pump ;
+    s223:cnx wbs:backwash_dosing_pump-out ;
+    s223:connected wbs:backwash_tank ;
+    s223:connectedThrough wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:connectedTo wbs:backwash_tank ;
+    s223:hasConnectionPoint wbs:backwash_dosing_pump-in,
+        wbs:backwash_dosing_pump-out ;
+    s223:hasProperty wbs:backwash_dosing_pump-flow-rate,
+        wbs:backwash_dosing_pump-speed-command ;
+    s223:hasRole s223:Role-Backwash .
+
+wbs:backwash_dosing_pump-flow-rate a s223:QuantifiableObservableProperty ;
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "95" .
+
+wbs:backwash_dosing_pump-in a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_dosing_pump-speed-command a s223:QuantifiableActuatableProperty ;
+    qudt:hasQuantityKind qudtqk:SpeedRatio ;
+    qudt:hasUnit unit:PERCENT ;
+    rdfs:comment "69" .
+
+wbs:backwash_tank-volume a s223:QuantifiableObservableProperty ;
+    qudt:hasQuantityKind qudtqk:Volume ;
+    qudt:hasUnit unit:GAL ;
+    rdfs:comment "29" .
+
 wbs:conn-b3w1_valve-to-uf_bypass_valve-flow-rate a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
     rdfs:comment "19" .
@@ -135,18 +163,6 @@ wbs:uf-unit-out-turbidity a s223:QuantifiableObservableProperty ;
     qudt:hasUnit unit:NTU ;
     rdfs:comment "34" .
 
-wbs:uf_backwash_pump a nawi:Pump ;
-    s223:cnx wbs:uf_backwash_pump-out ;
-    s223:connected wbs:h1_valve ;
-    s223:connectedThrough wbs:conn-uf_backwash_pump-to-h1_valve ;
-    s223:connectedTo wbs:h1_valve ;
-    s223:hasConnectionPoint wbs:uf_backwash_pump-in,
-        wbs:uf_backwash_pump-out ;
-    s223:hasProperty wbs:uf_backwash_pump-status .
-
-wbs:uf_backwash_pump-in a s223:InletConnectionPoint ;
-    s223:hasMedium s223:Medium-Water .
-
 wbs:uf_backwash_pump-status a s223:QuantifiableObservableProperty ;
     qudt:hasEnumerationKind s223:EnumerationKind-Status ;
     rdfs:comment "119" .
@@ -230,6 +246,34 @@ wbs:b3w1_valve-outlet-cp a s223:OutletConnectionPoint ;
 wbs:b3w2-valve-in a s223:InletConnectionPoint ;
     s223:connectsAt wbs:conn-feed-pump-to-b3w2-valve ;
     s223:connectsThrough wbs:conn-feed-pump-to-b3w2-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_dosing_pump-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:connectsAt wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:connectsThrough wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_tank-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:connectsThrough wbs:conn-backwash_dosing_pump-to-backwash_tank ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_tank-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:connectsAt wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:connectsThrough wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:connectsThrough wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:backwash_valve-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-backwash_valve-to-uf_backwash_pump ;
+    s223:connectsAt wbs:conn-backwash_valve-to-uf_backwash_pump ;
+    s223:connectsThrough wbs:conn-backwash_valve-to-uf_backwash_pump ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:feed-pump-in a s223:InletConnectionPoint ;
@@ -371,6 +415,11 @@ wbs:uf-unit-out a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water ;
     s223:hasProperty wbs:uf-unit-out-turbidity .
 
+wbs:uf_backwash_pump-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-backwash_valve-to-uf_backwash_pump ;
+    s223:connectsThrough wbs:conn-backwash_valve-to-uf_backwash_pump ;
+    s223:hasMedium s223:Medium-Water .
+
 wbs:uf_backwash_pump-out a s223:OutletConnectionPoint ;
     s223:cnx wbs:conn-uf_backwash_pump-to-h1_valve ;
     s223:connectsAt wbs:conn-uf_backwash_pump-to-h1_valve ;
@@ -477,6 +526,28 @@ wbs:b3w2-valve-out a s223:OutletConnectionPoint ;
         wbs:conn-of_pump-to-waste ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:backwash_tank a nawi:Tank ;
+    s223:cnx wbs:backwash_tank-in,
+        wbs:backwash_tank-out ;
+    s223:connected wbs:backwash_valve ;
+    s223:connectedThrough wbs:conn-backwash_dosing_pump-to-backwash_tank,
+        wbs:conn-backwash_tank-to-backwash_valve ;
+    s223:connectedTo wbs:backwash_valve ;
+    s223:hasConnectionPoint wbs:backwash_tank-in,
+        wbs:backwash_tank-out ;
+    s223:hasProperty wbs:backwash_tank-volume ;
+    s223:hasRole s223:Role-Backwash .
+
+wbs:backwash_valve a nawi:Valve ;
+    s223:cnx wbs:backwash_valve-in,
+        wbs:backwash_valve-out ;
+    s223:connected wbs:uf_backwash_pump ;
+    s223:connectedThrough wbs:conn-backwash_tank-to-backwash_valve,
+        wbs:conn-backwash_valve-to-uf_backwash_pump ;
+    s223:connectedTo wbs:uf_backwash_pump ;
+    s223:hasConnectionPoint wbs:backwash_valve-in,
+        wbs:backwash_valve-out .
+
 wbs:feed-pump a nawi:Pump ;
     s223:cnx wbs:feed-pump-in,
         wbs:feed-pump-out ;
@@ -542,6 +613,17 @@ wbs:uf-unit a nawi:UltrafiltrationUnit ;
     s223:hasConnectionPoint wbs:uf-unit-in,
         wbs:uf-unit-out,
         wbs:uf-unit-outlet-cp .
+
+wbs:uf_backwash_pump a nawi:Pump ;
+    s223:cnx wbs:uf_backwash_pump-in,
+        wbs:uf_backwash_pump-out ;
+    s223:connected wbs:h1_valve ;
+    s223:connectedThrough wbs:conn-backwash_valve-to-uf_backwash_pump,
+        wbs:conn-uf_backwash_pump-to-h1_valve ;
+    s223:connectedTo wbs:h1_valve ;
+    s223:hasConnectionPoint wbs:uf_backwash_pump-in,
+        wbs:uf_backwash_pump-out ;
+    s223:hasProperty wbs:uf_backwash_pump-status .
 
 wbs:ufd_valve a nawi:Valve ;
     s223:cnx wbs:ufd_valve-in,
@@ -675,6 +757,27 @@ wbs:conn-b3w2-valve-to-b1-valve a s223:Connection,
         wbs:b3w2-valve-out ;
     s223:connectsFrom wbs:b3w2-valve ;
     s223:connectsTo wbs:b1-valve .
+
+wbs:conn-backwash_dosing_pump-to-backwash_tank a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:backwash_dosing_pump-out,
+        wbs:backwash_tank-in ;
+    s223:connectsFrom wbs:backwash_dosing_pump ;
+    s223:connectsTo wbs:backwash_tank .
+
+wbs:conn-backwash_tank-to-backwash_valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:backwash_tank-out,
+        wbs:backwash_valve-in ;
+    s223:connectsFrom wbs:backwash_tank ;
+    s223:connectsTo wbs:backwash_valve .
+
+wbs:conn-backwash_valve-to-uf_backwash_pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:backwash_valve-out,
+        wbs:uf_backwash_pump-in ;
+    s223:connectsFrom wbs:backwash_valve ;
+    s223:connectsTo wbs:uf_backwash_pump .
 
 wbs:conn-feed-pump-to-b3w2-valve a s223:Connection,
         s223:Pipe ;

@@ -20,7 +20,7 @@ nawi:TotalOrganicCompoundConcentrationSensor
     a s223:Class ; 
     rdfs:subClassOf nawi:ConcentrationSensor ;
 .
-
+# have to check and make sure I've done 2 below correctly
 nawi:Constituent-Organics
     a s223:Class ; 
     a nawi:Constituent-Organics ;
@@ -28,4 +28,11 @@ nawi:Constituent-Organics
     rdfs:comment "Constituent-Organics" ;
     rdfs:label "Constituent-Organics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
+.
+
+nawi:Role-Backwash 
+    a s223:EnumerationKind ;
+    a nawi:Role-Backwash ; 
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+    rdfs:label "Role-Backwash" ;
 .
