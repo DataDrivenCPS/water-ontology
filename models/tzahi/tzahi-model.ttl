@@ -64,7 +64,7 @@ wbs:backwash_dosing_pump-speed-command a s223:QuantifiableActuatableProperty ;
 
 wbs:backwash_tank-volume a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Volume ;
-    qudt:hasUnit unit:GAL ;
+    qudt:hasUnit unit:GAL_US ;
     rdfs:comment "29" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-flow-rate a s223:QuantifiableObservableProperty ;
@@ -144,7 +144,7 @@ wbs:uf-feed-tank-temperature a s223:QuantifiableObservableProperty ;
 
 wbs:uf-feed-tank-volume a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Volume ;
-    qudt:hasUnit unit:GAL ;
+    qudt:hasUnit unit:GAL_US ;
     rdfs:comment "17" .
 
 wbs:uf-out-valve a nawi:Valve ;
