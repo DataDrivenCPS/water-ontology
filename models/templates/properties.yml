@@ -108,7 +108,7 @@ volume:
     
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Volume ;
-      qudt:hasUnit unit:GAL .
+      qudt:hasUnit unit:GAL_US .
   
 electric-current:
   body: >
