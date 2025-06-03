@@ -306,3 +306,42 @@ nawi:HeavyMetalRemovalAgent-SodiumSulfide
   rdfs:label "Sodium Sulfide" ;
   rdfs:subClassOf nawi:HeavyMetalRemovalAgent ;
 .
+nawi:Constituent-Organics
+    a s223:Class ; 
+    a nawi:Constituent-Organics ;
+    a sh:NodeShape ;
+    rdfs:comment "Constituent-Organics" ;
+    rdfs:label "Constituent-Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+nawi:Role-Backwash 
+    a s223:EnumerationKind ;
+    a nawi:Role-Backwash ; 
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+    rdfs:label "Role-Backwash" ;
+.
+nawi:Role-MakeUp 
+    a s223:EnumerationKind-Role ;
+    a s223:Class ;
+    a s223:Role-Makeup ;
+    a sh:NodeShape ;
+    rdfs:label "MakeUp" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+nawi:Role-Feed 
+    a s223:EnumerationKind-Role ;
+    a s223:Class ;
+    a s223:Role-Feed ;
+    a sh:NodeShape ;
+    rdfs:label "Feed" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+nawi:Role-Permeate 
+    a s223:EnumerationKind-Role ;
+    a s223:Class ;
+    a s223:Role-Permeate ;
+    a sh:NodeShape ;
+    rdfs:label "Permeate" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.

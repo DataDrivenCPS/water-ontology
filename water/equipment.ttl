@@ -12,7 +12,6 @@
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-
 nawi:Tank a rdfs:Class, sh:NodeShape ;
     rdfs:label "Tank" ;
     rdfs:comment "A tank for storing liquid" ;
@@ -400,3 +399,35 @@ nawi:FrequencySensor
     rdfs:label "Frequency Sensor" ;
     rdfs:comment "A sensor used to measure the frequency of a signal or mechanical vibration" ;
     rdfs:subClassOf s223:Sensor .
+
+# Do we want something like this? Is modeling a TOC sensor without explicitly naming it too vague (Concentration sensor, measuring organics)
+nawi:TotalOrganicCompoundConcentrationSensor
+    rdfs:label "TOC Sensor" ;
+    rdfs:comment "A sensor used to measure the total organic compound concentration" ;
+    rdfs:subClassOf nawi:ConcentrationSensor ;
+.
+# I just forgot this one originally I think
+nawi:Membrane
+    a s223:Class ;
+    rdfs:subClassOf s223:Filter 
+.
+nawi:Valve 
+    a s223:Class; 
+    rdfs:subClassOf s223:Valve 
+.
+nawi:VariableFrequencyDrive
+    a s223:Class ;
+    rdfs:subClassOf s223:VariableFrequencyDrive
+.
+nawi:ThreeWayValve 
+    a s223:Class; 
+    rdfs:subClassOf s223:Valve 
+.
+nawi:CheckValve
+    a s223:Class; 
+    rdfs:subClassOf s223:Valve
+.
+nawi:Controller 
+    a s223:Class ;
+    rdfs:subClassOf s223:Controller ;
+.
