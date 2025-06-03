@@ -421,7 +421,11 @@ watr:Controller
     a s223:Class ;
     rdfs:subClassOf s223:Controller ;
 .
-
+watr:ManualMeasurementPort 
+    rdfs:label "Manual Measurement Port" ;
+    rdfs:comment "A location where manual measurements are taken" ;
+    rdfs:subClassOf s223:Sensor ;
+.
 # Runtime can just be an enumeration kind - these are just properties
 # watr:RunTimeSensor
 #     rdfs:label "RunTimeSensor" ;
