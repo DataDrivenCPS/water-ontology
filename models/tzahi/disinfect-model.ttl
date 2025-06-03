@@ -1,0 +1,222 @@
+@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix wbs: <urn:ex/> .
+
+wbs: a owl:Ontology .
+
+wbs:h2o2-tank a nawi:Tank ;
+    s223:cnx wbs:h2o2-tank-in,
+        wbs:h2o2-tank-out ;
+    s223:connected wbs:lpuv-bypass-valve ;
+    s223:connectedThrough wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:connectedTo wbs:lpuv-bypass-valve ;
+    s223:hasConnectionPoint wbs:h2o2-tank-in,
+        wbs:h2o2-tank-out ;
+    s223:hasRole s223:Role-Supply .
+
+wbs:h2o2-tank-out-flow-rate a s223:QuantifiableObservableProperty ;
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "94" .
+
+wbs:h2o2-tank-out-speed-command a s223:QuantifiableActuatableProperty ;
+    qudt:hasQuantityKind qudtqk:SpeedRatio ;
+    qudt:hasUnit unit:PERCENT ;
+    rdfs:comment "68" .
+
+wbs:h2o2-tank-out-status a s223:QuantifiableObservableProperty ;
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "145" .
+
+wbs:lpuv-1 a nawi:UltravioletReactor ;
+    s223:cnx wbs:lpuv-1-out ;
+    s223:connected wbs:lpuv-2 ;
+    s223:connectedThrough wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:connectedTo wbs:lpuv-2 ;
+    s223:hasConnectionPoint wbs:lpuv-1-in,
+        wbs:lpuv-1-out .
+
+wbs:lpuv-1-in a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-2-status a s223:QuantifiableObservableProperty ;
+    qudt:hasEnumerationKind s223:EnumerationKind-Status ;
+    rdfs:comment "141" .
+
+wbs:h2o2-tank-in a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-bypass-valve-out a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:uv-out-valve-out a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:h2o2-tank-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:connectsAt wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:connectsThrough wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:hasMedium s223:Medium-Water ;
+    s223:hasProperty wbs:h2o2-tank-out-flow-rate,
+        wbs:h2o2-tank-out-speed-command,
+        wbs:h2o2-tank-out-status .
+
+wbs:lpuv-1-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:connectsAt wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:connectsThrough wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-2-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:connectsThrough wbs:conn-lpuv-1-to-lpuv-2 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-2-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:connectsAt wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:connectsThrough wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-3-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:connectsThrough wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-3-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:connectsAt wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:connectsThrough wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-bypass-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:connectsThrough wbs:conn-h2o2-tank-to-lpuv-bypass-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-bypass-valve-outlet-cp a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:connectsAt wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:connectsThrough wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:uv-led-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:connectsThrough wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:uv-led-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-uv-led-to-uv-out-valve ;
+    s223:connectsAt wbs:conn-uv-led-to-uv-out-valve ;
+    s223:connectsThrough wbs:conn-uv-led-to-uv-out-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:uv-out-valve-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:connectsThrough wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:uv-out-valve-inlet-cp a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-uv-led-to-uv-out-valve ;
+    s223:connectsThrough wbs:conn-uv-led-to-uv-out-valve ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:lpuv-2 a nawi:UltravioletReactor ;
+    s223:cnx wbs:lpuv-2-in,
+        wbs:lpuv-2-out ;
+    s223:connected wbs:lpuv-3 ;
+    s223:connectedThrough wbs:conn-lpuv-1-to-lpuv-2,
+        wbs:conn-lpuv-2-to-lpuv-3 ;
+    s223:connectedTo wbs:lpuv-3 ;
+    s223:hasConnectionPoint wbs:lpuv-2-in,
+        wbs:lpuv-2-out ;
+    s223:hasProperty wbs:lpuv-2-status .
+
+wbs:lpuv-3 a nawi:UltravioletReactor ;
+    s223:cnx wbs:lpuv-3-in,
+        wbs:lpuv-3-out ;
+    s223:connected wbs:uv-out-valve ;
+    s223:connectedThrough wbs:conn-lpuv-2-to-lpuv-3,
+        wbs:conn-lpuv-3-to-uv-out-valve ;
+    s223:connectedTo wbs:uv-out-valve ;
+    s223:hasConnectionPoint wbs:lpuv-3-in,
+        wbs:lpuv-3-out .
+
+wbs:lpuv-bypass-valve a nawi:Valve ;
+    s223:cnx wbs:lpuv-bypass-valve-in,
+        wbs:lpuv-bypass-valve-out,
+        wbs:lpuv-bypass-valve-outlet-cp ;
+    s223:connected wbs:uv-led ;
+    s223:connectedThrough wbs:conn-h2o2-tank-to-lpuv-bypass-valve,
+        wbs:conn-lpuv-bypass-valve-to-uv-led ;
+    s223:connectedTo wbs:uv-led ;
+    s223:hasConnectionPoint wbs:lpuv-bypass-valve-in,
+        wbs:lpuv-bypass-valve-out,
+        wbs:lpuv-bypass-valve-outlet-cp .
+
+wbs:uv-led a nawi:UltravioletReactor ;
+    s223:cnx wbs:uv-led-in,
+        wbs:uv-led-out ;
+    s223:connected wbs:uv-out-valve ;
+    s223:connectedThrough wbs:conn-lpuv-bypass-valve-to-uv-led,
+        wbs:conn-uv-led-to-uv-out-valve ;
+    s223:connectedTo wbs:uv-out-valve ;
+    s223:hasConnectionPoint wbs:uv-led-in,
+        wbs:uv-led-out .
+
+wbs:uv-out-valve a nawi:Valve ;
+    s223:cnx wbs:uv-out-valve-in,
+        wbs:uv-out-valve-inlet-cp,
+        wbs:uv-out-valve-out ;
+    s223:connectedThrough wbs:conn-lpuv-3-to-uv-out-valve,
+        wbs:conn-uv-led-to-uv-out-valve ;
+    s223:hasConnectionPoint wbs:uv-out-valve-in,
+        wbs:uv-out-valve-inlet-cp,
+        wbs:uv-out-valve-out .
+
+wbs:conn-h2o2-tank-to-lpuv-bypass-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:h2o2-tank-out,
+        wbs:lpuv-bypass-valve-in ;
+    s223:connectsFrom wbs:h2o2-tank ;
+    s223:connectsTo wbs:lpuv-bypass-valve .
+
+wbs:conn-lpuv-1-to-lpuv-2 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:lpuv-1-out,
+        wbs:lpuv-2-in ;
+    s223:connectsFrom wbs:lpuv-1 ;
+    s223:connectsTo wbs:lpuv-2 .
+
+wbs:conn-lpuv-2-to-lpuv-3 a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:lpuv-2-out,
+        wbs:lpuv-3-in ;
+    s223:connectsFrom wbs:lpuv-2 ;
+    s223:connectsTo wbs:lpuv-3 .
+
+wbs:conn-lpuv-3-to-uv-out-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:lpuv-3-out,
+        wbs:uv-out-valve-in ;
+    s223:connectsFrom wbs:lpuv-3 ;
+    s223:connectsTo wbs:uv-out-valve .
+
+wbs:conn-lpuv-bypass-valve-to-uv-led a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:lpuv-bypass-valve-outlet-cp,
+        wbs:uv-led-in ;
+    s223:connectsFrom wbs:lpuv-bypass-valve ;
+    s223:connectsTo wbs:uv-led .
+
+wbs:conn-uv-led-to-uv-out-valve a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:uv-led-out,
+        wbs:uv-out-valve-inlet-cp ;
+    s223:connectsFrom wbs:uv-led ;
+    s223:connectsTo wbs:uv-out-valve .
+
