@@ -50,45 +50,17 @@ watr:Water-Brine
   rdfs:subClassOf s223:Fluid-Water;
   s223:composedOf [
       a s223:QuantifiableProperty ;
-      s223:hasAspect s223:Aspect-LowLimit ;
-      s223:hasValue "3.5"^^xsd:decimal ;
       s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "Minimum Salt Concentration in Brine" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
-      s223:hasAspect s223:Aspect-HighLimit ;
-      s223:hasValue "26"^^xsd:decimal ;
       s223:ofConstituent s223:Constituent-H2O ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "Maximum Salt Concentration in Brine" ;
     ] ;
 # range based on google first result
-.
-watr:Water-Brine
-  # Possible constraint so subclasses are within allowed concentration ranges
-  # tried writing rule to use the existing composedOf high and low limit - not a good idea - too messy 
-  sh:property [
-    sh:path s223:composedOf ;
-    rdfs:comment "Making sure brine in salt concentration range" ;
-    sh:sparql [
-      a sh:SPARQLConstraint ;
-      rdfs:comment "Constraint for Brine Salinity" ;
-      sh:message "Substance {$this} has a salt concentration, {?conc}, outside of range of brine." ;
-      sh:select """
-        SELECT $this ?conc
-        WHERE {
-          $this s223:composedOf ?constituent .
-          ?constituent s223:hasValue ?conc ;
-            s223:ofConstituent watr:Salt-NaCl .
-          FILTER(?conc < 3.5 || ?conc > 26) .
-          }
-        """ ;
-    ] ;
-  ] ;
 .
 watr:Brine-15Percent
   a s223:Class ;
@@ -103,7 +75,7 @@ watr:Brine-15Percent
       s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "salt concentration" ;
+      rdfs:label "Salt Concentration" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
@@ -111,7 +83,7 @@ watr:Brine-15Percent
       s223:ofConstituent s223:Constituent-H2O ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "Water concentration" ;
+      rdfs:label "Water Concentration" ;
     ] ;
   rdfs:comment "Brine-15Percent" ;
   rdfs:label "Brine-15Percent" ;
@@ -132,7 +104,7 @@ watr:Brine-5to10Percent
       s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "low salt concentration" ;
+      rdfs:label "Low Salt Concentration" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
@@ -141,7 +113,7 @@ watr:Brine-5to10Percent
       s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
-      rdfs:label "salt concentration" ;
+      rdfs:label "High Salt Concentration" ;
     ] ;
   rdfs:comment "Brine-5to10Percent" ;
   rdfs:label "Brine-5to10Percent" ;
