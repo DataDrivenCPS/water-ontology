@@ -39,3 +39,21 @@ pipe:
     P:name a s223:Pipe, s223:Connection .
     P:in s223:cnx P:name .
     P:name s223:cnx P:out .
+
+junction:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:Junction ;
+      s223:hasMedium P:medium ;
+      s223:hasConnectionPoint P:in1, P:in2, P:out1, P:out2 .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in1"}
+    - template: inlet-cp
+      args: {"name": "in2"}
+    - template: outlet-cp
+      args: {"name": "out1"}
+    - template: outlet-cp
+      args: {"name": "out2"}
+  optional: ["in1", "in2", "out1", "out2"]

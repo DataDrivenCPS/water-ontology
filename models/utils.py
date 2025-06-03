@@ -12,11 +12,11 @@ CONTROL_MEDIUM = S223['Medium-Electricity']
 ADD_ALL_CNX_RELATIONS = True
 
 def remove_optional(graph, ns):
-        # TODO: Probably not supposed to do this, how should I actually use templates and optional params?
-        # Probably a better way to compose templates - definitely for hasRole, not sure for mapsTo
-        # Works for this case, not where there are more things stemming from optional params, maybe should instead be done with template builder or removing dependencies? 
-        graph.update(f'DELETE {{{ns}:delete ?p ?o}} WHERE {{ {ns}:delete ?p ?o . }}')
-        graph.update(f'DELETE {{?s ?p {ns}:delete}} WHERE {{ ?s ?p {ns}:delete . }}')
+    # TODO: Probably not supposed to do this, how should I actually use templates and optional params?
+    # Probably a better way to compose templates - definitely for hasRole, not sure for mapsTo
+    # Works for this case, not where there are more things stemming from optional params, maybe should instead be done with template builder or removing dependencies? 
+    graph.update(f'DELETE {{{ns}:delete ?p ?o}} WHERE {{ {ns}:delete ?p ?o . }}')
+    graph.update(f'DELETE {{?s ?p {ns}:delete}} WHERE {{ ?s ?p {ns}:delete . }}')
 
 def get_uri_end(uri_ref):
     # I think I can also do this with quads or something, may be better than regex
@@ -35,16 +35,19 @@ class ModelBuilder:
         self.graph = self.bm.graph
         self.templates = templates
 
-    def create_equipment(self, equip_name, equip_temp_name, optional_dict = {}, in_medium = DEFAULT_MEDIUM, out_medium = DEFAULT_MEDIUM, role = None):
+    def create_equipment(self, equip_name, equip_temp_name, optional_dict={}, in_medium=DEFAULT_MEDIUM, out_medium=DEFAULT_MEDIUM, role = None):
         equip_temp = self.templates.get_template_by_name(equip_temp_name)
-        equip_dict = {'in': self.ns[f'{equip_name}-in'],
-        'in-medium': in_medium,
-        'name': self.ns[f'{equip_name}'],
-        'out': self.ns[f'{equip_name}-out'],
-        'out-medium': out_medium,
+        equip_dict = {
+            'in': self.ns[f'{equip_name}-in'],
+            'in-medium': in_medium,
+            'name': self.ns[f'{equip_name}'],
+            'out': self.ns[f'{equip_name}-out'],
+            'out-medium': out_medium,
         }
         if role:
             equip_dict['role'] = role
+        for key, val in optional_dict.items():
+            equip_dict[key] = self.ns[val]
 
         equip = equip_temp.inline_dependencies().evaluate(equip_dict)
         if isinstance(equip, Graph):
@@ -53,7 +56,7 @@ class ModelBuilder:
         else:
             print("DELETING TEMPLATE PARAMETERS: ", equip.parameters)
             equip_graph = equip.evaluate({param: self.ns['delete'] for param in equip.parameters})
-            remove_optional(equip_graph)
+            remove_optional(equip_graph, self.ns)
         self.bm.add_graph(equip_graph)
         return equip_dict
 
@@ -191,7 +194,7 @@ class ModelBuilder:
         self.bm.add_graph(brine)
         return brine_dict
 
-    def add_connection_point(self, equip_dict, cp_type = 'inlet-cp', medium = DEFAULT_MEDIUM):
+    def add_connection_point(self, equip_dict, cp_type='inlet-cp', medium=DEFAULT_MEDIUM):
         # could provide option to name point as input 
         name = self.get_unique_uri(self.ns[f'{get_uri_end(equip_dict["name"])}-{cp_type}'])
 
@@ -206,7 +209,7 @@ class ModelBuilder:
         else:
             print("DELETING TEMPLATE PARAMETERS: ", cp_graph.parameters)
             cp_graph = cp_graph.evaluate({param: self.ns['delete'] for param in cp_graph.parameters})
-            remove_optional(cp_graph)
+            remove_optional(cp_graph, self.ns)
         self.bm.add_graph(cp_graph)
         self.bm.graph.add((equip_dict['name'], S223['hasConnectionPoint'], cp_dict['name']))
         self.bm.graph.add((equip_dict['name'], S223['cnx'], cp_dict['name']))
@@ -219,7 +222,7 @@ class ModelBuilder:
         equip_dict[equip_cp_key] = name
         return equip_cp_key
 
-    def add_vfd_to_pump(self, equip_dict, control_medium = CONTROL_MEDIUM):
+    def add_vfd_to_pump(self, equip_dict, control_medium=CONTROL_MEDIUM):
         # Should be a controls medium, will update
         # partly mapped arguments in template, should decide what to do about that
         equip_dict.update({'vfd-name': self.get_unique_uri(self.ns[f'{get_uri_end(equip_dict["name"])}-vfd']), 
@@ -244,7 +247,7 @@ class ModelBuilder:
         else:
             print("DELETING TEMPLATE PARAMETERS: ", vfd_pump_graph.parameters)
             vfd_pump_graph = vfd_pump_graph.evaluate({param: self.ns['delete'] for param in vfd_pump_graph.parameters})
-            remove_optional(vfd_pump_graph)
+            remove_optional(vfd_pump_graph, self.ns)
         self.bm.add_graph(vfd_pump_graph)
         return equip_dict
     def add_controller(self, name, equip_dict_list, control_medium = CONTROL_MEDIUM):

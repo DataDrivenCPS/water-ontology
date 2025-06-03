@@ -231,7 +231,23 @@ uv-reactor:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix nawi: <urn:nawi-water-ontology#> .
 
-    P:name a nawi:UltravioletReactor ;
+    P:name a nawi:UltravioletLightUnit ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+contact-chamber:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix nawi: <urn:nawi-water-ontology#> .
+
+    P:name a nawi:DisinfectionUnit ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:

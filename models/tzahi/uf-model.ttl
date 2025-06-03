@@ -67,6 +67,25 @@ wbs:backwash_tank-volume a s223:QuantifiableObservableProperty ;
     qudt:hasUnit unit:GAL_US ;
     rdfs:comment "29" .
 
+wbs:coag-dosing-pump-flow-rate a s223:QuantifiableObservableProperty ;
+    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
+    rdfs:comment "92" .
+
+wbs:coag-dosing-pump-speed-command a s223:QuantifiableActuatableProperty ;
+    qudt:hasQuantityKind qudtqk:SpeedRatio ;
+    qudt:hasUnit unit:PERCENT ;
+    rdfs:comment "66" .
+
+wbs:coag-tank a nawi:Tank ;
+    s223:cnx wbs:coag-tank-in,
+        wbs:coag-tank-out ;
+    s223:connected wbs:coag-dosing-pump ;
+    s223:connectedThrough wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:connectedTo wbs:coag-dosing-pump ;
+    s223:hasConnectionPoint wbs:coag-tank-in,
+        wbs:coag-tank-out ;
+    s223:hasRole s223:Role-Supply .
+
 wbs:conn-b3w1_valve-to-uf_bypass_valve-flow-rate a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
     rdfs:comment "19" .
@@ -84,7 +103,7 @@ wbs:conn-b3w1_valve-to-uf_bypass_valve-toc-ppm a s223:QuantifiableObservableProp
     s223:ofSubstance nawi:Constituent-Organics ;
     qudt:hasQuantityKind qudtqk:Concentration ;
     qudt:hasUnit unit:PPM ;
-    rdfs:comment "46" .
+    rdfs:comment "74" .
 
 wbs:conn-uf-unit-to-reject_valve-pressure a s223:QuantifiableObservableProperty ;
     qudt:hasQuantityKind qudtqk:Pressure ;
@@ -111,25 +130,6 @@ wbs:feed-pump-speed-command a s223:QuantifiableActuatableProperty ;
 wbs:s2_valve-status a s223:QuantifiableObservableProperty ;
     qudt:hasEnumerationKind s223:EnumerationKind-Status ;
     rdfs:comment "127" .
-
-wbs:supply-tank a nawi:Tank ;
-    s223:cnx wbs:supply-tank-in,
-        wbs:supply-tank-out ;
-    s223:connected wbs:uf-bypass ;
-    s223:connectedThrough wbs:conn-supply-tank-to-uf-bypass ;
-    s223:connectedTo wbs:uf-bypass ;
-    s223:hasConnectionPoint wbs:supply-tank-in,
-        wbs:supply-tank-out ;
-    s223:hasRole s223:Role-Supply .
-
-wbs:supply-tank-out-flow-rate a s223:QuantifiableObservableProperty ;
-    qudt:hasQuantityKind qudtqk:VolumeFlowRate ;
-    rdfs:comment "92" .
-
-wbs:supply-tank-out-speed-command a s223:QuantifiableActuatableProperty ;
-    qudt:hasQuantityKind qudtqk:SpeedRatio ;
-    qudt:hasUnit unit:PERCENT ;
-    rdfs:comment "66" .
 
 wbs:sv8_valve a nawi:Valve ;
     s223:cnx wbs:sv8_valve-in,
@@ -183,10 +183,10 @@ wbs:b3w1_valve-out a s223:OutletConnectionPoint ;
 wbs:b3w2-valve-outlet-cp a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:feed-valve-outlet-cp a s223:OutletConnectionPoint ;
+wbs:coag-tank-in a s223:InletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:supply-tank-in a s223:InletConnectionPoint ;
+wbs:feed-valve-outlet-cp a s223:OutletConnectionPoint ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:sv8_valve-out a s223:OutletConnectionPoint ;
@@ -276,6 +276,23 @@ wbs:backwash_valve-out a s223:OutletConnectionPoint ;
     s223:connectsThrough wbs:conn-backwash_valve-to-uf_backwash_pump ;
     s223:hasMedium s223:Medium-Water .
 
+wbs:coag-dosing-pump-in a s223:InletConnectionPoint ;
+    s223:connectsAt wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:connectsThrough wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:coag-dosing-pump-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-coag-dosing-pump-to-uf-bypass ;
+    s223:connectsAt wbs:conn-coag-dosing-pump-to-uf-bypass ;
+    s223:connectsThrough wbs:conn-coag-dosing-pump-to-uf-bypass ;
+    s223:hasMedium s223:Medium-Water .
+
+wbs:coag-tank-out a s223:OutletConnectionPoint ;
+    s223:cnx wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:connectsAt wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:connectsThrough wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:hasMedium s223:Medium-Water .
+
 wbs:feed-pump-in a s223:InletConnectionPoint ;
     s223:connectsAt wbs:conn-feed-valve-to-feed-pump ;
     s223:connectsThrough wbs:conn-feed-valve-to-feed-pump ;
@@ -350,22 +367,14 @@ wbs:s2_valve-out a s223:OutletConnectionPoint ;
     s223:connectsThrough wbs:conn-of_pump-to-waste ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:supply-tank-out a s223:OutletConnectionPoint ;
-    s223:cnx wbs:conn-supply-tank-to-uf-bypass ;
-    s223:connectsAt wbs:conn-supply-tank-to-uf-bypass ;
-    s223:connectsThrough wbs:conn-supply-tank-to-uf-bypass ;
-    s223:hasMedium s223:Medium-Water ;
-    s223:hasProperty wbs:supply-tank-out-flow-rate,
-        wbs:supply-tank-out-speed-command .
-
 wbs:sv8_valve-in a s223:InletConnectionPoint ;
     s223:connectsAt wbs:conn-uf-out-valve-to-b3w1_valve ;
     s223:connectsThrough wbs:conn-uf-out-valve-to-b3w1_valve ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:uf-bypass-in a s223:InletConnectionPoint ;
-    s223:connectsAt wbs:conn-supply-tank-to-uf-bypass ;
-    s223:connectsThrough wbs:conn-supply-tank-to-uf-bypass ;
+    s223:connectsAt wbs:conn-coag-dosing-pump-to-uf-bypass ;
+    s223:connectsThrough wbs:conn-coag-dosing-pump-to-uf-bypass ;
     s223:hasMedium s223:Medium-Water .
 
 wbs:uf-bypass-out a s223:OutletConnectionPoint ;
@@ -548,6 +557,19 @@ wbs:backwash_valve a nawi:Valve ;
     s223:hasConnectionPoint wbs:backwash_valve-in,
         wbs:backwash_valve-out .
 
+wbs:coag-dosing-pump a nawi:Pump ;
+    s223:cnx wbs:coag-dosing-pump-in,
+        wbs:coag-dosing-pump-out ;
+    s223:connected wbs:uf-bypass ;
+    s223:connectedThrough wbs:conn-coag-dosing-pump-to-uf-bypass,
+        wbs:conn-coag-tank-to-coag-dosing-pump ;
+    s223:connectedTo wbs:uf-bypass ;
+    s223:hasConnectionPoint wbs:coag-dosing-pump-in,
+        wbs:coag-dosing-pump-out ;
+    s223:hasProperty wbs:coag-dosing-pump-flow-rate,
+        wbs:coag-dosing-pump-speed-command ;
+    s223:hasRole s223:Role-Supply .
+
 wbs:feed-pump a nawi:Pump ;
     s223:cnx wbs:feed-pump-in,
         wbs:feed-pump-out ;
@@ -671,7 +693,7 @@ wbs:uf-bypass a nawi:Valve ;
         wbs:uf-bypass-outlet-cp ;
     s223:connected wbs:uf-feed-tank,
         wbs:uf_bypass_valve_to_waste ;
-    s223:connectedThrough wbs:conn-supply-tank-to-uf-bypass,
+    s223:connectedThrough wbs:conn-coag-dosing-pump-to-uf-bypass,
         wbs:conn-uf-bypass-to-uf-feed-tank,
         wbs:conn-uf-bypass-to-uf_bypass_valve_to_waste ;
     s223:connectedTo wbs:uf-feed-tank,
@@ -779,6 +801,20 @@ wbs:conn-backwash_valve-to-uf_backwash_pump a s223:Connection,
     s223:connectsFrom wbs:backwash_valve ;
     s223:connectsTo wbs:uf_backwash_pump .
 
+wbs:conn-coag-dosing-pump-to-uf-bypass a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:coag-dosing-pump-out,
+        wbs:uf-bypass-in ;
+    s223:connectsFrom wbs:coag-dosing-pump ;
+    s223:connectsTo wbs:uf-bypass .
+
+wbs:conn-coag-tank-to-coag-dosing-pump a s223:Connection,
+        s223:Pipe ;
+    s223:cnx wbs:coag-dosing-pump-in,
+        wbs:coag-tank-out ;
+    s223:connectsFrom wbs:coag-tank ;
+    s223:connectsTo wbs:coag-dosing-pump .
+
 wbs:conn-feed-pump-to-b3w2-valve a s223:Connection,
         s223:Pipe ;
     s223:cnx wbs:b3w2-valve-in,
@@ -813,13 +849,6 @@ wbs:conn-reject_valve-to-s2_valve a s223:Connection,
         wbs:s2_valve-in ;
     s223:connectsFrom wbs:reject_valve ;
     s223:connectsTo wbs:s2_valve .
-
-wbs:conn-supply-tank-to-uf-bypass a s223:Connection,
-        s223:Pipe ;
-    s223:cnx wbs:supply-tank-out,
-        wbs:uf-bypass-in ;
-    s223:connectsFrom wbs:supply-tank ;
-    s223:connectsTo wbs:uf-bypass .
 
 wbs:conn-uf-bypass-to-uf-feed-tank a s223:Connection,
         s223:Pipe ;

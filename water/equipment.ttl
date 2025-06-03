@@ -101,11 +101,13 @@ nawi:AerationBasin
 nawi:Digester
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf nawi:Tank .
+    rdfs:subClassOf nawi:Reactor .
+
 nawi:AnaerobicDigester
     rdfs:label "AnaerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
     rdfs:subClassOf nawi:Digester .
+
 nawi:AerobicDigester
     rdfs:label "AerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
@@ -114,7 +116,7 @@ nawi:AerobicDigester
 nawi:DisinfectionUnit
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
-    rdfs:subClassOf nawi:Tank .
+    rdfs:subClassOf nawi:Reactor .
 
 nawi:UltravioletLightUnit
     rdfs:label "UltravioletlightUnit" ;
