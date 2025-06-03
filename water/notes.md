@@ -61,3 +61,5 @@ Notes on modeling of equipment
 
 - June 2, 2025 - Aside from questions about ontology management and what to subclass from 223, questions in this notees document are resolved. 
 - getting rid of qudt subset file for now since its empty, though I think its probably worth having. 
+- Still some confusion between roles and equipment, and if equipment can be multiclassed. For example, plug flow reactors can also be ultraviolet disinfection units. Will that be somethign that is A UltravioletUnit and A plug flow reactor, or should one of these things be moved to a role. 
+- in Brick we would probably create a new class like UltraVioletDisinfectionPlugFlowReacotr. 
