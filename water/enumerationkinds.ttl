@@ -323,7 +323,7 @@ watr:Role-Backwash
 watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
-    a s223:Role-Makeup ;
+    a watr:Role-Makeup ;
     a sh:NodeShape ;
     rdfs:label "MakeUp" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
@@ -340,8 +340,25 @@ watr:Role-Feed
 watr:Role-Permeate 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
-    a s223:Role-Permeate ;
+    a watr:Role-Permeate ;
     a sh:NodeShape ;
     rdfs:label "Permeate" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+# Do we want aeration as a role? Are there fundamental processes that should have roles? 
+watr:Role-Aeration 
+    a s223:EnumerationKind-Role ;
+    a s223:Class ;
+    a watr:Role-Aeration ;
+    a sh:NodeShape ;
+    rdfs:label "Aeration" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+watr:EnumerationKind-Runtime
+    a s223:EnumerationKind ;
+    a s223:Class ;
+    a s223:EnumerationKind-Runtime ;
+    a sh:NodeShape ;
+    rdfs:label "Runtime" ;
+    rdfs:subClassOf s223:EnumerationKind ;
 .

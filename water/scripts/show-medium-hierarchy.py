@@ -43,8 +43,8 @@ def build_tree(g, class_uri, subclass_data):
 
 # class_uri = 's223:EnumerationKind-Substance'
 # testing out with other enumerationkinds
-# class_uri = 's223:EnumerationKind'
-class_uri = 's223:Equipment'
+class_uri = 's223:EnumerationKind'
+# class_uri = 's223:Equipment'
 graph = Graph()
 parse_ttl_files_in_directory('../../s223/vocab', graph)
 parse_ttl_files_in_directory('..', graph)

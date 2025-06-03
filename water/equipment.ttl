@@ -335,16 +335,6 @@ watr:TemperatureSensor
     rdfs:comment "A sensor used to measure temperature" ;
     rdfs:subClassOf s223:TemperatureSensor .
 
-watr:RunTimeSensor
-    rdfs:label "RunTimeSensor" ;
-    rdfs:comment "A sensor used to measure the operating time of equipment" ;
-    rdfs:subClassOf s223:Sensor .
-
-watr:RunStatusSensor
-    rdfs:label "RunStatusSensor" ;
-    rdfs:comment "A sensor used to monitor the operational status of equipment" ;
-    rdfs:subClassOf s223:Sensor .
-
 watr:ConcentrationSensor
     rdfs:label "ConcentrationSensor" ;
     rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
@@ -431,3 +421,14 @@ watr:Controller
     a s223:Class ;
     rdfs:subClassOf s223:Controller ;
 .
+
+# Runtime can just be an enumeration kind - these are just properties
+# watr:RunTimeSensor
+#     rdfs:label "RunTimeSensor" ;
+#     rdfs:comment "A sensor used to measure the operating time of equipment" ;
+#     rdfs:subClassOf s223:Sensor .
+
+# watr:RunStatusSensor
+#     rdfs:label "RunStatusSensor" ;
+#     rdfs:comment "A sensor used to monitor the operational status of equipment" ;
+#     rdfs:subClassOf s223:Sensor .
