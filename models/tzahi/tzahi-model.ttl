@@ -1,4 +1,4 @@
-@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
@@ -9,7 +9,7 @@
 
 wbs: a owl:Ontology .
 
-wbs:ac_valve a nawi:Valve ;
+wbs:ac_valve a watr:Valve ;
     s223:cnx wbs:ac_valve-in,
         wbs:ac_valve-out ;
     s223:connected wbs:v1_valve ;
@@ -39,7 +39,7 @@ wbs:b3w2-valve-status a s223:QuantifiableObservableProperty ;
     qudt:hasEnumerationKind s223:EnumerationKind-Status ;
     rdfs:comment "118" .
 
-wbs:backwash_dosing_pump a nawi:Pump ;
+wbs:backwash_dosing_pump a watr:Pump ;
     s223:cnx wbs:backwash_dosing_pump-out ;
     s223:connected wbs:backwash_tank ;
     s223:connectedThrough wbs:conn-backwash_dosing_pump-to-backwash_tank ;
@@ -81,7 +81,7 @@ wbs:conn-b3w1_valve-to-uf_bypass_valve-pressure a s223:QuantifiableObservablePro
     rdfs:comment "15" .
 
 wbs:conn-b3w1_valve-to-uf_bypass_valve-toc-ppm a s223:QuantifiableObservableProperty ;
-    s223:ofSubstance nawi:Constituent-Organics ;
+    s223:ofSubstance watr:Constituent-Organics ;
     qudt:hasQuantityKind qudtqk:Concentration ;
     qudt:hasUnit unit:PPM ;
     rdfs:comment "46" .
@@ -112,7 +112,7 @@ wbs:s2_valve-status a s223:QuantifiableObservableProperty ;
     qudt:hasEnumerationKind s223:EnumerationKind-Status ;
     rdfs:comment "127" .
 
-wbs:supply-tank a nawi:Tank ;
+wbs:supply-tank a watr:Tank ;
     s223:cnx wbs:supply-tank-in,
         wbs:supply-tank-out ;
     s223:connected wbs:uf-bypass ;
@@ -131,7 +131,7 @@ wbs:supply-tank-out-speed-command a s223:QuantifiableActuatableProperty ;
     qudt:hasUnit unit:PERCENT ;
     rdfs:comment "66" .
 
-wbs:sv8_valve a nawi:Valve ;
+wbs:sv8_valve a watr:Valve ;
     s223:cnx wbs:sv8_valve-in,
         wbs:sv8_valve-out ;
     s223:connectedThrough wbs:conn-uf-out-valve-to-b3w1_valve ;
@@ -147,7 +147,7 @@ wbs:uf-feed-tank-volume a s223:QuantifiableObservableProperty ;
     qudt:hasUnit unit:GAL_US ;
     rdfs:comment "17" .
 
-wbs:uf-out-valve a nawi:Valve ;
+wbs:uf-out-valve a watr:Valve ;
     s223:cnx wbs:uf-out-valve-in,
         wbs:uf-out-valve-out,
         wbs:uf-out-valve-outlet-cp ;
@@ -213,7 +213,7 @@ wbs:ac_valve-out a s223:OutletConnectionPoint ;
     s223:connectsThrough wbs:conn-ac_valve-to-v1_valve ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:air_valve a nawi:Valve ;
+wbs:air_valve a watr:Valve ;
     s223:cnx wbs:air_valve-in,
         wbs:air_valve-out ;
     s223:connectedThrough wbs:conn-reject_valve-to-air_valve ;
@@ -487,7 +487,7 @@ wbs:v1_valve-out a s223:OutletConnectionPoint ;
     s223:connectsThrough wbs:conn-v1_valve-to-uf-unit ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:waste a nawi:Tank ;
+wbs:waste a watr:Tank ;
     s223:cnx wbs:waste-in,
         wbs:waste-out ;
     s223:connectedThrough wbs:conn-of_pump-to-waste ;
@@ -499,7 +499,7 @@ wbs:waste-in a s223:InletConnectionPoint ;
     s223:connectsThrough wbs:conn-of_pump-to-waste ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:b1-valve a nawi:Valve ;
+wbs:b1-valve a watr:Valve ;
     s223:cnx wbs:b1-valve-in,
         wbs:b1-valve-out ;
     s223:connected wbs:v1_valve ;
@@ -526,7 +526,7 @@ wbs:b3w2-valve-out a s223:OutletConnectionPoint ;
         wbs:conn-of_pump-to-waste ;
     s223:hasMedium s223:Medium-Water .
 
-wbs:backwash_tank a nawi:Tank ;
+wbs:backwash_tank a watr:Tank ;
     s223:cnx wbs:backwash_tank-in,
         wbs:backwash_tank-out ;
     s223:connected wbs:backwash_valve ;
@@ -538,7 +538,7 @@ wbs:backwash_tank a nawi:Tank ;
     s223:hasProperty wbs:backwash_tank-volume ;
     s223:hasRole s223:Role-Backwash .
 
-wbs:backwash_valve a nawi:Valve ;
+wbs:backwash_valve a watr:Valve ;
     s223:cnx wbs:backwash_valve-in,
         wbs:backwash_valve-out ;
     s223:connected wbs:uf_backwash_pump ;
@@ -548,7 +548,7 @@ wbs:backwash_valve a nawi:Valve ;
     s223:hasConnectionPoint wbs:backwash_valve-in,
         wbs:backwash_valve-out .
 
-wbs:feed-pump a nawi:Pump ;
+wbs:feed-pump a watr:Pump ;
     s223:cnx wbs:feed-pump-in,
         wbs:feed-pump-out ;
     s223:connected wbs:b3w2-valve ;
@@ -560,7 +560,7 @@ wbs:feed-pump a nawi:Pump ;
     s223:hasProperty wbs:feed-pump-electric-current,
         wbs:feed-pump-speed-command .
 
-wbs:feed-valve a nawi:Valve ;
+wbs:feed-valve a watr:Valve ;
     s223:cnx wbs:feed-valve-in,
         wbs:feed-valve-out,
         wbs:feed-valve-outlet-cp ;
@@ -573,7 +573,7 @@ wbs:feed-valve a nawi:Valve ;
         wbs:feed-valve-outlet-cp ;
     s223:hasRole s223:Role-Supply .
 
-wbs:h1_valve a nawi:Valve ;
+wbs:h1_valve a watr:Valve ;
     s223:cnx wbs:h1_valve-in,
         wbs:h1_valve-out ;
     s223:connected wbs:b3w1_valve ;
@@ -583,7 +583,7 @@ wbs:h1_valve a nawi:Valve ;
     s223:hasConnectionPoint wbs:h1_valve-in,
         wbs:h1_valve-out .
 
-wbs:of_pump a nawi:Pump ;
+wbs:of_pump a watr:Pump ;
     s223:cnx wbs:of_pump-in,
         wbs:of_pump-out ;
     s223:connected wbs:waste ;
@@ -593,7 +593,7 @@ wbs:of_pump a nawi:Pump ;
     s223:hasConnectionPoint wbs:of_pump-in,
         wbs:of_pump-out .
 
-wbs:s2_valve a nawi:Valve ;
+wbs:s2_valve a watr:Valve ;
     s223:cnx wbs:s2_valve-in,
         wbs:s2_valve-out ;
     s223:connectedThrough wbs:conn-of_pump-to-waste,
@@ -602,7 +602,7 @@ wbs:s2_valve a nawi:Valve ;
         wbs:s2_valve-out ;
     s223:hasProperty wbs:s2_valve-status .
 
-wbs:uf-unit a nawi:UltrafiltrationUnit ;
+wbs:uf-unit a watr:UltrafiltrationUnit ;
     s223:cnx wbs:uf-unit-in,
         wbs:uf-unit-out,
         wbs:uf-unit-outlet-cp ;
@@ -614,7 +614,7 @@ wbs:uf-unit a nawi:UltrafiltrationUnit ;
         wbs:uf-unit-out,
         wbs:uf-unit-outlet-cp .
 
-wbs:uf_backwash_pump a nawi:Pump ;
+wbs:uf_backwash_pump a watr:Pump ;
     s223:cnx wbs:uf_backwash_pump-in,
         wbs:uf_backwash_pump-out ;
     s223:connected wbs:h1_valve ;
@@ -625,7 +625,7 @@ wbs:uf_backwash_pump a nawi:Pump ;
         wbs:uf_backwash_pump-out ;
     s223:hasProperty wbs:uf_backwash_pump-status .
 
-wbs:ufd_valve a nawi:Valve ;
+wbs:ufd_valve a watr:Valve ;
     s223:cnx wbs:ufd_valve-in,
         wbs:ufd_valve-out,
         wbs:ufd_valve-outlet-cp ;
@@ -636,7 +636,7 @@ wbs:ufd_valve a nawi:Valve ;
         wbs:ufd_valve-outlet-cp ;
     s223:hasProperty wbs:ufd_valve-status .
 
-wbs:b3w2-valve a nawi:Valve ;
+wbs:b3w2-valve a watr:Valve ;
     s223:cnx wbs:b3w2-valve-in,
         wbs:b3w2-valve-out,
         wbs:b3w2-valve-outlet-cp ;
@@ -650,7 +650,7 @@ wbs:b3w2-valve a nawi:Valve ;
         wbs:b3w2-valve-outlet-cp ;
     s223:hasProperty wbs:b3w2-valve-status .
 
-wbs:reject_valve a nawi:Valve ;
+wbs:reject_valve a watr:Valve ;
     s223:cnx wbs:reject_valve-in,
         wbs:reject_valve-out,
         wbs:reject_valve-outlet-cp ;
@@ -665,7 +665,7 @@ wbs:reject_valve a nawi:Valve ;
         wbs:reject_valve-out,
         wbs:reject_valve-outlet-cp .
 
-wbs:uf-bypass a nawi:Valve ;
+wbs:uf-bypass a watr:Valve ;
     s223:cnx wbs:uf-bypass-in,
         wbs:uf-bypass-out,
         wbs:uf-bypass-outlet-cp ;
@@ -681,7 +681,7 @@ wbs:uf-bypass a nawi:Valve ;
         wbs:uf-bypass-outlet-cp ;
     s223:hasRole s223:Role-Bypass .
 
-wbs:uf-feed-tank a nawi:Tank ;
+wbs:uf-feed-tank a watr:Tank ;
     s223:cnx wbs:uf-feed-tank-in,
         wbs:uf-feed-tank-out,
         wbs:uf-feed-tank-outlet-cp ;
@@ -699,7 +699,7 @@ wbs:uf-feed-tank a nawi:Tank ;
         wbs:uf-feed-tank-volume ;
     s223:hasRole s223:Role-Supply .
 
-wbs:uf_bypass_valve_to_waste a nawi:Valve ;
+wbs:uf_bypass_valve_to_waste a watr:Valve ;
     s223:cnx wbs:uf_bypass_valve_to_waste-in,
         wbs:uf_bypass_valve_to_waste-out,
         wbs:uf_bypass_valve_to_waste-outlet-cp ;
@@ -712,7 +712,7 @@ wbs:uf_bypass_valve_to_waste a nawi:Valve ;
         wbs:uf_bypass_valve_to_waste-out,
         wbs:uf_bypass_valve_to_waste-outlet-cp .
 
-wbs:b3w1_valve a nawi:Valve ;
+wbs:b3w1_valve a watr:Valve ;
     s223:cnx wbs:b3w1_valve-in,
         wbs:b3w1_valve-out,
         wbs:b3w1_valve-outlet-cp ;
@@ -886,7 +886,7 @@ wbs:conn-v1_valve-to-uf-unit a s223:Connection,
     s223:connectsFrom wbs:v1_valve ;
     s223:connectsTo wbs:uf-unit .
 
-wbs:uf_bypass_valve a nawi:Valve ;
+wbs:uf_bypass_valve a watr:Valve ;
     s223:cnx wbs:uf_bypass_valve-in,
         wbs:uf_bypass_valve-inlet-cp,
         wbs:uf_bypass_valve-out ;
@@ -899,7 +899,7 @@ wbs:uf_bypass_valve a nawi:Valve ;
         wbs:uf_bypass_valve-inlet-cp,
         wbs:uf_bypass_valve-out .
 
-wbs:v1_valve a nawi:Valve ;
+wbs:v1_valve a watr:Valve ;
     s223:cnx wbs:v1_valve-in,
         wbs:v1_valve-inlet-cp,
         wbs:v1_valve-out ;

@@ -13,7 +13,7 @@ Classes are organized into a hierarchy, and entities are an instance of a given 
 Examples of relationships are *encapsulation* (one entity is contained within another), *sequence* (one entity takes effect before another in some process) and *instantiation* (one entity's type is given by another).
 
 - **Relation:** A predicate (RDF property) used to describe a given relationship.
-Examples of a relation are the WaTr relation `sWaTr:contains`, which defines the relationship between two pieces of equipment in which one contains another.  
+Examples of a relation are the WaTr relation `swatr:contains`, which defines the relationship between two pieces of equipment in which one contains another.  
 
  - **Graph:** An abstract organizational data structure representing a set of entities (nodes) and relationships (edges) described in triple-structure. WaTr models are represented by a directed, labeled graph, and use the RDF standard. We recommend reading the [Wikipedia page on the abstract graph data structure](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) for more information.
 

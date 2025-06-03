@@ -4,7 +4,7 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 
 <urn:nawi-water-ontology/equip>
     a owl:Ontology ;
@@ -12,7 +12,7 @@
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-nawi:Tank a rdfs:Class, sh:NodeShape ;
+watr:Tank a rdfs:Class, sh:NodeShape ;
     rdfs:label "Tank" ;
     rdfs:comment "A tank for storing liquid" ;
     rdfs:subClassOf s223:Equipment ;
@@ -42,10 +42,10 @@ nawi:Tank a rdfs:Class, sh:NodeShape ;
     ] ;
 .
 
-nawi:Reactor
+watr:Reactor
     rdfs:label "Reactor" ;
     rdfs:comment "An equipment used for chemical reaction" ;
-    rdfs:subClassOf nawi:Tank ;
+    rdfs:subClassOf watr:Tank ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A reactor has at least one inlet fluid connection point" ;
@@ -72,362 +72,362 @@ nawi:Reactor
     ] ;
 .
 
-nawi:SequencingBatchReactor
+watr:SequencingBatchReactor
     rdfs:label "SequencingBatchReactor" ;
     rdfs:comment "A type of activated sludge process for wastewater treatment" ;
-    rdfs:subClassOf nawi:Reactor .
+    rdfs:subClassOf watr:Reactor .
 
-nawi:PlugFlowReactor
+watr:PlugFlowReactor
     rdfs:label "PlugFlowReactor" ;
     rdfs:comment "A type of reactor where the fluid flows in one direction through the tube" ;
-    rdfs:subClassOf nawi:Reactor .
+    rdfs:subClassOf watr:Reactor .
 
-nawi:ContinuouslyStirredTankReactor
+watr:ContinuouslyStirredTankReactor
     rdfs:label "ContinuouslyStirredTankReactor" ;
     rdfs:comment "A reactor in which contents are well mixed and reactants are added continuously" ;
-    rdfs:subClassOf nawi:Reactor .
+    rdfs:subClassOf watr:Reactor .
 
-nawi:StaticMixer
+watr:StaticMixer
     rdfs:label "StaticMixer" ;
     rdfs:comment "A device for mixing liquids without moving components" ;
-    rdfs:subClassOf nawi:Reactor .
+    rdfs:subClassOf watr:Reactor .
 
-nawi:AerationBasin
+watr:AerationBasin
     rdfs:label "AerationBasin" ;
     rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
-    rdfs:subClassOf nawi:Reactor .
+    rdfs:subClassOf watr:Reactor .
 
-nawi:Digester
+watr:Digester
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf nawi:Tank .
-nawi:AnaerobicDigester
+    rdfs:subClassOf watr:Tank .
+watr:AnaerobicDigester
     rdfs:label "AnaerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
-    rdfs:subClassOf nawi:Digester .
-nawi:AerobicDigester
+    rdfs:subClassOf watr:Digester .
+watr:AerobicDigester
     rdfs:label "AerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
-    rdfs:subClassOf nawi:Digester .
+    rdfs:subClassOf watr:Digester .
 
-nawi:DisinfectionUnit
+watr:DisinfectionUnit
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
-    rdfs:subClassOf nawi:Tank .
+    rdfs:subClassOf watr:Tank .
 
-nawi:UltravioletLightUnit
+watr:UltravioletLightUnit
     rdfs:label "UltravioletlightUnit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
-    rdfs:subClassOf nawi:Disinfection .
+    rdfs:subClassOf watr:Disinfection .
 
-nawi:ChlorinationBasin
+watr:ChlorinationBasin
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
-    rdfs:subClassOf nawi:Disinfection .
+    rdfs:subClassOf watr:Disinfection .
 
-nawi:SedimentationTank
+watr:SedimentationTank
     rdfs:label "SedimentationTank" ;
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
-    rdfs:subClassOf nawi:Tank .
+    rdfs:subClassOf watr:Tank .
 
-nawi:Screen
+watr:Screen
     rdfs:label "Screen" ;
     rdfs:comment "An equipment used for separation" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:GritChamber
+watr:GritChamber
     rdfs:label "Grit Chamber" ;
     rdfs:comment "A chamber used to remove grit from wastewater" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Reservoir
+watr:Reservoir
     rdfs:label "Reservoir" ;
     rdfs:comment "A large natural or artificial body of water used for water supply" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Pond
+watr:Pond
     rdfs:label "Pond" ;
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Battery
+watr:Battery
     rdfs:label "Battery" ;
     rdfs:comment "A device that stores energy for later use" ;
     rdfs:subClassOf s223:Battery .
 
-nawi:Cogenerator
+watr:Cogenerator
     rdfs:label "Cogenerator" ;
     rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Boiler
+watr:Boiler
     rdfs:label "Boiler" ;
     rdfs:comment "A device for heating water" ;
     rdfs:subClassOf s223:Boiler .
 
-nawi:Conditioner
+watr:Conditioner
     rdfs:label "Conditioner" ;
     rdfs:comment "An equipment used to prepare raw biogas from a digester by removing impurities" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Flare
+watr:Flare
     rdfs:label "Flare" ;
     rdfs:comment "A device used to burn off unwanted gas" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Pump
+watr:Pump
     rdfs:label "Pump" ;
     rdfs:comment "A device used to move fluids by mechanical action" ;
     rdfs:subClassOf s223:Pump .
 
-nawi:PressureExchanger
+watr:PressureExchanger
     rdfs:label "PressureExchanger" ;
     rdfs:comment "A device used to transfer pressure energy from one fluid to another" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:DewateringUnit
+watr:DewateringUnit
     rdfs:label "Dewatering" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Thickener
+watr:Thickener
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:DissolvedAirFlotationThickener
+watr:DissolvedAirFlotationThickener
     rdfs:label "DissolvedAirFlotationThickener" ;
     rdfs:comment "A thickener that uses dissolved air to separate solids from liquids" ;
-    rdfs:subClassOf nawi:Thickener .
+    rdfs:subClassOf watr:Thickener .
 
-nawi:CentrifugalThickener
+watr:CentrifugalThickener
     rdfs:label "CentrifugalThickener" ;
     rdfs:comment "A thickener that uses centrifugal force to separate solids from liquids" ;
-    rdfs:subClassOf nawi:Thickener .
+    rdfs:subClassOf watr:Thickener .
 
-nawi:GravityThickener
+watr:GravityThickener
     rdfs:label "GravityThickener" ;
     rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
-    rdfs:subClassOf nawi:Thickener .
+    rdfs:subClassOf watr:Thickener .
 
-nawi:BeltThickener
+watr:BeltThickener
     rdfs:label "BeltThickener" ;
     rdfs:comment "A thickener that uses a belt system to separate solids from liquids" ;
-    rdfs:subClassOf nawi:Thickener .
+    rdfs:subClassOf watr:Thickener .
 
-nawi:GravityBeltThickener
+watr:GravityBeltThickener
     rdfs:label "Gravity Belt Thickener" ;
     rdfs:comment "A thickener that combines gravity separation with a belt system" ;
-    rdfs:subClassOf nawi:BeltThickener .
+    rdfs:subClassOf watr:BeltThickener .
 
-nawi:RotaryDrumThickener
+watr:RotaryDrumThickener
     rdfs:label "Rotary Drum Thickener" ;
     rdfs:comment "A thickener that uses a rotating drum to separate solids from liquids" ;
-    rdfs:subClassOf nawi:Thickener .
+    rdfs:subClassOf watr:Thickener .
 
-nawi:Filter
+watr:Filter
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter .
 
-nawi:ReverseOsmosisMembrane
+watr:ReverseOsmosisMembrane
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
     
-nawi:ReverseOsmosisMembrane
+watr:ReverseOsmosisMembrane
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:TricklingFilter
+watr:TricklingFilter
     rdfs:label "TricklingFilter" ;
     rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:MembraneBioreactor
+watr:MembraneBioreactor
     rdfs:label "MembraneBioreactor" ;
     rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:MicrofiltrationUnit
+watr:MicrofiltrationUnit
     rdfs:label "MicrofiltrationUnit" ;
     rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:UltrafiltrationUnit
+watr:UltrafiltrationUnit
     rdfs:label "UltrafiltrationUnit" ;
     rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:NanofiltrationUnit
+watr:NanofiltrationUnit
     rdfs:label "NanofiltrationUnit" ;
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:MediaFiltration
+watr:MediaFiltration
     rdfs:label "MediaFiltrationUnit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
 
-nawi:CartridgeFiltrationUnit
+watr:CartridgeFiltrationUnit
     rdfs:label "CartridgeFiltrationUnit" ;
     rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
-    rdfs:subClassOf nawi:Filter .
+    rdfs:subClassOf watr:Filter .
     
-nawi:IonExchangeMembrane
+watr:IonExchangeMembrane
     rdfs:label "IonExchangeMembrane" ;
     rdfs:comment "A membrane that selectively allows ions to pass through while blocking other substances" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:ElectrodialysisUnit
+watr:ElectrodialysisUnit
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A unit that uses electricity to drive ion movement through a membrane" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Electrolyzer
+watr:Electrolyzer
     rdfs:label "Electrolyzer" ;
     rdfs:comment "An equipment that uses electricity to split liquids into constituent elements" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Crystallizer
+watr:Crystallizer
     rdfs:label "Crystallizer" ;
     rdfs:comment "An equipment used to produce solid crystals from a solution" ;
     rdfs:subClassOf s223:Equipment .
 
-nawi:Compressor
+watr:Compressor
     rdfs:label "Compressor" ;
     rdfs:comment "An equipment that increases the pressure of a gas" ;
     rdfs:subClassOf s223:Compressor .
 
-nawi:Evaporator
+watr:Evaporator
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
     rdfs:subClassOf s223:HeatExchanger .
 
-nawi:Condenser
+watr:Condenser
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
     rdfs:subClassOf s223:HeatExchanger .
 
-nawi:FlowSensor
+watr:FlowSensor
     rdfs:label "FlowSensor" ;
     rdfs:comment "A sensor used to measure the flow rate of liquids or gases" ;
     rdfs:subClassOf s223:FlowSensor .
 
-nawi:VolumeSensor
+watr:VolumeSensor
     rdfs:label "VolumeSensor" ;
     rdfs:comment "A sensor used to measure the volume of a substance" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:LevelSensor
+watr:LevelSensor
     rdfs:label "LevelSensor" ;
     rdfs:comment "A sensor used to detect the level of liquids or solids in a tank" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:PressureSensor
+watr:PressureSensor
     rdfs:label "PressureSensor" ;
     rdfs:comment "A sensor used to measure pressure" ;
     rdfs:subClassOf s223:PressureSensor .
 
-nawi:TemperatureSensor
+watr:TemperatureSensor
     rdfs:label "TemperatureSensor" ;
     rdfs:comment "A sensor used to measure temperature" ;
     rdfs:subClassOf s223:TemperatureSensor .
 
-nawi:RunTimeSensor
+watr:RunTimeSensor
     rdfs:label "RunTimeSensor" ;
     rdfs:comment "A sensor used to measure the operating time of equipment" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:RunStatusSensor
+watr:RunStatusSensor
     rdfs:label "RunStatusSensor" ;
     rdfs:comment "A sensor used to monitor the operational status of equipment" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:ConcentrationSensor
+watr:ConcentrationSensor
     rdfs:label "ConcentrationSensor" ;
     rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
-nawi:OxygenMeter
+watr:OxygenMeter
     rdfs:label "Oxygen Meter" ;
     rdfs:comment "A sensor used to measure the concentration of oxygen" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
-nawi:OxygenDemandSensor
+watr:OxygenDemandSensor
     rdfs:label "OxygenDemandSensor" ;
     rdfs:comment "A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:pHSensor
+watr:pHSensor
     rdfs:label "pHSensor" ;
     rdfs:comment "A sensor used to measure the pH of a solution" ;
-    rdfs:subClassOf nawi:ConcentrationSensor .
+    rdfs:subClassOf watr:ConcentrationSensor .
 
-nawi:ConductivitySensor
+watr:ConductivitySensor
     rdfs:label "ConductivitySensor" ;
     rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
-    rdfs:subClassOf nawi:Sensor .
+    rdfs:subClassOf watr:Sensor .
 
-nawi:TurbidityMeter
+watr:TurbidityMeter
     rdfs:label "TurbidityMeter" ;
     rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
-    rdfs:subClassOf nawi:Sensor .
+    rdfs:subClassOf watr:Sensor .
 
-nawi:RotationSensor
+watr:RotationSensor
     rdfs:label "RotationSensor" ;
     rdfs:comment "A sensor used to measure the rotational speed or position of an object" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:EfficiencySensor
+watr:EfficiencySensor
     rdfs:label "EfficiencySensor" ;
     rdfs:comment "A sensor used to measure the efficiency of a system or equipment" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:StateOfChargeSensor
+watr:StateOfChargeSensor
     rdfs:label "State of Charge Sensor" ;
     rdfs:comment "A sensor used to measure the remaining charge in a battery or energy storage system" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:SpeedSensor
+watr:SpeedSensor
     rdfs:label "Speed Sensor" ;
     rdfs:comment "A sensor used to measure the speed of an object or fluid" ;
     rdfs:subClassOf s223:Sensor .
 
-nawi:FrequencySensor
+watr:FrequencySensor
     rdfs:label "Frequency Sensor" ;
     rdfs:comment "A sensor used to measure the frequency of a signal or mechanical vibration" ;
     rdfs:subClassOf s223:Sensor .
 
 # Do we want something like this? Is modeling a TOC sensor without explicitly naming it too vague (Concentration sensor, measuring organics)
-nawi:TotalOrganicCompoundConcentrationSensor
+watr:TotalOrganicCompoundConcentrationSensor
     rdfs:label "TOC Sensor" ;
     rdfs:comment "A sensor used to measure the total organic compound concentration" ;
-    rdfs:subClassOf nawi:ConcentrationSensor ;
+    rdfs:subClassOf watr:ConcentrationSensor ;
 .
 # I just forgot this one originally I think
-nawi:Membrane
+watr:Membrane
     a s223:Class ;
     rdfs:subClassOf s223:Filter 
 .
-nawi:Valve 
+watr:Valve 
     a s223:Class; 
     rdfs:subClassOf s223:Valve 
 .
-nawi:VariableFrequencyDrive
+watr:VariableFrequencyDrive
     a s223:Class ;
     rdfs:subClassOf s223:VariableFrequencyDrive
 .
-nawi:ThreeWayValve 
+watr:ThreeWayValve 
     a s223:Class; 
     rdfs:subClassOf s223:Valve 
 .
-nawi:CheckValve
+watr:CheckValve
     a s223:Class; 
     rdfs:subClassOf s223:Valve
 .
-nawi:Controller 
+watr:Controller 
     a s223:Class ;
     rdfs:subClassOf s223:Controller ;
 .

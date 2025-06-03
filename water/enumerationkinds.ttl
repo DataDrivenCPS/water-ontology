@@ -7,7 +7,7 @@
 @prefix equip: <urn:nawi-water-ontology/equip#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
-@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 
 
 <urn:nawi-water-ontology/substances>
@@ -16,34 +16,34 @@
     rdfs:comment "An ontology for water substances used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-nawi:Constituent-Metals
+watr:Constituent-Metals
   a s223:Class ;
-  a nawi:Constituent-Metals ;
+  a watr:Constituent-Metals ;
   a sh:NodeShape ;
   rdfs:comment "Constituent-Metals" ;
   rdfs:label "Constituent-Metals" ;
   rdfs:subClassOf s223:Medium-Constituent ;
 .
 # Is it useful to have generic Salt? 
-nawi:Constituent-Salt
+watr:Constituent-Salt
   a s223:Class ;
-  a nawi:Constituent-Salt ;
+  a watr:Constituent-Salt ;
   a sh:NodeShape ;
   rdfs:comment "Constituent-Salt" ;
   rdfs:label "Constituent-Salt" ;
   rdfs:subClassOf s223:Medium-Constituent ;
 .
-nawi:Salt-NaCl
+watr:Salt-NaCl
   a s223:Class ;
-  a nawi:Salt-NaCl ;
+  a watr:Salt-NaCl ;
   a sh:NodeShape ;
   rdfs:comment "Salt-NaCl" ;
   rdfs:label "Salt-NaCl" ;
-  rdfs:subClassOf nawi:Constituent-Salt ;
+  rdfs:subClassOf watr:Constituent-Salt ;
 .
-nawi:Water-Brine
+watr:Water-Brine
   a s223:Class ;
-  a nawi:Water-Brine ;
+  a watr:Water-Brine ;
   a sh:NodeShape ;
   rdfs:comment "Water-Brine" ;
   rdfs:label "Water-Brine" ;
@@ -52,7 +52,7 @@ nawi:Water-Brine
       a s223:QuantifiableProperty ;
       s223:hasAspect s223:Aspect-LowLimit ;
       s223:hasValue "3.5"^^xsd:decimal ;
-      s223:ofConstituent nawi:Salt-NaCl ;
+      s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
       rdfs:label "Minimum Salt Concentration in Brine" ;
@@ -68,7 +68,7 @@ nawi:Water-Brine
     ] ;
 # range based on google first result
 .
-nawi:Water-Brine
+watr:Water-Brine
   # Possible constraint so subclasses are within allowed concentration ranges
   # tried writing rule to use the existing composedOf high and low limit - not a good idea - too messy 
   sh:property [
@@ -83,24 +83,24 @@ nawi:Water-Brine
         WHERE {
           $this s223:composedOf ?constituent .
           ?constituent s223:hasValue ?conc ;
-            s223:ofConstituent nawi:Salt-NaCl .
+            s223:ofConstituent watr:Salt-NaCl .
           FILTER(?conc < 3.5 || ?conc > 26) .
           }
         """ ;
     ] ;
   ] ;
 .
-nawi:Brine-15Percent
+watr:Brine-15Percent
   a s223:Class ;
-  a nawi:Brine-15Percent ;
+  a watr:Brine-15Percent ;
   a sh:NodeShape ;
   rdfs:comment "Brine-15Percent" ;
   rdfs:label "Brine-15Percent" ;
-  rdfs:subClassOf nawi:Water-Brine;
+  rdfs:subClassOf watr:Water-Brine;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasValue "15"^^xsd:decimal ;
-      s223:ofConstituent nawi:Salt-NaCl ;
+      s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
       rdfs:label "salt concentration" ;
@@ -118,18 +118,18 @@ nawi:Brine-15Percent
 .
 # Wonder how we should express a range, property like error or min/max properties? Use SHACL minexclusive/inclusive
 # Can do with existing 223 properties.
-nawi:Brine-5to10Percent
+watr:Brine-5to10Percent
   a s223:Class ;
-  a nawi:Brine-5to10Percent ;
+  a watr:Brine-5to10Percent ;
   a sh:NodeShape ;
   rdfs:comment "Brine-5to10Percent" ;
   rdfs:label "Brine-5to10Percent" ;
-  rdfs:subClassOf nawi:Water-Brine;
+  rdfs:subClassOf watr:Water-Brine;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasAspect s223:Aspect-LowLimit ;
       s223:hasValue "5"^^xsd:decimal ;
-      s223:ofConstituent nawi:Salt-NaCl ;
+      s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
       rdfs:label "low salt concentration" ;
@@ -138,7 +138,7 @@ nawi:Brine-5to10Percent
       a s223:QuantifiableProperty ;
       s223:hasAspect s223:Aspect-HighLimit ;
       s223:hasValue "10"^^xsd:decimal ;
-      s223:ofConstituent nawi:Salt-NaCl ;
+      s223:ofConstituent watr:Salt-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
       rdfs:label "salt concentration" ;
@@ -148,9 +148,9 @@ nawi:Brine-5to10Percent
 .
 
 # Base Class for Wastewater Treatment Chemicals
-nawi:WastewaterTreatmentChemical
+watr:WastewaterTreatmentChemical
   a s223:Class ;
-  a nawi:WastewaterTreatmentChemical ;
+  a watr:WastewaterTreatmentChemical ;
   a sh:NodeShape ;
   rdfs:comment "Base class for all chemicals used in wastewater treatment" ;
   rdfs:label "Wastewater Treatment Chemical" ;
@@ -158,169 +158,169 @@ nawi:WastewaterTreatmentChemical
 .
 
 # Coagulants
-nawi:Coagulant
+watr:Coagulant
   a s223:Class ;
-  a nawi:Coagulant ;
+  a watr:Coagulant ;
   a sh:NodeShape ;
   rdfs:comment "Class for coagulants used in wastewater treatment" ;
   rdfs:label "Coagulant" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
-nawi:Coagulant-Alum
+watr:Coagulant-Alum
   a s223:Class ;
-  a nawi:Coagulant-Alum ;
+  a watr:Coagulant-Alum ;
   a sh:NodeShape ;
   rdfs:comment "Aluminum sulfate (alum), a common coagulant" ;
   rdfs:label "Alum" ;
-  rdfs:subClassOf nawi:Coagulant ;
+  rdfs:subClassOf watr:Coagulant ;
 .
 
-nawi:Coagulant-FerricChloride
+watr:Coagulant-FerricChloride
   a s223:Class ;
-  a nawi:Coagulant-FerricChloride ;
+  a watr:Coagulant-FerricChloride ;
   a sh:NodeShape ;
   rdfs:comment "Ferric chloride, a coagulant for wastewater treatment" ;
   rdfs:label "Ferric Chloride" ;
-  rdfs:subClassOf nawi:Coagulant ;
+  rdfs:subClassOf watr:Coagulant ;
 .
 
-nawi:Coagulant-PolyaluminumChloride
+watr:Coagulant-PolyaluminumChloride
   a s223:Class ;
-  a nawi:Coagulant-PolyaluminumChloride ;
+  a watr:Coagulant-PolyaluminumChloride ;
   a sh:NodeShape ;
   rdfs:comment "Polyaluminum chloride (PAC), a coagulant" ;
   rdfs:label "Polyaluminum Chloride" ;
-  rdfs:subClassOf nawi:Coagulant ;
+  rdfs:subClassOf watr:Coagulant ;
 .
 
 # Flocculants
-nawi:Flocculant
+watr:Flocculant
   a s223:Class ;
-  a nawi:Flocculant ;
+  a watr:Flocculant ;
   a sh:NodeShape ;
   rdfs:comment "Class for flocculants used in wastewater treatment" ;
   rdfs:label "Flocculant" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
-nawi:Flocculant-Polyacrylamide
+watr:Flocculant-Polyacrylamide
   a s223:Class ;
-  a nawi:Flocculant-Polyacrylamide ;
+  a watr:Flocculant-Polyacrylamide ;
   a sh:NodeShape ;
   rdfs:comment "Polyacrylamide, a common flocculant" ;
   rdfs:label "Polyacrylamide" ;
-  rdfs:subClassOf nawi:Flocculant ;
+  rdfs:subClassOf watr:Flocculant ;
 .
 
 # pH Adjusters
-nawi:pHAdjuster
+watr:pHAdjuster
   a s223:Class ;
-  a nawi:pHAdjuster ;
+  a watr:pHAdjuster ;
   a sh:NodeShape ;
   rdfs:comment "Class for pH adjusters used in wastewater treatment" ;
   rdfs:label "pH Adjuster" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
-nawi:pHAdjuster-Lime
+watr:pHAdjuster-Lime
   a s223:Class ;
-  a nawi:pHAdjuster-Lime ;
+  a watr:pHAdjuster-Lime ;
   a sh:NodeShape ;
   rdfs:comment "Calcium hydroxide (lime), used to increase pH" ;
   rdfs:label "Lime" ;
-  rdfs:subClassOf nawi:pHAdjuster ;
+  rdfs:subClassOf watr:pHAdjuster ;
 .
 
-nawi:pHAdjuster-SulfuricAcid
+watr:pHAdjuster-SulfuricAcid
   a s223:Class ;
-  a nawi:pHAdjuster-SulfuricAcid ;
+  a watr:pHAdjuster-SulfuricAcid ;
   a sh:NodeShape ;
   rdfs:comment "Sulfuric acid, used to decrease pH" ;
   rdfs:label "Sulfuric Acid" ;
-  rdfs:subClassOf nawi:pHAdjuster ;
+  rdfs:subClassOf watr:pHAdjuster ;
 .
 
 # Disinfectants
-nawi:Disinfectant
+watr:Disinfectant
   a s223:Class ;
-  a nawi:Disinfectant ;
+  a watr:Disinfectant ;
   a sh:NodeShape ;
   rdfs:comment "Class for disinfectants used in wastewater treatment" ;
   rdfs:label "Disinfectant" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
-nawi:Disinfectant-Chlorine
+watr:Disinfectant-Chlorine
   a s223:Class ;
-  a nawi:Disinfectant-Chlorine ;
+  a watr:Disinfectant-Chlorine ;
   a sh:NodeShape ;
   rdfs:comment "Chlorine, a common disinfectant" ;
   rdfs:label "Chlorine" ;
-  rdfs:subClassOf nawi:Disinfectant ;
+  rdfs:subClassOf watr:Disinfectant ;
 .
 
-nawi:Disinfectant-Ozone
+watr:Disinfectant-Ozone
   a s223:Class ;
-  a nawi:Disinfectant-Ozone ;
+  a watr:Disinfectant-Ozone ;
   a sh:NodeShape ;
   rdfs:comment "Ozone, an advanced disinfectant" ;
   rdfs:label "Ozone" ;
-  rdfs:subClassOf nawi:Disinfectant ;
+  rdfs:subClassOf watr:Disinfectant ;
 .
 
 # Odor Control Agents
-nawi:OdorControlAgent
+watr:OdorControlAgent
   a s223:Class ;
-  a nawi:OdorControlAgent ;
+  a watr:OdorControlAgent ;
   a sh:NodeShape ;
   rdfs:comment "Class for chemicals used for odor control" ;
   rdfs:label "Odor Control Agent" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
-nawi:OdorControlAgent-ActivatedCarbon
+watr:OdorControlAgent-ActivatedCarbon
   a s223:Class ;
-  a nawi:OdorControlAgent-ActivatedCarbon ;
+  a watr:OdorControlAgent-ActivatedCarbon ;
   a sh:NodeShape ;
   rdfs:comment "Activated carbon, used to absorb odors" ;
   rdfs:label "Activated Carbon" ;
-  rdfs:subClassOf nawi:OdorControlAgent ;
+  rdfs:subClassOf watr:OdorControlAgent ;
 .
 
 # Heavy Metal Removal Agents
-nawi:HeavyMetalRemovalAgent
+watr:HeavyMetalRemovalAgent
   a s223:Class ;
-  a nawi:HeavyMetalRemovalAgent ;
+  a watr:HeavyMetalRemovalAgent ;
   a sh:NodeShape ;
   rdfs:comment "Class for chemicals used to remove heavy metals" ;
   rdfs:label "Heavy Metal Removal Agent" ;
-  rdfs:subClassOf nawi:WastewaterTreatmentChemical ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 # Could rename to chelator
-nawi:HeavyMetalRemovalAgent-SodiumSulfide
+watr:HeavyMetalRemovalAgent-SodiumSulfide
   a s223:Class ;
-  a nawi:HeavyMetalRemovalAgent-SodiumSulfide ;
+  a watr:HeavyMetalRemovalAgent-SodiumSulfide ;
   a sh:NodeShape ;
   rdfs:comment "Sodium sulfide, used to precipitate heavy metals" ;
   rdfs:label "Sodium Sulfide" ;
-  rdfs:subClassOf nawi:HeavyMetalRemovalAgent ;
+  rdfs:subClassOf watr:HeavyMetalRemovalAgent ;
 .
-nawi:Constituent-Organics
+watr:Constituent-Organics
     a s223:Class ; 
-    a nawi:Constituent-Organics ;
+    a watr:Constituent-Organics ;
     a sh:NodeShape ;
     rdfs:comment "Constituent-Organics" ;
     rdfs:label "Constituent-Organics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-nawi:Role-Backwash 
+watr:Role-Backwash 
     a s223:EnumerationKind ;
-    a nawi:Role-Backwash ; 
+    a watr:Role-Backwash ; 
     rdfs:subClassOf s223:EnumerationKind-Role ;
     rdfs:label "Role-Backwash" ;
 .
-nawi:Role-MakeUp 
+watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Makeup ;
@@ -329,7 +329,7 @@ nawi:Role-MakeUp
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-nawi:Role-Feed 
+watr:Role-Feed 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Feed ;
@@ -337,7 +337,7 @@ nawi:Role-Feed
     rdfs:label "Feed" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
-nawi:Role-Permeate 
+watr:Role-Permeate 
     a s223:EnumerationKind-Role ;
     a s223:Class ;
     a s223:Role-Permeate ;
