@@ -118,12 +118,12 @@ watr:DisinfectionUnit
 watr:UltravioletLightUnit
     rdfs:label "UltravioletlightUnit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
-    rdfs:subClassOf watr:Disinfection .
+    rdfs:subClassOf watr:DisinfectionUnit .
 
 watr:ChlorinationBasin
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
-    rdfs:subClassOf watr:Disinfection .
+    rdfs:subClassOf watr:DisinfectionUnit .
 
 watr:SedimentationTank
     rdfs:label "SedimentationTank" ;
