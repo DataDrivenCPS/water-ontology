@@ -58,3 +58,6 @@ Notes on modeling of equipment
     - Definitely want to reduce namespace annoyances for people querying - may want to just redeclare everything...
 
 - is there a way to do some string processing inside templates in buildingMotif, so that I can optionally expose less inputs for the dictionary? 
+
+- June 2, 2025 - Aside from questions about ontology management and what to subclass from 223, questions in this notees document are resolved. 
+- getting rid of qudt subset file for now since its empty, though I think its probably worth having. 

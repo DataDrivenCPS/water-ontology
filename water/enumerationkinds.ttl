@@ -60,7 +60,6 @@ watr:Water-Brine
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
     ] ;
-# range based on google first result
 .
 watr:Brine-15Percent
   a s223:Class ;
@@ -88,8 +87,6 @@ watr:Brine-15Percent
   rdfs:comment "Brine-15Percent" ;
   rdfs:label "Brine-15Percent" ;
 .
-# Wonder how we should express a range, property like error or min/max properties? Use SHACL minexclusive/inclusive
-# Can do with existing 223 properties.
 watr:Brine-5to10Percent
   a s223:Class ;
   a watr:Brine-5to10Percent ;
