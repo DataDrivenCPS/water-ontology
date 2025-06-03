@@ -47,7 +47,10 @@ class ModelBuilder:
         if role:
             equip_dict['role'] = role
         for key, val in optional_dict.items():
-            equip_dict[key] = self.ns[val]
+            if isinstance(val, str): # cast to namespace if argument was a string
+                equip_dict[key] = self.ns[val]
+            else: # otherwise assume a valid property was passed
+                equip_dict[key] = val
 
         equip = equip_temp.inline_dependencies().evaluate(equip_dict)
         if isinstance(equip, Graph):
