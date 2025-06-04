@@ -2,13 +2,21 @@
 
 The WaTr ontology represents information critical to the operation of water treatment systems, currently present in multiple different sources, to enable automated analytics, control, and data science in water treatment systems. 
 
+## ASHRAE 223P Extension
+
+ASHRAE Standard 223P is a consensus-based standard for creating machine-readable semantic models to represent automation and control data, and other building system information. It is focused on building mechanical, electrical, and plumbing systems, and designed to support the implementation of analytics and supervisory controls applications. The standard provides methods to contextualize time series data so that software applications can access the necessary data streams in an automated way. 
+
+While its initial focus is building mechanical, electrical and plumbing systems, the modeling constructs defined for the ASHRAE 223P, and tools created to support it, are applicable to any process automation domain. The WaTr ontology extends ASHRAE 223P to support modeling of wastewater treatment systems. It does this by creating constructs for the types of equipment, processes, and chemicals. It reuses the structures for modeling mechanical systems defined in 223P. 
+
+![ASHRAE 223P Extension Diagram](images/223-extension.png)
+
 ## Type
 
 This standard provides well-defined classes used to describe entities relevant to water treatment system information. Entities in WaTr models will generally be instances of the many classes defined or referred to by the standard. The classes in the standard provide 'names' for the fundamental building blocks used in WaTr models (e.g. a pump will be an instance of the class `watr:Pump`) and also have rules defining how they are used (e.g. a pump must convey water).
 
 ## Topology
 
-This standard can be used to describe the topology of the equipment and connections in a water treatment system, but not the geometric details. Topology refers to the way entities are connected and how some media (e.g. water, chemicals) is conveyed between them. There are several different classes used to describe which entities participate in connections and how they connect: Connectables, which include the entities that are capable of connecting to each other; ConnectionPoints, which model where Connectables can be connected; and Connections, which describe physical things through which the medium is conveyed, like pipes or channels. These Mediums (e.g. water, chemicals) are defined as an EnumerationKind in the standard. There are also multiple relations used to describe the details of these connections, and how the multiple entities involved in a connection relate to each other. Though there are many relations to describe different perspectives of a connection, only `watr:cnx` needs to be manually added to the model, and the rest can be automatically added to the model through the process of inference.
+This standard can be used to describe the topology of the equipment and connections in a water treatment system, but not the geometric details. Topology refers to the way entities are connected and how some media (e.g. water, chemicals) is conveyed between them. There are several different classes used to describe which entities participate in connections and how they connect: Connectables, which include the entities that are capable of connecting to each other; ConnectionPoints, which model where Connectables can be connected; and Connections, which describe physical things through which the medium is conveyed, like pipes or channels. These Mediums (e.g. water, chemicals) are defined as an EnumerationKind in the standard. There are also multiple relations used to describe the details of these connections, and how the multiple entities involved in a connection relate to each other. Though there are many relations to describe different perspectives of a connection, only `s223:cnx` needs to be manually added to the model, and the rest can be automatically added to the model through the process of inference.
 
 ## Composition
 

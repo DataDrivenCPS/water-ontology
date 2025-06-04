@@ -19,9 +19,11 @@ Examples of a relation are the WaTr relation `watr:contains`, which defines the 
 
  - **A WaTr Model:** A WaTr model is a digital representation of a water treatment train in RDF graph structure that uses the WaTr standard. This means that elements of the water treatment train are represented using the modeling constructs defined in the standard. The standard leverages semantic web technologies, allowing easy integration with other types of models based on RDF.
 
+ - **Namespaces:** RDF graphs have been defined to connect different data sources and ontologies. Several ontologies are used within WaTr Models including QUDT, ASHRAE 223P, and WaTr itself. Namespaces are used to distinguish between different types of resources and properties within an RDF Graph, primarily to avoid naming conflicts. Within WaTr models and throughout this document you may see ASHRAE 223P concepts denoted with the prefix `s223`, primarily for describing the connectivity of equipment, `watr`, for the different types of equipment and enumerations used in defining the treatment train, as well as `qudt`, `quantitykind`, and `unit`, for the concepts related to units of measure. 
+
 ## WaTr Top Level Classes
 
-The WaTr standard defines a hierarchy of classes used to define the entities within a water treatment train. This section provides a basic definition of the classes at the top level of the hierarchy to help users understand what the standard aims to represent, which is described in the [overview](WaTr-overview). 
+The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can be used to model the entities within a water treatment train, particularly to add more classes for Equipment, Substances, and Enumerations to represent water treatment. This section provides a basic definition of the classes at the top level of the hierarchy to help users understand what the ontology aims to represent, which is described in the [overview](WaTr-overview). 
 
  - **Connection:** A modeling construct for representing a physical thing (e.g., pipe, duct, wire) that connects and conveys a medium between two Connectable things.
 
@@ -41,7 +43,7 @@ The WaTr standard defines a hierarchy of classes used to define the entities wit
 
  - **System:** A task-oriented collection of interacting or interrelated Equipment defined by the modeler.
 
- - **Stage:** A collection of DomainSpaces grouped together based on water treatment services or controls.
+ - **Stage:** A collection of DomainSpaces grouped together based on water treatment services or controls. _TODO_: Adjust this to fit most recent definitions 
 
  - **Properties:** Properties often represent the actuation and measurement points within a water treatment train. They may be associated with real-time data. They also may define the attributes of other entities (e.g. Equipment, DomainSpaces, Stages). They can be further contextualized using enumerations.
 
