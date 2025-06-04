@@ -39,3 +39,9 @@ pipe:
     P:name a s223:Pipe, s223:Connection .
     P:in s223:cnx P:name .
     P:name s223:cnx P:out .
+
+junction:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:Junction .

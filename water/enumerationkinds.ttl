@@ -17,7 +17,7 @@
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
 watr:Constituent-Metals
-  a s223:Class ;
+  a watr:Class ;
   a watr:Constituent-Metals ;
   a sh:NodeShape ;
   rdfs:comment "Constituent-Metals" ;
@@ -26,7 +26,7 @@ watr:Constituent-Metals
 .
 # Is it useful to have generic Salt? 
 watr:Constituent-Salt
-  a s223:Class ;
+  a watr:Class ;
   a watr:Constituent-Salt ;
   a sh:NodeShape ;
   rdfs:comment "Constituent-Salt" ;
@@ -34,7 +34,7 @@ watr:Constituent-Salt
   rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Salt-NaCl
-  a s223:Class ;
+  a watr:Class ;
   a watr:Salt-NaCl ;
   a sh:NodeShape ;
   rdfs:comment "Salt-NaCl" ;
@@ -42,7 +42,7 @@ watr:Salt-NaCl
   rdfs:subClassOf watr:Constituent-Salt ;
 .
 watr:Water-Brine
-  a s223:Class ;
+  a watr:Class ;
   a watr:Water-Brine ;
   a sh:NodeShape ;
   rdfs:comment "Water-Brine" ;
@@ -62,7 +62,7 @@ watr:Water-Brine
     ] ;
 .
 watr:Brine-15Percent
-  a s223:Class ;
+  a watr:Class ;
   a watr:Brine-15Percent ;
   a sh:NodeShape ;
   rdfs:comment "Brine-15Percent" ;
@@ -88,7 +88,7 @@ watr:Brine-15Percent
   rdfs:label "Brine-15Percent" ;
 .
 watr:Brine-5to10Percent
-  a s223:Class ;
+  a watr:Class ;
   a watr:Brine-5to10Percent ;
   a sh:NodeShape ;
   rdfs:comment "Brine-5to10Percent" ;
@@ -118,7 +118,7 @@ watr:Brine-5to10Percent
 
 # Base Class for Wastewater Treatment Chemicals
 watr:WastewaterTreatmentChemical
-  a s223:Class ;
+  a watr:Class ;
   a watr:WastewaterTreatmentChemical ;
   a sh:NodeShape ;
   rdfs:comment "Base class for all chemicals used in wastewater treatment" ;
@@ -128,7 +128,7 @@ watr:WastewaterTreatmentChemical
 
 # Coagulants
 watr:Coagulant
-  a s223:Class ;
+  a watr:Class ;
   a watr:Coagulant ;
   a sh:NodeShape ;
   rdfs:comment "Class for coagulants used in wastewater treatment" ;
@@ -137,7 +137,7 @@ watr:Coagulant
 .
 
 watr:Coagulant-Alum
-  a s223:Class ;
+  a watr:Class ;
   a watr:Coagulant-Alum ;
   a sh:NodeShape ;
   rdfs:comment "Aluminum sulfate (alum), a common coagulant" ;
@@ -146,7 +146,7 @@ watr:Coagulant-Alum
 .
 
 watr:Coagulant-FerricChloride
-  a s223:Class ;
+  a watr:Class ;
   a watr:Coagulant-FerricChloride ;
   a sh:NodeShape ;
   rdfs:comment "Ferric chloride, a coagulant for wastewater treatment" ;
@@ -155,7 +155,7 @@ watr:Coagulant-FerricChloride
 .
 
 watr:Coagulant-PolyaluminumChloride
-  a s223:Class ;
+  a watr:Class ;
   a watr:Coagulant-PolyaluminumChloride ;
   a sh:NodeShape ;
   rdfs:comment "Polyaluminum chloride (PAC), a coagulant" ;
@@ -165,7 +165,7 @@ watr:Coagulant-PolyaluminumChloride
 
 # Flocculants
 watr:Flocculant
-  a s223:Class ;
+  a watr:Class ;
   a watr:Flocculant ;
   a sh:NodeShape ;
   rdfs:comment "Class for flocculants used in wastewater treatment" ;
@@ -174,7 +174,7 @@ watr:Flocculant
 .
 
 watr:Flocculant-Polyacrylamide
-  a s223:Class ;
+  a watr:Class ;
   a watr:Flocculant-Polyacrylamide ;
   a sh:NodeShape ;
   rdfs:comment "Polyacrylamide, a common flocculant" ;
@@ -184,7 +184,7 @@ watr:Flocculant-Polyacrylamide
 
 # pH Adjusters
 watr:pHAdjuster
-  a s223:Class ;
+  a watr:Class ;
   a watr:pHAdjuster ;
   a sh:NodeShape ;
   rdfs:comment "Class for pH adjusters used in wastewater treatment" ;
@@ -193,7 +193,7 @@ watr:pHAdjuster
 .
 
 watr:pHAdjuster-Lime
-  a s223:Class ;
+  a watr:Class ;
   a watr:pHAdjuster-Lime ;
   a sh:NodeShape ;
   rdfs:comment "Calcium hydroxide (lime), used to increase pH" ;
@@ -202,7 +202,7 @@ watr:pHAdjuster-Lime
 .
 
 watr:pHAdjuster-SulfuricAcid
-  a s223:Class ;
+  a watr:Class ;
   a watr:pHAdjuster-SulfuricAcid ;
   a sh:NodeShape ;
   rdfs:comment "Sulfuric acid, used to decrease pH" ;
@@ -212,7 +212,7 @@ watr:pHAdjuster-SulfuricAcid
 
 # Disinfectants
 watr:Disinfectant
-  a s223:Class ;
+  a watr:Class ;
   a watr:Disinfectant ;
   a sh:NodeShape ;
   rdfs:comment "Class for disinfectants used in wastewater treatment" ;
@@ -221,7 +221,7 @@ watr:Disinfectant
 .
 
 watr:Disinfectant-Chlorine
-  a s223:Class ;
+  a watr:Class ;
   a watr:Disinfectant-Chlorine ;
   a sh:NodeShape ;
   rdfs:comment "Chlorine, a common disinfectant" ;
@@ -230,7 +230,7 @@ watr:Disinfectant-Chlorine
 .
 
 watr:Disinfectant-Ozone
-  a s223:Class ;
+  a watr:Class ;
   a watr:Disinfectant-Ozone ;
   a sh:NodeShape ;
   rdfs:comment "Ozone, an advanced disinfectant" ;
@@ -240,7 +240,7 @@ watr:Disinfectant-Ozone
 
 # Odor Control Agents
 watr:OdorControlAgent
-  a s223:Class ;
+  a watr:Class ;
   a watr:OdorControlAgent ;
   a sh:NodeShape ;
   rdfs:comment "Class for chemicals used for odor control" ;
@@ -249,7 +249,7 @@ watr:OdorControlAgent
 .
 
 watr:OdorControlAgent-ActivatedCarbon
-  a s223:Class ;
+  a watr:Class ;
   a watr:OdorControlAgent-ActivatedCarbon ;
   a sh:NodeShape ;
   rdfs:comment "Activated carbon, used to absorb odors" ;
@@ -259,7 +259,7 @@ watr:OdorControlAgent-ActivatedCarbon
 
 # Heavy Metal Removal Agents
 watr:HeavyMetalRemovalAgent
-  a s223:Class ;
+  a watr:Class ;
   a watr:HeavyMetalRemovalAgent ;
   a sh:NodeShape ;
   rdfs:comment "Class for chemicals used to remove heavy metals" ;
@@ -268,7 +268,7 @@ watr:HeavyMetalRemovalAgent
 .
 # Could rename to chelator
 watr:HeavyMetalRemovalAgent-SodiumSulfide
-  a s223:Class ;
+  a watr:Class ;
   a watr:HeavyMetalRemovalAgent-SodiumSulfide ;
   a sh:NodeShape ;
   rdfs:comment "Sodium sulfide, used to precipitate heavy metals" ;
@@ -276,7 +276,7 @@ watr:HeavyMetalRemovalAgent-SodiumSulfide
   rdfs:subClassOf watr:HeavyMetalRemovalAgent ;
 .
 watr:Constituent-Organics
-    a s223:Class ; 
+    a watr:Class ; 
     a watr:Constituent-Organics ;
     a sh:NodeShape ;
     rdfs:comment "Constituent-Organics" ;
@@ -291,7 +291,7 @@ watr:Role-Backwash
 .
 watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
-    a s223:Class ;
+    a watr:Class ;
     a watr:Role-Makeup ;
     a sh:NodeShape ;
     rdfs:label "MakeUp" ;
@@ -300,7 +300,7 @@ watr:Role-MakeUp
 
 watr:Role-Feed 
     a s223:EnumerationKind-Role ;
-    a s223:Class ;
+    a watr:Class ;
     a s223:Role-Feed ;
     a sh:NodeShape ;
     rdfs:label "Feed" ;
@@ -308,7 +308,7 @@ watr:Role-Feed
 .
 watr:Role-Permeate 
     a s223:EnumerationKind-Role ;
-    a s223:Class ;
+    a watr:Class ;
     a watr:Role-Permeate ;
     a sh:NodeShape ;
     rdfs:label "Permeate" ;
@@ -317,7 +317,7 @@ watr:Role-Permeate
 # Do we want aeration as a role? Are there fundamental processes that should have roles? 
 watr:Role-Aeration 
     a s223:EnumerationKind-Role ;
-    a s223:Class ;
+    a watr:Class ;
     a watr:Role-Aeration ;
     a sh:NodeShape ;
     rdfs:label "Aeration" ;
@@ -325,7 +325,7 @@ watr:Role-Aeration
 .
 watr:EnumerationKind-Runtime
     a s223:EnumerationKind ;
-    a s223:Class ;
+    a watr:Class ;
     a s223:EnumerationKind-Runtime ;
     a sh:NodeShape ;
     rdfs:label "Runtime" ;

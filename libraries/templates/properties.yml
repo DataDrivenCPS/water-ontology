@@ -63,6 +63,17 @@ opening-ratio:
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:OpeningRatio .
 
+opening-command:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableActuatableProperty ;
+      qudt:hasQuantityKind quantitykind:OpeningRatio .
+
 on-off-command:
   body: >
     @prefix P: <urn:___param___#> .
@@ -85,4 +96,94 @@ speed-command:
     P:name a s223:QuantifiableActuatableProperty ;
       qudt:hasQuantityKind quantitykind:SpeedRatio ;
       qudt:hasUnit unit:PERCENT .
+
+# TODO: Correct unit 
+volume:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:Volume ;
+      qudt:hasUnit unit:GAL_US .
   
+electric-current:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:ElectricCurrent ;
+      qudt:hasUnit unit:A .
+
+status:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasEnumerationKind s223:EnumerationKind-Status .
+turbidity:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:Turbidity ;
+      qudt:hasUnit unit:NTU .
+
+# TODO: check and see if this also needs an ofmedium relation ofSubstance for solute, ofMedium for solution
+toc-ppm:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:Concentration ;
+      qudt:hasUnit unit:PPM ; 
+      s223:ofSubstance watr:Constituent-Organics .
+
+# TODO: check and see if this also needs an ofmedium relation ofSubstance for solute, ofMedium for solution
+cl2-mgL:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:Concentration ;
+      qudt:hasUnit unit:MilliGM-PER-L; 
+      s223:ofSubstance watr:Chlorine .
+
+concentration:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+    
+    P:name a s223:QuantifiableObservableProperty ;
+      qudt:hasQuantityKind quantitykind:Concentration ;
+      qudt:hasUnit P:unit ; 
+      s223:ofSubstance P:substance .

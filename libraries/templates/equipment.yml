@@ -121,6 +121,7 @@ pump:
     - template: outlet-cp
       args: {"name": "out"}
   optional: ["role"]
+
 check-valve:
   body: >
     @prefix P: <urn:___param___#> .
@@ -137,6 +138,7 @@ check-valve:
     - template: outlet-cp
       args: {"name": "out"}
   optional: ["role"]
+
 vfd:
 # can either just have a vfd, or make a vfd with a pump 
 # make connectionpoints optional for VFD, since we don't really do elecricity for controls
@@ -207,3 +209,61 @@ controller:
     P:name a watr:Controller .
 
       
+uf-unit:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:UltrafiltrationUnit ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+uv-reactor:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:UltravioletLightUnit ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+contact-chamber:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:DisinfectionUnit ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+sensor:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a s223:Sensor ;
+      s223:observes P:property ;
+      s223:hasObservationLocation P:location .
+  optional: ["property", "location"]
