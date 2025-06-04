@@ -100,11 +100,13 @@ watr:AerationBasin
 watr:Digester
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf watr:Tank .
+    rdfs:subClassOf watr:Reactor .
+
 watr:AnaerobicDigester
     rdfs:label "AnaerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
     rdfs:subClassOf watr:Digester .
+
 watr:AerobicDigester
     rdfs:label "AerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
@@ -113,7 +115,7 @@ watr:AerobicDigester
 watr:DisinfectionUnit
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
-    rdfs:subClassOf watr:Tank .
+    rdfs:subClassOf watr:Reactor .
 
 watr:UltravioletLightUnit
     rdfs:label "UltravioletlightUnit" ;

@@ -13,3 +13,35 @@
     rdfs:comment "Additions to NAWI ontology based on tzahi modeling" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
+
+# Do we want something like this? Is modeling a TOC sensor without explicitly naming it to vague (Concentration sensor, measuring organics)
+watr:TotalOrganicCompoundConcentrationSensor
+    a rdfs:Class ;
+    a s223:Class ; 
+    rdfs:subClassOf watr:ConcentrationSensor ;
+.
+# have to check and make sure I've done 3 below correctly
+watr:Constituent-Organics
+    a s223:Class ; 
+    a watr:Constituent-Organics ;
+    a sh:NodeShape ;
+    rdfs:comment "Constituent-Organics" ;
+    rdfs:label "Constituent-Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+
+watr:Chlorine
+    a s223:Class ; 
+    a watr:Chlorine ;
+    a sh:NodeShape ;
+    rdfs:comment "Chlorine" ;
+    rdfs:label "Chlorine" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+
+watr:Role-Backwash 
+    a s223:EnumerationKind ;
+    a watr:Role-Backwash ; 
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+    rdfs:label "Role-Backwash" ;
+.
