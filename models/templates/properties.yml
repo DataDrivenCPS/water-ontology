@@ -152,12 +152,12 @@ toc-ppm:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix nawi: <urn:nawi-water-ontology#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
     
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
       qudt:hasUnit unit:PPM ; 
-      s223:ofSubstance nawi:Constituent-Organics .
+      s223:ofSubstance watr:Constituent-Organics .
 
 # TODO: check and see if this also needs an ofmedium relation ofSubstance for solute, ofMedium for solution
 cl2-mgL:
@@ -167,9 +167,9 @@ cl2-mgL:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix nawi: <urn:nawi-water-ontology#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
     
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
       qudt:hasUnit unit:MilliGM-PER-L; 
-      s223:ofSubstance nawi:Chlorine .
+      s223:ofSubstance watr:Chlorine .

@@ -4,7 +4,7 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 
 # TODO: Rethink how I'm namespacing
 <urn:nawi-water-ontology/tzahi-additions>
@@ -15,34 +15,33 @@
 .
 
 # Do we want something like this? Is modeling a TOC sensor without explicitly naming it to vague (Concentration sensor, measuring organics)
-nawi:TotalOrganicCompoundConcentrationSensor
+watr:TotalOrganicCompoundConcentrationSensor
     a rdfs:Class ;
     a s223:Class ; 
-    rdfs:subClassOf nawi:ConcentrationSensor ;
+    rdfs:subClassOf watr:ConcentrationSensor ;
 .
-
 # have to check and make sure I've done 3 below correctly
-nawi:Constituent-Organics
+watr:Constituent-Organics
     a s223:Class ; 
-    a nawi:Constituent-Organics ;
+    a watr:Constituent-Organics ;
     a sh:NodeShape ;
     rdfs:comment "Constituent-Organics" ;
     rdfs:label "Constituent-Organics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 
-nawi:Chlorine
+watr:Chlorine
     a s223:Class ; 
-    a nawi:Chlorine ;
+    a watr:Chlorine ;
     a sh:NodeShape ;
     rdfs:comment "Chlorine" ;
     rdfs:label "Chlorine" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 
-nawi:Role-Backwash 
+watr:Role-Backwash 
     a s223:EnumerationKind ;
-    a nawi:Role-Backwash ; 
+    a watr:Role-Backwash ; 
     rdfs:subClassOf s223:EnumerationKind-Role ;
     rdfs:label "Role-Backwash" ;
 .
