@@ -5,3 +5,5 @@
    :maxdepth: 2
    :caption: Contents:
    :glob:
+
+   templates/index.rst

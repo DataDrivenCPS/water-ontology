@@ -1,4 +1,4 @@
-# Substances Classes
+# EnumerationKinds Classes
 
 ## Constituent-Metals
 
@@ -137,4 +137,10 @@
 **Description:** Sodium sulfide, used to precipitate heavy metals
 
 **Superclass:** HeavyMetalRemovalAgent
+
+## Constituent-Organics
+
+**Description:** Constituent-Organics
+
+**Superclass:** Medium-Constituent
 

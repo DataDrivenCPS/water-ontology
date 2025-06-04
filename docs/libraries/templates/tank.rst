@@ -68,8 +68,8 @@ Parameters
 - in is a :doc:`inlet-cp`
 - out is a :doc:`outlet-cp`
 - bi-cp is a :doc:`bidirectional-cp`
-- role
 - name
+- role
 
 
 Dependencies
@@ -97,13 +97,13 @@ Graph Visualization
                 digraph G {
             node [fontname="DejaVu Sans"];
             node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
-            node0 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
             node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node0 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
+            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
             node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
             node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='urn:nawi-water-ontology#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Tank</font></td></tr></table> >];
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp</B></td></tr><tr><td href='urn:___param___#bi-cp' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp</font></td></tr></table> >];
@@ -119,43 +119,43 @@ Graph Visualization
 
                 digraph G {
             node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node2 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node6 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node6 -> node0 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
-            node8 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node0 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node2 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node4 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
-            node4 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node11 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node8 -> node12 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
-            node4 -> node11 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node5 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node5 -> node8 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
-            node4 -> node13 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node11 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node1 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
+            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node4 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
+            node3 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
+            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node1 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node7 -> node8 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node9 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
+            node4 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node3 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
             node11 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node5 -> node12 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node11 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
-            node6 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node14 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-mapsto</B></td></tr><tr><td href='urn:___param___#out-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-mapsto</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>OutletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#OutletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#OutletConnectionPoint</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp-mapsto</B></td></tr><tr><td href='urn:___param___#bi-cp-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp-mapsto</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>BidirectionalConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#BidirectionalConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#BidirectionalConnectionPoint</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
-            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
-            node7 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-medium</B></td></tr><tr><td href='urn:___param___#out-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-medium</font></td></tr></table> >];
-            node8 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-mapsto</B></td></tr><tr><td href='urn:___param___#in-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-mapsto</font></td></tr></table> >];
-            node9 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-medium</B></td></tr><tr><td href='urn:___param___#in-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-medium</font></td></tr></table> >];
+            node3 -> node8 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node0 -> node11 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
+            node7 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
+            node11 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
+            node0 -> node12 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
+            node0 -> node11 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
+            node0 -> node13 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node9 -> node14 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node1 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
+            node11 -> node14 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
+            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
+            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
+            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-medium</B></td></tr><tr><td href='urn:___param___#in-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-medium</font></td></tr></table> >];
+            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
+            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-mapsto</B></td></tr><tr><td href='urn:___param___#in-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-mapsto</font></td></tr></table> >];
+            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-medium</B></td></tr><tr><td href='urn:___param___#out-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-medium</font></td></tr></table> >];
+            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>InletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#InletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#InletConnectionPoint</font></td></tr></table> >];
+            node7 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-mapsto</B></td></tr><tr><td href='urn:___param___#out-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-mapsto</font></td></tr></table> >];
+            node8 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>OutletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#OutletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#OutletConnectionPoint</font></td></tr></table> >];
+            node9 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp-mapsto</B></td></tr><tr><td href='urn:___param___#bi-cp-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp-mapsto</font></td></tr></table> >];
             node10 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp-medium</B></td></tr><tr><td href='urn:___param___#bi-cp-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp-medium</font></td></tr></table> >];
             node11 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp</B></td></tr><tr><td href='urn:___param___#bi-cp' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp</font></td></tr></table> >];
-            node12 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>InletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#InletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#InletConnectionPoint</font></td></tr></table> >];
+            node12 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
             node13 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='urn:nawi-water-ontology#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Tank</font></td></tr></table> >];
-            node14 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
+            node14 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>BidirectionalConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#BidirectionalConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#BidirectionalConnectionPoint</font></td></tr></table> >];
             }
             

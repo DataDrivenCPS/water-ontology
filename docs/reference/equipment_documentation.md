@@ -70,13 +70,13 @@
 
 **Description:** A unit using ultraviolet light for disinfection
 
-**Superclass:** Disinfection
+**Superclass:** DisinfectionUnit
 
 ## ChlorinationBasin
 
 **Description:** A basin where chlorine is added for disinfection
 
-**Superclass:** Disinfection
+**Superclass:** DisinfectionUnit
 
 ## SedimentationTank
 
@@ -324,18 +324,6 @@
 
 **Superclass:** TemperatureSensor
 
-## RunTimeSensor
-
-**Description:** A sensor used to measure the operating time of equipment
-
-**Superclass:** Sensor
-
-## RunStatusSensor
-
-**Description:** A sensor used to monitor the operational status of equipment
-
-**Superclass:** Sensor
-
 ## ConcentrationSensor
 
 **Description:** A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)
@@ -399,6 +387,18 @@
 ## Frequency Sensor
 
 **Description:** A sensor used to measure the frequency of a signal or mechanical vibration
+
+**Superclass:** Sensor
+
+## TOC Sensor
+
+**Description:** A sensor used to measure the total organic compound concentration
+
+**Superclass:** ConcentrationSensor
+
+## Manual Measurement Port
+
+**Description:** A location where manual measurements are taken
 
 **Superclass:** Sensor
 
