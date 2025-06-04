@@ -8,11 +8,13 @@
 
 <urn:nawi-water-ontology/equip>
     a owl:Ontology ;
-    rdfs:label "NAWI Water Equipment Ontology" ;
+a watr:Class ;
+rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-watr:Tank a rdfs:Class, sh:NodeShape ;
+watr:Tank a rdfs:Class,sh:NodeShape ;
+    a watr:Class ;
     rdfs:label "Tank" ;
     rdfs:comment "A tank for storing liquid" ;
     rdfs:subClassOf s223:Equipment ;
@@ -43,6 +45,7 @@ watr:Tank a rdfs:Class, sh:NodeShape ;
 .
 
 watr:Reactor
+    a watr:Class ;
     rdfs:label "Reactor" ;
     rdfs:comment "An equipment used for chemical reaction" ;
     rdfs:subClassOf watr:Tank ;
@@ -73,327 +76,390 @@ watr:Reactor
 .
 
 watr:SequencingBatchReactor
+    a watr:Class ;
     rdfs:label "SequencingBatchReactor" ;
     rdfs:comment "A type of activated sludge process for wastewater treatment" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:PlugFlowReactor
+    a watr:Class ;
     rdfs:label "PlugFlowReactor" ;
     rdfs:comment "A type of reactor where the fluid flows in one direction through the tube" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:ContinuouslyStirredTankReactor
+    a watr:Class ;
     rdfs:label "ContinuouslyStirredTankReactor" ;
     rdfs:comment "A reactor in which contents are well mixed and reactants are added continuously" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:StaticMixer
+    a watr:Class ;
     rdfs:label "StaticMixer" ;
     rdfs:comment "A device for mixing liquids without moving components" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:AerationBasin
+    a watr:Class ;
     rdfs:label "AerationBasin" ;
     rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:Digester
+    a watr:Class ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf watr:Reactor .
-
+    rdfs:subClassOf watr:Tank .
 watr:AnaerobicDigester
+    a watr:Class ;
     rdfs:label "AnaerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
     rdfs:subClassOf watr:Digester .
-
 watr:AerobicDigester
+    a watr:Class ;
     rdfs:label "AerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
     rdfs:subClassOf watr:Digester .
 
 watr:DisinfectionUnit
+    a watr:Class ;
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
-    rdfs:subClassOf watr:Reactor .
+    rdfs:subClassOf watr:Tank .
 
 watr:UltravioletLightUnit
+    a watr:Class ;
     rdfs:label "UltravioletlightUnit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
     rdfs:subClassOf watr:DisinfectionUnit .
 
 watr:ChlorinationBasin
+    a watr:Class ;
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
     rdfs:subClassOf watr:DisinfectionUnit .
 
 watr:SedimentationTank
+    a watr:Class ;
     rdfs:label "SedimentationTank" ;
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
     rdfs:subClassOf watr:Tank .
 
 watr:Screen
+    a watr:Class ;
     rdfs:label "Screen" ;
     rdfs:comment "An equipment used for separation" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:GritChamber
+    a watr:Class ;
     rdfs:label "Grit Chamber" ;
     rdfs:comment "A chamber used to remove grit from wastewater" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Reservoir
+    a watr:Class ;
     rdfs:label "Reservoir" ;
     rdfs:comment "A large natural or artificial body of water used for water supply" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Pond
+    a watr:Class ;
     rdfs:label "Pond" ;
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Battery
+    a watr:Class ;
     rdfs:label "Battery" ;
     rdfs:comment "A device that stores energy for later use" ;
     rdfs:subClassOf s223:Battery .
 
 watr:Cogenerator
+    a watr:Class ;
     rdfs:label "Cogenerator" ;
     rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Boiler
+    a watr:Class ;
     rdfs:label "Boiler" ;
     rdfs:comment "A device for heating water" ;
     rdfs:subClassOf s223:Boiler .
 
 watr:Conditioner
+    a watr:Class ;
     rdfs:label "Conditioner" ;
     rdfs:comment "An equipment used to prepare raw biogas from a digester by removing impurities" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Flare
+    a watr:Class ;
     rdfs:label "Flare" ;
     rdfs:comment "A device used to burn off unwanted gas" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Pump
+    a watr:Class ;
     rdfs:label "Pump" ;
     rdfs:comment "A device used to move fluids by mechanical action" ;
     rdfs:subClassOf s223:Pump .
 
 watr:PressureExchanger
+    a watr:Class ;
     rdfs:label "PressureExchanger" ;
     rdfs:comment "A device used to transfer pressure energy from one fluid to another" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:DewateringUnit
+    a watr:Class ;
     rdfs:label "Dewatering" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Thickener
+    a watr:Class ;
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:DissolvedAirFlotationThickener
+    a watr:Class ;
     rdfs:label "DissolvedAirFlotationThickener" ;
     rdfs:comment "A thickener that uses dissolved air to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener .
 
 watr:CentrifugalThickener
+    a watr:Class ;
     rdfs:label "CentrifugalThickener" ;
     rdfs:comment "A thickener that uses centrifugal force to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener .
 
 watr:GravityThickener
+    a watr:Class ;
     rdfs:label "GravityThickener" ;
     rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener .
 
 watr:BeltThickener
+    a watr:Class ;
     rdfs:label "BeltThickener" ;
     rdfs:comment "A thickener that uses a belt system to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener .
 
 watr:GravityBeltThickener
+    a watr:Class ;
     rdfs:label "Gravity Belt Thickener" ;
     rdfs:comment "A thickener that combines gravity separation with a belt system" ;
     rdfs:subClassOf watr:BeltThickener .
 
 watr:RotaryDrumThickener
+    a watr:Class ;
     rdfs:label "Rotary Drum Thickener" ;
     rdfs:comment "A thickener that uses a rotating drum to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener .
 
 watr:Filter
+    a watr:Class ;
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter .
 
 watr:ReverseOsmosisMembrane
+    a watr:Class ;
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter .
     
 watr:ReverseOsmosisMembrane
+    a watr:Class ;
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter .
 
 watr:TricklingFilter
+    a watr:Class ;
     rdfs:label "TricklingFilter" ;
     rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
     rdfs:subClassOf watr:Filter .
 
 watr:MembraneBioreactor
+    a watr:Class ;
     rdfs:label "MembraneBioreactor" ;
     rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
     rdfs:subClassOf watr:Filter .
 
 watr:MicrofiltrationUnit
+    a watr:Class ;
     rdfs:label "MicrofiltrationUnit" ;
     rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
     rdfs:subClassOf watr:Filter .
 
 watr:UltrafiltrationUnit
+    a watr:Class ;
     rdfs:label "UltrafiltrationUnit" ;
     rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
     rdfs:subClassOf watr:Filter .
 
 watr:NanofiltrationUnit
+    a watr:Class ;
     rdfs:label "NanofiltrationUnit" ;
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
     rdfs:subClassOf watr:Filter .
 
 watr:MediaFiltration
+    a watr:Class ;
     rdfs:label "MediaFiltrationUnit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
     rdfs:subClassOf watr:Filter .
 
 watr:CartridgeFiltrationUnit
+    a watr:Class ;
     rdfs:label "CartridgeFiltrationUnit" ;
     rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
     rdfs:subClassOf watr:Filter .
     
 watr:IonExchangeMembrane
+    a watr:Class ;
     rdfs:label "IonExchangeMembrane" ;
     rdfs:comment "A membrane that selectively allows ions to pass through while blocking other substances" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:ElectrodialysisUnit
+    a watr:Class ;
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A unit that uses electricity to drive ion movement through a membrane" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Electrolyzer
+    a watr:Class ;
     rdfs:label "Electrolyzer" ;
     rdfs:comment "An equipment that uses electricity to split liquids into constituent elements" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Crystallizer
+    a watr:Class ;
     rdfs:label "Crystallizer" ;
     rdfs:comment "An equipment used to produce solid crystals from a solution" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Compressor
+    a watr:Class ;
     rdfs:label "Compressor" ;
     rdfs:comment "An equipment that increases the pressure of a gas" ;
     rdfs:subClassOf s223:Compressor .
 
 watr:Evaporator
+    a watr:Class ;
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
     rdfs:subClassOf s223:HeatExchanger .
 
 watr:Condenser
+    a watr:Class ;
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
     rdfs:subClassOf s223:HeatExchanger .
 
 watr:FlowSensor
+    a watr:Class ;
     rdfs:label "FlowSensor" ;
     rdfs:comment "A sensor used to measure the flow rate of liquids or gases" ;
     rdfs:subClassOf s223:FlowSensor .
 
 watr:VolumeSensor
+    a watr:Class ;
     rdfs:label "VolumeSensor" ;
     rdfs:comment "A sensor used to measure the volume of a substance" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:LevelSensor
+    a watr:Class ;
     rdfs:label "LevelSensor" ;
     rdfs:comment "A sensor used to detect the level of liquids or solids in a tank" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:PressureSensor
+    a watr:Class ;
     rdfs:label "PressureSensor" ;
     rdfs:comment "A sensor used to measure pressure" ;
     rdfs:subClassOf s223:PressureSensor .
 
 watr:TemperatureSensor
+    a watr:Class ;
     rdfs:label "TemperatureSensor" ;
     rdfs:comment "A sensor used to measure temperature" ;
     rdfs:subClassOf s223:TemperatureSensor .
 
 watr:ConcentrationSensor
+    a watr:Class ;
     rdfs:label "ConcentrationSensor" ;
     rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
 watr:OxygenMeter
+    a watr:Class ;
     rdfs:label "Oxygen Meter" ;
     rdfs:comment "A sensor used to measure the concentration of oxygen" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
 watr:OxygenDemandSensor
+    a watr:Class ;
     rdfs:label "OxygenDemandSensor" ;
     rdfs:comment "A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:pHSensor
+    a watr:Class ;
     rdfs:label "pHSensor" ;
     rdfs:comment "A sensor used to measure the pH of a solution" ;
     rdfs:subClassOf watr:ConcentrationSensor .
 
 watr:ConductivitySensor
+    a watr:Class ;
     rdfs:label "ConductivitySensor" ;
     rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:TurbidityMeter
+    a watr:Class ;
     rdfs:label "TurbidityMeter" ;
     rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:RotationSensor
+    a watr:Class ;
     rdfs:label "RotationSensor" ;
     rdfs:comment "A sensor used to measure the rotational speed or position of an object" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:EfficiencySensor
+    a watr:Class ;
     rdfs:label "EfficiencySensor" ;
     rdfs:comment "A sensor used to measure the efficiency of a system or equipment" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:StateOfChargeSensor
+    a watr:Class ;
     rdfs:label "State of Charge Sensor" ;
     rdfs:comment "A sensor used to measure the remaining charge in a battery or energy storage system" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:SpeedSensor
+    a watr:Class ;
     rdfs:label "Speed Sensor" ;
     rdfs:comment "A sensor used to measure the speed of an object or fluid" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:FrequencySensor
+    a watr:Class ;
     rdfs:label "Frequency Sensor" ;
     rdfs:comment "A sensor used to measure the frequency of a signal or mechanical vibration" ;
     rdfs:subClassOf s223:Sensor .
 
 # Do we want something like this? Is modeling a TOC sensor without explicitly naming it too vague (Concentration sensor, measuring organics)
 watr:TotalOrganicCompoundConcentrationSensor
+    a watr:Class ;
     rdfs:label "TOC Sensor" ;
     rdfs:comment "A sensor used to measure the total organic compound concentration" ;
     rdfs:subClassOf watr:ConcentrationSensor ;
@@ -424,17 +490,8 @@ watr:Controller
     rdfs:subClassOf s223:Controller ;
 .
 watr:ManualMeasurementPort 
+    a watr:Class ;
     rdfs:label "Manual Measurement Port" ;
     rdfs:comment "A location where manual measurements are taken" ;
     rdfs:subClassOf s223:Sensor ;
 .
-# Runtime can just be an enumeration kind - these are just properties
-# watr:RunTimeSensor
-#     rdfs:label "RunTimeSensor" ;
-#     rdfs:comment "A sensor used to measure the operating time of equipment" ;
-#     rdfs:subClassOf s223:Sensor .
-
-# watr:RunStatusSensor
-#     rdfs:label "RunStatusSensor" ;
-#     rdfs:comment "A sensor used to monitor the operational status of equipment" ;
-#     rdfs:subClassOf s223:Sensor .
