@@ -16,3 +16,16 @@
   owl:imports sh: ;
 .
 
+watr:Class
+  a rdfs:Class ;
+  a sh:NodeShape ;
+  rdfs:comment "This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`." ;
+  rdfs:label "Class" ;
+  rdfs:subClassOf rdfs:Class ;
+  sh:property [
+      sh:path rdfs:label ;
+      rdfs:comment "A `Class` must be associated with at least one label using the relation `rdfs:label`." ;
+      sh:minCount 1 ;
+      sh:severity sh:Warning ;
+    ] ;
+.

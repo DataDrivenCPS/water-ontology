@@ -8,8 +8,7 @@
 
 <urn:nawi-water-ontology/equip>
     a owl:Ontology ;
-a watr:Class ;
-rdfs:label "NAWI Water Equipment Ontology" ;
+    rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
