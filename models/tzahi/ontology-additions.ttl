@@ -4,7 +4,7 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix nawi: <urn:nawi-water-ontology#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 
 # TODO: Rethink how I'm namespacing
 <urn:nawi-water-ontology/tzahi-additions>
@@ -12,27 +12,4 @@
     rdfs:label "Additions to NAWI ontology based on tzahi modeling" ;
     rdfs:comment "Additions to NAWI ontology based on tzahi modeling" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-.
-
-# Do we want something like this? Is modeling a TOC sensor without explicitly naming it to vague (Concentration sensor, measuring organics)
-nawi:TotalOrganicCompoundConcentrationSensor
-    a rdfs:Class ;
-    a s223:Class ; 
-    rdfs:subClassOf nawi:ConcentrationSensor ;
-.
-# have to check and make sure I've done 2 below correctly
-nawi:Constituent-Organics
-    a s223:Class ; 
-    a nawi:Constituent-Organics ;
-    a sh:NodeShape ;
-    rdfs:comment "Constituent-Organics" ;
-    rdfs:label "Constituent-Organics" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
-
-nawi:Role-Backwash 
-    a s223:EnumerationKind ;
-    a nawi:Role-Backwash ; 
-    rdfs:subClassOf s223:EnumerationKind-Role ;
-    rdfs:label "Role-Backwash" ;
 .

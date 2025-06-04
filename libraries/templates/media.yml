@@ -5,12 +5,12 @@ brine:
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
-    @prefix nawi: <urn:nawi-water-ontology#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
     
     P:name
       a s223:Class ;
       a P:name ;
-      rdfs:subClassOf nawi:Water-Brine ;
+      rdfs:subClassOf watr:Water-Brine ;
       rdfs:label "Brine-VariablePercent" ;
       rdfs:subClassOf s223:Fluid-Water;
       s223:composedOf P:salt-name ;
@@ -29,11 +29,11 @@ constituent-salt:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
-    @prefix nawi: <urn:nawi-water-ontology#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;
-      s223:ofConstituent nawi:Constituent-NaCl ;
+      s223:ofConstituent watr:Constituent-NaCl ;
       s223:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit qudt:PERCENT ;
     .
@@ -43,7 +43,7 @@ constituent-water:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
-    @prefix nawi: <urn:nawi-water-ontology#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;
