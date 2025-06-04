@@ -28,3 +28,4 @@ Build the ontology with `make libraries/water.ttl`
 See the ModelBuilder notebook for more information on how to use these libraries and templates to build models
 
 To document the templates, run `make local-docs` and open `docs/_build/html/index.html` in a browser. This should also auto-build when you push to the repostitory, making the docs available at https://datadrivencps.github.io/water-ontology/
+# water-models
