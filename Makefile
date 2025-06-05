@@ -13,6 +13,6 @@ local-docs:
 	uv run jupyter-book build docs
 
 clean:
-	ontoenv reset
+	ontoenv reset -f
 	uv run jupyter-book clean docs
 	rm -f libraries/water.ttl
