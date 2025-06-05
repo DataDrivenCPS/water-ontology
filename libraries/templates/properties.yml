@@ -1,3 +1,29 @@
+property:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:Property .
+    P:owner s223:hasProperty P:name .
+  optional: ["owner"]
+
+quantifiable-property:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:QuantifiableProperty ;
+      s223:ofConstituent P:constituent ;
+      qudt:hasUnit P:unit .
+    P:owner s223:hasProperty P:name .
+    P:unit a qudt:Unit .
+    P:constituent a s223:EnumerationKind-Substance .
+  optional: ["owner"]
+
 ph:
   body: >
     @prefix P: <urn:___param___#> .
@@ -16,7 +42,7 @@ pressure:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Pressure .
 conductivity:
@@ -26,7 +52,7 @@ conductivity:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Conductivity .
 
@@ -37,7 +63,7 @@ temperature:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Temperature .
 
@@ -48,10 +74,10 @@ flow-rate:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:VolumeFlowRate .
-  
+
 opening-ratio:
   body: >
     @prefix P: <urn:___param___#> .
@@ -59,7 +85,7 @@ opening-ratio:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:OpeningRatio .
 
@@ -70,7 +96,7 @@ opening-command:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableActuatableProperty ;
       qudt:hasQuantityKind quantitykind:OpeningRatio .
 
@@ -81,7 +107,7 @@ on-off-command:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:EnumeratedActuatableProperty ;
       s223:hasEnumerationKind s223:EnumerationKind-OnOff .
 
@@ -92,12 +118,12 @@ speed-command:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableActuatableProperty ;
       qudt:hasQuantityKind quantitykind:SpeedRatio ;
       qudt:hasUnit unit:PERCENT .
 
-# TODO: Correct unit 
+# TODO: Correct unit
 volume:
   body: >
     @prefix P: <urn:___param___#> .
@@ -105,11 +131,11 @@ volume:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Volume ;
       qudt:hasUnit unit:GAL_US .
-  
+
 electric-current:
   body: >
     @prefix P: <urn:___param___#> .
@@ -117,7 +143,7 @@ electric-current:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:ElectricCurrent ;
       qudt:hasUnit unit:A .
@@ -129,7 +155,7 @@ status:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasEnumerationKind s223:EnumerationKind-Status .
 turbidity:
@@ -139,7 +165,7 @@ turbidity:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Turbidity ;
       qudt:hasUnit unit:NTU .
@@ -153,10 +179,10 @@ toc-ppm:
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
-      qudt:hasUnit unit:PPM ; 
+      qudt:hasUnit unit:PPM ;
       s223:ofSubstance watr:Constituent-Organics .
 
 # TODO: check and see if this also needs an ofmedium relation ofSubstance for solute, ofMedium for solution
@@ -168,10 +194,10 @@ cl2-mgL:
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
-      qudt:hasUnit unit:MilliGM-PER-L; 
+      qudt:hasUnit unit:MilliGM-PER-L;
       s223:ofSubstance watr:Chlorine .
 
 concentration:
@@ -182,8 +208,23 @@ concentration:
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
-    
+
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
-      qudt:hasUnit P:unit ; 
+      qudt:hasUnit P:unit ;
       s223:ofSubstance P:substance .
+
+water-flow:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    P:name a s223:QuantifiableObservableProperty ;
+        s223:ofMedium s223:Fluid-Water ;
+        qudt:hasQuantityKind quantitykind:VolumeFlowRate;
+        qudt:hasUnit unit:FT3-PER-MIN .
+  dependencies:
+    - template: property
+      args: {"name": "name"}

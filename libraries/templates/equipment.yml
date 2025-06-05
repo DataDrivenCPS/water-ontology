@@ -265,5 +265,23 @@ sensor:
 
     P:name a s223:Sensor ;
       s223:observes P:property ;
-      s223:hasObservationLocation P:location .
-  optional: ["property", "location"]
+      s223:hasObservationLocation P:where .
+  optional: ["property", "where"]
+
+
+concentration-sensor:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+
+    P:name a s223:Sensor ;
+      s223:observes P:property ;
+      s223:hasObservationLocation P:where .
+    P:property qudt:hasUnit P:unit ;
+      s223:ofConstituent P:substance .
+  optional: ["where"]
+  dependencies:
+   - template: quantifiable-property
+     args: {"name": "property", "unit": "unit", "substance": "constituent", "property-unit": "unit", "property-constituent": "substance"}
