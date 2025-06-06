@@ -11,7 +11,7 @@ parts:
   - file: explanation/definitions.md
 - caption: Tutorials
   chapters:
-  - file: tutorials/creating-models.md
+  - file: notebooks/Tutorial1.ipynb
 - caption: Guides
   chapters:
   - file: guides/todo.md
