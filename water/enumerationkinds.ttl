@@ -116,6 +116,27 @@ watr:Brine-5to10Percent
   rdfs:label "Brine-5to10Percent" ;
 .
 
+watr:Fluid-Sludge
+  a watr:Class ;
+  a watr:Fluid-Sludge ;
+  a sh:NodeShape ;
+  rdfs:comment "A semi-solid slurry composed of water and solids." ;
+  rdfs:label "Sludge" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Constituent-Solids ;
+      s223:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit qudt:PERCENT ;
+    ] ;
+.
+
 # Base Class for Wastewater Treatment Chemicals
 watr:WastewaterTreatmentChemical
   a watr:Class ;
@@ -281,6 +302,14 @@ watr:Constituent-Organics
     a sh:NodeShape ;
     rdfs:comment "Constituent-Organics" ;
     rdfs:label "Constituent-Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Solids
+    a watr:Class ;
+    a watr:Constituent-Solids ;
+    a sh:NodeShape ;
+    rdfs:comment "Constituent-Solids" ;
+    rdfs:label "Constituent-Solids" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Role-Backwash 
