@@ -9,6 +9,7 @@ parts:
   - file: explanation/purpose_scope.md
   - file: explanation/overview.md
   - file: explanation/definitions.md
+  - file: explanation/processes.md
 - caption: Tutorials
   chapters:
   - file: tutorials/creating-models.md
