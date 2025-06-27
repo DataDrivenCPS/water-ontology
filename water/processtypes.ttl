@@ -36,6 +36,10 @@ watr:Process-Filtration a watr:Physical-Process ;
     rdfs:label "Filtration" ;
     rdfs:comment "A unit process that removes smaller particles from water by passing it through a filter." .
 
+watr:Process-RapidSandFiltration a watr:Physical-Process ;
+    rdfs:label "Rapid Sand Filtration" ;
+    rdfs:comment "A filtration process that uses a bed of sand to remove impurities." .
+
 watr:Process-Flotation a watr:Physical-Process ;
     rdfs:label "Flotation" ;
     rdfs:comment "A unit process that uses buoyancy to separate solids from water, often using air bubbles." .

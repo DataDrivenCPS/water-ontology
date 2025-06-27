@@ -665,6 +665,20 @@ watr:MediaFiltration
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
     rdfs:subClassOf watr:Filter .
 
+watr:RapidSandFilter
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Rapid Sand Filter" ;
+    rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
+    rdfs:subClassOf watr:MediaFiltration ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-RapidSandFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of RapidSandFilter must have the RapidSandFiltration process." ;
+    ] .
+
 watr:CartridgeFiltrationUnit
     a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
