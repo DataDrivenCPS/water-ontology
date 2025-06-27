@@ -11,6 +11,7 @@
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:imports <urn:nawi-water-ontology/processes> ;
 .
 watr:Tank a rdfs:Class,sh:NodeShape ;
     a watr:Class ;
@@ -38,6 +39,71 @@ watr:Tank a rdfs:Class,sh:NodeShape ;
             sh:property [
                 sh:path s223:hasMedium ;
                 sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+.
+
+watr:Basin a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Basin" ;
+    rdfs:comment "A Basin is a physical structure or containment unit designed to hold and condition a volume of water as part of a treatment process. It has at least one inlet and one outlet for water flow and may include drains, overflow paths, mixing devices, or aeration elements depending on its operational role." ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin has an inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin has an outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    # optional drain port
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin may have an drain connection point" ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+            sh:property [
+                sh:path s223:hasRole ;
+                sh:hasValue s223:Role-Drain ;
+            ] ;
+        ] ;
+    ] ;
+    # optional overflow connection point
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin may have an overflow connection point" ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+            sh:property [
+                sh:path s223:hasRole ;
+                sh:hasValue s223:Role-Overflow ;
             ] ;
         ] ;
     ] ;
@@ -78,12 +144,90 @@ watr:SequencingBatchReactor
     a watr:Class ;
     rdfs:label "SequencingBatchReactor" ;
     rdfs:comment "A type of activated sludge process for wastewater treatment" ;
+    # has 1 in, 1out (both water),  OR 1 bidirectional (water)
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A SBR has at least 1 sludge return point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Fluid-Sludge ;
+            ] ;
+        ] ;
+    ] ;
+    sh:xone (
+        # 1 in (water) and 1 out (water)
+        [ sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 inlet fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+        ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 outlet fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+            
+        ] ]
+        # OR 1 bidirectional (water)
+        [ sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 bidirectional fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+        ] ]
+    ) ;
     rdfs:subClassOf watr:Reactor .
 
 watr:PlugFlowReactor
     a watr:Class ;
     rdfs:label "PlugFlowReactor" ;
     rdfs:comment "A type of reactor where the fluid flows in one direction through the tube" ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A plug flow reactor has at least one inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A plug flow reactor has at least one outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
     rdfs:subClassOf watr:Reactor .
 
 watr:ContinuouslyStirredTankReactor
@@ -102,7 +246,13 @@ watr:AerationBasin
     a watr:Class ;
     rdfs:label "AerationBasin" ;
     rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
-    rdfs:subClassOf watr:Reactor .
+    rdfs:subClassOf watr:Reactor, watr:Basin .
+
+watr:FlocculationBasin
+    a watr:Class ;
+    rdfs:label "FlocculationBasin" ;
+    rdfs:comment "A tank where flocculation occurs to aggregate particles in water" ;
+    rdfs:subClassOf watr:Basin .
 
 watr:Digester
     a watr:Class ;
@@ -136,7 +286,7 @@ watr:ChlorinationBasin
     a watr:Class ;
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit .
+    rdfs:subClassOf watr:DisinfectionUnit, watr:Basin .
 
 watr:SedimentationTank
     a watr:Class ;
