@@ -11,7 +11,7 @@
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    owl:imports <urn:nawi-water-ontology/processes> ;
+    owl:imports <urn:nawi-water-ontology/processtypes> ;
 .
 watr:Tank a rdfs:Class,sh:NodeShape ;
     a watr:Class ;

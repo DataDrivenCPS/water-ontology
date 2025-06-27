@@ -9,9 +9,9 @@
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix watr: <urn:nawi-water-ontology#> .
 
-<urn:nawi-water-ontology/processes>
+<urn:nawi-water-ontology/processtypes>
     a owl:Ontology ;
-    rdfs:label "NAWI Water Substances Ontology" ;
+    rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" ;
 .
 
