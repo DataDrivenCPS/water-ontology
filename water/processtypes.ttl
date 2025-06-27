@@ -15,9 +15,14 @@
     rdfs:comment "An ontology for types of unit process" ;
 .
 
+watr:Process a watr:Class, sh:NodeShape ;
+    rdfs:label "Process" ;
+    rdfs:comment "A process applied to water treatment." .
+
 watr:Physical-Process a watr:Class, sh:NodeShape ;
-    rdfs:label "Unit process types" ;
-.
+    rdfs:label "Physical Process" ;
+    rdfs:comment "A unit process that relies on physical forces to separate or treat water." ;
+    rdfs:subClassOf watr:Process .
 
 watr:Process-Screening a watr:Class, watr:Process-Screening, sh:NodeShape ;
     rdfs:label "Screening" ;
@@ -49,6 +54,11 @@ watr:Process-Mixing a watr:Class, watr:Process-Mixing, sh:NodeShape ;
     rdfs:comment "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
     rdfs:subClassOf watr:Physical-Process .
 
+watr:Process-Equalization a watr:Class, watr:Process-Equalization, sh:NodeShape ;
+    rdfs:label "Equalization" ;
+    rdfs:comment "Flow and load dampening using a tank or basin" ;
+    rdfs:subClassOf watr:Physical-Process .
+
 
 watr:Chemical-Process a watr:Class, sh:NodeShape ;
     rdfs:label "Chemical Process" ;
@@ -65,7 +75,7 @@ watr:Process-Flocculation a watr:Class, watr:Process-Flocculation, sh:NodeShape 
     rdfs:comment "A unit process that gently mixes water to allow coagulated particles to form larger clumps." ;
     rdfs:subClassOf watr:Chemical-Process .
 
-watr:Process-Diseinfection a watr:Class, watr:Process-Disinfection, sh:NodeShape ;
+watr:Process-Disinfection a watr:Class, watr:Process-Disinfection, sh:NodeShape ;
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." ;
     rdfs:subClassOf watr:Chemical-Process .
@@ -80,3 +90,33 @@ watr:Process-Oxidation a watr:Class, watr:Process-Oxidation, sh:NodeShape ;
     rdfs:comment "A unit process that adds oxidizing agents to water to remove contaminants or improve water quality." ;
     rdfs:subClassOf watr:Chemical-Process .
 
+watr:Process-Softening a watr:Class, watr:Process-Softening, sh:NodeShape ;
+    rdfs:label "Softening" ;
+    rdfs:comment "Chemical precipitation of calcium/magnesium" ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitation, sh:NodeShape ;
+    rdfs:label "Chemical Precipitation" ;
+    rdfs:comment "Removal of nutrients or metals using coagulants" ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+
+watr:Biological-Process a watr:Class, sh:NodeShape ;
+    rdfs:label "Biological Process" ;
+    rdfs:comment "A unit process that utilizes biological activity for water treatment." ;
+    rdfs:subClassOf watr:Process .
+
+watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge, sh:NodeShape ;
+    rdfs:label "Activated Sludge" ;
+    rdfs:comment "Aerobic suspended-growth biological treatment" ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration, sh:NodeShape ;
+    rdfs:label "Biofiltration" ;
+    rdfs:comment "Fixed-film biological treatment (e.g., trickling filter)" ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-MembraneBioreactor a watr:Class, watr:Process-MembraneBioreactor, sh:NodeShape ;
+    rdfs:label "Membrane Bioreactor" ;
+    rdfs:comment "Combined biological and membrane filtration" ;
+    rdfs:subClassOf watr:Biological-Process .
