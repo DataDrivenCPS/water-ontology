@@ -76,6 +76,10 @@ watr:Process-Electrodialysis a watr:Physical-Process ;
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." .
 
+watr:Process-UVDisinfection a watr:Physical-Process ;
+    rdfs:label "UV Disinfection" ;
+    rdfs:comment "A disinfection process that uses ultraviolet light to inactivate microorganisms." .
+
 
 watr:Chemical-Process a rdfs:Class ;
     rdfs:label "Chemical Process" ;
@@ -93,6 +97,10 @@ watr:Process-Flocculation a watr:Chemical-Process ;
 watr:Process-Disinfection a watr:Chemical-Process ;
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." .
+
+watr:Process-Chlorination a watr:Chemical-Process ;
+    rdfs:label "Chlorination" ;
+    rdfs:comment "A disinfection process that uses chlorine or chlorine compounds." .
 
 watr:Process-pHAdjustment a watr:Chemical-Process ;
     rdfs:label "pH Adjustment" ;

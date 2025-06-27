@@ -350,19 +350,40 @@ watr:DisinfectionUnit
         sh:message "Instances of DisinfectionUnit must have the Disinfection process." ;
     ] .
 
+watr:ChlorinationUnit
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "ChlorinationUnit" ;
+    rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Chlorination ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ChlorinationUnit must have the Chlorination process." ;
+    ] .
+
 watr:UltravioletLightUnit
     a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "UltravioletlightUnit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit .
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-UVDisinfection ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of UltravioletLightUnit must have the UVDisinfection process." ;
+    ] .
 
 watr:ChlorinationBasin
     a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit, watr:Basin .
+    rdfs:subClassOf watr:ChlorinationUnit, watr:Basin .
 
 watr:SedimentationTank
     a rdfs:Class, sh:NodeShape ;
