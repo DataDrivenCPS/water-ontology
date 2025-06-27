@@ -17,6 +17,28 @@ tank:
       args: {"name": "bi-cp"}
   optional: ["role", "bi-cp", "in", "out"]
 
+basin:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:Basin ;
+      s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
+      s223:cnx P:in, P:out, P:drain, P:overflow ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+    - template: outlet-cp
+      args: {"name": "drain"}
+    - template: outlet-cp
+      args: {"name": "overflow"}
+  optional: ["role", "in", "out", "overflow", "drain"]
+
+
 bladder:
   body: >
     @prefix P: <urn:___param___#> .
@@ -84,7 +106,7 @@ membrane:
   optional: ["role"]
 
 membrane-module:
-# Membrane module may in reality contain many membranes 
+# Membrane module may in reality contain many membranes
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
@@ -140,7 +162,7 @@ check-valve:
   optional: ["role"]
 
 vfd:
-# can either just have a vfd, or make a vfd with a pump 
+# can either just have a vfd, or make a vfd with a pump
 # make connectionpoints optional for VFD, since we don't really do elecricity for controls
 # In s223 VFD's have required electrical connection points, would probably be easier to make a vfd with a pump template
   body: >
@@ -168,7 +190,7 @@ pump-with-vfd:
 
     P:name a watr:Pump ;
       s223:hasConnectionPoint P:in, P:out, P:elec-in ;
-      s223:contains P:vfd-name, P:pump-name ; 
+      s223:contains P:vfd-name, P:pump-name ;
       s223:hasProperty P:on-off-command, P:speed-command .
 
     P:pump-in s223:mapsTo P:in .
@@ -176,11 +198,11 @@ pump-with-vfd:
 
     P:pump-name s223:hasConnectionPoint P:pump-elec-in ;
       s223:cnx P:pump-elec-in ;
-      s223:hasMedium P:elec-medium . 
-    
+      s223:hasMedium P:elec-medium .
+
     P:vfd-name s223:mapsTo P:elec-in ;
       s223:connectsTo P:pump-name .
-    
+
     P:vfd-in s223:mapsTo P:elec-in .
     P:vfd-out s223:cnx P:pump-elec-in .
 
@@ -208,7 +230,7 @@ controller:
 
     P:name a watr:Controller .
 
-      
+
 uf-unit:
   body: >
     @prefix P: <urn:___param___#> .
