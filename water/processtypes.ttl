@@ -59,6 +59,36 @@ watr:Process-Equalization a watr:Class, watr:Process-Equalization, sh:NodeShape 
     rdfs:comment "Flow and load dampening using a tank or basin" ;
     rdfs:subClassOf watr:Physical-Process .
 
+watr:Process-Dewatering a watr:Class, sh:NodeShape ;
+    rdfs:label "Dewatering" ;
+    rdfs:comment "A process to remove or separate water from another material, typically solids." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Centrifugation a watr:Class, sh:NodeShape ;
+    rdfs:label "Centrifugation" ;
+    rdfs:comment "A process that uses centrifugal force to separate substances of different densities." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Crystallization a watr:Class, sh:NodeShape ;
+    rdfs:label "Crystallization" ;
+    rdfs:comment "A process of forming solid crystals from a solution." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Evaporation a watr:Class, sh:NodeShape ;
+    rdfs:label "Evaporation" ;
+    rdfs:comment "A process of turning a liquid into a vapor." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Condensation a watr:Class, sh:NodeShape ;
+    rdfs:label "Condensation" ;
+    rdfs:comment "A process of turning a vapor into a liquid." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Electrodialysis a watr:Class, sh:NodeShape ;
+    rdfs:label "Electrodialysis" ;
+    rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." ;
+    rdfs:subClassOf watr:Physical-Process .
+
 
 watr:Chemical-Process a watr:Class, sh:NodeShape ;
     rdfs:label "Chemical Process" ;
@@ -100,6 +130,16 @@ watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitat
     rdfs:comment "Removal of nutrients or metals using coagulants" ;
     rdfs:subClassOf watr:Chemical-Process .
 
+watr:Process-IonExchange a watr:Class, sh:NodeShape ;
+    rdfs:label "Ion Exchange" ;
+    rdfs:comment "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Electrolysis a watr:Class, sh:NodeShape ;
+    rdfs:label "Electrolysis" ;
+    rdfs:comment "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
 
 watr:Biological-Process a watr:Class, sh:NodeShape ;
     rdfs:label "Biological Process" ;
@@ -119,4 +159,14 @@ watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration, sh:NodeShap
 watr:Process-MembraneBioreactor a watr:Class, watr:Process-MembraneBioreactor, sh:NodeShape ;
     rdfs:label "Membrane Bioreactor" ;
     rdfs:comment "Combined biological and membrane filtration" ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-AnaerobicDigestion a watr:Class, sh:NodeShape ;
+    rdfs:label "Anaerobic Digestion" ;
+    rdfs:comment "A biological process that breaks down organic matter in the absence of oxygen." ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-AerobicDigestion a watr:Class, sh:NodeShape ;
+    rdfs:label "Aerobic Digestion" ;
+    rdfs:comment "A biological process that breaks down organic matter in the presence of oxygen." ;
     rdfs:subClassOf watr:Biological-Process .
