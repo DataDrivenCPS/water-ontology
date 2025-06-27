@@ -15,158 +15,131 @@
     rdfs:comment "An ontology for types of unit process" ;
 .
 
-watr:Process a watr:Class, sh:NodeShape ;
+watr:Process a rdfs:Class ;
     rdfs:label "Process" ;
     rdfs:comment "A process applied to water treatment." .
 
-watr:Physical-Process a watr:Class, sh:NodeShape ;
+watr:Physical-Process a rdfs:Class ;
     rdfs:label "Physical Process" ;
     rdfs:comment "A unit process that relies on physical forces to separate or treat water." ;
     rdfs:subClassOf watr:Process .
 
-watr:Process-Screening a watr:Class, watr:Process-Screening, sh:NodeShape ;
+watr:Process-Screening a watr:Physical-Process ;
     rdfs:label "Screening" ;
-    rdfs:comment "A unit process that removes large solids from water, such as leaves, branches, and other debris." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that removes large solids from water, such as leaves, branches, and other debris." .
 
-watr:Process-Sedimentation a watr:Class, watr:Process-Sedimentation, sh:NodeShape ;
+watr:Process-Sedimentation a watr:Physical-Process ;
     rdfs:label "Sedimentation" ;
-    rdfs:comment "A unit process that allows solids to settle out of water by gravity." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that allows solids to settle out of water by gravity." .
 
-watr:Process-Filtration a watr:Class, watr:Process-Filtration, sh:NodeShape ;
+watr:Process-Filtration a watr:Physical-Process ;
     rdfs:label "Filtration" ;
-    rdfs:comment "A unit process that removes smaller particles from water by passing it through a filter." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that removes smaller particles from water by passing it through a filter." .
 
-watr:Process-Flotation a watr:Class, watr:Process-Flotation, sh:NodeShape ;
+watr:Process-Flotation a watr:Physical-Process ;
     rdfs:label "Flotation" ;
-    rdfs:comment "A unit process that uses buoyancy to separate solids from water, often using air bubbles." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that uses buoyancy to separate solids from water, often using air bubbles." .
 
-watr:Process-GasTransfer a watr:Class, watr:Process-GasTransfer, sh:NodeShape ;
+watr:Process-GasTransfer a watr:Physical-Process ;
     rdfs:label "Gas Transfer" ;
-    rdfs:comment "A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water." .
 
-watr:Process-Mixing a watr:Class, watr:Process-Mixing, sh:NodeShape ;
+watr:Process-Mixing a watr:Physical-Process ;
     rdfs:label "Mixing" ;
-    rdfs:comment "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A unit process that mixes water with chemicals or other substances to achieve a desired effect." .
 
-watr:Process-Equalization a watr:Class, watr:Process-Equalization, sh:NodeShape ;
+watr:Process-Equalization a watr:Physical-Process ;
     rdfs:label "Equalization" ;
-    rdfs:comment "Flow and load dampening using a tank or basin" ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "Flow and load dampening using a tank or basin" .
 
-watr:Process-Dewatering a watr:Class, sh:NodeShape ;
+watr:Process-Dewatering a watr:Physical-Process ;
     rdfs:label "Dewatering" ;
-    rdfs:comment "A process to remove or separate water from another material, typically solids." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process to remove or separate water from another material, typically solids." .
 
-watr:Process-Centrifugation a watr:Class, sh:NodeShape ;
+watr:Process-Centrifugation a watr:Physical-Process ;
     rdfs:label "Centrifugation" ;
-    rdfs:comment "A process that uses centrifugal force to separate substances of different densities." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process that uses centrifugal force to separate substances of different densities." .
 
-watr:Process-Crystallization a watr:Class, sh:NodeShape ;
+watr:Process-Crystallization a watr:Physical-Process ;
     rdfs:label "Crystallization" ;
-    rdfs:comment "A process of forming solid crystals from a solution." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process of forming solid crystals from a solution." .
 
-watr:Process-Evaporation a watr:Class, sh:NodeShape ;
+watr:Process-Evaporation a watr:Physical-Process ;
     rdfs:label "Evaporation" ;
-    rdfs:comment "A process of turning a liquid into a vapor." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process of turning a liquid into a vapor." .
 
-watr:Process-Condensation a watr:Class, sh:NodeShape ;
+watr:Process-Condensation a watr:Physical-Process ;
     rdfs:label "Condensation" ;
-    rdfs:comment "A process of turning a vapor into a liquid." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process of turning a vapor into a liquid." .
 
-watr:Process-Electrodialysis a watr:Class, sh:NodeShape ;
+watr:Process-Electrodialysis a watr:Physical-Process ;
     rdfs:label "Electrodialysis" ;
-    rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." .
 
 
-watr:Chemical-Process a watr:Class, sh:NodeShape ;
+watr:Chemical-Process a rdfs:Class ;
     rdfs:label "Chemical Process" ;
     rdfs:comment "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
     rdfs:subClassOf watr:Process .
 
-watr:Process-Coagulation a watr:Class, watr:Process-Coagulation, sh:NodeShape ;
+watr:Process-Coagulation a watr:Chemical-Process ;
     rdfs:label "Coagulation" ;
-    rdfs:comment "A unit process that adds chemicals to water to cause small particles to clump together." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A unit process that adds chemicals to water to cause small particles to clump together." .
 
-watr:Process-Flocculation a watr:Class, watr:Process-Flocculation, sh:NodeShape ;
+watr:Process-Flocculation a watr:Chemical-Process ;
     rdfs:label "Flocculation" ;
-    rdfs:comment "A unit process that gently mixes water to allow coagulated particles to form larger clumps." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A unit process that gently mixes water to allow coagulated particles to form larger clumps." .
 
-watr:Process-Disinfection a watr:Class, watr:Process-Disinfection, sh:NodeShape ;
+watr:Process-Disinfection a watr:Chemical-Process ;
     rdfs:label "Disinfection" ;
-    rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." .
 
-watr:Process-pHAdjustment a watr:Class, watr:Process-pHAdjustment, sh:NodeShape ;
+watr:Process-pHAdjustment a watr:Chemical-Process ;
     rdfs:label "pH Adjustment" ;
-    rdfs:comment "A unit process that adjusts the pH of water to a desired level using chemicals." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A unit process that adjusts the pH of water to a desired level using chemicals." .
 
-watr:Process-Oxidation a watr:Class, watr:Process-Oxidation, sh:NodeShape ;
+watr:Process-Oxidation a watr:Chemical-Process ;
     rdfs:label "Oxidation" ;
-    rdfs:comment "A unit process that adds oxidizing agents to water to remove contaminants or improve water quality." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A unit process that adds oxidizing agents to water to remove contaminants or improve water quality." .
 
-watr:Process-Softening a watr:Class, watr:Process-Softening, sh:NodeShape ;
+watr:Process-Softening a watr:Chemical-Process ;
     rdfs:label "Softening" ;
-    rdfs:comment "Chemical precipitation of calcium/magnesium" ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "Chemical precipitation of calcium/magnesium" .
 
-watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitation, sh:NodeShape ;
+watr:Process-ChemicalPrecipitation a watr:Chemical-Process ;
     rdfs:label "Chemical Precipitation" ;
-    rdfs:comment "Removal of nutrients or metals using coagulants" ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "Removal of nutrients or metals using coagulants" .
 
-watr:Process-IonExchange a watr:Class, sh:NodeShape ;
+watr:Process-IonExchange a watr:Chemical-Process ;
     rdfs:label "Ion Exchange" ;
-    rdfs:comment "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." .
 
-watr:Process-Electrolysis a watr:Class, sh:NodeShape ;
+watr:Process-Electrolysis a watr:Chemical-Process ;
     rdfs:label "Electrolysis" ;
-    rdfs:comment "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:comment "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." .
 
 
-watr:Biological-Process a watr:Class, sh:NodeShape ;
+watr:Biological-Process a rdfs:Class ;
     rdfs:label "Biological Process" ;
     rdfs:comment "A unit process that utilizes biological activity for water treatment." ;
     rdfs:subClassOf watr:Process .
 
-watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge, sh:NodeShape ;
+watr:Process-ActivatedSludge a watr:Biological-Process ;
     rdfs:label "Activated Sludge" ;
-    rdfs:comment "Aerobic suspended-growth biological treatment" ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:comment "Aerobic suspended-growth biological treatment" .
 
-watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration, sh:NodeShape ;
+watr:Process-Biofiltration a watr:Biological-Process ;
     rdfs:label "Biofiltration" ;
-    rdfs:comment "Fixed-film biological treatment (e.g., trickling filter)" ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:comment "Fixed-film biological treatment (e.g., trickling filter)" .
 
-watr:Process-MembraneBioreactor a watr:Class, watr:Process-MembraneBioreactor, sh:NodeShape ;
+watr:Process-MembraneBioreactor a watr:Biological-Process ;
     rdfs:label "Membrane Bioreactor" ;
-    rdfs:comment "Combined biological and membrane filtration" ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:comment "Combined biological and membrane filtration" .
 
-watr:Process-AnaerobicDigestion a watr:Class, sh:NodeShape ;
+watr:Process-AnaerobicDigestion a watr:Biological-Process ;
     rdfs:label "Anaerobic Digestion" ;
-    rdfs:comment "A biological process that breaks down organic matter in the absence of oxygen." ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:comment "A biological process that breaks down organic matter in the absence of oxygen." .
 
-watr:Process-AerobicDigestion a watr:Class, sh:NodeShape ;
+watr:Process-AerobicDigestion a watr:Biological-Process ;
     rdfs:label "Aerobic Digestion" ;
-    rdfs:comment "A biological process that breaks down organic matter in the presence of oxygen." ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:comment "A biological process that breaks down organic matter in the presence of oxygen." .
