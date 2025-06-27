@@ -307,3 +307,78 @@ concentration-sensor:
   dependencies:
    - template: quantifiable-property
      args: {"name": "property", "unit": "unit", "substance": "constituent", "property-unit": "unit", "property-constituent": "substance"}
+
+flocculation-basin:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:FlocculationBasin ;
+      watr:hasProcess watr:Process-Flocculation ;
+      s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
+      s223:cnx P:in, P:out, P:drain, P:overflow ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+    - template: outlet-cp
+      args: {"name": "drain"}
+    - template: outlet-cp
+      args: {"name": "overflow"}
+  optional: ["role", "in", "out", "overflow", "drain"]
+
+sedimentation-tank:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:SedimentationTank ;
+      watr:hasProcess watr:Process-Sedimentation ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:cnx P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role", "in", "out"]
+
+filtration:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:Filter ;
+      watr:hasProcess watr:Process-Filtration ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role"]
+
+disinfection-unit:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <urn:nawi-water-ontology#> .
+
+    P:name a watr:DisinfectionUnit ;
+      watr:hasProcess watr:Process-Disinfection ;
+      s223:hasConnectionPoint P:in, P:out ;
+      s223:cnx P:in, P:out ;
+      s223:hasRole P:role .
+  dependencies:
+    - template: inlet-cp
+      args: {"name": "in"}
+    - template: outlet-cp
+      args: {"name": "out"}
+  optional: ["role", "in", "out"]
