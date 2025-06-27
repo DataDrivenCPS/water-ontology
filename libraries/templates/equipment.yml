@@ -3,8 +3,10 @@ tank:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Tank ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out, P:bi-cp ;
       s223:cnx P:in, P:out, P:bi-cp ;
       s223:hasRole P:role .
@@ -15,15 +17,17 @@ tank:
       args: {"name": "out"}
     - template: bidirectional-cp
       args: {"name": "bi-cp"}
-  optional: ["role", "bi-cp", "in", "out"]
+  optional: ["role", "bi-cp", "in", "out", "label"]
 
 basin:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Basin ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
       s223:cnx P:in, P:out, P:drain, P:overflow ;
       s223:hasRole P:role .
@@ -36,7 +40,7 @@ basin:
       args: {"name": "drain"}
     - template: outlet-cp
       args: {"name": "overflow"}
-  optional: ["role", "in", "out", "overflow", "drain"]
+  optional: ["role", "in", "out", "overflow", "drain", "label"]
 
 
 bladder:
@@ -44,8 +48,10 @@ bladder:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Tank ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -54,15 +60,17 @@ bladder:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Valve ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -71,15 +79,17 @@ valve:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 filter:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Filter ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -87,15 +97,17 @@ filter:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 membrane:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Membrane ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -103,7 +115,7 @@ membrane:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 membrane-module:
 # Membrane module may in reality contain many membranes
@@ -111,8 +123,10 @@ membrane-module:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Equipment ;
+      rdfs:label P:label ;
       s223:contains P:membrane ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -126,15 +140,17 @@ membrane-module:
       args: {"name": "out"}
     - template: membrane
       args: {"name": "membrane", "in":"membrane-in", "out":"membrane-out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 pump:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Pump ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -142,15 +158,17 @@ pump:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 check-valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:CheckValve ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -159,7 +177,7 @@ check-valve:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 vfd:
 # can either just have a vfd, or make a vfd with a pump
@@ -169,8 +187,10 @@ vfd:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:VariableFrequencyDrive ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -178,7 +198,7 @@ vfd:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 pump-with-vfd:
 # I don't recall if this was the agreed upon modeling convention
@@ -187,8 +207,10 @@ pump-with-vfd:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Pump ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out, P:elec-in ;
       s223:contains P:vfd-name, P:pump-name ;
       s223:hasProperty P:on-off-command, P:speed-command .
@@ -221,14 +243,18 @@ pump-with-vfd:
     args: {"name": "pump-name", "in":"pump-in", "out":"pump-out"}
   - template: vfd
     args: {"name": "vfd-name", "in":"vfd-in", "out":"vfd-out"}
+  optional: ["label"]
 
 controller:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-    P:name a watr:Controller .
+    P:name a watr:Controller ;
+      rdfs:label P:label .
+  optional: ["label"]
 
 
 uf-unit:
@@ -236,8 +262,10 @@ uf-unit:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:UltrafiltrationUnit ;
+      rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -245,15 +273,17 @@ uf-unit:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 uv-reactor:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:UltravioletLightUnit ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-UVDisinfection ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -262,15 +292,17 @@ uv-reactor:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 contact-chamber:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:DisinfectionUnit ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Disinfection ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -279,18 +311,20 @@ contact-chamber:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 sensor:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a s223:Sensor ;
+      rdfs:label P:label ;
       s223:observes P:property ;
       s223:hasObservationLocation P:where .
-  optional: ["property", "where"]
+  optional: ["property", "where", "label"]
 
 
 concentration-sensor:
@@ -299,13 +333,15 @@ concentration-sensor:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a s223:Sensor ;
+      rdfs:label P:label ;
       s223:observes P:property ;
       s223:hasObservationLocation P:where .
     P:property qudt:hasUnit P:unit ;
       s223:ofConstituent P:substance .
-  optional: ["where"]
+  optional: ["where", "label"]
   dependencies:
    - template: quantifiable-property
      args: {"name": "property", "unit": "unit", "substance": "constituent", "property-unit": "unit", "property-constituent": "substance"}
@@ -315,8 +351,10 @@ flocculation-basin:
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:FlocculationBasin ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Flocculation ;
       s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
       s223:cnx P:in, P:out, P:drain, P:overflow ;
@@ -330,15 +368,17 @@ flocculation-basin:
       args: {"name": "drain"}
     - template: outlet-cp
       args: {"name": "overflow"}
-  optional: ["role", "in", "out", "overflow", "drain"]
+  optional: ["role", "in", "out", "overflow", "drain", "label"]
 
 sedimentation-tank:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:SedimentationTank ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Sedimentation ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
@@ -348,15 +388,17 @@ sedimentation-tank:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role", "in", "out"]
+  optional: ["role", "in", "out", "label"]
 
 filtration:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Filter ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Filtration ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -365,15 +407,17 @@ filtration:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
 
 disinfection-unit:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:DisinfectionUnit ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Disinfection ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
@@ -383,15 +427,17 @@ disinfection-unit:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role", "in", "out"]
+  optional: ["role", "in", "out", "label"]
 
 chlorination-unit:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:ChlorinationUnit ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-Chlorination ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
@@ -401,15 +447,17 @@ chlorination-unit:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role", "in", "out"]
+  optional: ["role", "in", "out", "label"]
 
 rapid-sand-filter:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:RapidSandFilter ;
+      rdfs:label P:label ;
       watr:hasProcess watr:Process-RapidSandFiltration ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -418,4 +466,4 @@ rapid-sand-filter:
       args: {"name": "in"}
     - template: outlet-cp
       args: {"name": "out"}
-  optional: ["role"]
+  optional: ["role", "label"]
