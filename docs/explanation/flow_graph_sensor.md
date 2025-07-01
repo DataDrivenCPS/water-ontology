@@ -9,19 +9,18 @@ To determine the **optimal locations for sensor placement** in a water treatment
 
 We generate this graph from an RDF-based model of the plant. The graph abstraction implemented here is based on WWTP1, described in the paper ["Optimal flow sensor placement on wastewater treatment plants" by Villez et al. (2016)](https://doi.org/10.1016/j.watres.2016.05.068). We can identify a **minimal set of sensor placements** that covers all flows in the system.
 ## Graph Construction Using SPARQL Rules
-In the RDF based model, equipments are connected indirectly through multiple layers.
+In the RDF based model, equipments are connected indirectly through multiple steps.
 
 **Each connection flows from:**  
   ```
   Equipment ->  Outlet Connection point -> Pipe -> Inlet Connection Point -> Equipment
   ```
-In some cases, a an equipment or junction may connect directly to another equipment or junction through a pipe, bypassing any intermediate Inlet or Outlet connection point. This structure makes it complicated for sensor placement analys. Therefore we simplify the topology as described by Villez et al. (2016) traversing only the most essential paths that reflect actual flow of material through pipes using SPARQL queries. We follow the connectsFrom and connectsTo relationships, to bypass intermediate nodes like connection points or junctions.
+This structure makes it complicated for optimal sensor placement. Therefore we simplify the topology as described by Villez et al. (2016) traversing only the most essential paths that reflect actual flow of material through pipes using SPARQL queries. We follow the connectsFrom and connectsTo relationships, to bypass intermediate nodes like connection points or junctions.
 
 ## Ensuring Graph Completeness
 
 To make the graph **fully closed** (i.e., all flows are measured), we introduce a special node called **`Environment`**, which represents everything external to the system. This connects all **inflows** and **outflows** to a common endpoint.
-Prevents unconnected “open ends” where water appears or disappears.
-Enforces flow **conservation** throughout the graph.
+This Prevents unconnected “open ends” where water appears or disappears which enforces flow conservation, and enables accurate modeling for optimal sensor placement.
 
 We use **two SPARQL Rules** (Pipe Rule and Enviroment Rule) to extract the necessary structure from the RDF model and simplify it into a usable flow graph. These SPARQL rules:
 - **Identify connections between devices and pipes.**
@@ -32,11 +31,11 @@ We use **two SPARQL Rules** (Pipe Rule and Enviroment Rule) to extract the neces
 ## Visual Transformation Overview
 
 ### Before: Raw RDF Graph
-<sub>(equipment → connection points → pipe → connection points → equipment)</sub>  
+<sub>(equipment →Outlet Connection points → pipe → Inlet Connection points → equipment)</sub>  
 ![Before: RDF Graph](./images/WTS1.png)
 
 ### After: Simplified Flow Graph
-<sub>(direct connections from one device to another, and environment closure)</sub>  
+<sub>(direct connections from one equipment to another, and environment closure)</sub>  
 ![After: Flow Graph](./images/Process_Graph.png)
 
 
