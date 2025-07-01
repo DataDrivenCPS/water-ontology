@@ -107,7 +107,7 @@ SELECT ?from ?conn ?to WHERE {
 
 - **Branch 1 (Outlet):**  
   - `?to_orig rdf:type s223:OutletConnectionPoint`  
-    Finds every outlet connection point.  
+    Finds every outlet connection point. 
   - `?from s223:hasConnectionPoint ?to_orig`  
     Identifies every outlet connection point's source device.  
   - `FILTER NOT EXISTS { ?to_orig s223:connectsThrough ?conn_orig }`  
