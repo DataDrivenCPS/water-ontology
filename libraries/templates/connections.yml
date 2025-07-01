@@ -36,8 +36,11 @@ pipe:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     P:name a s223:Pipe, s223:Connection .
-    P:name s223:cnx P:out, P:in .
+    P:name s223:cnx P:source, P:destination ;
+      rdfs:label P:label .
+  optional: ["label"]
 
 junction:
   body: >
