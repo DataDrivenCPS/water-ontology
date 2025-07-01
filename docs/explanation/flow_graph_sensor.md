@@ -3,7 +3,7 @@
 
 To determine the **optimal locations for sensor placement** in a water treatment plant, we aim to monitor all water flows using the **fewest number of sensors**. This can be achieved by constructing a **flow graph**, where:
 
-**Nodes** represent system components (e.g., devices, junctions).
+**Nodes** represent system components (e.g., equipments, junctions).
 
 **Edges** represent water flows between these components.
 
@@ -15,7 +15,7 @@ In the RDF based model, equipments are connected indirectly through multiple ste
   ```
   Equipment ->  Outlet Connection point -> Pipe -> Inlet Connection Point -> Equipment
   ```
-This structure makes it complicated for optimal sensor placement. Therefore we simplify the topology as described by Villez et al. (2016) traversing only the most essential paths that reflect actual flow of material through pipes using SPARQL queries. We follow the connectsFrom and connectsTo relationships, to bypass intermediate nodes like connection points or junctions.
+This structure makes it complicated for optimal sensor placement. Therefore we simplify the topology as described by Villez et al. (2016), traversing only the most essential paths that reflect actual flow of material through pipes using SPARQL queries. We follow the connectsFrom and connectsTo relationships, to bypass intermediate nodes like connection points or junctions.
 
 ## Ensuring Graph Completeness
 
@@ -23,7 +23,7 @@ To make the graph **fully closed** (i.e., all flows are measured), we introduce 
 This Prevents unconnected “open ends” where water appears or disappears which enforces flow conservation, and enables accurate modeling for optimal sensor placement.
 
 We use **two SPARQL Rules** (Pipe Rule and Enviroment Rule) to extract the necessary structure from the RDF model and simplify it into a usable flow graph. These SPARQL rules:
-- **Identify connections between devices and pipes.**
+- **Identify connections between equipments and pipes.**
 - **Ignores non-essential intermediary nodes.**
 - **Attach unconnected flow endpoints to the `Environment`.**
 
