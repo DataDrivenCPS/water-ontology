@@ -7,21 +7,26 @@ To determine the **optimal locations for sensor placement** in a water treatment
 
 **Edges** represent water flows between these components.
 
-We generate this graph from an RDF-based model of the plant. The graph abstraction implemented here is based on WWTP1, described in the paper["Optimal flow sensor placement on wastewater treatment plants" by Villez et al. (2016)](https://doi.org/10.1016/j.watres.2016.05.068). We can identify a **minimal set of sensor placements** that covers all flows in the system.
+We generate this graph from an RDF-based model of the plant. The graph abstraction implemented here is based on WWTP1, described in the paper ["Optimal flow sensor placement on wastewater treatment plants" by Villez et al. (2016)](https://doi.org/10.1016/j.watres.2016.05.068). We can identify a **minimal set of sensor placements** that covers all flows in the system.
+## Graph Construction Using SPARQL Rules
+In the RDF based model, equipments are connected indirectly through multiple layers.
+
+**Each connection flows from:**  
+  ```
+  Equipment ->  Outlet Connection point -> Pipe -> Inlet Connection Point -> Equipment
+  ```
+In some cases, a an equipment or junction may connect directly to another equipment or junction through a pipe, bypassing any intermediate Inlet or Outlet connection point. This structure makes it complicated for sensor placement analys. Therefore we simplify the topology as described by Villez et al. (2016) traversing only the most essential paths that reflect actual flow of material through pipes using SPARQL queries. We follow the connectsFrom and connectsTo relationships, to bypass intermediate nodes like connection points or junctions.
 
 ## Ensuring Graph Completeness
 
-To make the graph **fully closed** (i.e., all flows are accounted for), we introduce a special node called **`Environment`**, which represents everything external to the system. This connects all **inflows** and **outflows** to a common endpoint.
+To make the graph **fully closed** (i.e., all flows are measured), we introduce a special node called **`Environment`**, which represents everything external to the system. This connects all **inflows** and **outflows** to a common endpoint.
 Prevents unconnected “open ends” where water appears or disappears.
-Enforces **conservation** throughout the graph.
+Enforces flow **conservation** throughout the graph.
 
-## Graph Construction Using SPARQL Rules
-
-We use **SPARQL queries** to extract the necessary structure from the RDF model and simplify it into a usable flow graph. These rules:
-
-Identify connections between devices and pipes.
-Ignores non-essential intermediary nodes.
-Attach unconnected flow endpoints to the `Environment`.
+We use **two SPARQL Rules** (Pipe Rule and Enviroment Rule) to extract the necessary structure from the RDF model and simplify it into a usable flow graph. These SPARQL rules:
+- **Identify connections between devices and pipes.**
+- **Ignores non-essential intermediary nodes.**
+- **Attach unconnected flow endpoints to the `Environment`.**
 
 
 ## Visual Transformation Overview
@@ -113,7 +118,7 @@ SELECT ?from ?conn ?to WHERE {
     Marks the endpoint as `Environment`.  
   - **Resulting connection:**  
     ```
-    Device-> connects_to_env -> Environment
+    Equipment-> connects_to_env -> Environment
     ```
 
 - **Branch 2 (Inlet):**  
@@ -129,7 +134,7 @@ SELECT ?from ?conn ?to WHERE {
     Marks the source as `Environment`.  
   - **Resulting connection:**  
     ```
-    Environment ->  connects_to_env -> Device
+    Environment ->  connects_to_env -> Equipment
     ```
 
 
