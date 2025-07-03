@@ -25,4 +25,5 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv.sources]
-buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "gtf-variadic-template-param" }
+buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }
+#buildingmotif = { path = "../../NREL/scratch/buildingmotif" }

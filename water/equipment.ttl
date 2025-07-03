@@ -929,3 +929,178 @@ watr:ManualMeasurementPort
     rdfs:comment "A location where manual measurements are taken" ;
     rdfs:subClassOf s223:Sensor ;
 .
+
+watr:MultifunctionalMembrane
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Multifunctional Membrane" ;
+    rdfs:comment "A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants." ;
+    rdfs:subClassOf watr:Filter .
+
+watr:MolybdenumSulfideBasedMembrane
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Molybdenum Sulfide (MoS2)-based Membrane" ;
+    rdfs:comment "A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity." ;
+    rdfs:subClassOf watr:Filter .
+
+watr:ElectricallyConductingMembrane
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Electrically Conducting Membrane" ;
+    rdfs:comment "A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes." ;
+    rdfs:subClassOf watr:Filter .
+
+watr:ElectroDialyticCrystallizer
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Electro-Dialytic Crystallizer (EDC)" ;
+    rdfs:comment "A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization." ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Electrodialysis ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ElectroDialyticCrystallizer must have the Electrodialysis process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Crystallization ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ElectroDialyticCrystallizer must have the Crystallization process." ;
+    ] .
+
+watr:Electrode
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Electrode" ;
+    rdfs:comment "A component where electrochemical reactions occur in electrified processes." ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:Anode
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Anode" ;
+    rdfs:comment "An electrode where oxidation occurs, often a sacrificial component in electrocoagulation." ;
+    rdfs:subClassOf watr:Electrode .
+
+watr:Cathode
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Cathode" ;
+    rdfs:comment "An electrode where reduction occurs." ;
+    rdfs:subClassOf watr:Electrode .
+
+watr:ElectromagneticFieldDevice
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Electromagnetic Field (EMF) Device" ;
+    rdfs:comment "A device that generates an electromagnetic field, used as a pretreatment method for membrane scaling and fouling control." ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:SolventExtractionSystem
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Solvent Extraction System" ;
+    rdfs:comment "A system that uses a solvent to selectively extract water from highly saline brines." ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-SolventExtraction ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of SolventExtractionSystem must have the SolventExtraction process." ;
+    ] .
+
+watr:DMERecoverySystem
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Dimethyl Ether (DME) Recovery System" ;
+    rdfs:comment "A system designed to recover a high percentage of Dimethyl Ether solvent in solvent-driven processes." ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:StandardizedFlowCell
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Standardized Flow Cell" ;
+    rdfs:comment "An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode." ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:UVH2O2Reactor
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "UV/H2O2 Reactor" ;
+    rdfs:comment "A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide." ;
+    rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-AdvancedOxidation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of UVH2O2Reactor must have the AdvancedOxidation process." ;
+    ] .
+
+watr:BiologicalAeratedFilter
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Biological Aerated Filter (BAF)" ;
+    rdfs:comment "A filter that uses biological processes to remove contaminants." ;
+    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-BiologicallyActiveFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of BiologicalAeratedFilter must have the BiologicallyActiveFiltration process." ;
+    ] .
+
+watr:ElectrocoagulationUnit
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Electrocoagulation Unit" ;
+    rdfs:comment "A unit that uses electrocoagulation for contaminant removal." ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Electrocoagulation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ElectrocoagulationUnit must have the Electrocoagulation process." ;
+    ] .
+
+watr:OzonationUnit
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Ozonation Unit" ;
+    rdfs:comment "A unit that uses ozone for water treatment." ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Ozonation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of OzonationUnit must have the Ozonation process." ;
+    ] .
+
+watr:GranulatedActivatedCarbonAdsorber
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Granulated Activated Carbon (GAC) Adsorber" ;
+    rdfs:comment "A unit that uses granulated activated carbon to adsorb impurities from water." ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-GranulatedActivatedCarbonAdsorption ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranulatedActivatedCarbonAdsorption process." ;
+    ] .
+
+watr:3DPrintedSpacer
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "3D Printed Spacer" ;
+    rdfs:comment "Customized geometries within membrane modules, fabricated by 3D printing, designed to maximize mass and heat transport rates." ;
+    rdfs:subClassOf s223:Equipment .
