@@ -1097,10 +1097,3 @@ watr:GranulatedActivatedCarbonAdsorber
         sh:maxCount 1 ;
         sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranulatedActivatedCarbonAdsorption process." ;
     ] .
-
-watr:3DPrintedSpacer
-    a rdfs:Class, sh:NodeShape ;
-    a watr:Class ;
-    rdfs:label "3D Printed Spacer" ;
-    rdfs:comment "Customized geometries within membrane modules, fabricated by 3D printing, designed to maximize mass and heat transport rates." ;
-    rdfs:subClassOf s223:Equipment .
