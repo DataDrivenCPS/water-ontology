@@ -2,7 +2,7 @@
 
 build-ontology:
 	ontoenv init --offline water libraries
-	ontoenv get-closure urn:nawi-water-ontology libraries/water.ttl
+	ontoenv closure urn:nawi-water-ontology libraries/water.ttl
 
 install-jupyter-venv:
 	uv add ipykernel
