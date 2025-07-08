@@ -10051,7 +10051,7 @@ s223:Electricity-AC a s223:Class,
             sh:path s223:hasNumberOfElectricalPhases ] .
 
 <http://data.ashrae.org/standard223/1.0/model/all> a owl:Ontology ;
-    owl:imports <http://qudt.org/3.1.1/vocab/constant>,
+    owl:imports <http://qudt.org/3.1.1/vocab/quantitykind>,
         <http://qudt.org/3.1.1/vocab/unit>,
         sh: ;
     owl:versionInfo "Created with TopBraid Composer"^^xsd:string ;
