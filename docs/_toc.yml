@@ -10,12 +10,14 @@ parts:
   - file: explanation/overview.md
   - file: explanation/definitions.md
   - file: explanation/processes.md
+  - file: explanation/flow_graph_sensor.md
 - caption: Tutorials
   chapters:
   - file: tutorials/creating-models.md
 - caption: Guides
   chapters:
   - file: guides/todo.md
+  
 - caption: Reference
   chapters:
   - file: reference/equipment_documentation.md
