@@ -28,3 +28,6 @@ build-backend = "hatchling.build"
 [tool.uv.sources]
 buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }
 #buildingmotif = { path = "../../NREL/scratch/buildingmotif" }
+
+[tool.uv]
+override-dependencies = ["brick-tq-shacl==0.4.0a7"]
