@@ -8,6 +8,7 @@ dependencies = [
     "pyontoenv==0.2.2a5",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
+    "brick-tq-shacl==0.4.0a7",
     "jupyterlab>=4.2.5",
     "jupyterlab-rise>=0.42.0",
     "ipykernel>=6.29.5",
