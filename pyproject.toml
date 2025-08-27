@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pyontoenv==0.1.10a4",
+    "pyontoenv==0.2.2a5",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
     "jupyterlab>=4.2.5",
@@ -15,6 +15,9 @@ dependencies = [
     "sphinx-autodoc-bmotif==0.1.6",
     "sphinx-toolbox>=3.8.1",
     "sphinx-tabs>=3.4.5",
+    "networkx>=3.4.2",
+    "pydotplus>=2.0.2",
+    "graphviz>=0.21",
 ]
 
 [build-system]
@@ -22,4 +25,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv.sources]
-buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }
+buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "gtf-variadic-template-param" }

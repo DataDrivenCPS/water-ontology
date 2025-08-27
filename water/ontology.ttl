@@ -10,10 +10,10 @@
 <urn:nawi-water-ontology>
   a owl:Ontology ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-  owl:imports <http://qudt.org/2.1/vocab/constant> ;
-  owl:imports <http://qudt.org/2.1/vocab/currency> ;
-  owl:imports <http://qudt.org/2.1/vocab/unit> ;
+  owl:imports <http://qudt.org/3.1/vocab/unit> ;
   owl:imports <urn:nawi-water-ontology/equip> ;
+  owl:imports <urn:nawi-water-ontology/processtypes> ;
+  owl:imports <urn:nawi-water-ontology/substances> ;
   owl:imports sh: ;
 .
 
@@ -29,4 +29,22 @@ watr:Class
       sh:minCount 1 ;
       sh:severity sh:Warning ;
     ] ;
+.
+
+watr:UnitProcess
+    a rdfs:Class ;
+    rdfs:label "Unit Process" ;
+    rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
+    rdfs:subClassOf watr:Class ;
+    sh:property [
+      sh:path watr:hasProcess ;
+      sh:minCount 1 ;
+      sh:message "A `Unit Process` must be associated with at least one water treatment process using the relation `watr:hasProcess`." ;
+      sh:class watr:Process ;
+    ] ;
+.
+
+watr:hasProcess a rdf:Property ;
+    rdfs:label "has process" ;
+    rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
 .

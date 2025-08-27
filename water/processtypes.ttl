@@ -1,0 +1,190 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix equip: <urn:nawi-water-ontology/equip#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/processtypes>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Process Types Ontology" ;
+    rdfs:comment "An ontology for types of unit process" .
+
+watr:ProcessKind a rdfs:Class ;
+    rdfs:label "Process Kind" ;
+    rdfs:comment "The class of all process kinds. Each process kind is both a class (a sub-class of watr:Process) and an individual." .
+
+watr:Process a owl:Class ;
+    rdfs:label "Process" ;
+    rdfs:comment "A process applied to water treatment." .
+
+watr:Physical-Process a owl:Class ;
+    rdfs:label "Physical Process" ;
+    rdfs:comment "A unit process that relies on physical forces to separate or treat water." ;
+    rdfs:subClassOf watr:Process .
+
+watr:Process-Screening a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Screening" ;
+    rdfs:comment "A unit process that removes large solids from water, such as leaves, branches, and other debris." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Sedimentation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Sedimentation" ;
+    rdfs:comment "A unit process that allows solids to settle out of water by gravity." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Filtration a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Filtration" ;
+    rdfs:comment "A unit process that removes smaller particles from water by passing it through a filter." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-RapidSandFiltration a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Rapid Sand Filtration" ;
+    rdfs:comment "A filtration process that uses a bed of sand to remove impurities." ;
+    rdfs:subClassOf watr:Process-Filtration .
+
+watr:Process-Flotation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Flotation" ;
+    rdfs:comment "A unit process that uses buoyancy to separate solids from water, often using air bubbles." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-GasTransfer a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Gas Transfer" ;
+    rdfs:comment "A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Mixing a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Mixing" ;
+    rdfs:comment "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Equalization a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Equalization" ;
+    rdfs:comment "Flow and load dampening using a tank or basin" ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Dewatering a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Dewatering" ;
+    rdfs:comment "A process to remove or separate water from another material, typically solids." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Centrifugation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Centrifugation" ;
+    rdfs:comment "A process that uses centrifugal force to separate substances of different densities." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Crystallization a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Crystallization" ;
+    rdfs:comment "A process of forming solid crystals from a solution." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Evaporation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Evaporation" ;
+    rdfs:comment "A process of turning a liquid into a vapor." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Condensation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Condensation" ;
+    rdfs:comment "A process of turning a vapor into a liquid." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Electrodialysis a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Electrodialysis" ;
+    rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." ;
+    rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
+
+watr:Process-UVDisinfection a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "UV Disinfection" ;
+    rdfs:comment "A disinfection process that uses ultraviolet light to inactivate microorganisms." ;
+    rdfs:subClassOf watr:Physical-Process, watr:Process-Disinfection .
+
+
+watr:Chemical-Process a owl:Class ;
+    rdfs:label "Chemical Process" ;
+    rdfs:comment "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
+    rdfs:subClassOf watr:Process .
+
+watr:Process-Coagulation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Coagulation" ;
+    rdfs:comment "A unit process that adds chemicals to water to cause small particles to clump together." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Flocculation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Flocculation" ;
+    rdfs:comment "A unit process that gently mixes water to allow coagulated particles to form larger clumps." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Disinfection a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Disinfection" ;
+    rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Chlorination a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Chlorination" ;
+    rdfs:comment "A disinfection process that uses chlorine or chlorine compounds." ;
+    rdfs:subClassOf watr:Process-Disinfection .
+
+watr:Process-pHAdjustment a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "pH Adjustment" ;
+    rdfs:comment "A unit process that adjusts the pH of water to a desired level using chemicals." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Oxidation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Oxidation" ;
+    rdfs:comment "A unit process that adds oxidizing agents to water to remove contaminants or improve water quality." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-Softening a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Softening" ;
+    rdfs:comment "Chemical precipitation of calcium/magnesium" ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-ChemicalPrecipitation a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Chemical Precipitation" ;
+    rdfs:comment "Removal of nutrients or metals using coagulants" ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+watr:Process-IonExchange a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Ion Exchange" ;
+    rdfs:comment "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." ;
+    rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
+
+watr:Process-Electrolysis a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Electrolysis" ;
+    rdfs:comment "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
+
+watr:Biological-Process a owl:Class ;
+    rdfs:label "Biological Process" ;
+    rdfs:comment "A unit process that utilizes biological activity for water treatment." ;
+    rdfs:subClassOf watr:Process .
+
+watr:Process-ActivatedSludge a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Activated Sludge" ;
+    rdfs:comment "Aerobic suspended-growth biological treatment" ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-Biofiltration a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Biofiltration" ;
+    rdfs:comment "Fixed-film biological treatment (e.g., trickling filter)" ;
+    rdfs:subClassOf watr:Biological-Process, watr:Physical-Process .
+
+watr:Process-MembraneBioreactor a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Membrane Bioreactor" ;
+    rdfs:comment "Combined biological and membrane filtration" ;
+    rdfs:subClassOf watr:Biological-Process, watr:Physical-Process .
+
+watr:Process-AnaerobicDigestion a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Anaerobic Digestion" ;
+    rdfs:comment "A biological process that breaks down organic matter in the absence of oxygen." ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-AerobicDigestion a owl:Class, sh:NodeShape, watr:ProcessKind ;
+    rdfs:label "Aerobic Digestion" ;
+    rdfs:comment "A biological process that breaks down organic matter in the presence of oxygen." ;
+    rdfs:subClassOf watr:Biological-Process .

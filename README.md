@@ -16,6 +16,7 @@
 0. (to update 223, run the `download-s223.sh` script; this will only work for those with existing access to that repo)
 1. Install [`uv`](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) for working with Python
 2. Install the dependencies with `uv sync`
+3. Install `ontoenv` either by downloading the latest [release](https://github.com/gtfierro/ontoenv-rs/releases) or through `cargo install ontoenv-cli@0.2.1a1`
 
 ## Building the Ontology
 

@@ -11,6 +11,7 @@
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+    owl:imports <urn:nawi-water-ontology/processtypes> ;
 .
 watr:Tank a rdfs:Class,sh:NodeShape ;
     a watr:Class ;
@@ -43,7 +44,73 @@ watr:Tank a rdfs:Class,sh:NodeShape ;
     ] ;
 .
 
+watr:Basin a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Basin" ;
+    rdfs:comment "A Basin is a physical structure or containment unit designed to hold and condition a volume of water as part of a treatment process. It has at least one inlet and one outlet for water flow and may include drains, overflow paths, mixing devices, or aeration elements depending on its operational role." ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin has an inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin has an outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    # optional drain port
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin may have an drain connection point" ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+            sh:property [
+                sh:path s223:hasRole ;
+                sh:hasValue s223:Role-Drain ;
+            ] ;
+        ] ;
+    ] ;
+    # optional overflow connection point
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A basin may have an overflow connection point" ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+            sh:property [
+                sh:path s223:hasRole ;
+                sh:hasValue s223:Role-Overflow ;
+            ] ;
+        ] ;
+    ] ;
+.
+
 watr:Reactor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Reactor" ;
     rdfs:comment "An equipment used for chemical reaction" ;
@@ -75,382 +142,748 @@ watr:Reactor
 .
 
 watr:SequencingBatchReactor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "SequencingBatchReactor" ;
     rdfs:comment "A type of activated sludge process for wastewater treatment" ;
-    rdfs:subClassOf watr:Reactor .
+    rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-ActivatedSludge ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of SequencingBatchReactor must have the ActivatedSludge process." ;
+    ] ;
+    # has 1 in, 1out (both water),  OR 1 bidirectional (water)
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A SBR has at least 1 sludge return point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Fluid-Sludge ;
+            ] ;
+        ] ;
+    ] ;
+    sh:xone (
+        # 1 in (water) and 1 out (water)
+        [ sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 inlet fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:InletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+        ] ;
+        sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 outlet fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:OutletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+            
+        ] ]
+        # OR 1 bidirectional (water)
+        [ sh:property [
+            sh:path s223:hasConnectionPoint ;
+            rdfs:comment "A SBR has at least 1 bidirectional fluid connection point" ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [
+                sh:class s223:BidirectionalConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:hasValue s223:Mix-Fluid ;
+                ] ;
+            ] ;
+        ] ]
+    ) .
 
 watr:PlugFlowReactor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "PlugFlowReactor" ;
     rdfs:comment "A type of reactor where the fluid flows in one direction through the tube" ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A plug flow reactor has at least one inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A plug flow reactor has at least one outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:hasValue s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
     rdfs:subClassOf watr:Reactor .
 
 watr:ContinuouslyStirredTankReactor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ContinuouslyStirredTankReactor" ;
     rdfs:comment "A reactor in which contents are well mixed and reactants are added continuously" ;
     rdfs:subClassOf watr:Reactor .
 
 watr:StaticMixer
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "StaticMixer" ;
     rdfs:comment "A device for mixing liquids without moving components" ;
-    rdfs:subClassOf watr:Reactor .
+    rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Mixing ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of StaticMixer must have the Mixing process." ;
+    ] .
 
 watr:AerationBasin
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "AerationBasin" ;
     rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
-    rdfs:subClassOf watr:Reactor .
+    rdfs:subClassOf watr:Reactor, watr:Basin, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-GasTransfer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of AerationBasin must have the GasTransfer process." ;
+    ] .
+
+watr:CoagulationBasin
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "CoagulationBasin" ;
+    rdfs:comment "A basin where coagulation occurs to destabilize particles in water" ;
+    rdfs:subClassOf watr:Basin, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Coagulation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of CoagulationBasin must have the Coagulation process." ;
+    ] .
+
+watr:FlocculationBasin
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "FlocculationBasin" ;
+    rdfs:comment "A tank where flocculation occurs to aggregate particles in water" ;
+    rdfs:subClassOf watr:Basin, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Flocculation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of FlocculationBasin must have the Flocculation process." ;
+    ] .
 
 watr:Digester
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
     rdfs:subClassOf watr:Tank .
 watr:AnaerobicDigester
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "AnaerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
-    rdfs:subClassOf watr:Digester .
+    rdfs:subClassOf watr:Digester, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-AnaerobicDigestion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of AnaerobicDigester must have the AnaerobicDigestion process." ;
+    ] .
 watr:AerobicDigester
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "AerobicDigester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
-    rdfs:subClassOf watr:Digester .
+    rdfs:subClassOf watr:Digester, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-AerobicDigestion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of AerobicDigester must have the AerobicDigestion process." ;
+    ] .
 
 watr:DisinfectionUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Disinfection" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
-    rdfs:subClassOf watr:Tank .
+    rdfs:subClassOf watr:Tank, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Disinfection ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of DisinfectionUnit must have the Disinfection process." ;
+    ] .
+
+watr:ChlorinationUnit
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "ChlorinationUnit" ;
+    rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Chlorination ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ChlorinationUnit must have the Chlorination process." ;
+    ] .
 
 watr:UltravioletLightUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "UltravioletlightUnit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit .
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-UVDisinfection ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of UltravioletLightUnit must have the UVDisinfection process." ;
+    ] .
 
 watr:ChlorinationBasin
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ChlorinationBasin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit .
+    rdfs:subClassOf watr:ChlorinationUnit, watr:Basin .
 
 watr:SedimentationTank
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "SedimentationTank" ;
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
-    rdfs:subClassOf watr:Tank .
+    rdfs:subClassOf watr:Tank, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Sedimentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
+    ] .
 
 watr:Screen
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Screen" ;
     rdfs:comment "An equipment used for separation" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Screening ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Screen must have the Screening process." ;
+    ] .
 
 watr:GritChamber
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Grit Chamber" ;
     rdfs:comment "A chamber used to remove grit from wastewater" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Sedimentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of GritChamber must have the Sedimentation process." ;
+    ] .
 
 watr:Reservoir
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Reservoir" ;
     rdfs:comment "A large natural or artificial body of water used for water supply" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Pond
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Pond" ;
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Battery
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Battery" ;
     rdfs:comment "A device that stores energy for later use" ;
     rdfs:subClassOf s223:Battery .
 
 watr:Cogenerator
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Cogenerator" ;
     rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Boiler
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Boiler" ;
     rdfs:comment "A device for heating water" ;
     rdfs:subClassOf s223:Boiler .
 
 watr:Conditioner
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Conditioner" ;
     rdfs:comment "An equipment used to prepare raw biogas from a digester by removing impurities" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Flare
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Flare" ;
     rdfs:comment "A device used to burn off unwanted gas" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:Pump
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Pump" ;
     rdfs:comment "A device used to move fluids by mechanical action" ;
     rdfs:subClassOf s223:Pump .
 
 watr:PressureExchanger
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "PressureExchanger" ;
     rdfs:comment "A device used to transfer pressure energy from one fluid to another" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:DewateringUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Dewatering" ;
     rdfs:comment "A unit used to remove water from solid material" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Dewatering ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of DewateringUnit must have the Dewatering process." ;
+    ] .
 
 watr:Thickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment .
 
 watr:DissolvedAirFlotationThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "DissolvedAirFlotationThickener" ;
     rdfs:comment "A thickener that uses dissolved air to separate solids from liquids" ;
-    rdfs:subClassOf watr:Thickener .
+    rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Flotation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of DissolvedAirFlotationThickener must have the Flotation process." ;
+    ] .
 
 watr:CentrifugalThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "CentrifugalThickener" ;
     rdfs:comment "A thickener that uses centrifugal force to separate solids from liquids" ;
-    rdfs:subClassOf watr:Thickener .
+    rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Centrifugation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of CentrifugalThickener must have the Centrifugation process." ;
+    ] .
 
 watr:GravityThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "GravityThickener" ;
     rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
-    rdfs:subClassOf watr:Thickener .
+    rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Sedimentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of GravityThickener must have the Sedimentation process." ;
+    ] .
 
 watr:BeltThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "BeltThickener" ;
     rdfs:comment "A thickener that uses a belt system to separate solids from liquids" ;
-    rdfs:subClassOf watr:Thickener .
+    rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Filtration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of BeltThickener must have the Filtration process." ;
+    ] .
 
 watr:GravityBeltThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Gravity Belt Thickener" ;
     rdfs:comment "A thickener that combines gravity separation with a belt system" ;
     rdfs:subClassOf watr:BeltThickener .
 
 watr:RotaryDrumThickener
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Rotary Drum Thickener" ;
     rdfs:comment "A thickener that uses a rotating drum to separate solids from liquids" ;
-    rdfs:subClassOf watr:Thickener .
+    rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Filtration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of RotaryDrumThickener must have the Filtration process." ;
+    ] .
 
 watr:Filter
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
-    rdfs:subClassOf s223:Filter .
+    rdfs:subClassOf s223:Filter, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Filtration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Filter must have the Filtration process." ;
+    ] .
 
 watr:ReverseOsmosisMembrane
-    a watr:Class ;
-    rdfs:label "ReverseOsmosisMembrane" ;
-    rdfs:comment "A membrane used for reverse osmosis" ;
-    rdfs:subClassOf watr:Filter .
-    
-watr:ReverseOsmosisMembrane
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ReverseOsmosisMembrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter .
 
 watr:TricklingFilter
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "TricklingFilter" ;
     rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of TricklingFilter must have the Biofiltration process." ;
+    ] .
 
 watr:MembraneBioreactor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "MembraneBioreactor" ;
     rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-MembraneBioreactor ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MembraneBioreactor must have the MembraneBioreactor process." ;
+    ] .
 
 watr:MicrofiltrationUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "MicrofiltrationUnit" ;
     rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
     rdfs:subClassOf watr:Filter .
 
 watr:UltrafiltrationUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "UltrafiltrationUnit" ;
     rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
     rdfs:subClassOf watr:Filter .
 
 watr:NanofiltrationUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "NanofiltrationUnit" ;
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
     rdfs:subClassOf watr:Filter .
 
 watr:MediaFiltration
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "MediaFiltrationUnit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
     rdfs:subClassOf watr:Filter .
 
+watr:RapidSandFilter
+    a rdfs:Class, sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Rapid Sand Filter" ;
+    rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
+    rdfs:subClassOf watr:MediaFiltration ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-RapidSandFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of RapidSandFilter must have the RapidSandFiltration process." ;
+    ] .
+
 watr:CartridgeFiltrationUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "CartridgeFiltrationUnit" ;
     rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
     rdfs:subClassOf watr:Filter .
     
 watr:IonExchangeMembrane
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "IonExchangeMembrane" ;
     rdfs:comment "A membrane that selectively allows ions to pass through while blocking other substances" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-IonExchange ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of IonExchangeMembrane must have the IonExchange process." ;
+    ] .
 
 watr:ElectrodialysisUnit
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A unit that uses electricity to drive ion movement through a membrane" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Electrodialysis ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ElectrodialysisUnit must have the Electrodialysis process." ;
+    ] .
 
 watr:Electrolyzer
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Electrolyzer" ;
     rdfs:comment "An equipment that uses electricity to split liquids into constituent elements" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Electrolysis ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Electrolyzer must have the Electrolysis process." ;
+    ] .
 
 watr:Crystallizer
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Crystallizer" ;
     rdfs:comment "An equipment used to produce solid crystals from a solution" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Crystallization ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Crystallizer must have the Crystallization process." ;
+    ] .
 
 watr:Compressor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Compressor" ;
     rdfs:comment "An equipment that increases the pressure of a gas" ;
     rdfs:subClassOf s223:Compressor .
 
 watr:Evaporator
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
-    rdfs:subClassOf s223:HeatExchanger .
+    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Evaporation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Evaporator must have the Evaporation process." ;
+    ] .
 
 watr:Condenser
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
-    rdfs:subClassOf s223:HeatExchanger .
+    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Condensation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Condenser must have the Condensation process." ;
+    ] .
 
 watr:FlowSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "FlowSensor" ;
     rdfs:comment "A sensor used to measure the flow rate of liquids or gases" ;
     rdfs:subClassOf s223:FlowSensor .
 
 watr:VolumeSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "VolumeSensor" ;
     rdfs:comment "A sensor used to measure the volume of a substance" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:LevelSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "LevelSensor" ;
     rdfs:comment "A sensor used to detect the level of liquids or solids in a tank" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:PressureSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "PressureSensor" ;
     rdfs:comment "A sensor used to measure pressure" ;
     rdfs:subClassOf s223:PressureSensor .
 
 watr:TemperatureSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "TemperatureSensor" ;
     rdfs:comment "A sensor used to measure temperature" ;
     rdfs:subClassOf s223:TemperatureSensor .
 
 watr:ConcentrationSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ConcentrationSensor" ;
     rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
 watr:OxygenMeter
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Oxygen Meter" ;
     rdfs:comment "A sensor used to measure the concentration of oxygen" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
 watr:OxygenDemandSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "OxygenDemandSensor" ;
     rdfs:comment "A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:pHSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "pHSensor" ;
     rdfs:comment "A sensor used to measure the pH of a solution" ;
     rdfs:subClassOf watr:ConcentrationSensor .
 
 watr:ConductivitySensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "ConductivitySensor" ;
     rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:TurbidityMeter
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "TurbidityMeter" ;
     rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:RotationSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "RotationSensor" ;
     rdfs:comment "A sensor used to measure the rotational speed or position of an object" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:EfficiencySensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "EfficiencySensor" ;
     rdfs:comment "A sensor used to measure the efficiency of a system or equipment" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:StateOfChargeSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "State of Charge Sensor" ;
     rdfs:comment "A sensor used to measure the remaining charge in a battery or energy storage system" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:SpeedSensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Speed Sensor" ;
     rdfs:comment "A sensor used to measure the speed of an object or fluid" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:FrequencySensor
+    a rdfs:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Frequency Sensor" ;
     rdfs:comment "A sensor used to measure the frequency of a signal or mechanical vibration" ;
@@ -458,37 +891,39 @@ watr:FrequencySensor
 
 # Do we want something like this? Is modeling a TOC sensor without explicitly naming it too vague (Concentration sensor, measuring organics)
 watr:TotalOrganicCompoundConcentrationSensor
+    a watr:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "TOC Sensor" ;
     rdfs:comment "A sensor used to measure the total organic compound concentration" ;
     rdfs:subClassOf watr:ConcentrationSensor ;
 .
-# I just forgot this one originally I think
-watr:Membrane
-    a s223:Class ;
-    rdfs:subClassOf s223:Filter 
-.
 watr:Valve 
-    a s223:Class; 
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
     rdfs:subClassOf s223:Valve 
 .
 watr:VariableFrequencyDrive
-    a s223:Class ;
+    a s223:Class, sh:NodeShape ;
+    a watr:Class ;
     rdfs:subClassOf s223:VariableFrequencyDrive
 .
 watr:ThreeWayValve 
-    a s223:Class; 
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
     rdfs:subClassOf s223:Valve 
 .
 watr:CheckValve
-    a s223:Class; 
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
     rdfs:subClassOf s223:Valve
 .
 watr:Controller 
-    a s223:Class ;
+    a s223:Class, sh:NodeShape ;
+    a watr:Class ;
     rdfs:subClassOf s223:Controller ;
 .
 watr:ManualMeasurementPort 
+    a watr:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Manual Measurement Port" ;
     rdfs:comment "A location where manual measurements are taken" ;
