@@ -15,6 +15,7 @@
   owl:imports <urn:nawi-water-ontology/equip> ;
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
+  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
   owl:imports sh: ;
 .
 

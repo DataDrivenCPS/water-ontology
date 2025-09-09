@@ -18,3 +18,4 @@ __pycache__/
 # ignore logs?
 *.log
 docs/_build
+.ipynb_checkpoints
