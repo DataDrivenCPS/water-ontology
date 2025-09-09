@@ -10,7 +10,8 @@
 <urn:nawi-water-ontology>
   a owl:Ontology ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-  owl:imports <http://qudt.org/3.1/vocab/unit> ;
+  owl:imports <http://qudt.org/3.1.1/vocab/unit> ;
+  owl:imports <http://qudt.org/3.1.1/vocab/quantitykind> ;
   owl:imports <urn:nawi-water-ontology/equip> ;
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
@@ -35,7 +36,7 @@ watr:UnitProcess
     a rdfs:Class ;
     rdfs:label "Unit Process" ;
     rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
-    rdfs:subClassOf watr:Class ;
+    rdfs:subClassOf watr:Class, s223:Equipment ;
     sh:property [
       sh:path watr:hasProcess ;
       sh:minCount 1 ;
