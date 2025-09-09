@@ -1,0 +1,342 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix equip: <urn:nawi-water-ontology/equip#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/substances>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Substances Ontology" ;
+    rdfs:comment "An ontology for water substances used in the NAWI project" ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+.
+watr:Constituent-Metals
+  a watr:Class ;
+  a watr:Constituent-Metals ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-Metals" ;
+  rdfs:label "Constituent-Metals" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Salt
+  a watr:Class ;
+  a watr:Constituent-Salt ;
+  a sh:NodeShape ;
+  rdfs:comment "Constituent-Salt" ;
+  rdfs:label "Constituent-Salt" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Salt-NaCl
+  a watr:Class ;
+  a watr:Salt-NaCl ;
+  a sh:NodeShape ;
+  rdfs:comment "Salt-NaCl" ;
+  rdfs:label "Salt-NaCl" ;
+  rdfs:subClassOf watr:Constituent-Salt ;
+.
+watr:Water-Brine
+  a watr:Class ;
+  a watr:Water-Brine ;
+  a sh:NodeShape ;
+  rdfs:comment "Water-Brine" ;
+  rdfs:label "Water-Brine" ;
+  rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+    ] ;
+.
+watr:Brine-15Percent
+  a watr:Class ;
+  a watr:Brine-15Percent ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-15Percent" ;
+  rdfs:label "Brine-15Percent" ;
+  rdfs:subClassOf watr:Water-Brine;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "15"^^xsd:decimal ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt Concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue "85"^^xsd:decimal ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water Concentration" ;
+    ] ;
+  rdfs:comment "Brine-15Percent" ;
+  rdfs:label "Brine-15Percent" ;
+.
+watr:Brine-5to10Percent
+  a watr:Class ;
+  a watr:Brine-5to10Percent ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-5to10Percent" ;
+  rdfs:label "Brine-5to10Percent" ;
+  rdfs:subClassOf watr:Water-Brine;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-LowLimit ;
+      s223:hasValue "5"^^xsd:decimal ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Low Salt Concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasAspect s223:Aspect-HighLimit ;
+      s223:hasValue "10"^^xsd:decimal ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "High Salt Concentration" ;
+    ] ;
+  rdfs:comment "Brine-5to10Percent" ;
+  rdfs:label "Brine-5to10Percent" ;
+.
+
+watr:Fluid-Sludge
+  a watr:Class ;
+  a watr:Fluid-Sludge ;
+  a sh:NodeShape ;
+  rdfs:comment "A semi-solid slurry composed of water and solids." ;
+  rdfs:label "Sludge" ;
+  rdfs:subClassOf s223:Mix-Fluid ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Constituent-Solids ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+    ] ;
+.
+
+# Base Class for Wastewater Treatment Chemicals
+watr:WastewaterTreatmentChemical
+  a watr:Class ;
+  a watr:WastewaterTreatmentChemical ;
+  a sh:NodeShape ;
+  rdfs:comment "Base class for all chemicals used in wastewater treatment" ;
+  rdfs:label "Wastewater Treatment Chemical" ;
+  rdfs:subClassOf s223:Medium-Constituent ;
+.
+
+watr:Coagulant
+  a watr:Class ;
+  a watr:Coagulant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for coagulants used in wastewater treatment" ;
+  rdfs:label "Coagulant" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:Coagulant-Alum
+  a watr:Class ;
+  a watr:Coagulant-Alum ;
+  a sh:NodeShape ;
+  rdfs:comment "Aluminum sulfate (alum), a common coagulant" ;
+  rdfs:label "Alum" ;
+  rdfs:subClassOf watr:Coagulant ;
+.
+
+watr:Coagulant-FerricChloride
+  a watr:Class ;
+  a watr:Coagulant-FerricChloride ;
+  a sh:NodeShape ;
+  rdfs:comment "Ferric chloride, a coagulant for wastewater treatment" ;
+  rdfs:label "Ferric Chloride" ;
+  rdfs:subClassOf watr:Coagulant ;
+.
+
+watr:Coagulant-PolyaluminumChloride
+  a watr:Class ;
+  a watr:Coagulant-PolyaluminumChloride ;
+  a sh:NodeShape ;
+  rdfs:comment "Polyaluminum chloride (PAC), a coagulant" ;
+  rdfs:label "Polyaluminum Chloride" ;
+  rdfs:subClassOf watr:Coagulant ;
+.
+
+# Flocculants
+watr:Flocculant
+  a watr:Class ;
+  a watr:Flocculant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for flocculants used in wastewater treatment" ;
+  rdfs:label "Flocculant" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:Flocculant-Polyacrylamide
+  a watr:Class ;
+  a watr:Flocculant-Polyacrylamide ;
+  a sh:NodeShape ;
+  rdfs:comment "Polyacrylamide, a common flocculant" ;
+  rdfs:label "Polyacrylamide" ;
+  rdfs:subClassOf watr:Flocculant ;
+.
+
+# pH Adjusters
+watr:pHAdjuster
+  a watr:Class ;
+  a watr:pHAdjuster ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for pH adjusters used in wastewater treatment" ;
+  rdfs:label "pH Adjuster" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:pHAdjuster-Lime
+  a watr:Class ;
+  a watr:pHAdjuster-Lime ;
+  a sh:NodeShape ;
+  rdfs:comment "Calcium hydroxide (lime), used to increase pH" ;
+  rdfs:label "Lime" ;
+  rdfs:subClassOf watr:pHAdjuster ;
+.
+
+watr:pHAdjuster-SulfuricAcid
+  a watr:Class ;
+  a watr:pHAdjuster-SulfuricAcid ;
+  a sh:NodeShape ;
+  rdfs:comment "Sulfuric acid, used to decrease pH" ;
+  rdfs:label "Sulfuric Acid" ;
+  rdfs:subClassOf watr:pHAdjuster ;
+.
+
+# Disinfectants
+watr:Disinfectant
+  a watr:Class ;
+  a watr:Disinfectant ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for disinfectants used in wastewater treatment" ;
+  rdfs:label "Disinfectant" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:Disinfectant-Chlorine
+  a watr:Class ;
+  a watr:Disinfectant-Chlorine ;
+  a sh:NodeShape ;
+  rdfs:comment "Chlorine, a common disinfectant" ;
+  rdfs:label "Chlorine" ;
+  rdfs:subClassOf watr:Disinfectant ;
+.
+
+watr:Disinfectant-Ozone
+  a watr:Class ;
+  a watr:Disinfectant-Ozone ;
+  a sh:NodeShape ;
+  rdfs:comment "Ozone, an advanced disinfectant" ;
+  rdfs:label "Ozone" ;
+  rdfs:subClassOf watr:Disinfectant ;
+.
+
+# Odor Control Agents
+watr:OdorControlAgent
+  a watr:Class ;
+  a watr:OdorControlAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for chemicals used for odor control" ;
+  rdfs:label "Odor Control Agent" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:OdorControlAgent-ActivatedCarbon
+  a watr:Class ;
+  a watr:OdorControlAgent-ActivatedCarbon ;
+  a sh:NodeShape ;
+  rdfs:comment "Activated carbon, used to absorb odors" ;
+  rdfs:label "Activated Carbon" ;
+  rdfs:subClassOf watr:OdorControlAgent ;
+.
+
+# Heavy Metal Removal Agents
+watr:HeavyMetalRemovalAgent
+  a watr:Class ;
+  a watr:HeavyMetalRemovalAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for chemicals used to remove heavy metals" ;
+  rdfs:label "Heavy Metal Removal Agent" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+# Could rename to chelator
+watr:HeavyMetalRemovalAgent-SodiumSulfide
+  a watr:Class ;
+  a watr:HeavyMetalRemovalAgent-SodiumSulfide ;
+  a sh:NodeShape ;
+  rdfs:comment "Sodium sulfide, used to precipitate heavy metals" ;
+  rdfs:label "Sodium Sulfide" ;
+  rdfs:subClassOf watr:HeavyMetalRemovalAgent ;
+.
+watr:Constituent-Organics
+    a watr:Class ; 
+    a watr:Constituent-Organics ;
+    a sh:NodeShape ;
+    rdfs:comment "Constituent-Organics" ;
+    rdfs:label "Constituent-Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Solids
+    a watr:Class ;
+    a watr:Constituent-Solids ;
+    a sh:NodeShape ;
+    rdfs:comment "Constituent-Solids" ;
+    rdfs:label "Constituent-Solids" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-SuspendedSolids
+    a watr:Class ;
+    a watr:Constituent-SuspendedSolids ;
+    a sh:NodeShape ;
+    rdfs:comment "Suspended solids are particulate matter that is not dissolved in water and can be removed by filtration including organic and inorganic particles." ;
+    rdfs:label "Constituent-SuspendedSolids" ;
+    rdfs:subClassOf watr:Constituent-Solids ;
+.
+watr:Sludge-MixedLiquor
+    a watr:Class ;
+    a watr:Sludge-MixedLiquor ;
+    a sh:NodeShape ;
+    rdfs:comment "Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water." ;
+    rdfs:label "Sludge-MixedLiquor" ;
+    rdfs:subClassOf s223:Fluid-Sludge ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent watr:Constituent-SuspendedSolids ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+        rdfs:label "Suspended Solids Fraction"
+    ] ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent s223:Constituent-H2O ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+        rdfs:label "Water Fraction"
+    ] ;
+.

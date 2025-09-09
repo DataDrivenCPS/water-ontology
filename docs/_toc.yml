@@ -13,7 +13,7 @@ parts:
   - file: explanation/flow_graph_sensor.md
 - caption: Tutorials
   chapters:
-  - file: notebooks/Tutorial1.ipynb
+  - file: tutorials/creating-models.md
 - caption: Guides
   chapters:
   - file: guides/todo.md
