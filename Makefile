@@ -1,11 +1,10 @@
-.PHONY: install-jupyter-venv local-docs clean build-ontology
+.PHONY: install-jupyter-venv local-docs clean build-ontology initialize-environment
 
-#build-ontology:
-#	ontoenv init --offline water
-#	ontoenv closure urn:nawi-water-ontology libraries/water.ttl
-
-libaries/water.ttl:
+libaries/water.ttl: initialize-environment
 	uv run scripts/compile-water-ontology.py
+
+initialize-environment:
+	uv run python -m ontoenv.init --offline --search-dir water
 
 install-jupyter-venv:
 	uv add ipykernel
