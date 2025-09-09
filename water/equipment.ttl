@@ -900,26 +900,31 @@ watr:TotalOrganicCompoundConcentrationSensor
 watr:Valve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:label "Valve" ;
     rdfs:subClassOf s223:Valve 
 .
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:subClassOf s223:VariableFrequencyDrive
+    rdfs:label "Variable Frequency Drive" ;
 .
 watr:ThreeWayValve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:label "Three Way Valve" ;
     rdfs:subClassOf s223:Valve 
 .
 watr:CheckValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:label "Check Valve" ;
     rdfs:subClassOf s223:Valve
 .
 watr:Controller 
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
+    rdfs:label "Controller" ;
     rdfs:subClassOf s223:Controller ;
 .
 watr:ManualMeasurementPort 
