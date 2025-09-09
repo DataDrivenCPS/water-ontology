@@ -14,6 +14,9 @@ local-docs:
 	uv run jupyter-book build docs
 	uv run jupyter-book build docs
 
+test: libraries/water.ttl
+	uv run pytest tests
+
 clean:
 	ontoenv reset -f
 	uv run jupyter-book clean docs
