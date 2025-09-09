@@ -5,9 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pyontoenv==0.2.2a5",
+    "pyontoenv==0.4.0a4",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
+    "brick-tq-shacl==0.4.0a7",
     "jupyterlab>=4.2.5",
     "jupyterlab-rise>=0.42.0",
     "ipykernel>=6.29.5",
@@ -25,4 +26,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv.sources]
-buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "gtf-variadic-template-param" }
+buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }
+
+[tool.uv]
+override-dependencies = ["brick-tq-shacl==0.4.0"]

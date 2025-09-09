@@ -1,3 +1,4 @@
 jupyter-book
 matplotlib
 numpy
+buildingmotif[topquadrant] @ git+https://github.com/NREL/buildingmotif.git@develop

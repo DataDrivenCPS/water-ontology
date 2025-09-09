@@ -7,6 +7,7 @@
 @prefix equip: <urn:nawi-water-ontology/equip#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix watr: <urn:nawi-water-ontology#> .
 
 
@@ -51,14 +52,14 @@ watr:Water-Brine
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent watr:Salt-NaCl ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     ] ;
 .
 watr:Brine-15Percent
@@ -72,16 +73,16 @@ watr:Brine-15Percent
       a s223:QuantifiableProperty ;
       s223:hasValue "15"^^xsd:decimal ;
       s223:ofConstituent watr:Salt-NaCl ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
       rdfs:label "Salt Concentration" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasValue "85"^^xsd:decimal ;
       s223:ofConstituent s223:Constituent-H2O ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
       rdfs:label "Water Concentration" ;
     ] ;
   rdfs:comment "Brine-15Percent" ;
@@ -99,8 +100,8 @@ watr:Brine-5to10Percent
       s223:hasAspect s223:Aspect-LowLimit ;
       s223:hasValue "5"^^xsd:decimal ;
       s223:ofConstituent watr:Salt-NaCl ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
       rdfs:label "Low Salt Concentration" ;
     ] ;
   s223:composedOf [
@@ -108,8 +109,8 @@ watr:Brine-5to10Percent
       s223:hasAspect s223:Aspect-HighLimit ;
       s223:hasValue "10"^^xsd:decimal ;
       s223:ofConstituent watr:Salt-NaCl ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
       rdfs:label "High Salt Concentration" ;
     ] ;
   rdfs:comment "Brine-5to10Percent" ;
@@ -126,14 +127,14 @@ watr:Fluid-Sludge
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent watr:Constituent-Solids ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     ] ;
 .
 
