@@ -906,7 +906,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
-    rdfs:subClassOf s223:VariableFrequencyDrive
+    rdfs:subClassOf s223:VariableFrequencyDrive ;
     rdfs:label "Variable Frequency Drive" ;
 .
 watr:ThreeWayValve 
