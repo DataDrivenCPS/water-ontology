@@ -58,7 +58,7 @@ s223:QuantifiableProperty
    ] ;
    sh:property [
      sh:path watr:hasNumericRange ;
-     rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units." ;
+     rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measured values." ;
      sh:class s223:QuantifiableProperty ;
    ] ;
    sh:property [
