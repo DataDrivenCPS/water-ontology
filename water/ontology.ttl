@@ -63,7 +63,7 @@ s223:QuantifiableProperty
    ] ;
    sh:property [
      sh:path watr:hasVariableRange ;
-     rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable during normal operation." ;
+     rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the maximum or minimum for the measured variable during normal operation." ;
      sh:class s223:QuantifiableProperty ;
    ] ;
    sh:property [
