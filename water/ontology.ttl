@@ -15,7 +15,6 @@
   owl:imports <urn:nawi-water-ontology/equip> ;
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
-  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
   owl:imports sh: ;
 .
 
@@ -46,7 +45,134 @@ watr:UnitProcess
     ] ;
 .
 
-watr:hasProcess a rdf:Property ;
-    rdfs:label "has process" ;
-    rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
+s223:QuantifiableProperty
+  sh:property [
+     sh:path watr:hasTemporalResolution ;
+     rdfs:comment "The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+     sh:property [
+     sh:path watr:hasNumericResolution ;
+     rdfs:comment "The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasNumericRange ;
+     rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasVariableRange ;
+     rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasProcessedData ;
+     rdfs:comment "The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasAccuracy ;
+     rdfs:comment "The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasPrecision ;
+     rdfs:comment "The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasBias ;
+     rdfs:comment "The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+     sh:path watr:hasResponseTime ;
+     rdfs:comment "The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable." ;
+     sh:class s223:QuantifiableProperty ;
+   ] ;
+   sh:property [
+    sh:path watr:hasCalibrationCurve ;
+    rdfs:comment "The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units." ;
+    sh:class s223:QuantifiableProperty ;
+  ] ;
+   sh:property [
+    sh:path watr:hasDropRate ;
+    rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
+    sh:class s223:QuantifiableProperty ;
+  ] ;
 .
+
+watr:hasProcess
+  a rdf:Property ;
+  rdfs:label "has process" ;
+  rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
+.
+
+watr:hasTemporalResolution
+  a rdf:Property ;
+  rdfs:comment "The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points." ;
+  rdfs:label "has temporal resolution" ;
+.
+
+watr:hasNumericResolution
+  a rdf:Property ;
+  rdfs:comment "The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units." ;
+  rdfs:label "has numeric resolution" ;
+.
+
+watr:hasNumericRange
+  a rdf:Property ;
+  rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units." ;
+  rdfs:label "has numeric range" ;
+.
+
+watr:hasVariableRange
+  a rdf:Property ;
+  rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions." ;
+  rdfs:label "has variable range" ;
+.
+
+watr:hasProcessedData
+  a rdf:Property ;
+  rdfs:comment "The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values." ;
+  rdfs:label "has processed data" ;
+.
+
+watr:hasAccuracy
+  a rdf:Property ;
+  rdfs:comment "The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units." ;
+  rdfs:label "has accuracy" ;
+.
+
+watr:hasPrecision
+  a rdf:Property ;
+  rdfs:comment "The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions." ;
+  rdfs:label "has precision" ;
+.
+
+watr:hasBias
+  a rdf:Property ;
+  rdfs:comment "The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value." ;
+  rdfs:label "has bias" ;
+.
+
+watr:hasResponseTime
+  a rdf:Property ;
+  rdfs:comment "The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable." ;
+  rdfs:label "has response time" ;
+.
+
+watr:hasCalibrationCurve
+  a rdf:Property ;
+  rdfs:comment "The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units." ;
+  rdfs:label "has calibration curve" ;
+.
+watr:hasDropRate
+  a rdf:Property ;
+  rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
+  rdfs:label "has drop rate" ;
+.
+
+
+

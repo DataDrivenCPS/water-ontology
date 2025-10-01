@@ -1,4 +1,30 @@
-Notes on modeling of equipment
+Sept 30, 2025
+For modelign data quality, quality will be measured as quantifiable properties. 
+We discussed not relating a property to a property, but it makes a little more sense because there is more data attached to some of these properties, like if it is a duration, how to interpret it. 
+
+I think we have decided not to be perscriptive about encodings (e.g. using ISO standard duration).
+Perhaps units will be different, or notes should be attached. Ultimately I think it probably makes more sense to bind to a property, as we do in s223
+Alternative is to accept external reference or a literal, or better, constraining that to some xsd datatype so we know we can process what we have. something like 
+```
+  sh:property [
+      sh:path s223:hasTemporalResolution ;
+      rdfs:comment "" ;
+      sh:or (
+          [
+            sh:class ref:ExternalReference ;
+          ]
+          [
+            sh:nodeKind sh:Literal ;
+          ]
+          [
+            sh:datatype xsd:duration ;
+          ]
+        ) ;
+  ]
+.
+```
+
+Notes on modeling of equipment June, 2024
 - Fletch: Separator and Reactor are basic ways to distinguish between things
 - Used an LLM for the descriptions, and checked some against pypes. Not sure exactly what the water-domain definitions for all of these things are
 - Many equipment are named for the process they perform. Added "Unit" to several entries in the list to make them equipment rather than referring to a process. 
