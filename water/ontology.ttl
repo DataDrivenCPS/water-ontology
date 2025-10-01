@@ -113,6 +113,13 @@ s223:QuantifiableProperty
   ] ;
 .
 
+s223:Sensor
+  sh:property [
+      sh:path watr:hasMeasurementRange ;
+      rdfs:comment "The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the maximum or minimum that can physically be measured, e.g. by a sensor." ;
+      sh:class s223:QuantifiableProperty ;
+    ] ;
+  .
 watr:hasProcess
   a rdf:Property ;
   rdfs:label "has process" ;
