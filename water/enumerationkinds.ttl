@@ -248,8 +248,152 @@ watr:Synchronization-TimeAlignment
     rdfs:comment "Align data points from different sources to common timestamps" ;
     rdfs:subClassOf watr:DataProcessing-Synchronization ;
 .
+watr:DataProcessing-ErrorMetrics
+    a watr:Class ;
+    a watr:DataProcessing-ErrorMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Error Metrics" ;
+    rdfs:comment "Parent class for error and uncertainty measurements" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Error-AbsoluteError
+    a watr:Class ;
+    a watr:Error-AbsoluteError ;
+    a sh:NodeShape ;
+    rdfs:label "Absolute Error" ;
+    rdfs:comment "Absolute difference between measured and true/reference value" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-RelativeError
+    a watr:Class ;
+    a watr:Error-RelativeError ;
+    a sh:NodeShape ;
+    rdfs:label "Relative Error" ;
+    rdfs:comment "Error expressed as a percentage of the true/reference value" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanAbsoluteError
+    a watr:Class ;
+    a watr:Error-MeanAbsoluteError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Absolute Error (MAE)" ;
+    rdfs:comment "Average of absolute errors across multiple measurements" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanSquaredError
+    a watr:Class ;
+    a watr:Error-MeanSquaredError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Squared Error (MSE)" ;
+    rdfs:comment "Average of squared errors" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-RootMeanSquaredError
+    a watr:Class ;
+    a watr:Error-RootMeanSquaredError ;
+    a sh:NodeShape ;
+    rdfs:label "Root Mean Squared Error (RMSE)" ;
+    rdfs:comment "Square root of MSE, in same units as measurements" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanAbsolutePercentageError
+    a watr:Class ;
+    a watr:Error-MeanAbsolutePercentageError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Absolute Percentage Error (MAPE)" ;
+    rdfs:comment "Average of absolute percentage errors" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-Bias
+    a watr:Class ;
+    a watr:Error-Bias ;
+    a sh:NodeShape ;
+    rdfs:label "Bias" ;
+    rdfs:comment "Systematic deviation from true value (trueness measure)" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:DataProcessing-PrecisionMetrics
+    a watr:Class ;
+    a watr:DataProcessing-PrecisionMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Precision Metrics" ;
+    rdfs:comment "Metrics for precision and repeatability measurements" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Precision-RepeatabilityStdDev
+    a watr:Class ;
+    a watr:Precision-RepeatabilityStdDev ;
+    a sh:NodeShape ;
+    rdfs:label "Repeatability Standard Deviation" ;
+    rdfs:comment "Standard deviation under repeatability conditions (same operator, equipment, short time)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-ReproducibilityStdDev
+    a watr:Class ;
+    a watr:Precision-ReproducibilityStdDev ;
+    a sh:NodeShape ;
+    rdfs:label "Reproducibility Standard Deviation" ;
+    rdfs:comment "Standard deviation under reproducibility conditions (different operators, equipment, time)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-CoefficientOfVariation
+    a watr:Class ;
+    a watr:Precision-CoefficientOfVariation ;
+    a sh:NodeShape ;
+    rdfs:label "Coefficient of Variation" ;
+    rdfs:comment "Ratio of standard deviation to mean (relative precision)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-ConfidenceInterval
+    a watr:Class ;
+    a watr:Precision-ConfidenceInterval ;
+    a sh:NodeShape ;
+    rdfs:label "Confidence Interval" ;
+    rdfs:comment "Range within which true value likely falls with specified confidence level" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:DataProcessing-AccuracyMetrics
+    a watr:Class ;
+    a watr:DataProcessing-AccuracyMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Accuracy Metrics" ;
+    rdfs:comment "Combined accuracy measures (precision and trueness)" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Accuracy-TotalUncertainty
+    a watr:Class ;
+    a watr:Accuracy-TotalUncertainty ;
+    a sh:NodeShape ;
+    rdfs:label "Total Uncertainty" ;
+    rdfs:comment "Combined standard uncertainty from all sources" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-ExpandedUncertainty
+    a watr:Class ;
+    a watr:Accuracy-ExpandedUncertainty ;
+    a sh:NodeShape ;
+    rdfs:label "Expanded Uncertainty" ;
+    rdfs:comment "Total uncertainty multiplied by coverage factor" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-PercentRecovery
+    a watr:Class ;
+    a watr:Accuracy-PercentRecovery ;
+    a sh:NodeShape ;
+    rdfs:label "Percent Recovery" ;
+    rdfs:comment "Ratio of measured to known value (for spike/recovery tests)" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-RSquared
+    a watr:Class ;
+    a watr:Accuracy-RSquared ;
+    a sh:NodeShape ;
+    rdfs:label "R-Squared" ;
+    rdfs:comment "Coefficient of determination for calibration curves" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
 
-watr:Role-Backwash 
+watr:Role-Backwash
     a s223:EnumerationKind ;
     a watr:Role-Backwash ; 
     rdfs:subClassOf s223:EnumerationKind-Role ;
