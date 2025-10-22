@@ -4,7 +4,7 @@ libaries/water.ttl: initialize-environment
 	uv run scripts/compile-water-ontology.py
 
 initialize-environment:
-	uv run python -m ontoenv.init --offline --search-dir water
+	uv run ontoenv init --offline -- water
 
 install-jupyter-venv:
 	uv add ipykernel
