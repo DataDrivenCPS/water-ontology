@@ -39,25 +39,45 @@ watr:Physical-Process a watr:Class, watr:Physical-Process ;
     skos:definition "A unit process that relies on physical forces to separate or treat water." ;
     rdfs:subClassOf watr:Process .
 
+watr:Process-Separation a watr:Class, watr:Process-Separation ;
+    rdfs:label "Separation" ;
+    skos:definition "The most generic process for separation of any two constituents." ;
+    rdfs:subClassOf watr:Physical-Process .
+
+watr:Process-Elutriation a watr:Class, watr:Process-Elutriation ;
+    rdfs:label "Elutriation" ;
+    skos:definition "A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density." ;
+    rdfs:subClassOf watr:Process-Separation .
+
 watr:Process-Screening a watr:Class, watr:Process-Screening ;
     rdfs:label "Screening" ;
     skos:definition "A unit process that removes large solids from water, such as leaves, branches, and other debris." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-Sedimentation a watr:Class, watr:Process-Sedimentation ;
     rdfs:label "Sedimentation" ;
     skos:definition "A unit process that allows solids to settle out of water by gravity." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-Filtration a watr:Class, watr:Process-Filtration ;
     rdfs:label "Filtration" ;
     skos:definition "A unit process that removes smaller particles from water by passing it through a filter." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:subClassOf watr:Process-Separation .
+
+watr:Process-MediaFiltration a watr:Class, watr:Process-MediaFiltration ;
+    rdfs:label "Media Filtration" ;
+    skos:definition "A filtration process that uses a bed of media (as opposed to a membrane-based process)." ;
+    rdfs:subClassOf watr:Process-Filtration .
+
+watr:Process-SlowSandFiltration a watr:Class, watr:Process-SlowSandFiltration ;
+    rdfs:label "Slow Sand Filtration" ;
+    skos:definition "A filtration process that uses a bed of sand to remove impurities at low flow rates." ;
+    rdfs:subClassOf watr:Process-MediaFiltration .
 
 watr:Process-RapidSandFiltration a watr:Class, watr:Process-RapidSandFiltration ;
     rdfs:label "Rapid Sand Filtration" ;
-    skos:definition "A filtration process that uses a bed of sand to remove impurities." ;
-    rdfs:subClassOf watr:Process-Filtration .
+    skos:definition "A filtration process that uses a bed of sand to remove impurities at high flow rates." ;
+    rdfs:subClassOf watr:Process-MediaFiltration .
 
 watr:Process-Flotation a watr:Class, watr:Process-Flotation ;
     rdfs:label "Flotation" ;
@@ -169,16 +189,26 @@ watr:Process-Comminution a watr:Class watr:Process-Comminution ;
     skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
     rdfs:subClassOf watr:Process-Physical .
 
+watr:Process-BiosolidsDisposal a watr:Class watr:Process-BiosolidsDisposal ;
+    rdfs:label "BiosolidsDisposal" ;
+    skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
+    rdfs:subClassOf watr:Process-Physical .
+
 
 watr:Chemical-Process a watr:Class, watr:Chemical-Process ;
     rdfs:label "Chemical Process" ;
     skos:definition "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
     rdfs:subClassOf watr:Process .
 
+watr:Process-ChemicalAddition a watr:Class, watr:Process-ChemicalAddition ;
+    rdfs:label "Chemical Addition" ;
+    skos:definition "Addition of chemicals, such as coagulant, polymer, disinfectant, etc." ;
+    rdfs:subClassOf watr:Chemical-Process .
+
 watr:Process-Coagulation a watr:Class, watr:Process-Coagulation ;
     rdfs:label "Coagulation" ;
     skos:definition "A unit process that adds chemicals to water to cause small particles to clump together." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:subClassOf watr:Process-ChemicalAddition .
 
 watr:Process-Electrocoagulation a watr:Class, watr:Process-Electrocoagulation ;
     rdfs:label "Electrocoagulation (EC)" ;
@@ -243,7 +273,7 @@ watr:Process-Ozonation a watr:Class, watr:Process-Ozonation ;
 watr:Process-Softening a watr:Class, watr:Process-Softening ;
     rdfs:label "Softening" ;
     skos:definition "Chemical precipitation of calcium/magnesium" ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:subClassOf watr:Process-ChemicalAddition .
 
 watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitation ;
     rdfs:label "Chemical Precipitation" ;
@@ -295,6 +325,21 @@ watr:Biological-Process a watr:Class, watr:Biological-Process ;
     rdfs:label "Biological Process" ;
     skos:definition "A unit process that utilizes biological activity for water treatment." ;
     rdfs:subClassOf watr:Process .
+
+watr:Process-Nitrification a watr:Class, watr:Process-Nitrification ;
+    rdfs:label "Nitrification" ;
+    skos:definition "Process by which ammonia is oxidized to nitrite and subsequently nitrate." ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
+    rdfs:label "Denitrification" ;
+    skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-Bardenpho a watr:Class, watr:Process-Bardenpho ;
+    rdfs:label "BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+    skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
+    rdfs:subClassOf watr:Biological-Process .
 
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;

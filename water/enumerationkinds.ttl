@@ -395,28 +395,36 @@ watr:Accuracy-RSquared
 
 watr:Role-Backwash
     a s223:EnumerationKind ;
-    a watr:Role-Backwash ; 
-    rdfs:subClassOf s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Backwash ;
+    a sh:NodeShape ;
     rdfs:label "Role-Backwash" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
 watr:Role-NutrientRemoval
-    a s223:EnumerationKind ;
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
     a watr:Role-NutrientRemoval ; 
-    rdfs:subClassOf s223:EnumerationKind-Role ;
+    a sh:NodeShape ;
     rdfs:label "Role-NutrientRemoval" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
 watr:Role-NitrogenRemoval
-    a s223:EnumerationKind ;
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
     a watr:Role-NitrogenRemoval ; 
-    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    a sh:NodeShape ;
     rdfs:label "Role-NitrogenRemoval" ;
+    rdfs:subClassOf s223:Role-NutrientRemoval ;
 .
 
 watr:Role-PhosphorusRemoval
-    a s223:EnumerationKind ;
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
     a watr:Role-PhosphorusRemoval ; 
+    a sh:NodeShape ;
     rdfs:subClassOf s223:Role-NutrientRemoval ;
     rdfs:label "Role-PhosphorusRemoval" ;
 .
@@ -481,6 +489,96 @@ watr:Role-Anoxic
     a watr:Role-Anoxic ;
     a sh:NodeShape ;
     rdfs:label "Anoxic" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Stabilization 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Stabilization ;
+    a sh:NodeShape ;
+    rdfs:label "Stabilization" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Equalization 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Equalization ;
+    a sh:NodeShape ;
+    rdfs:label "Equalization" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Detention 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Detention ;
+    a sh:NodeShape ;
+    rdfs:label "Detention" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Retention 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Retention ;
+    a sh:NodeShape ;
+    rdfs:label "Retention" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Containment 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Containment ;
+    a sh:NodeShape ;
+    rdfs:label "Containment" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Pretreatment
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Pretreatment ;
+    a sh:NodeShape ;
+    rdfs:label "Pretreatment" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Primary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Primary ;
+    a sh:NodeShape ;
+    rdfs:label "Primary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Secondary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Secondary ;
+    a sh:NodeShape ;
+    rdfs:label "Secondary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Tertiary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Tertiary ;
+    a sh:NodeShape ;
+    rdfs:label "Tertiary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Posttreatment
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Posttreatment ;
+    a sh:NodeShape ;
+    rdfs:label "Posttreatment" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
