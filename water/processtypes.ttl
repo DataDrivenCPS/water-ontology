@@ -69,6 +69,11 @@ watr:Process-GasTransfer a watr:Class, watr:Process-GasTransfer ;
     skos:definition "A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water." ;
     rdfs:subClassOf watr:Physical-Process .
 
+watr:Process-Aeration a watr:Class, watr:Process-Aeration ;
+    rdfs:label "Aeration" ;
+    skos:definition "A unit process that aerates (i.e., transfers oxygen into water)." ;
+    rdfs:subClassOf watr:Process-GasTransfer .
+
 watr:Process-Mixing a watr:Class, watr:Process-Mixing ;
     rdfs:label "Mixing" ;
     skos:definition "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
@@ -89,10 +94,15 @@ watr:Process-Centrifugation a watr:Class, watr:Process-Centrifugation ;
     skos:definition "A process that uses centrifugal force to separate substances of different densities." ;
     rdfs:subClassOf watr:Physical-Process .
 
+watr:Process-Solidification a watr:Class, watr:Process-Solidification ;
+    rdfs:label "Solidification" ;
+    skos:definition "A process of turning a liquid into a solid (e.g., freezing)." ;
+    rdfs:subClassOf watr:Physical-Process .
+
 watr:Process-Crystallization a watr:Class, watr:Process-Crystallization ;
     rdfs:label "Crystallization" ;
     skos:definition "A process of forming solid crystals from a solution." ;
-    rdfs:subClassOf watr:Physical-Process .
+    rdfs:subClassOf watr:Process-Solidification .
 
 watr:Process-Evaporation a watr:Class, watr:Process-Evaporation ;
     rdfs:label "Evaporation" ;
@@ -109,10 +119,10 @@ watr:Process-Adsorption a watr:Class, watr:Process-Adsorption ;
     skos:definition "A process by which substances bind to a surface." ;
     rdfs:subClassOf watr:Physical-Process .
 
-watr:Process-GranulatedActivatedCarbonAdsorption a watr:Class, watr:Process-GranulatedActivatedCarbonAdsorption ;
-    rdfs:label "Granulated Activated Carbon Adsorption (GAC)" ;
-    skos:definition "A process that uses activated carbon to adsorb impurities from water." ;
-    rdfs:subClassOf watr:Process-Adsorption .
+watr:Process-GranularActivatedCarbon a watr:Class, watr:Process-GranularActivatedCarbon ;
+    rdfs:label "Granular Activated Carbon (GAC)" ;
+    skos:definition "A process that uses an activated carbon filter to adsorb impurities from water." ;
+    rdfs:subClassOf watr:Process-Adsorption, watr:Process-Filtration .
 
 watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
     rdfs:label "Membrane Process" ;
@@ -154,10 +164,10 @@ watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDi
     skos:definition "A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream." ;
     rdfs:subClassOf watr:Process-Electrodialysis, watr:Process-Crystallization .
 
-watr:Process-UVDisinfection a watr:Class, watr:Process-UVDisinfection ;
-    rdfs:label "UV Disinfection" ;
-    skos:definition "A disinfection process that uses ultraviolet light to inactivate microorganisms." ;
-    rdfs:subClassOf watr:Physical-Process, watr:Process-Disinfection .
+watr:Process-Comminution a watr:Class watr:Process-Comminution ;
+    rdfs:label "Comminution" ;
+    skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
+    rdfs:subClassOf watr:Process-Physical .
 
 
 watr:Chemical-Process a watr:Class, watr:Chemical-Process ;
@@ -178,7 +188,12 @@ watr:Process-Electrocoagulation a watr:Class, watr:Process-Electrocoagulation ;
 watr:Process-Flocculation a watr:Class, watr:Process-Flocculation ;
     rdfs:label "Flocculation" ;
     skos:definition "A unit process that gently mixes water to allow coagulated particles to form larger clumps." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:subClassOf watr:Chemical-Process, watr:Process-Mixing .
+
+watr:Process-UVDisinfection a watr:Class, watr:Process-UVDisinfection ;
+    rdfs:label "UV Disinfection" ;
+    skos:definition "A disinfection process that uses ultraviolet light to inactivate microorganisms." ;
+    rdfs:subClassOf watr:Process-Disinfection .
 
 watr:Process-Disinfection a watr:Class, watr:Process-Disinfection ;
     rdfs:label "Disinfection" ;
@@ -190,6 +205,11 @@ watr:Process-Chlorination a watr:Class, watr:Process-Chlorination ;
     skos:definition "A disinfection process that uses chlorine or chlorine compounds." ;
     rdfs:subClassOf watr:Process-Disinfection .
 
+watr:Process-Dechlorination a watr:Class, watr:Process-Dechlorination ;
+    rdfs:label "Dechlorination" ;
+    skos:definition "A post-disinfection process that removes excess chlorine compounds." ;
+    rdfs:subClassOf watr:Process-Disinfection .
+
 watr:Process-pHAdjustment a watr:Class, watr:Process-pHAdjustment ;
     rdfs:label "pH Adjustment" ;
     skos:definition "A unit process that adjusts the pH of water to a desired level using chemicals." ;
@@ -197,7 +217,7 @@ watr:Process-pHAdjustment a watr:Class, watr:Process-pHAdjustment ;
 
 watr:Process-Neutralization a watr:Class, watr:Process-Neutralization ;
     rdfs:label "Neutralization" ;
-    skos:definition "pH adjustment, typically with a base, used in processes like high-density sludge treatment." ;
+    skos:definition "pH adjustment to neutral, typically with a base, used in processes like high-density sludge treatment." ;
     rdfs:subClassOf watr:Process-pHAdjustment .
 
 watr:Process-Oxidation a watr:Class, watr:Process-Oxidation ;
@@ -255,6 +275,21 @@ watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
     skos:definition "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
     rdfs:subClassOf watr:Chemical-Process .
 
+watr:Process-Incineration a watr:Class watr:Process-Incineration ;
+    rdfs:label "Incineration" ;
+    skos:definition "A process that combusts biosolids or biogas." ;
+    rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
+
+watr:Process-FluidizedBedIncineration a watr:Class Process-FluidizedBedIncineration ;
+    rdfs:label "Fluidized Bed Incineration" ;
+    skos:definition "A process that combusts a constantly moving bed of biosolids." ;
+    rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
+
+watr:Process-Cogeneration a watr:Class watr:Process-Cogeneration ;
+    rdfs:label "Cogeneration" ;
+    skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." ;
+    rdfs:subClassOf watr:Process-Incineration .
+
 
 watr:Biological-Process a watr:Class, watr:Biological-Process ;
     rdfs:label "Biological Process" ;
@@ -266,27 +301,47 @@ watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
     rdfs:subClassOf watr:Biological-Process .
 
+watr:Process-OxidationDitch a watr:Class, watr:Process-OxidationDitch ;
+    rdfs:label "Oxidation Ditch" ;
+    skos:definition "Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants" ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
-    skos:definition "Fixed-film biological treatment (e.g., trickling filter)" ;
-    rdfs:subClassOf watr:Biological-Process, watr:Physical-Process .
+    skos:definition "A filtration method that uses biological processes to remove contaminants (e.g., trickling filter)." ;
+    rdfs:subClassOf watr:Biological-Process, watr:Process-Filtration .
+
+watr:Process-RotatingBiologicalContactor a watr:Class, watr:Process-RotatingBiologicalContactor ;
+    rdfs:label "Rotating Biological Contactor (RBC)" ;
+    skos:definition "Fixed-film process using a slowly rotating discs partially submerged in a tank." ;
+    rdfs:subClassOf watr:Process-Biofiltration .
+
+watr:Process-TricklingFiltration a watr:Class, watr:Process-Biofiltration ;
+    rdfs:label "TricklingFiltration" ;
+    skos:definition "Trickling filter using any media (e.g., plastic, sand, gravel, etc.)" ;
+    rdfs:subClassOf watr:Process-Biofiltration .
 
 watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-BiologicallyActiveFiltration ;
     rdfs:label "Biologically Active Filtration (BAF)" ;
-    skos:definition "A filtration method that uses biological processes to remove contaminants." ;
+    skos:definition "A biologically activated filtration column." ;
     rdfs:subClassOf watr:Process-Biofiltration .
 
 watr:Process-MembraneBioreactor a watr:Class, watr:Process-MembraneBioreactor ;
     rdfs:label "Membrane Bioreactor" ;
     skos:definition "Combined biological and membrane filtration" ;
-    rdfs:subClassOf watr:Biological-Process, watr:Physical-Process .
+    rdfs:subClassOf watr:Process-Biofiltration .
+
+watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
+    rdfs:label "Digestion" ;
+    skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
+    rdfs:subClassOf watr:Biological-Process .
 
 watr:Process-AnaerobicDigestion a watr:Class, watr:Process-AnaerobicDigestion ;
     rdfs:label "Anaerobic Digestion" ;
     skos:definition "A biological process that breaks down organic matter in the absence of oxygen." ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:subClassOf watr:Digestion .
 
 watr:Process-AerobicDigestion a watr:Class, watr:Process-AerobicDigestion ;
     rdfs:label "Aerobic Digestion" ;
     skos:definition "A biological process that breaks down organic matter in the presence of oxygen." ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:subClassOf watr:Digestion .

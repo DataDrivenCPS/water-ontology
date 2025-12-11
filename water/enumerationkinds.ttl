@@ -399,6 +399,28 @@ watr:Role-Backwash
     rdfs:subClassOf s223:EnumerationKind-Role ;
     rdfs:label "Role-Backwash" ;
 .
+
+watr:Role-NutrientRemoval
+    a s223:EnumerationKind ;
+    a watr:Role-NutrientRemoval ; 
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+    rdfs:label "Role-NutrientRemoval" ;
+.
+
+watr:Role-NitrogenRemoval
+    a s223:EnumerationKind ;
+    a watr:Role-NitrogenRemoval ; 
+    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    rdfs:label "Role-NitrogenRemoval" ;
+.
+
+watr:Role-PhosphorusRemoval
+    a s223:EnumerationKind ;
+    a watr:Role-PhosphorusRemoval ; 
+    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    rdfs:label "Role-PhosphorusRemoval" ;
+.
+
 watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -416,6 +438,7 @@ watr:Role-Feed
     rdfs:label "Feed" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
+
 watr:Role-Permeate 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -424,15 +447,43 @@ watr:Role-Permeate
     rdfs:label "Permeate" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
-# TODO: Move to process type
-watr:Role-Aeration 
+
+watr:Role-Storage 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-Aeration ;
+    a watr:Role-Storage ;
     a sh:NodeShape ;
-    rdfs:label "Aeration" ;
+    rdfs:label "Storage" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+. 
+
+watr:Role-Aerobic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Aerobic ;
+    a sh:NodeShape ;
+    rdfs:label "Aerobic" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
+
+watr:Role-Anaerobic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Anaerobic ;
+    a sh:NodeShape ;
+    rdfs:label "Anaerobic" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Anoxic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Anoxic ;
+    a sh:NodeShape ;
+    rdfs:label "Anoxic" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
 watr:EnumerationKind-Runtime
     a s223:EnumerationKind ;
     a watr:Class ;

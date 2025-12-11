@@ -269,10 +269,10 @@ watr:AerationBasin
     rdfs:subClassOf watr:Reactor, watr:Basin, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-GasTransfer ;
+        sh:hasValue watr:Process-Aeration ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of AerationBasin must have the GasTransfer process." ;
+        sh:message "Instances of AerationBasin must have the Aeration process." ;
     ] .
 
 watr:CoagulationBasin
@@ -441,6 +441,13 @@ watr:Pond
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage" ;
     rdfs:subClassOf s223:Equipment .
 
+watr:Wetland
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Wetland" ;
+    rdfs:comment "A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment." ;
+    rdfs:subClassOf s223:Equipment .
+
 watr:Battery
     a  sh:NodeShape ;
     a watr:Class ;
@@ -572,7 +579,7 @@ watr:GravityBeltThickener
     a watr:Class ;
     rdfs:label "Gravity Belt Thickener" ;
     rdfs:comment "A thickener that combines gravity separation with a belt system" ;
-    rdfs:subClassOf watr:BeltThickener .
+    rdfs:subClassOf watr:BeltThickener, watr:GravityThickener .
 
 watr:RotaryDrumThickener
     a  sh:NodeShape ;
@@ -617,10 +624,10 @@ watr:TricklingFilter
     rdfs:subClassOf watr:Filter, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Biofiltration ;
+        sh:hasValue watr:Process-TricklingFiltration ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of TricklingFilter must have the Biofiltration process." ;
+        sh:message "Instances of TricklingFilter must have the TricklingFiltration process." ;
     ] .
 
 watr:MembraneBioreactor
