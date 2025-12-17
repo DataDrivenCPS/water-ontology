@@ -243,7 +243,7 @@ watr:Process-Dechlorination a watr:Class, watr:Process-Dechlorination ;
 watr:Process-pHAdjustment a watr:Class, watr:Process-pHAdjustment ;
     rdfs:label "pH Adjustment" ;
     skos:definition "A unit process that adjusts the pH of water to a desired level using chemicals." ;
-    rdfs:subClassOf watr:Chemical-Process .
+    rdfs:subClassOf watr:Process-ChemicalAddition .
 
 watr:Process-Neutralization a watr:Class, watr:Process-Neutralization ;
     rdfs:label "Neutralization" ;
@@ -350,11 +350,6 @@ watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
     skos:definition "A filtration method that uses biological processes to remove contaminants (e.g., trickling filter)." ;
     rdfs:subClassOf watr:Biological-Process, watr:Process-Filtration .
-
-watr:Process-RotatingBiologicalContactor a watr:Class, watr:Process-RotatingBiologicalContactor ;
-    rdfs:label "Rotating Biological Contactor (RBC)" ;
-    skos:definition "Fixed-film process using a slowly rotating discs partially submerged in a tank." ;
-    rdfs:subClassOf watr:Process-Biofiltration .
 
 watr:Process-TricklingFiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "TricklingFiltration" ;

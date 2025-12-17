@@ -264,7 +264,7 @@ watr:StaticMixer
 watr:AerationBasin
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "AerationBasin" ;
+    rdfs:label "Aeration Basin" ;
     rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
     rdfs:subClassOf watr:Reactor, watr:Basin, watr:UnitProcess ;
     sh:property [
@@ -278,7 +278,7 @@ watr:AerationBasin
 watr:CoagulationBasin
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "CoagulationBasin" ;
+    rdfs:label "Coagulation Basin" ;
     rdfs:comment "A basin where coagulation occurs to destabilize particles in water" ;
     rdfs:subClassOf watr:Basin, watr:UnitProcess ;
     sh:property [
@@ -292,7 +292,7 @@ watr:CoagulationBasin
 watr:FlocculationBasin
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "FlocculationBasin" ;
+    rdfs:label "Flocculation Basin" ;
     rdfs:comment "A tank where flocculation occurs to aggregate particles in water" ;
     rdfs:subClassOf watr:Basin, watr:UnitProcess ;
     sh:property [
@@ -313,7 +313,7 @@ watr:Digester
 watr:AnaerobicDigester
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "AnaerobicDigester" ;
+    rdfs:label "Anaerobic Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
     rdfs:subClassOf watr:Digester, watr:UnitProcess ;
     sh:property [
@@ -327,7 +327,7 @@ watr:AnaerobicDigester
 watr:AerobicDigester
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "AerobicDigester" ;
+    rdfs:label "Aerobic Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
     rdfs:subClassOf watr:Digester, watr:UnitProcess ;
     sh:property [
@@ -341,7 +341,7 @@ watr:AerobicDigester
 watr:DisinfectionUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "Disinfection" ;
+    rdfs:label "Disinfection Unit" ;
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess ;
     sh:property [
@@ -355,7 +355,7 @@ watr:DisinfectionUnit
 watr:ChlorinationUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ChlorinationUnit" ;
+    rdfs:label "Chlorination Unit" ;
     rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
@@ -369,7 +369,7 @@ watr:ChlorinationUnit
 watr:UltravioletLightUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "UltravioletlightUnit" ;
+    rdfs:label "Ultravioletlight Unit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
@@ -383,14 +383,14 @@ watr:UltravioletLightUnit
 watr:ChlorinationBasin
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ChlorinationBasin" ;
+    rdfs:label "Chlorination Basin" ;
     rdfs:comment "A basin where chlorine is added for disinfection" ;
     rdfs:subClassOf watr:ChlorinationUnit, watr:Basin .
 
 watr:SedimentationTank
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "SedimentationTank" ;
+    rdfs:label "Sedimentation Tank" ;
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess ;
     sh:property [
@@ -404,7 +404,7 @@ watr:SedimentationTank
 watr:ImhoffTank
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ImhoffTank" ;
+    rdfs:label "Imhoff Tank" ;
     rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
     rdfs:subClassOf watr:SedimentationTank ;
     sh:property [
@@ -477,6 +477,13 @@ watr:Cogenerator
     rdfs:label "Cogenerator" ;
     rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
     rdfs:subClassOf s223:Equipment .
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Cogeneration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Cogenerator must have the Cogeneration process." ;
+    ] .
 
 watr:Boiler
     a  sh:NodeShape ;
@@ -484,6 +491,13 @@ watr:Boiler
     rdfs:label "Boiler" ;
     rdfs:comment "A device for heating water" ;
     rdfs:subClassOf s223:Boiler .
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Incineration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Boiler must have the Incineration process." ;
+    ] .
 
 watr:Conditioner
     a  sh:NodeShape ;
@@ -516,7 +530,7 @@ watr:PressureExchanger
 watr:DewateringUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "Dewatering" ;
+    rdfs:label "Dewatering Unit" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
@@ -537,7 +551,7 @@ watr:Thickener
 watr:DissolvedAirFlotationThickener
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "DissolvedAirFlotationThickener" ;
+    rdfs:label "Dissolved Air Flotation Thickener" ;
     rdfs:comment "A thickener that uses dissolved air to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
     sh:property [
@@ -551,7 +565,7 @@ watr:DissolvedAirFlotationThickener
 watr:CentrifugalThickener
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "CentrifugalThickener" ;
+    rdfs:label "Centrifugal Thickener" ;
     rdfs:comment "A thickener that uses centrifugal force to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
     sh:property [
@@ -565,7 +579,7 @@ watr:CentrifugalThickener
 watr:GravityThickener
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "GravityThickener" ;
+    rdfs:label "Gravity Thickener" ;
     rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
     sh:property [
@@ -579,7 +593,7 @@ watr:GravityThickener
 watr:BeltThickener
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "BeltThickener" ;
+    rdfs:label "Belt Thickener" ;
     rdfs:comment "A thickener that uses a belt system to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener, watr:UnitProcess ;
     sh:property [
@@ -628,14 +642,28 @@ watr:Filter
 watr:ReverseOsmosisMembrane
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ReverseOsmosisMembrane" ;
+    rdfs:label "Reverse Osmosis Membrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter .
+
+watr:RotatingBiologicalContactor 
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Rotating Biological Contactor (RBC)" ;
+    rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
+    rdfs:subClassOf watr:Filter .
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of RotatingBiologicalContactor must have the Biofiltration process." ;
+    ] .
 
 watr:TricklingFilter
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "TricklingFilter" ;
+    rdfs:label "Trickling Filter" ;
     rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
     rdfs:subClassOf watr:Filter, watr:UnitProcess ;
     sh:property [
@@ -649,7 +677,7 @@ watr:TricklingFilter
 watr:OxidationDitch
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "OxidationDitch" ;
+    rdfs:label "Oxidation Ditch" ;
     rdfs:comment "Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants" ;
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
     sh:property [
@@ -663,7 +691,7 @@ watr:OxidationDitch
 watr:MembraneBioreactor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "MembraneBioreactor" ;
+    rdfs:label "Membrane Bioreactor" ;
     rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
     rdfs:subClassOf watr:Filter, watr:UnitProcess ;
     sh:property [
@@ -677,28 +705,28 @@ watr:MembraneBioreactor
 watr:MicrofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "MicrofiltrationUnit" ;
+    rdfs:label "Microfiltration Unit" ;
     rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
     rdfs:subClassOf watr:Filter .
 
 watr:UltrafiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "UltrafiltrationUnit" ;
+    rdfs:label "Ultrafiltration Unit" ;
     rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
     rdfs:subClassOf watr:Filter .
 
 watr:NanofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "NanofiltrationUnit" ;
+    rdfs:label "Nanofiltration Unit" ;
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
     rdfs:subClassOf watr:Filter .
 
 watr:MediaFiltration
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "MediaFiltrationUnit" ;
+    rdfs:label "MediaFiltration Unit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
     rdfs:subClassOf watr:Filter .
 
@@ -719,14 +747,14 @@ watr:RapidSandFilter
 watr:CartridgeFiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "CartridgeFiltrationUnit" ;
+    rdfs:label "Cartridge Filtration Unit" ;
     rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
     rdfs:subClassOf watr:Filter .
     
 watr:IonExchangeMembrane
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "IonExchangeMembrane" ;
+    rdfs:label "Ion Exchange Membrane" ;
     rdfs:comment "A membrane that selectively allows ions to pass through while blocking other substances" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
@@ -817,42 +845,42 @@ watr:Condenser
 watr:FlowSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "FlowSensor" ;
+    rdfs:label "Flow Sensor" ;
     rdfs:comment "A sensor used to measure the flow rate of liquids or gases" ;
     rdfs:subClassOf s223:FlowSensor .
 
 watr:VolumeSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "VolumeSensor" ;
+    rdfs:label "Volume Sensor" ;
     rdfs:comment "A sensor used to measure the volume of a substance" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:LevelSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "LevelSensor" ;
+    rdfs:label "Level Sensor" ;
     rdfs:comment "A sensor used to detect the level of liquids or solids in a tank" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:PressureSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "PressureSensor" ;
+    rdfs:label "Pressure Sensor" ;
     rdfs:comment "A sensor used to measure pressure" ;
     rdfs:subClassOf s223:PressureSensor .
 
 watr:TemperatureSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "TemperatureSensor" ;
+    rdfs:label "Temperature Sensor" ;
     rdfs:comment "A sensor used to measure temperature" ;
     rdfs:subClassOf s223:TemperatureSensor .
 
 watr:ConcentrationSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ConcentrationSensor" ;
+    rdfs:label "Concentration Sensor" ;
     rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
     rdfs:subClassOf s223:ConcentrationSensor .
 
@@ -866,42 +894,42 @@ watr:OxygenMeter
 watr:OxygenDemandSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "OxygenDemandSensor" ;
+    rdfs:label "OxygenDemand Sensor" ;
     rdfs:comment "A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:pHSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "pHSensor" ;
+    rdfs:label "pH Sensor" ;
     rdfs:comment "A sensor used to measure the pH of a solution" ;
     rdfs:subClassOf watr:ConcentrationSensor .
 
 watr:ConductivitySensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "ConductivitySensor" ;
+    rdfs:label "Conductivity Sensor" ;
     rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:TurbidityMeter
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "TurbidityMeter" ;
+    rdfs:label "Turbidity Meter" ;
     rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
     rdfs:subClassOf watr:Sensor .
 
 watr:RotationSensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "RotationSensor" ;
+    rdfs:label "Rotation Sensor" ;
     rdfs:comment "A sensor used to measure the rotational speed or position of an object" ;
     rdfs:subClassOf s223:Sensor .
 
 watr:EfficiencySensor
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "EfficiencySensor" ;
+    rdfs:label "Efficiency Sensor" ;
     rdfs:comment "A sensor used to measure the efficiency of a system or equipment" ;
     rdfs:subClassOf s223:Sensor .
 
@@ -943,7 +971,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
-    rdfs:subClassOf s223:VariableFrequencyDrive ;
+    rdfs:subClassOf s223:Variable Frequency Drive ;
     rdfs:label "Variable Frequency Drive" ;
 .
 watr:ThreeWayValve 
@@ -1126,16 +1154,16 @@ watr:OzonationUnit
         sh:message "Instances of OzonationUnit must have the Ozonation process." ;
     ] .
 
-watr:GranulatedActivatedCarbonAdsorber
+watr:GranularActivatedCarbonAdsorber
     a  sh:NodeShape ;
     a watr:Class ;
-    rdfs:label "Granulated Activated Carbon (GAC) Adsorber" ;
+    rdfs:label "Granular Activated Carbon (GAC) Adsorber" ;
     rdfs:comment "A unit that uses granulated activated carbon to adsorb impurities from water." ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-GranulatedActivatedCarbonAdsorption ;
+        sh:hasValue watr:Process-GranularActivatedCarbon ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranulatedActivatedCarbonAdsorption process." ;
+        sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranularActivatedCarbon process." ;
     ] .
