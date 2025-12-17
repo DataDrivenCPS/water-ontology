@@ -346,11 +346,6 @@ watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
     rdfs:subClassOf watr:Biological-Process .
 
-watr:Process-OxidationDitch a watr:Class, watr:Process-OxidationDitch ;
-    rdfs:label "Oxidation Ditch" ;
-    skos:definition "Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants" ;
-    rdfs:subClassOf watr:Process-ActivatedSludge .
-
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
     skos:definition "A filtration method that uses biological processes to remove contaminants (e.g., trickling filter)." ;

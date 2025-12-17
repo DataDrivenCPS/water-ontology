@@ -309,6 +309,7 @@ watr:Digester
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
     rdfs:subClassOf watr:Tank .
+
 watr:AnaerobicDigester
     a  sh:NodeShape ;
     a watr:Class ;
@@ -322,6 +323,7 @@ watr:AnaerobicDigester
         sh:maxCount 1 ;
         sh:message "Instances of AnaerobicDigester must have the AnaerobicDigestion process." ;
     ] .
+
 watr:AerobicDigester
     a  sh:NodeShape ;
     a watr:Class ;
@@ -397,6 +399,20 @@ watr:SedimentationTank
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
+    ] .
+
+watr:ImhoffTank
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "ImhoffTank" ;
+    rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
+    rdfs:subClassOf watr:SedimentationTank ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Sedimentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ImhoffTank must have the Sedimentation process." ;
     ] .
 
 watr:Screen
@@ -628,6 +644,20 @@ watr:TricklingFilter
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:message "Instances of TricklingFilter must have the TricklingFiltration process." ;
+    ] .
+
+watr:OxidationDitch
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "OxidationDitch" ;
+    rdfs:comment "Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants" ;
+    rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-ActivatedSludge ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of OxidationDitch must have the ActivatedSludge process." ;
     ] .
 
 watr:MembraneBioreactor
