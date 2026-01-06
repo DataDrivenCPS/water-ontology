@@ -1181,17 +1181,3 @@ watr:Grinder
         sh:maxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;
     ] .
-
-watr:DiurnalFlowBox
-    a  sh:NodeShape ;
-    a watr:Class ; 
-    rdfs:label "Diurnal Flow Box" ;
-    rdfs:comment "Structure that collects and temporarily stores wastewater to manage flow rates based on diurnal patterns" ;
-    rdfs:subClassOf s223:Tank, watr:UnitProcess ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Equalization ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of Diurnal Flow Box must have the Equalization process." ;
-    ] .
