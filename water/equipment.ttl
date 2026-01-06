@@ -476,7 +476,7 @@ watr:Cogenerator
     a watr:Class ;
     rdfs:label "Cogenerator" ;
     rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
-    rdfs:subClassOf s223:Equipment .
+    rdfs:subClassOf s223:Equipment ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Cogeneration ;
@@ -490,7 +490,7 @@ watr:Boiler
     a watr:Class ;
     rdfs:label "Boiler" ;
     rdfs:comment "A device for heating water" ;
-    rdfs:subClassOf s223:Boiler .
+    rdfs:subClassOf s223:Boiler ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Incineration ;
@@ -651,7 +651,7 @@ watr:RotatingBiologicalContactor
     a watr:Class ;
     rdfs:label "Rotating Biological Contactor (RBC)" ;
     rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Biofiltration ;
@@ -971,7 +971,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
-    rdfs:subClassOf s223:Variable Frequency Drive ;
+    rdfs:subClassOf s223:VariableFrequencyDrive ;
     rdfs:label "Variable Frequency Drive" ;
 .
 watr:ThreeWayValve 
@@ -1166,4 +1166,32 @@ watr:GranularActivatedCarbonAdsorber
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranularActivatedCarbon process." ;
+    ] .
+
+watr:Grinder
+    a  sh:NodeShape ;
+    a watr:Class ; 
+    rdfs:label "Grinder" ;
+    rdfs:comment "Machine that shreds solid waste into tiny particles" ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Comminution ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Grinder must have the Comminution process." ;
+    ] .
+
+watr:DiurnalFlowBox
+    a  sh:NodeShape ;
+    a watr:Class ; 
+    rdfs:label "Diurnal Flow Box" ;
+    rdfs:comment "Structure that collects and temporarily stores wastewater to manage flow rates based on diurnal patterns" ;
+    rdfs:subClassOf s223:Tank, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Equalization ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Diurnal Flow Box must have the Equalization process." ;
     ] .
