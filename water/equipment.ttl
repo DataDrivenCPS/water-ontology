@@ -1181,3 +1181,17 @@ watr:Grinder
         sh:maxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;
     ] .
+watr:Gate 
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Gate" ;
+    rdfs:comment "Tool to control water flow and isolate sections" ;
+    rdfs:subClassOf s223:Equipment 
+.
+watr:SluiceGate
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Sluice Gate" ;
+    rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;
+    rdfs:subClassOf watr:Gate
+.
