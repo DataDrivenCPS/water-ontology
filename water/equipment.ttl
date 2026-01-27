@@ -308,7 +308,14 @@ watr:Digester
     a watr:Class ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf watr:Tank .
+    rdfs:subClassOf watr:Tank, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Digestion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Digester must have the Digestion process." ;
+    ] .
 
 watr:AnaerobicDigester
     a  sh:NodeShape ;
@@ -357,7 +364,7 @@ watr:ChlorinationUnit
     a watr:Class ;
     rdfs:label "Chlorination Unit" ;
     rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
-    rdfs:subClassOf watr:DisinfectionUnit ;
+    rdfs:subClassOf watr:DisinfectionUnit, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Chlorination ;
@@ -406,7 +413,7 @@ watr:ImhoffTank
     a watr:Class ;
     rdfs:label "Imhoff Tank" ;
     rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
-    rdfs:subClassOf watr:SedimentationTank ;
+    rdfs:subClassOf watr:SedimentationTank, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Sedimentation ;
@@ -644,7 +651,14 @@ watr:ReverseOsmosisMembrane
     a watr:Class ;
     rdfs:label "Reverse Osmosis Membrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter, watr:UnitProcess;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-ReverseOsmosis ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of ReverseOsmosisMembrane must have the ReverseOsmosis process." ;
+    ] .
 
 watr:RotatingBiologicalContactor 
     a  sh:NodeShape ;

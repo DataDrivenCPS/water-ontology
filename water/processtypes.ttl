@@ -341,6 +341,11 @@ watr:Process-Bardenpho a watr:Class, watr:Process-Bardenpho ;
     skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
     rdfs:subClassOf watr:Biological-Process .
 
+watr:Process-ModifiedLudzackEttinger a watr:Class, watr:Process-ModifiedLudzackEttinger ;
+    rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
+    skos:definition "A two-stage biological nutrient removal process designed for nitrogen removal through anoxic denitrification followed by aerobic nitrification." ;
+    rdfs:SubClassOf watr:Biological-Process .
+
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
