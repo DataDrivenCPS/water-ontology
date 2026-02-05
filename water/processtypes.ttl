@@ -336,15 +336,41 @@ watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
     skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
     rdfs:subClassOf watr:Biological-Process .
 
-watr:Process-Bardenpho a watr:Class, watr:Process-Bardenpho ;
-    rdfs:label "BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
+    rdfs:label "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
+    rdfs:subClassOf watr:Biological-Process .
+
+watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
+    rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zoneswith two anoxic and two aerobic zones." ;
     rdfs:subClassOf watr:Biological-Process .
 
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
     rdfs:subClassOf watr:Biological-Process .
+
+
+watr:Process-AO a watr:Class, watr:Process-AO ;
+    rdfs:label "Anoxic-Aerobic" ;
+    skos:definition "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
+watr:Process-MLE a watr:Class, watr:Process-MLE ;
+    rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
+    skos:definition "Modification of AO a with internal recycle." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
+watr:Process-A2O a watr:Class, watr:Process-A2O ;
+    rdfs:label "Anaerobic-Anoxic-Oxic (A2O)" ;
+    skos:definition "Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
+watr:Process-UCT a watr:Class, watr:Process-UCT ;
+    rdfs:label "University of Cape Town (UCT)" ;
+    skos:definition "Variant of A2O with modified recycle streams for phosphorus removal." ;
+    rdfs:subClassOf watr:Process-A2O .
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
