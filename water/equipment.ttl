@@ -322,7 +322,7 @@ watr:AnaerobicDigester
     a watr:Class ;
     rdfs:label "Anaerobic Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
-    rdfs:subClassOf watr:Digester, watr:UnitProcess ;
+    rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-AnaerobicDigestion ;
@@ -336,7 +336,7 @@ watr:AerobicDigester
     a watr:Class ;
     rdfs:label "Aerobic Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
-    rdfs:subClassOf watr:Digester, watr:UnitProcess ;
+    rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-AerobicDigestion ;
@@ -364,7 +364,7 @@ watr:ChlorinationUnit
     a watr:Class ;
     rdfs:label "Chlorination Unit" ;
     rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
-    rdfs:subClassOf watr:DisinfectionUnit, watr:UnitProcess ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Chlorination ;
@@ -378,7 +378,7 @@ watr:UltravioletLightUnit
     a watr:Class ;
     rdfs:label "Ultravioletlight Unit" ;
     rdfs:comment "A unit using ultraviolet light for disinfection" ;
-    rdfs:subClassOf watr:DisinfectionUnit, watr:ProcessUnit ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-UVDisinfection ;
@@ -413,7 +413,7 @@ watr:ImhoffTank
     a watr:Class ;
     rdfs:label "Imhoff Tank" ;
     rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
-    rdfs:subClassOf watr:SedimentationTank, watr:UnitProcess ;
+    rdfs:subClassOf watr:SedimentationTank ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Sedimentation ;
@@ -651,7 +651,7 @@ watr:ReverseOsmosisMembrane
     a watr:Class ;
     rdfs:label "Reverse Osmosis Membrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
-    rdfs:subClassOf watr:Filter, watr:UnitProcess;
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-ReverseOsmosis ;
@@ -665,7 +665,7 @@ watr:RotatingBiologicalContactor
     a watr:Class ;
     rdfs:label "Rotating Biological Contactor (RBC)" ;
     rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
-    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Biofiltration ;
@@ -679,7 +679,7 @@ watr:TricklingFilter
     a watr:Class ;
     rdfs:label "Trickling Filter" ;
     rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
-    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-TricklingFiltration ;
@@ -707,7 +707,7 @@ watr:MembraneBioreactor
     a watr:Class ;
     rdfs:label "Membrane Bioreactor" ;
     rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
-    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-MembraneBioreactor ;
@@ -749,7 +749,7 @@ watr:RapidSandFilter
     a watr:Class ;
     rdfs:label "Rapid Sand Filter" ;
     rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
-    rdfs:subClassOf watr:MediaFiltration, watr:UnitProcess ;
+    rdfs:subClassOf watr:MediaFiltration ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-RapidSandFiltration ;
@@ -924,14 +924,14 @@ watr:ConductivitySensor
     a watr:Class ;
     rdfs:label "Conductivity Sensor" ;
     rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
-    rdfs:subClassOf watr:Sensor .
+    rdfs:subClassOf s223:Sensor .
 
 watr:TurbidityMeter
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Turbidity Meter" ;
     rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
-    rdfs:subClassOf watr:Sensor .
+    rdfs:subClassOf s223:Sensor .
 
 watr:RotationSensor
     a  sh:NodeShape ;
@@ -1130,7 +1130,7 @@ watr:BiologicalAeratedFilter
     a watr:Class ;
     rdfs:label "Biological Aerated Filter (BAF)" ;
     rdfs:comment "A filter that uses biological processes to remove contaminants." ;
-    rdfs:subClassOf watr:Filter, watr:UnitProcess ;
+    rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-BiologicallyActiveFiltration ;
