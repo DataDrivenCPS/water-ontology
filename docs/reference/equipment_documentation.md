@@ -2,13 +2,19 @@
 
 ## Tank
 
-**Description:** A tank for storing liquid
+**Description:** A tank with at least one inlet and one outlet for liquid; may include optional drain or overflow connection points. Used for storage and as the base for reactors and separation tanks.
 
 **Superclass:** Equipment
 
 ## Reactor
 
-**Description:** An equipment used for chemical reaction
+**Description:** A tank used for reaction or biological/chemical treatment; may include recirculation or return connection points (e.g. for RAS, internal recycle).
+
+**Superclass:** Tank
+
+## SeparationTank
+
+**Description:** A tank that separates phases or streams; must have at least two outlets (e.g. clarifier overflow and underflow).
 
 **Superclass:** Tank
 
@@ -16,7 +22,7 @@
 
 **Description:** A type of activated sludge process for wastewater treatment
 
-**Superclass:** Reactor
+**Superclass:** Reactor, SeparationTank
 
 ## PlugFlowReactor
 
@@ -42,11 +48,17 @@
 
 **Superclass:** Reactor
 
+## MixingBasin
+
+**Description:** A tank where mixed liquor is stirred without aeration
+
+**Superclass:** Reactor
+
 ## Digester
 
 **Description:** A container to promote decomposition of organic waste
 
-**Superclass:** Tank
+**Superclass:** Reactor
 
 ## AnaerobicDigester
 
@@ -72,17 +84,17 @@
 
 **Superclass:** DisinfectionUnit
 
-## ChlorinationBasin
+## ChlorinationUnit
 
-**Description:** A basin where chlorine is added for disinfection
+**Description:** A unit that uses chlorine or chlorine compounds for disinfection.
 
-**Superclass:** DisinfectionUnit
+**Superclass:** DisinfectionUnit, Reactor
 
 ## SedimentationTank
 
 **Description:** A tank used to remove solids from liquids through sedimentation
 
-**Superclass:** Tank
+**Superclass:** SeparationTank
 
 ## Screen
 
@@ -214,13 +226,13 @@
 
 **Description:** A filter system that treats wastewater by trickling it over a bed of rocks or plastic
 
-**Superclass:** Filter
+**Superclass:** Filter, Reactor
 
 ## MembraneBioreactor
 
 **Description:** A filter system that combines a membrane process like microfiltration with a biological reactor
 
-**Superclass:** Filter
+**Superclass:** Filter, Reactor, SeparationTank
 
 ## MicrofiltrationUnit
 

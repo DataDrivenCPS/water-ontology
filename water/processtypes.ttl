@@ -185,11 +185,13 @@ watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDi
     rdfs:subClassOf watr:Process-Electrodialysis, watr:Process-Crystallization .
 
 watr:Process-Comminution a watr:Class, watr:Process-Comminution ;
+watr:Process-Comminution a watr:Class , watr:Process-Comminution ;
     rdfs:label "Comminution" ;
     skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
     rdfs:subClassOf watr:Process-Physical .
 
 watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
+watr:Process-BiosolidsDisposal a watr:Class , watr:Process-BiosolidsDisposal ;
     rdfs:label "BiosolidsDisposal" ;
     skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
     rdfs:subClassOf watr:Process-Physical .
@@ -306,11 +308,13 @@ watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
     rdfs:subClassOf watr:Chemical-Process .
 
 watr:Process-Incineration a watr:Class, watr:Process-Incineration ;
+watr:Process-Incineration a watr:Class , watr:Process-Incineration ;
     rdfs:label "Incineration" ;
     skos:definition "A process that combusts biosolids or biogas." ;
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
 
 watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
+watr:Process-FluidizedBedIncineration a watr:Class , watr:Process-FluidizedBedIncineration ;
     rdfs:label "Fluidized Bed Incineration" ;
     skos:definition "A process that combusts a constantly moving bed of biosolids." ;
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
@@ -321,6 +325,7 @@ watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHeart
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
 
 watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
+watr:Process-Cogeneration a watr:Class , watr:Process-Cogeneration ;
     rdfs:label "Cogeneration" ;
     skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." ;
     rdfs:subClassOf watr:Process-Incineration .
@@ -341,20 +346,49 @@ watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
     skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
     rdfs:subClassOf watr:Biological-Process .
 
-watr:Process-Bardenpho a watr:Class, watr:Process-Bardenpho ;
-    rdfs:label "BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
+    rdfs:label "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
-    rdfs:subClassOf watr:Biological-Process .
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    rdfs:subClassOf watr:Process-Nitrification ;
+    rdfs:subClassOf watr:Process-Denitrification .
 
-watr:Process-ModifiedLudzackEttinger a watr:Class, watr:Process-ModifiedLudzackEttinger ;
-    rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
-    skos:definition "A two-stage biological nutrient removal process designed for nitrogen removal through anoxic denitrification followed by aerobic nitrification." ;
-    rdfs:SubClassOf watr:Biological-Process .
+watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
+    rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zoneswith two anoxic and two aerobic zones." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    rdfs:subClassOf watr:Process-Nitrification ;
+    rdfs:subClassOf watr:Process-Denitrification .
 
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
     rdfs:subClassOf watr:Biological-Process .
+
+
+watr:Process-AO a watr:Class, watr:Process-AO ;
+    rdfs:label "Anoxic-Aerobic" ;
+    skos:definition "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    rdfs:subClassOf watr:Process-Nitrification ;
+    rdfs:subClassOf watr:Process-Denitrification .
+
+watr:Process-MLE a watr:Class, watr:Process-MLE ;
+    rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
+    skos:definition "Modification of AO a with internal recycle." ;
+    rdfs:subClassOf watr:Process-AO .
+
+watr:Process-A2O a watr:Class, watr:Process-A2O ;
+    rdfs:label "Anaerobic-Anoxic-Oxic (A2O)" ;
+    skos:definition "Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal." ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    rdfs:subClassOf watr:Process-Nitrification ;
+    rdfs:subClassOf watr:Process-Denitrification .
+
+watr:Process-UCT a watr:Class, watr:Process-UCT ;
+    rdfs:label "University of Cape Town (UCT)" ;
+    skos:definition "Variant of A2O with modified recycle streams for phosphorus removal." ;
+    rdfs:subClassOf watr:Process-A2O .
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
