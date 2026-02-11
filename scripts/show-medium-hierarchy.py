@@ -4,7 +4,7 @@ import rdflib
 from rich.tree import Tree
 from rich import print
 import sys
-from utils import parse_ttl_files_in_directory, get_prefixes, query_to_df
+from utils import parse_ttl_files_in_directory, get_prefixes, query_to_df, bind_prefixes
 
 def get_subclass_hierarchy(g, class_uri):
     query = f"""
@@ -46,9 +46,10 @@ def build_tree(g, class_uri, subclass_data):
 class_uri = 's223:EnumerationKind'
 # class_uri = 's223:Equipment'
 graph = Graph()
-parse_ttl_files_in_directory('../../s223/vocab', graph)
-parse_ttl_files_in_directory('..', graph)
+parse_ttl_files_in_directory('../s223/vocab', graph)
+parse_ttl_files_in_directory('../water', graph)
 
+bind_prefixes(graph)
 # Define the s223 namespace
 
 results = get_subclass_hierarchy(graph, class_uri)
