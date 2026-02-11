@@ -14,6 +14,7 @@ parts:
 - caption: Tutorials
   chapters:
   - file: tutorials/creating-models.md
+  - file: tutorials/data-quality-tutorial.md
 - caption: Guides
   chapters:
   - file: guides/todo.md

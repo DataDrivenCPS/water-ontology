@@ -318,6 +318,22 @@ watr:Constituent-SuspendedSolids
     rdfs:label "Constituent-SuspendedSolids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
 .
+watr:Constituent-Cyanide
+    a watr:Class ;
+    a watr:Constituent-Cyanide ;
+    a sh:NodeShape ;
+    rdfs:comment "Cyanide: A highly toxic chemical compound that can be harmful to aquatic life" ;
+    rdfs:label "Constituent Cyanide" ;
+    rdfs:subClassOf watr:Medium-Constituent ;
+.
+watr:Constituent-Bacteria
+    a watr:Class ;
+    a watr:Constituent-Bacteria ;
+    a sh:NodeShape ;
+    rdfs:comment "Bacteria: Microscopic single-celled organisms that can be found in water" ;
+    rdfs:label "Constituent Bacteria" ;
+    rdfs:subClassOf watr:Medium-Constituent ;
+.
 watr:Sludge-MixedLiquor
     a watr:Class ;
     a watr:Sludge-MixedLiquor ;

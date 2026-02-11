@@ -16,13 +16,419 @@
     rdfs:comment "An ontology for enumerationkinds used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-
-watr:Role-Backwash 
-    a s223:EnumerationKind ;
-    a watr:Role-Backwash ; 
-    rdfs:subClassOf s223:EnumerationKind-Role ;
-    rdfs:label "Role-Backwash" ;
+watr:EnumerationKind-DataProcessing 
+    a watr:Class ;
+    a s223:EnumerationKind-DataQuality ;
+    a sh:NodeShape ;
+    rdfs:label "DataQuality" ;
+    rdfs:comment "This EnumerationKind describes methods of data processing, aggregation, or imputation" ;
+    rdfs:subClassOf s223:EnumerationKind ;
 .
+watr:DataProcessing-Filter 
+    a watr:Class ;
+    a watr:DataProcessing-Filter ;
+    a sh:NodeShape ;
+    rdfs:label "Filter" ;
+    rdfs:comment "Parent class for filtering methods to remove outliers or unwanted data points" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:DataProcessing-Aggregate
+    a watr:Class ;
+    a watr:DataProcessing-Aggregate ;
+    a sh:NodeShape ;
+    rdfs:label "Aggregate" ;
+    rdfs:comment "Parent class for aggregation functions that combine multiple data points" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Aggregate-Mean
+    a watr:Class ;
+    a watr:Aggregate-Mean ;
+    a sh:NodeShape ;
+    rdfs:label "Mean" ;
+    rdfs:comment "Arithmetic mean (average) of data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Median
+    a watr:Class ;
+    a watr:Aggregate-Median ;
+    a sh:NodeShape ;
+    rdfs:label "Median" ;
+    rdfs:comment "Middle value of sorted data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Max
+    a watr:Class ;
+    a watr:Aggregate-Max ;
+    a sh:NodeShape ;
+    rdfs:label "Maximum" ;
+    rdfs:comment "Maximum value from data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Min
+    a watr:Class ;
+    a watr:Aggregate-Min ;
+    a sh:NodeShape ;
+    rdfs:label "Minimum" ;
+    rdfs:comment "Minimum value from data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Sum
+    a watr:Class ;
+    a watr:Aggregate-Sum ;
+    a sh:NodeShape ;
+    rdfs:label "Sum" ;
+    rdfs:comment "Sum of all data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Count
+    a watr:Class ;
+    a watr:Aggregate-Count ;
+    a sh:NodeShape ;
+    rdfs:label "Count" ;
+    rdfs:comment "Count of data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-StdDev
+    a watr:Class ;
+    a watr:Aggregate-StdDev ;
+    a sh:NodeShape ;
+    rdfs:label "Standard Deviation" ;
+    rdfs:comment "Standard deviation of data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Variance
+    a watr:Class ;
+    a watr:Aggregate-Variance ;
+    a sh:NodeShape ;
+    rdfs:label "Variance" ;
+    rdfs:comment "Variance of data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Range
+    a watr:Class ;
+    a watr:Aggregate-Range ;
+    a sh:NodeShape ;
+    rdfs:label "Range" ;
+    rdfs:comment "Difference between maximum and minimum values" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:Aggregate-Mode
+    a watr:Class ;
+    a watr:Aggregate-Mode ;
+    a sh:NodeShape ;
+    rdfs:label "Mode" ;
+    rdfs:comment "Most frequently occurring value in data points" ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate ;
+.
+watr:DataProcessing-Interpolation
+    a watr:Class ;
+    a watr:DataProcessing-Interpolation ;
+    a sh:NodeShape ;
+    rdfs:label "Interpolation" ;
+    rdfs:comment "Parent class for interpolation methods to estimate values between known data points" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Interpolation-Linear
+    a watr:Class ;
+    a watr:Interpolation-Linear ;
+    a sh:NodeShape ;
+    rdfs:label "Linear Interpolation" ;
+    rdfs:comment "Linear interpolation between two adjacent data points" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:Interpolation-Spline
+    a watr:Class ;
+    a watr:Interpolation-Spline ;
+    a sh:NodeShape ;
+    rdfs:label "Spline Interpolation" ;
+    rdfs:comment "Cubic spline interpolation for smooth curves" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:Interpolation-Polynomial
+    a watr:Class ;
+    a watr:Interpolation-Polynomial ;
+    a sh:NodeShape ;
+    rdfs:label "Polynomial Interpolation" ;
+    rdfs:comment "Polynomial interpolation using multiple data points" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:Interpolation-NearestNeighbor
+    a watr:Class ;
+    a watr:Interpolation-NearestNeighbor ;
+    a sh:NodeShape ;
+    rdfs:label "Nearest Neighbor" ;
+    rdfs:comment "Use the value of the nearest known data point" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:Interpolation-ForwardFill
+    a watr:Class ;
+    a watr:Interpolation-ForwardFill ;
+    a sh:NodeShape ;
+    rdfs:label "Forward Fill" ;
+    rdfs:comment "Propagate last valid observation forward to fill gaps" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:Interpolation-BackwardFill
+    a watr:Class ;
+    a watr:Interpolation-BackwardFill ;
+    a sh:NodeShape ;
+    rdfs:label "Backward Fill" ;
+    rdfs:comment "Propagate next valid observation backward to fill gaps" ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation ;
+.
+watr:DataProcessing-Normalization
+    a watr:Class ;
+    a watr:DataProcessing-Normalization ;
+    a sh:NodeShape ;
+    rdfs:label "Normalization" ;
+    rdfs:comment "Parent class for normalization methods to scale data to a standard range" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Normalization-MinMax
+    a watr:Class ;
+    a watr:Normalization-MinMax ;
+    a sh:NodeShape ;
+    rdfs:label "Min-Max Normalization" ;
+    rdfs:comment "Scale data to a fixed range, typically [0, 1]" ;
+    rdfs:subClassOf watr:DataProcessing-Normalization ;
+.
+watr:Normalization-ZScore
+    a watr:Class ;
+    a watr:Normalization-ZScore ;
+    a sh:NodeShape ;
+    rdfs:label "Z-Score Normalization" ;
+    rdfs:comment "Standardize data to have mean=0 and standard deviation=1" ;
+    rdfs:subClassOf watr:DataProcessing-Normalization ;
+.
+watr:Normalization-Decimal
+    a watr:Class ;
+    a watr:Normalization-Decimal ;
+    a sh:NodeShape ;
+    rdfs:label "Decimal Scaling" ;
+    rdfs:comment "Normalize by moving the decimal point of values" ;
+    rdfs:subClassOf watr:DataProcessing-Normalization ;
+.
+watr:DataProcessing-Synchronization
+    a watr:Class ;
+    a watr:DataProcessing-Synchronization ;
+    a sh:NodeShape ;
+    rdfs:label "Synchronization" ;
+    rdfs:comment "Parent class for synchronization methods to align data from multiple sources to common time intervals" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Synchronization-Resampling
+    a watr:Class ;
+    a watr:Synchronization-Resampling ;
+    a sh:NodeShape ;
+    rdfs:label "Resampling" ;
+    rdfs:comment "Resample data to a different frequency or time interval" ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization ;
+.
+watr:Synchronization-Upsampling
+    a watr:Class ;
+    a watr:Synchronization-Upsampling ;
+    a sh:NodeShape ;
+    rdfs:label "Upsampling" ;
+    rdfs:comment "Increase the sampling frequency of data to a higher rate" ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization ;
+.
+watr:Synchronization-Downsampling
+    a watr:Class ;
+    a watr:Synchronization-Downsampling ;
+    a sh:NodeShape ;
+    rdfs:label "Downsampling" ;
+    rdfs:comment "Decrease the sampling frequency of data to a lower rate" ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization ;
+.
+watr:Synchronization-TimeAlignment
+    a watr:Class ;
+    a watr:Synchronization-TimeAlignment ;
+    a sh:NodeShape ;
+    rdfs:label "Time Alignment" ;
+    rdfs:comment "Align data points from different sources to common timestamps" ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization ;
+.
+watr:DataProcessing-ErrorMetrics
+    a watr:Class ;
+    a watr:DataProcessing-ErrorMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Error Metrics" ;
+    rdfs:comment "Parent class for error and uncertainty measurements" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Error-AbsoluteError
+    a watr:Class ;
+    a watr:Error-AbsoluteError ;
+    a sh:NodeShape ;
+    rdfs:label "Absolute Error" ;
+    rdfs:comment "Absolute difference between measured and true/reference value" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-RelativeError
+    a watr:Class ;
+    a watr:Error-RelativeError ;
+    a sh:NodeShape ;
+    rdfs:label "Relative Error" ;
+    rdfs:comment "Error expressed as a percentage of the true/reference value" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanAbsoluteError
+    a watr:Class ;
+    a watr:Error-MeanAbsoluteError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Absolute Error (MAE)" ;
+    rdfs:comment "Average of absolute errors across multiple measurements" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanSquaredError
+    a watr:Class ;
+    a watr:Error-MeanSquaredError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Squared Error (MSE)" ;
+    rdfs:comment "Average of squared errors" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-RootMeanSquaredError
+    a watr:Class ;
+    a watr:Error-RootMeanSquaredError ;
+    a sh:NodeShape ;
+    rdfs:label "Root Mean Squared Error (RMSE)" ;
+    rdfs:comment "Square root of MSE, in same units as measurements" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-MeanAbsolutePercentageError
+    a watr:Class ;
+    a watr:Error-MeanAbsolutePercentageError ;
+    a sh:NodeShape ;
+    rdfs:label "Mean Absolute Percentage Error (MAPE)" ;
+    rdfs:comment "Average of absolute percentage errors" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:Error-Bias
+    a watr:Class ;
+    a watr:Error-Bias ;
+    a sh:NodeShape ;
+    rdfs:label "Bias" ;
+    rdfs:comment "Systematic deviation from true value (trueness measure)" ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics ;
+.
+watr:DataProcessing-PrecisionMetrics
+    a watr:Class ;
+    a watr:DataProcessing-PrecisionMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Precision Metrics" ;
+    rdfs:comment "Metrics for precision and repeatability measurements" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Precision-RepeatabilityStdDev
+    a watr:Class ;
+    a watr:Precision-RepeatabilityStdDev ;
+    a sh:NodeShape ;
+    rdfs:label "Repeatability Standard Deviation" ;
+    rdfs:comment "Standard deviation under repeatability conditions (same operator, equipment, short time)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-ReproducibilityStdDev
+    a watr:Class ;
+    a watr:Precision-ReproducibilityStdDev ;
+    a sh:NodeShape ;
+    rdfs:label "Reproducibility Standard Deviation" ;
+    rdfs:comment "Standard deviation under reproducibility conditions (different operators, equipment, time)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-CoefficientOfVariation
+    a watr:Class ;
+    a watr:Precision-CoefficientOfVariation ;
+    a sh:NodeShape ;
+    rdfs:label "Coefficient of Variation" ;
+    rdfs:comment "Ratio of standard deviation to mean (relative precision)" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:Precision-ConfidenceInterval
+    a watr:Class ;
+    a watr:Precision-ConfidenceInterval ;
+    a sh:NodeShape ;
+    rdfs:label "Confidence Interval" ;
+    rdfs:comment "Range within which true value likely falls with specified confidence level" ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics ;
+.
+watr:DataProcessing-AccuracyMetrics
+    a watr:Class ;
+    a watr:DataProcessing-AccuracyMetrics ;
+    a sh:NodeShape ;
+    rdfs:label "Accuracy Metrics" ;
+    rdfs:comment "Combined accuracy measures (precision and trueness)" ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+.
+watr:Accuracy-TotalUncertainty
+    a watr:Class ;
+    a watr:Accuracy-TotalUncertainty ;
+    a sh:NodeShape ;
+    rdfs:label "Total Uncertainty" ;
+    rdfs:comment "Combined standard uncertainty from all sources" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-ExpandedUncertainty
+    a watr:Class ;
+    a watr:Accuracy-ExpandedUncertainty ;
+    a sh:NodeShape ;
+    rdfs:label "Expanded Uncertainty" ;
+    rdfs:comment "Total uncertainty multiplied by coverage factor" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-PercentRecovery
+    a watr:Class ;
+    a watr:Accuracy-PercentRecovery ;
+    a sh:NodeShape ;
+    rdfs:label "Percent Recovery" ;
+    rdfs:comment "Ratio of measured to known value (for spike/recovery tests)" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+watr:Accuracy-RSquared
+    a watr:Class ;
+    a watr:Accuracy-RSquared ;
+    a sh:NodeShape ;
+    rdfs:label "R-Squared" ;
+    rdfs:comment "Coefficient of determination for calibration curves" ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
+.
+
+watr:Role-Backwash
+    a s223:EnumerationKind ;
+    a watr:Class ;
+    a watr:Role-Backwash ;
+    a sh:NodeShape ;
+    rdfs:label "Role-Backwash" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-NutrientRemoval
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-NutrientRemoval ; 
+    a sh:NodeShape ;
+    rdfs:label "Role-NutrientRemoval" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-NitrogenRemoval
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-NitrogenRemoval ; 
+    a sh:NodeShape ;
+    rdfs:label "Role-NitrogenRemoval" ;
+    rdfs:subClassOf s223:Role-NutrientRemoval ;
+.
+
+watr:Role-PhosphorusRemoval
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-PhosphorusRemoval ; 
+    a sh:NodeShape ;
+    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    rdfs:label "Role-PhosphorusRemoval" ;
+.
+
 watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -40,6 +446,7 @@ watr:Role-Feed
     rdfs:label "Feed" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
+
 watr:Role-Permeate 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -48,15 +455,133 @@ watr:Role-Permeate
     rdfs:label "Permeate" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
-# TODO: Move to process type
-watr:Role-Aeration 
+
+watr:Role-Storage 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-Aeration ;
+    a watr:Role-Storage ;
     a sh:NodeShape ;
-    rdfs:label "Aeration" ;
+    rdfs:label "Storage" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+. 
+
+watr:Role-Aerobic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Aerobic ;
+    a sh:NodeShape ;
+    rdfs:label "Aerobic" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
+
+watr:Role-Anaerobic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Anaerobic ;
+    a sh:NodeShape ;
+    rdfs:label "Anaerobic" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Anoxic 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Anoxic ;
+    a sh:NodeShape ;
+    rdfs:label "Anoxic" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Stabilization 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Stabilization ;
+    a sh:NodeShape ;
+    rdfs:label "Stabilization" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Equalization 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Equalization ;
+    a sh:NodeShape ;
+    rdfs:label "Equalization" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Detention 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Detention ;
+    a sh:NodeShape ;
+    rdfs:label "Detention" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Retention 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Retention ;
+    a sh:NodeShape ;
+    rdfs:label "Retention" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Containment 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Containment ;
+    a sh:NodeShape ;
+    rdfs:label "Containment" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Pretreatment
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Pretreatment ;
+    a sh:NodeShape ;
+    rdfs:label "Pretreatment" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Primary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Primary ;
+    a sh:NodeShape ;
+    rdfs:label "Primary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Secondary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Secondary ;
+    a sh:NodeShape ;
+    rdfs:label "Secondary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Tertiary 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Tertiary ;
+    a sh:NodeShape ;
+    rdfs:label "Tertiary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Posttreatment
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Posttreatment ;
+    a sh:NodeShape ;
+    rdfs:label "Posttreatment" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
 watr:EnumerationKind-Runtime
     a s223:EnumerationKind ;
     a watr:Class ;
