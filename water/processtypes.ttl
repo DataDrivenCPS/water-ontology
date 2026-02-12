@@ -184,14 +184,12 @@ watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDi
     skos:definition "A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream." ;
     rdfs:subClassOf watr:Process-Electrodialysis, watr:Process-Crystallization .
 
-watr:Process-Comminution a watr:Class, watr:Process-Comminution ;
-watr:Process-Comminution a watr:Class , watr:Process-Comminution ;
+watr:Process-Comminution a watr:Class ;
     rdfs:label "Comminution" ;
     skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
     rdfs:subClassOf watr:Process-Physical .
 
-watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
-watr:Process-BiosolidsDisposal a watr:Class , watr:Process-BiosolidsDisposal ;
+watr:Process-BiosolidsDisposal a watr:Class ;
     rdfs:label "BiosolidsDisposal" ;
     skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
     rdfs:subClassOf watr:Process-Physical .
@@ -307,14 +305,12 @@ watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
     skos:definition "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
     rdfs:subClassOf watr:Chemical-Process .
 
-watr:Process-Incineration a watr:Class, watr:Process-Incineration ;
-watr:Process-Incineration a watr:Class , watr:Process-Incineration ;
+watr:Process-Incineration a watr:Class ;
     rdfs:label "Incineration" ;
     skos:definition "A process that combusts biosolids or biogas." ;
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
 
-watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
-watr:Process-FluidizedBedIncineration a watr:Class , watr:Process-FluidizedBedIncineration ;
+watr:Process-FluidizedBedIncineration a watr:Class ;
     rdfs:label "Fluidized Bed Incineration" ;
     skos:definition "A process that combusts a constantly moving bed of biosolids." ;
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
@@ -324,8 +320,7 @@ watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHeart
     skos:definition "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
     rdfs:subClassOf watr:Chemical-Process, watr:Physical-Process .
 
-watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
-watr:Process-Cogeneration a watr:Class , watr:Process-Cogeneration ;
+watr:Process-Cogeneration a watr:Class ;
     rdfs:label "Cogeneration" ;
     skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." ;
     rdfs:subClassOf watr:Process-Incineration .
