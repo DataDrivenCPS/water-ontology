@@ -201,13 +201,22 @@ watr:Flocculant
   rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
+watr:Flocculant-Polymer
+  a watr:Class ;
+  a watr:Flocculant-Polymer ;
+  a sh:NodeShape ;
+  rdfs:comment "Polymer-type flocculants" ;
+  rdfs:label "Polyacrylamide" ;
+  rdfs:subClassOf watr:Flocculant ;
+.
+
 watr:Flocculant-Polyacrylamide
   a watr:Class ;
   a watr:Flocculant-Polyacrylamide ;
   a sh:NodeShape ;
   rdfs:comment "Polyacrylamide, a common flocculant" ;
   rdfs:label "Polyacrylamide" ;
-  rdfs:subClassOf watr:Flocculant ;
+  rdfs:subClassOf watr:Flocculant-Polymer ;
 .
 
 # pH Adjusters

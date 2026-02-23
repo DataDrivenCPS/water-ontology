@@ -117,6 +117,44 @@ def processtypes_to_txt(process_file):
         })
     return processes
 
+def substance_to_txt(substance_file):
+    # Load ontology
+    g = Graph()
+    g.parse(substance_file, format="turtle", publicID="substances.ttl")
+
+    # Namespaces
+    WATR = Namespace("urn:nawi-water-ontology#")
+    S223 = Namespace("http://data.ashrae.org/standard223#")
+
+    def local_name(uri):
+        return uri.split("#")[-1]
+
+    substances = []
+
+    for cls in g.subjects(RDF.type, WATR.Class):
+        cls_name = local_name(str(cls))
+
+        # definition (using skos:definition)
+        definition = None
+        for c in g.objects(cls, SKOS.definition):
+            definition = str(c)
+            break
+
+        # parent substances (ignore EnumerationKind-Substance)
+        sub_substance_of = []
+        for parent in g.objects(cls, RDFS.subClassOf):
+            parent_name = local_name(str(parent))
+            if parent_name != "EnumerationKind-Substance":
+                sub_substance_of.append(parent_name)
+
+        substances.append({
+            "id": cls_name,
+            "def": definition,
+            "subSubstanceOf": sub_substance_of if sub_substance_of else None
+        })
+    return substances
+
+
 def roles_to_txt(enumerationkinds_file):
     # Load ontology
     g = Graph()
@@ -158,6 +196,8 @@ def main():
     processes = processtypes_to_txt("water/processtypes.ttl")
     print("\n--- Roles ---\n")
     roles = roles_to_txt("water/enumerationkinds.ttl")
+    print("\n--- Substances ---\n")
+    substances = substance_to_txt("water/substances.ttl")
 
 
     # Save to text file in compact format
@@ -181,6 +221,14 @@ def main():
                 parts.append(proc['def'])
             if proc.get('subProcessOf'):
                 parts.append(f"SubProcess: {', '.join(proc['subProcessOf'])}")
+            f.write(" | ".join(parts) + "\n")
+
+        f.write("\n########################\n")
+        f.write("SUBSTANCES:\n")
+        for sub in substances:
+            parts = [sub['id']]
+            if sub.get('SubSubstanceOf'):
+                parts.append(f"SubSubstance: {', '.join(sub['SubSubstanceOf'])}")
             f.write(" | ".join(parts) + "\n")
         
         f.write("\n########################\n")
