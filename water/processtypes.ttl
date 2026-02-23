@@ -104,11 +104,6 @@ watr:Process-Mixing a watr:Class, watr:Process-Mixing ;
     skos:definition "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
     rdfs:subClassOf watr:Physical-Process .
 
-watr:Process-Equalization a watr:Class, watr:Process-Equalization ;
-    rdfs:label "Equalization" ;
-    skos:definition "Flow and load dampening using a tank or basin" ;
-    rdfs:subClassOf watr:Physical-Process .
-
 watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
     rdfs:label "Dewatering" ;
     skos:definition "A process to remove or separate water from another material, typically solids." ;

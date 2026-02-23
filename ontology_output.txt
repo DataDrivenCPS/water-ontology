@@ -87,7 +87,6 @@ Process-Flotation | A unit process that uses buoyancy to separate solids from wa
 Process-GasTransfer | A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water. | SubProcess: Physical-Process
 Process-Aeration | A unit process that aerates (i.e., transfers oxygen into water). | SubProcess: Process-GasTransfer
 Process-Mixing | A unit process that mixes water with chemicals or other substances to achieve a desired effect. | SubProcess: Physical-Process
-Process-Equalization | Flow and load dampening using a tank or basin | SubProcess: Physical-Process
 Process-Dewatering | A process to remove or separate water from another material, typically solids. | SubProcess: Physical-Process
 Process-Drying | Drying of biosolids to reduce moisture content. | SubProcess: Process-Dewatering
 Process-Centrifugation | A process that uses centrifugal force to separate substances of different densities. | SubProcess: Physical-Process
