@@ -1248,7 +1248,7 @@ watr:Gate
     a watr:Class ;
     rdfs:label "Gate" ;
     rdfs:comment "Tool to control water flow and isolate sections" ;
-    rdfs:subClassOf s223:Equipment 
+    rdfs:subClassOf s223:Valve 
 .
 watr:SluiceGate
     a s223:Class, sh:NodeShape; 

@@ -7,7 +7,7 @@ skip_equip = [
     "ElectromagneticFieldDevice","SolventExtractionSystem", "DMERecoverySystem",
     "StanderdizedFlowCell"
 ]
-skip_parent_suffixes = ["Sensor", "Valve", "Controller", "Electrode"]
+skip_parent_suffixes = ["Sensor", "Valve", "Controller", "Electrode", "VariableFrequencyDrive"]
 def equipment_to_txt (equipment_file):
     # Load ontology
     g = Graph()
@@ -21,6 +21,14 @@ def equipment_to_txt (equipment_file):
     def local_name(uri):
         return uri.split("#")[-1]
 
+    def should_skip(cls):
+        """Check if any ancestor name ends with a skip suffix, using transitive subClassOf."""
+        for ancestor in g.transitive_objects(cls, RDFS.subClassOf):
+            ancestor_name = local_name(str(ancestor))
+            if any(ancestor_name.endswith(suffix) for suffix in skip_parent_suffixes):
+                return True
+        return False
+
     equipment = []
 
     for cls in g.subjects(RDF.type, WATR.Class):
@@ -28,6 +36,10 @@ def equipment_to_txt (equipment_file):
 
         # check for equipment to skip:
         if cls_name in skip_equip:
+            continue
+
+        # Skip if any ancestor matches a skip suffix
+        if should_skip(cls):
             continue
 
         # definition
@@ -38,25 +50,14 @@ def equipment_to_txt (equipment_file):
 
         # subclasses (ignore UnitProcess, Equipment, and s223 namespace items)
         sub_equips = []
-        has_parent_suffix = False
-        
         for parent in g.objects(cls, RDFS.subClassOf):
             parent_uri = str(parent)
             parent_name = local_name(parent_uri)
-            # Check if any parent name ends with suffix to skip:
-            for suffix in skip_parent_suffixes:
-                if parent_name.endswith(suffix):
-                    has_parent_suffix = True
-                    break
             # Only include watr namespace items, exclude s223 namespace
-            if (parent_name != "UnitProcess" and 
+            if (parent_name != "UnitProcess" and
                 parent_name != "Equipment" and
                 not parent_uri.startswith("http://data.ashrae.org/standard223#")):
                 sub_equips.append(parent_name)
-
-        # Skip this equipment if it has a Sensor parent
-        if has_parent_suffix :
-            continue
 
         # unit processes (from sh:hasValue or sh:in where sh:path == watr:hasProcess)
         unit_processes = []

@@ -59,12 +59,10 @@ Crystallizer | An equipment used to produce solid crystals from a solution | Pro
 Compressor | An equipment that increases the pressure of a gas
 Evaporator | A device used to turn the liquid form of a substance into its gaseous form | Process: Process-Evaporation
 Condenser | A device used to condense a gaseous substance back into a liquid | Process: Process-Condensation
-VariableFrequencyDrive
 MultifunctionalMembrane | A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants. | SubEquip: Filter
 MolybdenumSulfideBasedMembrane | A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity. | SubEquip: Filter
 ElectricallyConductingMembrane | A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes. | SubEquip: Filter
 ElectroDialyticCrystallizer | A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization. | Process: Process-Electrodialysis, Process-Crystallization
-Electrode | A component where electrochemical reactions occur in electrified processes.
 StandardizedFlowCell | An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode.
 UVH2O2Reactor | A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide. | SubEquip: Reactor | Process: Process-AdvancedOxidation
 BiologicalAeratedFilter | A filter that uses biological processes to remove contaminants. | SubEquip: Reactor, Filter | Process: Process-BiologicallyActiveFiltration
@@ -72,8 +70,6 @@ ElectrocoagulationUnit | A unit that uses electrocoagulation for contaminant rem
 OzonationUnit | A unit that uses ozone for water treatment. | SubEquip: Reactor | Process: Process-Ozonation
 GranularActivatedCarbonAdsorber | A unit that uses granulated activated carbon to adsorb impurities from water. | Process: Process-GranularActivatedCarbon
 Grinder | Machine that shreds solid waste into tiny particles | Process: Process-Comminution
-Gate | Tool to control water flow and isolate sections
-SluiceGate | Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins | SubEquip: Gate
 
 ########################
 PROCESSES:
