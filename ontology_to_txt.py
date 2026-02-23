@@ -58,13 +58,19 @@ def equipment_to_txt (equipment_file):
         if has_parent_suffix :
             continue
 
-        # unit processes (from sh:hasValue where sh:path == watr:hasProcess)
+        # unit processes (from sh:hasValue or sh:in where sh:path == watr:hasProcess)
         unit_processes = []
         for prop in g.objects(cls, SH.property):
             for path in g.objects(prop, SH.path):
                 if path == WATR.hasProcess:
                     for val in g.objects(prop, SH.hasValue):
                         unit_processes.append(local_name(str(val)))
+                    # Also handle sh:in lists (e.g., MBR requires MF or UF)
+                    for in_list in g.objects(prop, SH["in"]):
+                        items = list(g.items(in_list))
+                        if items:
+                            options = [local_name(str(item)) for item in items]
+                            unit_processes.append(f"OneOf({', '.join(options)})")
 
         equipment.append({
             "id": cls_name,

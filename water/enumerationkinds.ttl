@@ -573,6 +573,15 @@ watr:Role-Tertiary
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
+watr:Role-Solids 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Solids ;
+    a sh:NodeShape ;
+    rdfs:label "Solids" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
 watr:Role-Posttreatment
     a s223:EnumerationKind-Role ;
     a watr:Class ;

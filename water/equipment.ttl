@@ -457,8 +457,40 @@ watr:Pond
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Pond" ;
-    rdfs:comment "A body of still water smaller than a lake, used for treatment or storage" ;
+    rdfs:comment "A body of still water smaller than a lake, used for treatment or storage." ;
     rdfs:subClassOf s223:Tank .
+
+watr:Lagoon
+    a sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Lagoon" ;
+    rdfs:comment "A treatment lagoon with biological activity" ;
+    rdfs:subClassOf watr:Pond ;
+    sh:property [
+        sh:path s223:hasRole ;
+        sh:in ( watr:Role-Aerobic watr:Role-Anaerobic ) ;
+        sh:minCount 1 ;
+        sh:message "Instances of Lagoon must have an Aerobic or Anaerobic role." ;
+    ] .
+
+watr:FacultativeLagoon
+    a sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Facultative Lagoon" ;
+    rdfs:comment "A lagoon with both aerobic surface and anaerobic bottom zones" ;
+    rdfs:subClassOf watr:Lagoon ;
+    sh:property [
+        sh:path s223:hasRole ;
+        sh:hasValue watr:Role-Aerobic ;
+        sh:minCount 1 ;
+        sh:message "Instances of FacultativeLagoon must have the Aerobic role." ;
+    ] ;
+    sh:property [
+        sh:path s223:hasRole ;
+        sh:hasValue watr:Role-Anaerobic ;
+        sh:minCount 1 ;
+        sh:message "Instances of FacultativeLagoon must have the Anaerobic role." ;
+    ] .
 
 watr:Wetland
     a  sh:NodeShape ;
@@ -706,10 +738,17 @@ watr:MembraneBioreactor
     rdfs:subClassOf watr:Filter, watr:Reactor, watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-MembraneBioreactor ;
+        sh:in ( watr:Process-Microfiltration watr:Process-Ultrafiltration ) ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of MembraneBioreactor must have the MembraneBioreactor process." ;
+        sh:message "Instances of MembraneBioreactor must have either the Microfiltration or Ultrafiltration process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MembraneBioreactor must have the Biofiltration process." ;
     ] .
 
 watr:MicrofiltrationUnit
@@ -717,14 +756,28 @@ watr:MicrofiltrationUnit
     a watr:Class ;
     rdfs:label "Microfiltration Unit" ;
     rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Microfiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MicrofiltrationUnit must have the Microfiltration process." ;
+    ] .
 
 watr:UltrafiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Ultrafiltration Unit" ;
     rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Ultrafiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of UltrafiltrationUnit must have the Ultrafiltration process." ;
+    ] .
 
 watr:NanofiltrationUnit
     a  sh:NodeShape ;
