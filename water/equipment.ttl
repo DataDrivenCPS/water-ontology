@@ -460,38 +460,6 @@ watr:Pond
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage." ;
     rdfs:subClassOf s223:Tank .
 
-watr:Lagoon
-    a sh:NodeShape ;
-    a watr:Class ;
-    rdfs:label "Lagoon" ;
-    rdfs:comment "A treatment lagoon with biological activity" ;
-    rdfs:subClassOf watr:Pond ;
-    sh:property [
-        sh:path s223:hasRole ;
-        sh:in ( watr:Role-Aerobic watr:Role-Anaerobic ) ;
-        sh:minCount 1 ;
-        sh:message "Instances of Lagoon must have an Aerobic or Anaerobic role." ;
-    ] .
-
-watr:FacultativeLagoon
-    a sh:NodeShape ;
-    a watr:Class ;
-    rdfs:label "Facultative Lagoon" ;
-    rdfs:comment "A lagoon with both aerobic surface and anaerobic bottom zones" ;
-    rdfs:subClassOf watr:Lagoon ;
-    sh:property [
-        sh:path s223:hasRole ;
-        sh:hasValue watr:Role-Aerobic ;
-        sh:minCount 1 ;
-        sh:message "Instances of FacultativeLagoon must have the Aerobic role." ;
-    ] ;
-    sh:property [
-        sh:path s223:hasRole ;
-        sh:hasValue watr:Role-Anaerobic ;
-        sh:minCount 1 ;
-        sh:message "Instances of FacultativeLagoon must have the Anaerobic role." ;
-    ] .
-
 watr:Wetland
     a  sh:NodeShape ;
     a watr:Class ;

@@ -155,6 +155,15 @@ watr:Coagulant
   rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
+watr:HighPurityOxygen
+  a watr:Class ;
+  a watr:HighPurityOxygen ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for high purity oxygen used in wastewater treatment" ;
+  rdfs:label "Coagulant" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
 watr:Coagulant-Alum
   a watr:Class ;
   a watr:Coagulant-Alum ;

@@ -219,7 +219,6 @@ watr:Process-Landfill a watr:Class, watr:Process-Landfill ;
     skos:definition "Disposal of biosolids in a landfill." ;
     rdfs:subClassOf watr:Process-BiosolidsDisposal .
 
-
 watr:Chemical-Process a watr:Class, watr:Chemical-Process ;
     rdfs:label "Chemical Process" ;
     skos:definition "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
@@ -414,21 +413,6 @@ watr:Process-UCT a watr:Class, watr:Process-UCT ;
     rdfs:label "University of Cape Town (UCT)" ;
     skos:definition "Variant of A2O with modified recycle streams for phosphorus removal." ;
     rdfs:subClassOf watr:Process-A2O .
-
-watr:Process-PureOxygen a watr:Class, watr:Process-PureOxygen ;
-    rdfs:label "Pure Oxygen Activated Sludge" ;
-    skos:definition "Conventional activated sludge variant using pure oxygen instead of air for aeration." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge .
-
-watr:Process-ExtendedAeration a watr:Class, watr:Process-ExtendedAeration ;
-    rdfs:label "Extended Aeration" ;
-    skos:definition "Conventional activated sludge variant with extended aeration hydraulic retention time." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge .
-
-watr:Process-StepfeedActivatedSludge a watr:Class, watr:Process-StepfeedActivatedSludge ;
-    rdfs:label "Step-Feed Activated Sludge" ;
-    skos:definition "Conventional activated sludge variant with step feed of influent along the aeration basin." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;

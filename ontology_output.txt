@@ -22,8 +22,6 @@ Screen | An equipment used for separation | Process: Process-Screening
 GritChamber | A chamber used to remove grit from wastewater | Process: Process-Sedimentation
 Reservoir | A large natural or artificial body of water used for water supply
 Pond | A body of still water smaller than a lake, used for treatment or storage.
-Lagoon | A treatment lagoon with biological activity | SubEquip: Pond
-FacultativeLagoon | A lagoon with both aerobic surface and anaerobic bottom zones | SubEquip: Lagoon
 Wetland | A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment.
 Battery | A device that stores energy for later use
 Cogenerator | An equipment that produces both electricity and heat from the same energy source | Process: Process-Cogeneration
@@ -148,9 +146,6 @@ Process-AO | Two-stage process with anoxic zone followed by aerobic zone for bio
 Process-MLE | Modification of AO a with internal recycle. | SubProcess: Process-AO
 Process-A2O | Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal. | SubProcess: Process-ActivatedSludge, Process-Nitrification, Process-Denitrification
 Process-UCT | Variant of A2O with modified recycle streams for phosphorus removal. | SubProcess: Process-A2O
-Process-PureOxygen | Conventional activated sludge variant using pure oxygen instead of air for aeration. | SubProcess: Process-ActivatedSludge
-Process-ExtendedAeration | Conventional activated sludge variant with extended aeration hydraulic retention time. | SubProcess: Process-ActivatedSludge
-Process-StepfeedActivatedSludge | Conventional activated sludge variant with step feed of influent along the aeration basin. | SubProcess: Process-ActivatedSludge
 Process-Biofiltration | A filtration method that uses biological processes to remove contaminants (e.g., trickling filter). | SubProcess: Biological-Process, Process-Filtration
 Process-TricklingFiltration | Trickling filter using any media (e.g., plastic, sand, gravel, etc.) | SubProcess: Process-Biofiltration
 Process-BiologicallyActiveFiltration | A biologically activated filtration column. | SubProcess: Process-Biofiltration
@@ -181,6 +176,8 @@ Role-Containment
 Role-Pretreatment
 Role-Primary
 Role-Secondary
+Role-Extended
+Role-Stepfeed
 Role-Tertiary
 Role-Solids
 Role-Posttreatment
