@@ -8,6 +8,7 @@ ContinuouslyStirredTankReactor | A reactor in which contents are well mixed and 
 StaticMixer | A device for mixing liquids without moving components | SubEquip: Reactor | Process: Process-Mixing
 AerationBasin | A tank where water is aerated to remove gases and volatile organic compounds | SubEquip: Reactor | Process: Process-Aeration
 MixingBasin | A tank where mixed liquor is stirred without aeration | SubEquip: Reactor | Process: Process-ActivatedSludge
+MembraneAeratedBiofilmReaactor | A reactor that grows biofilm on membranes supplied with air | SubEquip: Reactor | Process: Process-Aeration
 CoagulationBasin | A basin where coagulation occurs to destabilize particles in water | SubEquip: Reactor | Process: Process-Coagulation
 FlocculationBasin | A tank where flocculation occurs to aggregate particles in water | SubEquip: Reactor | Process: Process-Flocculation
 Digester | A container to promote decomposition of organic waste | SubEquip: Tank | Process: Process-Digestion

@@ -277,6 +277,20 @@ watr:MixingBasin
         sh:in ( watr:Role-Anoxic watr:Role-Anaerobic ) ;
         sh:message "Instances of MixingBasin must have the anoxic or anaerobic role." ;
     ] .
+
+watr:MembraneAeratedBiofilmReaactor
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Membrane Aerated Biofilm Reactor" ;
+    rdfs:comment "A reactor that grows biofilm on membranes supplied with air" ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Aeration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of AerationBasin must have the Aeration process." ;
+    ] .
     
 watr:CoagulationBasin
     a  sh:NodeShape ;
