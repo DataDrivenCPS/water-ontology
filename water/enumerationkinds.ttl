@@ -591,12 +591,12 @@ watr:Role-Tertiary
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-watr:Role-Solids 
+watr:Role-SolidsHandling
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-Solids ;
+    a watr:Role-SolidsHandling ;
     a sh:NodeShape ;
-    rdfs:label "Solids" ;
+    rdfs:label "Solids handling (e.g., biosolids disposal)" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
