@@ -208,7 +208,7 @@ def main():
             if eq.get('def'):
                 parts.append(eq['def'])
             if eq.get('SubEquipmentOf'):
-                parts.append(f"SubEquip: {', '.join(eq['SubEquipmentOf'])}")
+                parts.append(f"SubEquipOf: {', '.join(eq['SubEquipmentOf'])}")
             if eq.get('UnitProcess'):
                 parts.append(f"Process: {', '.join(eq['UnitProcess'])}")
             f.write(" | ".join(parts) + "\n")
@@ -220,7 +220,7 @@ def main():
             if proc.get('def'):
                 parts.append(proc['def'])
             if proc.get('subProcessOf'):
-                parts.append(f"SubProcess: {', '.join(proc['subProcessOf'])}")
+                parts.append(f"SubProcessOf: {', '.join(proc['subProcessOf'])}")
             f.write(" | ".join(parts) + "\n")
 
         f.write("\n########################\n")
@@ -228,7 +228,7 @@ def main():
         for sub in substances:
             parts = [sub['id']]
             if sub.get('SubSubstanceOf'):
-                parts.append(f"SubSubstance: {', '.join(sub['SubSubstanceOf'])}")
+                parts.append(f"SubSubstanceOf: {', '.join(sub['SubSubstanceOf'])}")
             f.write(" | ".join(parts) + "\n")
         
         f.write("\n########################\n")
@@ -236,7 +236,7 @@ def main():
         for role in roles:
             parts = [role['id']]
             if role.get('SubRoleOf'):
-                parts.append(f"SubRole: {', '.join(role['SubRoleOf'])}")
+                parts.append(f"SubRoleOf: {', '.join(role['SubRoleOf'])}")
             f.write(" | ".join(parts) + "\n")
 
     print("\nOutput saved to ontology_output.txt")

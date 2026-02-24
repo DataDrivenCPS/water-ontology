@@ -112,7 +112,7 @@ watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
 watr:Process-Drying a watr:Class, watr:Process-Drying ;
     rdfs:label "Drying" ;
     skos:definition "Drying of biosolids to reduce moisture content." ;
-    rdfs:subClassOf watr:Process-Dewatering .
+    rdfs:subClassOf watr:Process-Dewatering, watr:Process-Evaporation .
 
 watr:Process-Centrifugation a watr:Class, watr:Process-Centrifugation ;
     rdfs:label "Centrifugation" ;
