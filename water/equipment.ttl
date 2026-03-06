@@ -773,7 +773,14 @@ watr:MediaFiltration
     a watr:Class ;
     rdfs:label "MediaFiltration Unit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-MediaFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MediaFiltration must have the MediaFiltration process." ;
+    ] .
 
 watr:RapidSandFilter
     a  sh:NodeShape ;
