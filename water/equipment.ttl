@@ -971,7 +971,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
-    rdfs:subClassOf s223:Variable_Frequency_Drive ;
+    rdfs:subClassOf s223:VariableFrequencyDrive ;
     rdfs:label "Variable Frequency Drive" ;
 .
 watr:ThreeWayValve 
@@ -1167,3 +1167,31 @@ watr:GranularActivatedCarbonAdsorber
         sh:maxCount 1 ;
         sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranularActivatedCarbon process." ;
     ] .
+
+watr:Grinder
+    a  sh:NodeShape ;
+    a watr:Class ; 
+    rdfs:label "Grinder" ;
+    rdfs:comment "Machine that shreds solid waste into tiny particles" ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Comminution ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Grinder must have the Comminution process." ;
+    ] .
+watr:Gate 
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Gate" ;
+    rdfs:comment "Tool to control water flow and isolate sections" ;
+    rdfs:subClassOf s223:Equipment 
+.
+watr:SluiceGate
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Sluice Gate" ;
+    rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;
+    rdfs:subClassOf watr:Gate
+.

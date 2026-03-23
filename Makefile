@@ -1,6 +1,6 @@
 .PHONY: install-jupyter-venv local-docs clean build-ontology initialize-environment
 
-libaries/water.ttl: initialize-environment
+libraries/water.ttl: initialize-environment
 	uv run scripts/compile-water-ontology.py
 
 initialize-environment:
@@ -18,6 +18,6 @@ test: libraries/water.ttl
 	uv run pytest tests
 
 clean:
-	ontoenv reset -f
+	rm -rf .ontoenv
 	uv run jupyter-book clean docs
 	rm -f libraries/water.ttl
