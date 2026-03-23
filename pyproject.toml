@@ -3,9 +3,9 @@ name = "water-ontology"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "pyontoenv>=0.4.0a10",
+    "pyontoenv>=0.5.1",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
     "brick-tq-shacl==0.4.0a7",
