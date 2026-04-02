@@ -200,6 +200,3 @@ watr:hasDropRate
   rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
   rdfs:label "has drop rate" ;
 .
-
-
-
