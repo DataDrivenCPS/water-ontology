@@ -8,7 +8,7 @@
 
 ## Tank
 
-**Description:** A tank for storing liquid
+**Description:** A tank with at least one inlet and one outlet for liquid; may include optional drain or overflow connection points. Used for storage and as the base for reactors and separation tanks.
 
 **URI:** urn:nawi-water-ontology#Tank
 
@@ -16,9 +16,17 @@
 
 ## Reactor
 
-**Description:** An equipment used for chemical reaction
+**Description:** A tank used for reaction or biological/chemical treatment; may include recirculation or return connection points (e.g. for RAS, internal recycle).
 
 **URI:** urn:nawi-water-ontology#Reactor
+
+**Superclass URI :** urn:nawi-water-ontology#Tank
+
+## SeparationTank
+
+**Description:** A tank that separates phases or streams; must have at least two outlets (e.g. clarified flow and sludge, or overflow and underflow).
+
+**URI:** urn:nawi-water-ontology#SeparationTank
 
 **Superclass URI :** urn:nawi-water-ontology#Tank
 
@@ -28,7 +36,7 @@
 
 **URI:** urn:nawi-water-ontology#SequencingBatchReactor
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** urn:nawi-water-ontology#Reactor, urn:nawi-water-ontology#SeparationTank
 
 ## PlugFlowReactor
 
@@ -62,13 +70,21 @@
 
 **Superclass URI :** urn:nawi-water-ontology#Reactor
 
+## MixingBasin
+
+**Description:**  A tank where mixed liquor is stirred without aeration
+
+**URI:** urn:nawi-water-ontology#MixingBasin
+
+**Superclass URI :** urn:nawi-water-ontology#Reactor
+
 ## Digester
 
 **Description:** A container to promote decomposition of organic waste
 
 **URI:** urn:nawi-water-ontology#Digester
 
-**Superclass URI :** urn:nawi-water-ontology#Tank
+**Superclass URI :** urn:nawi-water-ontology#Reactor
 
 ## AnaerobicDigester
 
@@ -100,15 +116,15 @@
 
 **URI:** urn:nawi-water-ontology#UltravioletLightUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Disinfection
+**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnit
 
-## ChlorinationBasin
+## ChlorinationUnit
 
-**Description:** A basin where chlorine is added for disinfection
+**Description:** A unit that uses chlorine or chlorine compounds for disinfection.
 
-**URI:** urn:nawi-water-ontology#ChlorinationBasin
+**URI:** urn:nawi-water-ontology#ChlorinationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Disinfection
+**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnitUnit, urn:nawi-water-ontology#Reactor
 
 ## SedimentationTank
 
@@ -116,7 +132,7 @@
 
 **URI:** urn:nawi-water-ontology#SedimentationTank
 
-**Superclass URI :** urn:nawi-water-ontology#Tank
+**Superclass URI :** urn:nawi-water-ontology#SeparationTank
 
 ## Screen
 
@@ -292,7 +308,7 @@
 
 **URI:** urn:nawi-water-ontology#TricklingFilter
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** urn:nawi-water-ontology#Filter, urn:nawi-water-ontology#Reactor
 
 ## MembraneBioreactor
 
@@ -300,7 +316,7 @@
 
 **URI:** urn:nawi-water-ontology#MembraneBioreactor
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** urn:nawi-water-ontology#Filter, urn:nawi-water-ontology#Reactor, urn:nawi-water-ontology#SeparationTank
 
 ## MicrofiltrationUnit
 

@@ -1,0 +1,218 @@
+EQUIPMENTS:
+Tank | A tank with at least one inlet and one outlet
+Reactor | A tank used for reaction or biological/chemical treatment processes | SubEquipOf: Tank
+SeparationTank | A tank that has at least two outlets (e.g. overflow and underflow) | SubEquipOf: Tank
+SequencingBatchReactor | A type of activated sludge process for wastewater treatment | SubEquipOf: Reactor, SeparationTank | Process: Process-ActivatedSludge
+PlugFlowReactor | A type of reactor where the fluid flows in one direction through the tube | SubEquipOf: Reactor
+ContinuouslyStirredTankReactor | A reactor in which contents are well mixed and reactants are added continuously | SubEquipOf: Reactor
+StaticMixer | A device for mixing liquids without moving components | SubEquipOf: Reactor | Process: Process-Mixing
+AerationBasin | A tank where water is aerated to remove gases and volatile organic compounds | SubEquipOf: Reactor | Process: Process-Aeration
+MixingBasin | A tank where mixed liquor is stirred without aeration | SubEquipOf: Reactor | Process: Process-ActivatedSludge
+MembraneAeratedBiofilmReaactor | A reactor that grows biofilm on membranes supplied with air | SubEquipOf: Reactor | Process: Process-Aeration
+CoagulationBasin | A basin where coagulation occurs to destabilize particles in water | SubEquipOf: Reactor | Process: Process-Coagulation
+FlocculationBasin | A tank where flocculation occurs to aggregate particles in water | SubEquipOf: Reactor | Process: Process-Flocculation
+Digester | A container to promote decomposition of organic waste | SubEquipOf: Tank | Process: Process-Digestion
+AnaerobicDigester | A container to promote decomposition of organic waste in anaerobic conditions | SubEquipOf: Digester | Process: Process-AnaerobicDigestion
+AerobicDigester | A container to promote decomposition of organic waste in aerobic conditions | SubEquipOf: Digester | Process: Process-AerobicDigestion
+DisinfectionUnit | A unit used to eliminate or reduce harmful microorganisms | SubEquipOf: Reactor | Process: Process-Disinfection
+ChlorinationUnit | A unit that uses chlorine or chlorine compounds for disinfection. | SubEquipOf: DisinfectionUnit | Process: Process-Chlorination
+UltravioletLightUnit | A unit using ultraviolet light for disinfection | SubEquipOf: DisinfectionUnit | Process: Process-UVDisinfection
+SedimentationTank | A tank used to remove solids from liquids through sedimentation | SubEquipOf: SeparationTank | Process: Process-Sedimentation
+ImhoffTank | A sedimentation tank specifically designed for septic treatment | SubEquipOf: SedimentationTank | Process: Process-Sedimentation
+Screen | An equipment used for separation | Process: Process-Screening
+GritChamber | A chamber used to remove grit from wastewater | Process: Process-Sedimentation
+Reservoir | A large natural or artificial body of water used for water supply
+Pond | A body of still water smaller than a lake, used for treatment or storage.
+Wetland | A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment.
+Battery | A device that stores energy for later use
+Cogenerator | An equipment that produces both electricity and heat from the same energy source | Process: Process-Cogeneration
+Boiler | A device for heating water | Process: Process-Incineration
+Conditioner | An equipment used to prepare raw biogas from a digester by removing impurities
+Flare | A device used to burn off unwanted gas
+Pump | A device used to move fluids by mechanical action
+PressureExchanger | A device used to transfer pressure energy from one fluid to another
+DewateringUnit | A unit used to remove water from solid material | Process: Process-Dewatering
+Thickener | A device used to increase the solids concentration of a slurry
+DissolvedAirFlotationThickener | A thickener that uses dissolved air to separate solids from liquids | SubEquipOf: Thickener | Process: Process-Flotation
+CentrifugalThickener | A thickener that uses centrifugal force to separate solids from liquids | SubEquipOf: Thickener | Process: Process-Centrifugation
+GravityThickener | A thickener that uses gravity to separate solids from liquids | SubEquipOf: Thickener | Process: Process-Sedimentation
+BeltThickener | A thickener that uses a belt system to separate solids from liquids | SubEquipOf: Thickener | Process: Process-Filtration
+GravityBeltThickener | A thickener that combines gravity separation with a belt system | SubEquipOf: BeltThickener, GravityThickener
+RotaryDrumThickener | A thickener that uses a rotating drum to separate solids from liquids | SubEquipOf: Thickener | Process: Process-Filtration
+Filter | An equipment used to remove impurities from liquids or gases | Process: Process-Filtration
+ReverseOsmosisMembrane | A membrane used for reverse osmosis | SubEquipOf: Filter | Process: Process-ReverseOsmosis
+RotatingBiologicalContactor | Fixed-film process using a slowly rotating discs partially submerged in a tank | SubEquipOf: Filter | Process: Process-Biofiltration
+TricklingFilter | A filter system that treats wastewater by trickling it over a bed of rocks or plastic | SubEquipOf: Filter | Process: Process-TricklingFiltration
+OxidationDitch | Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants | SubEquipOf: Reactor | Process: Process-ActivatedSludge
+MembraneBioreactor | A filter system that combines a membrane process like microfiltration with a biological reactor | SubEquipOf: Filter, Reactor, SeparationTank | Process: OneOf(Process-Microfiltration, Process-Ultrafiltration), Process-Biofiltration
+MicrofiltrationUnit | A filter system which removes contaminants from a liquid by passing it through a microporous membrane | SubEquipOf: Filter | Process: Process-Microfiltration
+UltrafiltrationUnit | A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid | SubEquipOf: Filter | Process: Process-Ultrafiltration
+NanofiltrationUnit | A filter system that uses a membrane to soften water and remove organic contaminants | SubEquipOf: Filter
+MediaFiltration | A filter system that uses a bed of material to filter out contaminants | SubEquipOf: Filter
+RapidSandFilter | A type of media filter that uses sand as the filter medium and operates at high filtration rates. | SubEquipOf: MediaFiltration | Process: Process-RapidSandFiltration
+CartridgeFiltrationUnit | A filter system using a cartridge to remove contaminants from fluids | SubEquipOf: Filter
+IonExchangeMembrane | A membrane that selectively allows ions to pass through while blocking other substances | Process: Process-IonExchange
+ElectrodialysisUnit | A unit that uses electricity to drive ion movement through a membrane | Process: Process-Electrodialysis
+Electrolyzer | An equipment that uses electricity to split liquids into constituent elements | Process: Process-Electrolysis
+Crystallizer | An equipment used to produce solid crystals from a solution | Process: Process-Crystallization
+Compressor | An equipment that increases the pressure of a gas
+Evaporator | A device used to turn the liquid form of a substance into its gaseous form | Process: Process-Evaporation
+Condenser | A device used to condense a gaseous substance back into a liquid | Process: Process-Condensation
+MultifunctionalMembrane | A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants. | SubEquipOf: Filter
+MolybdenumSulfideBasedMembrane | A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity. | SubEquipOf: Filter
+ElectricallyConductingMembrane | A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes. | SubEquipOf: Filter
+ElectroDialyticCrystallizer | A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization. | Process: Process-Electrodialysis, Process-Crystallization
+StandardizedFlowCell | An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode.
+UVH2O2Reactor | A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide. | SubEquipOf: Reactor | Process: Process-AdvancedOxidation
+BiologicalAeratedFilter | A filter that uses biological processes to remove contaminants. | SubEquipOf: Reactor, Filter | Process: Process-BiologicallyActiveFiltration
+ElectrocoagulationUnit | A unit that uses electrocoagulation for contaminant removal. | SubEquipOf: Reactor | Process: Process-Electrocoagulation
+OzonationUnit | A unit that uses ozone for water treatment. | SubEquipOf: Reactor | Process: Process-Ozonation
+GranularActivatedCarbonAdsorber | A unit that uses granulated activated carbon to adsorb impurities from water. | Process: Process-GranularActivatedCarbon
+Grinder | Machine that shreds solid waste into tiny particles | Process: Process-Comminution
+
+########################
+PROCESSES:
+ProcessType | A process applied to water treatment.
+Physical-Process | A unit process that relies on physical forces to separate or treat water.
+Process-Separation | The most generic process for separation of any two constituents. | SubProcessOf: Physical-Process
+Process-Elutriation | A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density. | SubProcessOf: Process-Separation
+Process-Screening | A unit process that removes large solids from water, such as leaves, branches, and other debris. | SubProcessOf: Process-Separation
+Process-Sedimentation | A unit process that allows solids to settle out of water by gravity. | SubProcessOf: Process-Separation
+Process-Stripping | Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds. | SubProcessOf: Process-Separation
+Process-Filtration | A unit process that removes smaller particles from water by passing it through a filter. | SubProcessOf: Process-Separation
+Process-MediaFiltration | A filtration process that uses a bed of media (as opposed to a membrane-based process). | SubProcessOf: Process-Filtration
+Process-SlowSandFiltration | A filtration process that uses a bed of sand to remove impurities at low flow rates. | SubProcessOf: Process-MediaFiltration
+Process-RapidSandFiltration | A filtration process that uses a bed of sand to remove impurities at high flow rates. | SubProcessOf: Process-MediaFiltration
+Process-Flotation | A unit process that uses buoyancy to separate solids from water, often using air bubbles. | SubProcessOf: Physical-Process
+Process-GasTransfer | A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water. | SubProcessOf: Physical-Process
+Process-Aeration | A unit process that aerates (i.e., transfers oxygen into water). | SubProcessOf: Process-GasTransfer
+Process-Mixing | A unit process that mixes water with chemicals or other substances to achieve a desired effect. | SubProcessOf: Physical-Process
+Process-Dewatering | A process to remove or separate water from another material, typically solids. | SubProcessOf: Physical-Process
+Process-Drying | Drying of biosolids to reduce moisture content. | SubProcessOf: Process-Dewatering, Process-Evaporation
+Process-Centrifugation | A process that uses centrifugal force to separate substances of different densities. | SubProcessOf: Physical-Process
+Process-Solidification | A process of turning a liquid into a solid (e.g., freezing). | SubProcessOf: Physical-Process
+Process-Crystallization | A process of forming solid crystals from a solution. | SubProcessOf: Process-Solidification
+Process-Evaporation | A process of turning a liquid into a vapor. | SubProcessOf: Physical-Process
+Process-Condensation | A process of turning a vapor into a liquid. | SubProcessOf: Physical-Process
+Process-Adsorption | A process by which substances bind to a surface. | SubProcessOf: Physical-Process
+Process-GranularActivatedCarbon | A process that uses an activated carbon filter to adsorb impurities from water. | SubProcessOf: Process-Adsorption, Process-Filtration
+Process-MembraneProcess | A process that uses a semi-permeable membrane to separate substances. | SubProcessOf: Physical-Process
+Process-ReverseOsmosis | A core membrane separation process for desalination and advanced purification. | SubProcessOf: Process-MembraneProcess
+Process-ClosedCircuitReverseOsmosis | A specific RO configuration explored for optimization, capable of adapting to unmeasured changes like feed salinity. | SubProcessOf: Process-ReverseOsmosis
+Process-OsmoticallyAssistedReverseOsmosis | A process with validated Computational Fluid Dynamics (CFD) models for cost optimization. | SubProcessOf: Process-ReverseOsmosis
+Process-FeedReversalReverseOsmosis | A dynamic and cyclic design to mitigate scaling and balance salt/foulant load, enabling high recovery. | SubProcessOf: Process-ReverseOsmosis
+Process-MembraneDistillation | A thermal membrane process, often subject to CFD modeling for optimization of heat and mass transfer. | SubProcessOf: Process-MembraneProcess
+Process-Electrodialysis | A process that uses ion-exchange membranes and an electric potential to separate ions from water. | SubProcessOf: Chemical-Process, Physical-Process
+Process-ElectroDialyticCrystallization | A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream. | SubProcessOf: Process-Electrodialysis, Process-Crystallization
+Process-ElectrodialysisReversal | Electrodialysis with periodic polarity reversal to reduce membrane fouling. | SubProcessOf: Process-Electrodialysis
+Process-Comminution | Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression. | SubProcessOf: Process-Physical
+Process-BiosolidsDisposal | Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.). | SubProcessOf: Process-Physical
+Process-LandApplication | Beneficial reuse of biosolids by spreading on agricultural land. | SubProcessOf: Process-BiosolidsDisposal
+Process-Landfill | Disposal of biosolids in a landfill. | SubProcessOf: Process-BiosolidsDisposal
+Chemical-Process | A unit process that involves the addition of chemicals to water to achieve a desired effect.
+Process-ChemicalAddition | Addition of chemicals, such as coagulant, polymer, disinfectant, etc. | SubProcessOf: Chemical-Process
+Process-Coagulation | A unit process that adds chemicals to water to cause small particles to clump together. | SubProcessOf: Process-ChemicalAddition
+Process-Electrocoagulation | An electrified pretreatment technology using sacrificial anodes to release coagulant precursors for contaminant removal. | SubProcessOf: Process-Coagulation, Physical-Process
+Process-Flocculation | A unit process that gently mixes water to allow coagulated particles to form larger clumps. | SubProcessOf: Chemical-Process, Process-Mixing
+Process-UVDisinfection | A disinfection process that uses ultraviolet light to inactivate microorganisms. | SubProcessOf: Process-Disinfection
+Process-Disinfection | A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water. | SubProcessOf: Chemical-Process
+Process-Chlorination | A disinfection process that uses chlorine or chlorine compounds. | SubProcessOf: Process-Disinfection
+Process-Dechlorination | A post-disinfection process that removes excess chlorine compounds. | SubProcessOf: Process-Disinfection
+Process-ThermalDisinfection | Heat-based pathogen inactivation such as pasteurization. | SubProcessOf: Process-Disinfection
+Process-pHAdjustment | A unit process that adjusts the pH of water to a desired level using chemicals. | SubProcessOf: Process-ChemicalAddition
+Process-Neutralization | pH adjustment to neutral, typically with a base, used in processes like high-density sludge treatment. | SubProcessOf: Process-pHAdjustment
+Process-Oxidation | A unit process that adds oxidizing agents to water to remove contaminants or improve water quality. | SubProcessOf: Chemical-Process
+Process-AdvancedOxidation | Processes combining UV light with oxidants (e.g., UV-AOP) to destroy contaminants. | SubProcessOf: Process-Oxidation
+Process-Electrooxidation | An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses. | SubProcessOf: Process-Oxidation, Physical-Process
+Process-Ozonation | A water treatment process that uses ozone as an oxidant. | SubProcessOf: Process-Oxidation
+Process-Softening | Chemical precipitation of calcium/magnesium | SubProcessOf: Process-ChemicalAddition
+Process-ChemicalPrecipitation | Removal of nutrients or metals using coagulants | SubProcessOf: Chemical-Process
+Process-Reduction | Mechanism by which contaminants are transformed through the gain of electrons. | SubProcessOf: Chemical-Process
+Process-SolventExtraction | A non-membrane, non-thermal method using a solvent to selectively extract water from highly saline brines. | SubProcessOf: Chemical-Process
+Process-HighDensitySludge | A method for treating acid mine drainage involving neutralization. | SubProcessOf: Chemical-Process, Physical-Process
+Process-IonExchange | A process in which ions are exchanged between a solution and an ion-exchange resin or membrane. | SubProcessOf: Chemical-Process, Physical-Process
+Process-Electrolysis | A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction. | SubProcessOf: Chemical-Process
+Process-Incineration | A process that combusts biosolids or biogas. | SubProcessOf: Chemical-Process, Physical-Process
+Process-FluidizedBedIncineration | A process that combusts a constantly moving bed of biosolids. | SubProcessOf: Chemical-Process, Physical-Process
+Process-MultipleHearthIncineration | A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow. | SubProcessOf: Process-Incineration
+Process-Cogeneration | A process that combusts biosolids or biogas to produce electricity and heat simultaneously. | SubProcessOf: Process-Incineration
+Biological-Process | A unit process that utilizes biological activity for water treatment.
+Process-Nitrification | Process by which ammonia is oxidized to nitrite and subsequently nitrate. | SubProcessOf: Biological-Process
+Process-Denitrification | Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides. | SubProcessOf: Biological-Process
+Process-FiveStageBardenpho | A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus. | SubProcessOf: Process-ActivatedSludge, Process-Nitrification, Process-Denitrification
+Process-FourStageBardenpho | A four-stage biological nutrient removal process with two anoxic and two aerobic zoneswith two anoxic and two aerobic zones. | SubProcessOf: Process-ActivatedSludge, Process-Nitrification, Process-Denitrification
+Process-ActivatedSludge | Aerobic suspended-growth biological treatment | SubProcessOf: Biological-Process
+Process-AO | Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal. | SubProcessOf: Process-ActivatedSludge, Process-Nitrification, Process-Denitrification
+Process-MLE | Modification of AO a with internal recycle. | SubProcessOf: Process-AO
+Process-A2O | Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal. | SubProcessOf: Process-ActivatedSludge, Process-Nitrification, Process-Denitrification
+Process-UCT | Variant of A2O with modified recycle streams for phosphorus removal. | SubProcessOf: Process-A2O
+Process-Biofiltration | A filtration method that uses biological processes to remove contaminants (e.g., trickling filter). | SubProcessOf: Biological-Process, Process-Filtration
+Process-TricklingFiltration | Trickling filter using any media (e.g., plastic, sand, gravel, etc.) | SubProcessOf: Process-Biofiltration
+Process-BiologicallyActiveFiltration | A biologically activated filtration column. | SubProcessOf: Process-Biofiltration
+Process-Microfiltration | 0.1 to 1 micron-scale filtration | SubProcessOf: Process-Filtration
+Process-Ultrafiltration | 0.01 to 0.1 micron-scale filtration | SubProcessOf: Process-Filtration
+Process-Digestion | A biological process that breaks down organic matter over a long duration in a tank. | SubProcessOf: Biological-Process
+Process-AnaerobicDigestion | A biological process that breaks down organic matter in the absence of oxygen. | SubProcessOf: Digestion
+Process-AerobicDigestion | A biological process that breaks down organic matter in the presence of oxygen. | SubProcessOf: Digestion
+
+########################
+SUBSTANCES:
+Constituent-Metals
+Constituent-Salt
+Salt-NaCl
+Water-Brine
+Brine-15Percent
+Brine-5to10Percent
+Fluid-Sludge
+WastewaterTreatmentChemical
+Coagulant
+HighPurityOxygen
+Coagulant-Alum
+Coagulant-FerricChloride
+Coagulant-PolyaluminumChloride
+Flocculant
+Flocculant-Polymer
+Flocculant-Polyacrylamide
+pHAdjuster
+pHAdjuster-Lime
+pHAdjuster-SulfuricAcid
+Disinfectant
+Disinfectant-Chlorine
+Disinfectant-Ozone
+OdorControlAgent
+OdorControlAgent-ActivatedCarbon
+HeavyMetalRemovalAgent
+HeavyMetalRemovalAgent-SodiumSulfide
+Constituent-Organics
+Constituent-Solids
+Constituent-SuspendedSolids
+Constituent-Cyanide
+Constituent-Bacteria
+Sludge-MixedLiquor
+
+########################
+ROLES:
+Role-Backwash
+Role-NutrientRemoval
+Role-NitrogenRemoval | SubRoleOf: Role-NutrientRemoval
+Role-PhosphorusRemoval | SubRoleOf: Role-NutrientRemoval
+Role-MakeUp
+Role-Feed
+Role-Permeate
+Role-Storage
+Role-Aerobic
+Role-Anaerobic
+Role-Anoxic
+Role-Stabilization
+Role-Equalization
+Role-Detention
+Role-Retention
+Role-Containment
+Role-Pretreatment
+Role-Primary
+Role-Secondary
+Role-Extended
+Role-Stepfeed
+Role-Tertiary
+Role-SolidsHandling
+Role-Posttreatment

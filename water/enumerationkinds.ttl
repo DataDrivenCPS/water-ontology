@@ -564,12 +564,39 @@ watr:Role-Secondary
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
+watr:Role-Extended 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Extended ;
+    a sh:NodeShape ;
+    rdfs:label "Extended" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-Stepfeed 
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Stepfeed ;
+    a sh:NodeShape ;
+    rdfs:label "Stepfeed" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
 watr:Role-Tertiary 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
     a watr:Role-Tertiary ;
     a sh:NodeShape ;
     rdfs:label "Tertiary" ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+.
+
+watr:Role-SolidsHandling
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-SolidsHandling ;
+    a sh:NodeShape ;
+    rdfs:label "Solids handling (e.g., biosolids disposal)" ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
