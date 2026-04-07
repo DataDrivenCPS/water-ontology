@@ -1036,7 +1036,44 @@ watr:CheckValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
     rdfs:label "Check Valve" ;
-    rdfs:subClassOf s223:Valve .
+    rdfs:subClassOf s223:Valve
+.
+
+watr:BallValve
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Ball Valve" ;
+    rdfs:subClassOf s223:Valve
+.
+
+watr:ButterflyValve
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Butterfly Valve" ;
+    rdfs:subClassOf s223:Valve
+.
+
+watr:GlobeValve
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Globe Valve" ;
+    rdfs:subClassOf s223:Valve
+.
+
+watr:PlugValve
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Plug Valve" ;
+    rdfs:subClassOf s223:Valve
+.
+
+watr:AirReleaseValve
+    a s223:Class, sh:NodeShape; 
+    a watr:Class ;
+    rdfs:label "Air Release Valve" ;
+    rdfs:comment "Valve for vent trapped air pockets" ;
+    rdfs:subClassOf s223:Valve
+.
 
 watr:Controller 
     a s223:Class, sh:NodeShape ;
