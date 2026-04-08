@@ -116,6 +116,13 @@ watr:SeparationTank a sh:NodeShape ;
             ] ;
         ] ;
     ] ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Separation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of SeparationTank must have the Separation process." ;
+    ] ;
 .
 
 watr:SequencingBatchReactor
@@ -266,10 +273,10 @@ watr:MixingBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-ActivatedSludge ;
+        sh:hasValue watr:Process-Mixing ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of MixingBasin must have the ActivatedSludge process." ;
+        sh:message "Instances of MixingBasin must have the Mixing process." ;
     ] ;
     sh:property [
         sh:path s223:hasRole ;
@@ -289,7 +296,7 @@ watr:MembraneAeratedBiofilmReaactor
         sh:hasValue watr:Process-Aeration ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Instances of AerationBasin must have the Aeration process." ;
+        sh:message "Instances of MembraneAeratedBiofilmReaactor must have the Aeration process." ;
     ] .
     
 watr:CoagulationBasin
@@ -325,7 +332,7 @@ watr:Digester
     a watr:Class ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
-    rdfs:subClassOf watr:Tank, watr:UnitProcess ;
+    rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:hasValue watr:Process-Digestion ;
@@ -465,14 +472,14 @@ watr:Reservoir
     a watr:Class ;
     rdfs:label "Reservoir" ;
     rdfs:comment "A large natural or artificial body of water used for water supply" ;
-    rdfs:subClassOf s223:Tank .
+    rdfs:subClassOf s223:Equipment .
 
 watr:Pond
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Pond" ;
     rdfs:comment "A body of still water smaller than a lake, used for treatment or storage." ;
-    rdfs:subClassOf s223:Tank .
+    rdfs:subClassOf s223:Equipment .
 
 watr:Wetland
     a  sh:NodeShape ;
@@ -1018,19 +1025,22 @@ watr:Valve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
     rdfs:label "Valve" ;
-    rdfs:subClassOf s223:Valve .
+    rdfs:subClassOf s223:Valve 
+.
 
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:subClassOf s223:VariableFrequencyDrive ;
-    rdfs:label "Variable Frequency Drive" .
+    rdfs:label "Variable Frequency Drive" 
+.
 
 watr:ThreeWayValve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
     rdfs:label "Three Way Valve" ;
-    rdfs:subClassOf s223:Valve .
+    rdfs:subClassOf s223:Valve 
+.
 
 watr:CheckValve
     a s223:Class, sh:NodeShape; 
@@ -1268,7 +1278,9 @@ watr:Grinder
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;
-    ] .
+    ] 
+.
+
 watr:Gate 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
@@ -1276,10 +1288,11 @@ watr:Gate
     rdfs:comment "Tool to control water flow and isolate sections" ;
     rdfs:subClassOf s223:Valve 
 .
+
 watr:SluiceGate
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
     rdfs:label "Sluice Gate" ;
     rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;
-    rdfs:subClassOf watr:Gate
+    rdfs:subClassOf watr:Gate 
 .

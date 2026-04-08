@@ -124,7 +124,7 @@
 
 **URI:** urn:nawi-water-ontology#ChlorinationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnitUnit, urn:nawi-water-ontology#Reactor
+**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnitUnit
 
 ## SedimentationTank
 

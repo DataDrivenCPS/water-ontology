@@ -50,7 +50,7 @@
 
 ## MixingBasin
 
-**Description:** A tank where mixed liquor is stirred without aeration
+**Description:** A tank where liquid is stirred without aeration
 
 **Superclass:** Reactor
 
@@ -88,7 +88,7 @@
 
 **Description:** A unit that uses chlorine or chlorine compounds for disinfection.
 
-**Superclass:** DisinfectionUnit, Reactor
+**Superclass:** DisinfectionUnit
 
 ## SedimentationTank
 
