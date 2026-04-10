@@ -40,6 +40,14 @@ watr:Tank a sh:NodeShape ;
                 sh:path s223:hasMedium ;
                 sh:hasValue s223:Mix-Fluid ;
             ] ;
+            sh:not [
+                # this is NOT a drain connection point! Tanks with a drain connection point must have a separate outlet connection point for the drain.
+                sh:property [
+                    sh:path s223:hasRole ;
+                    sh:hasValue watr:Role-Drain ;
+                    sh:minCount 1 ;
+                ] ;
+            ] ;
         ] ;
     ] ;
     sh:property [
@@ -54,7 +62,7 @@ watr:Tank a sh:NodeShape ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
-                sh:hasValue s223:Role-Drain ;
+                sh:hasValue watr:Role-Drain ;
             ] ;
         ] ;
     ] ;

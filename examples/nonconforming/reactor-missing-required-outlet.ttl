@@ -1,0 +1,23 @@
+@prefix : <urn:example/reactor-missing-required-outlet#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:example/reactor-missing-required-outlet>
+    a owl:Ontology ;
+    rdfs:label "Nonconforming Reactor Example Missing Required Normal Outlet" ;
+    owl:imports <urn:nawi-water-ontology> ;
+.
+
+:reactor
+    a watr:Reactor ;
+    watr:hasProcess watr:Process-Mixing ;
+    s223:hasConnectionPoint :inlet ;
+.
+
+:inlet
+    a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :reactor ;
+.

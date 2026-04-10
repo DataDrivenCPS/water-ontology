@@ -1,0 +1,36 @@
+@prefix : <urn:example/reactor-with-recirculation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:example/reactor-with-recirculation>
+    a owl:Ontology ;
+    rdfs:label "Reactor Example With Optional Recirculation Connection Point" ;
+    owl:imports <urn:nawi-water-ontology> ;
+.
+
+:reactor
+    a watr:Reactor ;
+    watr:hasProcess watr:Process-Mixing ;
+    s223:hasConnectionPoint :inlet, :outlet, :recirculation ;
+.
+
+:inlet
+    a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :reactor ;
+.
+
+:outlet
+    a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :reactor ;
+.
+
+:recirculation
+    a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :reactor ;
+    s223:hasRole s223:Role-Recirculating ;
+.
