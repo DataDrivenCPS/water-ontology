@@ -402,6 +402,15 @@ watr:Role-Backwash
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
+watr:Role-Drain
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Drain ;
+    a sh:NodeShape ;
+    rdfs:label "Role-Drain" ;
+    rdfs:subClassOf s223:Role-Discharge ;
+.
+
 watr:Role-NutrientRemoval
     a s223:EnumerationKind-Role ;
     a watr:Class ;

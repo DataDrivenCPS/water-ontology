@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "pyontoenv>=0.5.1",
+    "pyontoenv>=0.5.3",
     "rdflib>=7.0.0",
     "buildingmotif[topquadrant]",
     "brick-tq-shacl==0.4.0a7",
