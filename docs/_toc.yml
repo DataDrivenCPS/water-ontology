@@ -11,6 +11,7 @@ parts:
   - file: explanation/definitions.md
   - file: explanation/processes.md
   - file: explanation/flow_graph_sensor.md
+  - file: explanation/data_quality.md
 - caption: Tutorials
   chapters:
   - file: tutorials/creating-models.md
