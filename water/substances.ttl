@@ -155,6 +155,15 @@ watr:Coagulant
   rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
+watr:HighPurityOxygen
+  a watr:Class ;
+  a watr:HighPurityOxygen ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for high purity oxygen used in wastewater treatment" ;
+  rdfs:label "High Purity Oxygen" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
 watr:Coagulant-Alum
   a watr:Class ;
   a watr:Coagulant-Alum ;
@@ -192,13 +201,22 @@ watr:Flocculant
   rdfs:subClassOf watr:WastewaterTreatmentChemical ;
 .
 
+watr:Flocculant-Polymer
+  a watr:Class ;
+  a watr:Flocculant-Polymer ;
+  a sh:NodeShape ;
+  rdfs:comment "Flocculant that is a type of polymer" ;
+  rdfs:label "Polymer Flocculant" ;
+  rdfs:subClassOf watr:Flocculant ;
+.
+
 watr:Flocculant-Polyacrylamide
   a watr:Class ;
   a watr:Flocculant-Polyacrylamide ;
   a sh:NodeShape ;
   rdfs:comment "Polyacrylamide, a common flocculant" ;
   rdfs:label "Polyacrylamide" ;
-  rdfs:subClassOf watr:Flocculant ;
+  rdfs:subClassOf watr:Flocculant-Polymer ;
 .
 
 # pH Adjusters

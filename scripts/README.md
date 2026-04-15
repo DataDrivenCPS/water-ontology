@@ -1,1 +1,1 @@
-Running random scripts used in the development process in this directory 
+Scripts used in the development process are saved in this directory for posterity
