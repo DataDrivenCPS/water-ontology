@@ -97,7 +97,7 @@ watr:Reactor a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
