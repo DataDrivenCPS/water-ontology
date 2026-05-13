@@ -436,12 +436,12 @@ watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
 watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
     rdfs:label "Backwashing" ;
     skos:definition "A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids." ;
-    rdfs:subClassOf watr:Process-Filtration, watr:Process-Cleaning .
+    rdfs:subClassOf watr:Process-Cleaning .
 
 watr:Process-AirScouring a watr:Class, watr:Process-AirScouring ;
     rdfs:label "Air Scouring" ;
     skos:definition "A cleaning process that uses injected air to dislodge accumulated foulants or solids from filter media or membrane surfaces." ;
-    rdfs:subClassOf watr:Process-Backwashing, watr:Process-GasTransfer .
+    rdfs:subClassOf watr:Process-Cleaning .
 
 watr:Process-Purging a watr:Class, watr:Process-Purging ;
     rdfs:label "Purging" ;

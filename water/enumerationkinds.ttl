@@ -120,6 +120,116 @@ watr:Aggregate-Mode
     rdfs:comment "Most frequently occurring value in data points" ;
     rdfs:subClassOf watr:DataProcessing-Aggregate ;
 .
+
+watr:EnumerationKind-Aggregation
+    a watr:Class ;
+    a watr:EnumerationKind-Aggregation ;
+    a sh:NodeShape ;
+    rdfs:label "Aggregation" ;
+    rdfs:comment "EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum." ;
+    rdfs:subClassOf s223:EnumerationKind-Aspect ;
+.
+
+watr:Aggregation-Total
+    a watr:Class ;
+    a watr:Aggregation-Total ;
+    a sh:NodeShape ;
+    owl:equivalentClass s223:Aspect-Total ;
+    rdfs:label "Total" ;
+    rdfs:comment "The associated property represents the total amount of the characterized quantity or substance." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Max
+    a watr:Class ;
+    a watr:Aggregation-Max ;
+    a sh:NodeShape ;
+    rdfs:label "Maximum" ;
+    rdfs:comment "The associated property represents the maximum value over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Min
+    a watr:Class ;
+    a watr:Aggregation-Min ;
+    a sh:NodeShape ;
+    rdfs:label "Minimum" ;
+    rdfs:comment "The associated property represents the minimum value over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Mean
+    a watr:Class ;
+    a watr:Aggregation-Mean ;
+    a sh:NodeShape ;
+    rdfs:label "Mean" ;
+    rdfs:comment "The associated property represents the arithmetic mean over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Median
+    a watr:Class ;
+    a watr:Aggregation-Median ;
+    a sh:NodeShape ;
+    rdfs:label "Median" ;
+    rdfs:comment "The associated property represents the median value over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Sum
+    a watr:Class ;
+    a watr:Aggregation-Sum ;
+    a sh:NodeShape ;
+    rdfs:label "Sum" ;
+    rdfs:comment "The associated property represents the sum over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Count
+    a watr:Class ;
+    a watr:Aggregation-Count ;
+    a sh:NodeShape ;
+    rdfs:label "Count" ;
+    rdfs:comment "The associated property represents a count over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Range
+    a watr:Class ;
+    a watr:Aggregation-Range ;
+    a sh:NodeShape ;
+    rdfs:label "Range" ;
+    rdfs:comment "The associated property represents the difference between maximum and minimum over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Mode
+    a watr:Class ;
+    a watr:Aggregation-Mode ;
+    a sh:NodeShape ;
+    rdfs:label "Mode" ;
+    rdfs:comment "The associated property represents the most frequently occurring value over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Variance
+    a watr:Class ;
+    a watr:Aggregation-Variance ;
+    a sh:NodeShape ;
+    rdfs:label "Variance" ;
+    rdfs:comment "The associated property represents the variance over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-StandardDeviation
+    a watr:Class ;
+    a watr:Aggregation-StandardDeviation ;
+    a sh:NodeShape ;
+    rdfs:label "Standard Deviation" ;
+    rdfs:comment "The associated property represents the standard deviation over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
 watr:DataProcessing-Interpolation
     a watr:Class ;
     a watr:DataProcessing-Interpolation ;
