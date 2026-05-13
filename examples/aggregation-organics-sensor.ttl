@@ -1,0 +1,37 @@
+@prefix : <urn:nawi-water-ontology/examples/aggregation-organics-sensor#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/examples/aggregation-organics-sensor>
+    a owl:Ontology ;
+    owl:imports <urn:nawi-water-ontology> ;
+    rdfs:label "Aggregation Property Example" ;
+    rdfs:comment "Example of a sensor observing an organics concentration property with a water-specific aggregation marker on the property." ;
+.
+
+:sample_point
+    a s223:Junction ;
+    s223:hasMedium s223:Fluid-Water ;
+.
+
+:organics_sensor
+    a watr:TotalOrganicCompoundConcentrationSensor ;
+    rdfs:label "Organics Sensor" ;
+    s223:hasObservationLocation :sample_point ;
+    s223:observes :total_organics_property ;
+.
+
+:total_organics_property
+    a s223:QuantifiableObservableProperty ;
+    rdfs:label "Total Organics Concentration" ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-Organics ;
+    watr:hasAggregation watr:Aggregation-Total ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L ;
+.
