@@ -275,6 +275,24 @@ watr:Disinfectant-Ozone
   rdfs:subClassOf watr:Disinfectant ;
 .
 
+watr:OxidizingAgent
+  a watr:Class ;
+  a watr:OxidizingAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for oxidizing agents used in water treatment" ;
+  rdfs:label "Oxidizing Agent" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
+watr:OxidizingAgent-HydrogenPeroxide
+  a watr:Class ;
+  a watr:OxidizingAgent-HydrogenPeroxide ;
+  a sh:NodeShape ;
+  rdfs:comment "Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes" ;
+  rdfs:label "Hydrogen Peroxide" ;
+  rdfs:subClassOf watr:OxidizingAgent ;
+.
+
 # Odor Control Agents
 watr:OdorControlAgent
   a watr:Class ;
@@ -335,6 +353,70 @@ watr:Constituent-SuspendedSolids
     rdfs:comment "Suspended solids are particulate matter that is not dissolved in water and can be removed by filtration including organic and inorganic particles." ;
     rdfs:label "Constituent-SuspendedSolids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
+.
+watr:Constituent-ParticleCount
+    a watr:Class ;
+    a watr:Constituent-ParticleCount ;
+    a sh:NodeShape ;
+    rdfs:comment "Particles suspended in water that are commonly tracked by size-resolved particle counting instrumentation." ;
+    rdfs:label "Particle Count Constituents" ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+.
+watr:Constituent-TotalOrganicCarbon
+    a watr:Class ;
+    a watr:Constituent-TotalOrganicCarbon ;
+    a sh:NodeShape ;
+    rdfs:comment "Organic carbon present in water, typically measured as total organic carbon." ;
+    rdfs:label "Total Organic Carbon" ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+.
+watr:Constituent-TotalInorganicCarbon
+    a watr:Class ;
+    a watr:Constituent-TotalInorganicCarbon ;
+    a sh:NodeShape ;
+    rdfs:comment "Inorganic carbon species present in water, typically measured as total inorganic carbon." ;
+    rdfs:label "Total Inorganic Carbon" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-DissolvedOxygen
+    a watr:Class ;
+    a watr:Constituent-DissolvedOxygen ;
+    a sh:NodeShape ;
+    rdfs:comment "Molecular oxygen dissolved in water." ;
+    rdfs:label "Dissolved Oxygen" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Ammonia
+    a watr:Class ;
+    a watr:Constituent-Ammonia ;
+    a sh:NodeShape ;
+    rdfs:comment "Ammonia present in water, often measured as part of nitrogen treatment monitoring." ;
+    rdfs:label "Ammonia" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Nitrite
+    a watr:Class ;
+    a watr:Constituent-Nitrite ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrite present in water as an intermediate nitrogen species." ;
+    rdfs:label "Nitrite" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Nitrate
+    a watr:Class ;
+    a watr:Constituent-Nitrate ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrate present in water as an oxidized nitrogen species." ;
+    rdfs:label "Nitrate" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-NitrogenOxides
+    a watr:Class ;
+    a watr:Constituent-NitrogenOxides ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrogen oxides associated with biological nitrogen conversion and off-gas monitoring." ;
+    rdfs:label "Nitrogen Oxides" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-Cyanide
     a watr:Class ;
