@@ -157,6 +157,7 @@ watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
 watr:Process-ReverseOsmosis a watr:Class, watr:Process-ReverseOsmosis ;
     rdfs:label "Reverse Osmosis (RO)" ;
     skos:definition "A core membrane separation process for desalination and advanced purification." ;
+    rdfs:subClassOf watr:Process-Filtration ;
     rdfs:subClassOf watr:Process-MembraneProcess .
 
 watr:Process-ClosedCircuitReverseOsmosis a watr:Class, watr:Process-ClosedCircuitReverseOsmosis ;
@@ -192,12 +193,12 @@ watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDi
 watr:Process-Comminution a watr:Class, watr:Process-Comminution ;
     rdfs:label "Comminution" ;
     skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
-    rdfs:subClassOf watr:Process-Physical .
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
     rdfs:label "BiosolidsDisposal" ;
     skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
-    rdfs:subClassOf watr:Process-Physical .
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
     rdfs:label "Land Application" ;
@@ -376,6 +377,7 @@ watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
     skos:definition "Aerobic suspended-growth biological treatment" ;
+    rdfs:subClassOf watr:Process-Separation ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 
@@ -436,9 +438,9 @@ watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
 watr:Process-AnaerobicDigestion a watr:Class, watr:Process-AnaerobicDigestion ;
     rdfs:label "Anaerobic Digestion" ;
     skos:definition "A biological process that breaks down organic matter in the absence of oxygen." ;
-    rdfs:subClassOf watr:Digestion .
+    rdfs:subClassOf watr:Process-Digestion .
 
 watr:Process-AerobicDigestion a watr:Class, watr:Process-AerobicDigestion ;
     rdfs:label "Aerobic Digestion" ;
     skos:definition "A biological process that breaks down organic matter in the presence of oxygen." ;
-    rdfs:subClassOf watr:Digestion .
+    rdfs:subClassOf watr:Process-Digestion .
