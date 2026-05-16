@@ -448,6 +448,20 @@ watr:SedimentationTank
         sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
     ] .
 
+watr:SepticTank
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Septic Tank" ;
+    rdfs:comment "A septic tank for on-site wastewater treatment" ;
+    rdfs:subClassOf watr:Tank ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Sedimentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of SepticTank must have the Sedimentation process." ;
+    ] .
+
 watr:ImhoffTank
     a  sh:NodeShape ;
     a watr:Class ;
@@ -726,6 +740,20 @@ watr:RotatingBiologicalContactor
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RotatingBiologicalContactor must have the Biofiltration process." ;
+    ] .
+
+watr:MovingBedBioreactor 
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Moving Bed Bioreactor (MBBR)" ;
+    rdfs:comment "MBBR process using suspended growth media a tank" ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MovingBedBioreactor must have the Biofiltration process." ;
     ] .
 
 watr:TricklingFilter
