@@ -18,6 +18,7 @@
 .
 watr:EnumerationKind-DataProcessing 
     a watr:Class ;
+    # Is this an intentional modeling pattern? 
     a s223:EnumerationKind-DataQuality ;
     a sh:NodeShape ;
     rdfs:label "DataQuality" ;
@@ -173,6 +174,15 @@ watr:Aggregation-Median
     a sh:NodeShape ;
     rdfs:label "Median" ;
     rdfs:comment "The associated property represents the median value over an aggregation scope." ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+.
+
+watr:Aggregation-Percentile
+    a watr:Class ;
+    a watr:Aggregation-Percentile ;
+    a sh:NodeShape ;
+    rdfs:label "Percentile" ;
+    rdfs:comment "The associated property represents the percentile value over an aggregation scope." ;
     rdfs:subClassOf watr:EnumerationKind-Aggregation ;
 .
 
