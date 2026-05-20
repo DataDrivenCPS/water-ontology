@@ -40,6 +40,15 @@ watr:Salt-NaCl
   rdfs:label "Salt-NaCl" ;
   rdfs:subClassOf watr:Constituent-Salt ;
 .
+watr:Water-Seawater 
+  a watr:Class ;
+  a watr:Water-Seawater ;
+  a sh:NodeShape ;
+  rdfs:comment "Water-Seawater" ;
+  rdfs:label "Water-Seawater" ;
+  rdfs:subClassOf s223:Fluid-Water;
+.
+
 watr:Water-Brine
   a watr:Class ;
   a watr:Water-Brine ;
@@ -336,6 +345,14 @@ watr:Constituent-Organics
     a sh:NodeShape ;
     rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
     rdfs:label "Constituent-Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Inorganics
+    a watr:Class ; 
+    a watr:Constituent-Inorganics ;
+    a sh:NodeShape ;
+    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:label "Constituent-Inorganics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-Solids
