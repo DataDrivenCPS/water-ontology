@@ -53,7 +53,7 @@
     a :Percentile-95 ;
     rdfs:subClassOf watr:Aggregation-Percentile ;
     rdfs:label "95th Percentile" ;
-    s223:hasValue "95"^^xsd:decimal ;
+    s223:hasValue 95 ;
     qudt:hasUnit unit:PERCENT ;
 .
 
