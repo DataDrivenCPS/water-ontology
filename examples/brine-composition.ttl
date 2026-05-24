@@ -19,7 +19,7 @@
   rdfs:subClassOf watr:Water-Brine;
   s223:composedOf [
       a s223:QuantifiableProperty ;
-      s223:hasValue "15"^^xsd:decimal ;
+      s223:hasValue 15 ;
       s223:ofConstituent watr:Salt-NaCl ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
@@ -27,7 +27,7 @@
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
-      s223:hasValue "85"^^xsd:decimal ;
+      s223:hasValue 85 ;
       s223:ofConstituent s223:Constituent-H2O ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
@@ -47,7 +47,7 @@
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasAspect s223:Aspect-LowLimit ;
-      s223:hasValue "5"^^xsd:decimal ;
+      s223:hasValue 5 ;
       s223:ofConstituent watr:Salt-NaCl ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
@@ -56,7 +56,7 @@
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasAspect s223:Aspect-HighLimit ;
-      s223:hasValue "10"^^xsd:decimal ;
+      s223:hasValue 10 ;
       s223:ofConstituent watr:Salt-NaCl ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
