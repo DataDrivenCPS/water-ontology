@@ -12,6 +12,7 @@
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.1.1/vocab/unit> ;
   owl:imports <http://qudt.org/3.1.1/vocab/quantitykind> ;
+  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
   owl:imports <urn:nawi-water-ontology/equip> ;
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
@@ -111,6 +112,12 @@ s223:QuantifiableProperty
     rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
     sh:class s223:QuantifiableProperty ;
   ] ;
+   sh:property [
+     sh:path watr:hasAggregation ;
+     rdfs:comment "If present, `hasAggregation` associates a quantifiable property with one aggregation semantics such as total, mean, maximum, or minimum." ;
+     sh:class watr:EnumerationKind-Aggregation ;
+     sh:maxCount 1 ;
+   ] ;
 .
 
 s223:Sensor
@@ -124,6 +131,12 @@ watr:hasProcess
   a rdf:Property ;
   rdfs:label "has process" ;
   rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
+.
+
+watr:hasAggregation
+  a rdf:Property ;
+  rdfs:comment "The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum." ;
+  rdfs:label "has aggregation" ;
 .
 
 watr:hasTemporalResolution
