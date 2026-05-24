@@ -155,7 +155,7 @@ watr:SequencingBatchReactor
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:class s223:Fluid-Sludge ;
+                sh:class watr:Fluid-Sludge ;
             ] ;
         ] ;
     ] ;

@@ -358,7 +358,7 @@ watr:Sludge-MixedLiquor
     a sh:NodeShape ;
     rdfs:comment "Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water." ;
     rdfs:label "Sludge-MixedLiquor" ;
-    rdfs:subClassOf s223:Fluid-Sludge ;
+    rdfs:subClassOf watr:Fluid-Sludge ;
     s223:composedOf [
         a s223:QuantifiableProperty ;
         s223:ofConstituent watr:Constituent-SuspendedSolids ;
