@@ -846,7 +846,7 @@ watr:NanofiltrationUnit
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
     rdfs:subClassOf watr:Filter .
 
-watr:MediaFiltration
+watr:MediaFiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "MediaFiltration Unit" ;
