@@ -1032,6 +1032,7 @@ watr:TotalOrganicCompoundConcentrationSensor
 watr:Valve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways." ;
     rdfs:label "Valve" ;
     rdfs:subClassOf s223:Valve 
 .
@@ -1039,6 +1040,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
+    rdfs:comment "A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity." ;
     rdfs:subClassOf s223:VariableFrequencyDrive ;
     rdfs:label "Variable Frequency Drive" 
 .
@@ -1046,6 +1048,7 @@ watr:VariableFrequencyDrive
 watr:ThreeWayValve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve that features three ports (connections)" ;
     rdfs:label "Three Way Valve" ;
     rdfs:subClassOf s223:Valve 
 .
@@ -1053,6 +1056,7 @@ watr:ThreeWayValve
 watr:CheckValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve that normally allows fluid (liquid or gas) to flow through it in only one direction" ;
     rdfs:label "Check Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1060,6 +1064,7 @@ watr:CheckValve
 watr:BallValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve which operates using a spherical ball with a hole (also known as a bore) through the middle." ;
     rdfs:label "Ball Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1067,6 +1072,7 @@ watr:BallValve
 watr:ButterflyValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids" ;
     rdfs:label "Butterfly Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1074,6 +1080,7 @@ watr:ButterflyValve
 watr:GlobeValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow" ;
     rdfs:label "Globe Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1081,6 +1088,7 @@ watr:GlobeValve
 watr:PlugValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve" ;
     rdfs:label "Plug Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1096,6 +1104,7 @@ watr:AirReleaseValve
 watr:Controller 
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
+    rdfs:comment "A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s." ;
     rdfs:label "Controller" ;
     rdfs:subClassOf s223:Controller .
 
