@@ -104,6 +104,11 @@ watr:Process-Mixing a watr:Class, watr:Process-Mixing ;
     skos:definition "A unit process that mixes water with chemicals or other substances to achieve a desired effect." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
+watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
+    rdfs:label "Recirculation" ;
+    skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
+
 watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
     rdfs:label "Dewatering" ;
     skos:definition "A process to remove or separate water from another material, typically solids." ;
@@ -430,10 +435,30 @@ watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
     skos:definition "0.01 to 0.1 micron-scale filtration" ;
     rdfs:subClassOf watr:Process-Filtration .
 
+watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
+    rdfs:label "Backwashing" ;
+    skos:definition "A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids." ;
+    rdfs:subClassOf watr:Process-Cleaning .
+
+watr:Process-AirScouring a watr:Class, watr:Process-AirScouring ;
+    rdfs:label "Air Scouring" ;
+    skos:definition "A cleaning process that uses injected air to dislodge accumulated foulants or solids from filter media or membrane surfaces." ;
+    rdfs:subClassOf watr:Process-Cleaning .
+
+watr:Process-Purging a watr:Class, watr:Process-Purging ;
+    rdfs:label "Purging" ;
+    skos:definition "A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle." ;
+    rdfs:subClassOf watr:Process-Cleaning .
+
 watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     rdfs:label "Digestion" ;
     skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
+
+watr:Process-Cleaning a watr:Class, watr:Process-Cleaning ;
+    rdfs:label "Cleaning" ;
+    skos:definition "A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-AnaerobicDigestion a watr:Class, watr:Process-AnaerobicDigestion ;
     rdfs:label "Anaerobic Digestion" ;
