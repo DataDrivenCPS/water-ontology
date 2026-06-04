@@ -15,7 +15,7 @@
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
 
-watr:ProcessType a watr:Class, sh:NodeShape ;
+watr:Process a watr:Class, sh:NodeShape ;
     rdfs:label "Water Process" ;
     skos:definition "A process applied to water treatment." ;
     sh:property [
@@ -157,12 +157,11 @@ watr:Process-GranularActivatedCarbon a watr:Class, watr:Process-GranularActivate
 watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
     rdfs:label "Membrane Process" ;
     skos:definition "A process that uses a semi-permeable membrane to separate substances." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-Filtration .
 
 watr:Process-ReverseOsmosis a watr:Class, watr:Process-ReverseOsmosis ;
     rdfs:label "Reverse Osmosis (RO)" ;
     skos:definition "A core membrane separation process for desalination and advanced purification." ;
-    rdfs:subClassOf watr:Process-Filtration ;
     rdfs:subClassOf watr:Process-MembraneProcess .
 
 watr:Process-ClosedCircuitReverseOsmosis a watr:Class, watr:Process-ClosedCircuitReverseOsmosis ;

@@ -107,7 +107,7 @@ def processtypes_to_txt(process_file):
         sub_process_of = []
         for parent in g.objects(cls, RDFS.subClassOf):
             parent_name = local_name(str(parent))
-            if parent_name != "ProcessType" and parent_name != "Process":
+            if parent_name != "Process":
                 sub_process_of.append(parent_name)
 
         processes.append({
