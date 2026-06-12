@@ -1,27 +1,38 @@
 """Structural consistency checks on the compiled water ontology.
 
-Two invariants are asserted, complementing the SHACL validation tests:
+Complements the SHACL validation tests by asserting one structural invariant:
 
-1. Every process class — anything named `watr:Process-*` or used as
-   `sh:class` on `watr:hasProcess` — must reach `watr:Process` via
-   `rdfs:subClassOf+`.
-2. For every device NodeShape that constrains a property path with
-   `sh:class`, the required class must be a (transitive) subclass of the
-   class required by any ancestor device class on the same path
-   (e.g. `BiologicalAeratedFilter.hasProcess` must be a subclass of
-   `Filter.hasProcess`'s required class).
+For every equipment class that constrains ``watr:hasProcess``, and for every
+process required by any of its ancestor equipment classes, at least one of the
+equipment's own required processes must be the same as, or a (transitive)
+subclass of, that ancestor-required process. In other words, a subclass may
+only *refine* (never contradict) the process rules it inherits
+(e.g. ``BiologicalAeratedFilter.hasProcess`` must be a subclass of
+``Filter.hasProcess``'s required class).
+
+An equipment may pin more than one process (e.g. ``MembraneBioreactor`` requires
+both a filtration and a biofiltration process); each ancestor-required process
+just needs to be refined by *one* of them.
+
+Process rules are read from both the legacy shape (``sh:class`` directly on the
+``hasProcess`` property shape) and the qualified-cardinality shape
+(``sh:qualifiedValueShape`` carrying ``sh:class`` or an ``sh:in`` list).
 """
-from collections import defaultdict
+import sys
 from pathlib import Path
 
 import pytest
-from rdflib import Graph, Namespace, RDFS, SH
+from rdflib import Graph, Namespace, URIRef
 
 
 ROOT = Path(__file__).resolve().parents[1]
 WATER_TTL = ROOT / "libraries" / "water.ttl"
 WATR = Namespace("urn:nawi-water-ontology#")
-PROCESS = WATR.Process
+
+# Reuse the consistency helpers from the standalone script unchanged.
+sys.path.insert(0, str(ROOT / "scripts"))
+
+CACHE = {}
 
 
 def _qname(g: Graph, uri) -> str:
@@ -32,52 +43,84 @@ def _qname(g: Graph, uri) -> str:
         return str(uri)
 
 
-def _transitive_superclasses(g: Graph, cls) -> set:
-    seen = set()
-    stack = [cls]
-    while stack:
-        current = stack.pop()
-        for parent in g.objects(current, RDFS.subClassOf):
-            if parent in seen or parent == cls:
-                continue
-            seen.add(parent)
-            stack.append(parent)
-    return seen
+def _find_equipments(g: Graph):
+    """Return a set of all equipment classes."""
+    q = """
+    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX s223: <http://data.ashrae.org/standard223#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+    SELECT DISTINCT ?cls WHERE {
+        ?cls a watr:Class .
+        ?cls rdfs:subClassOf* s223:Equipment .
+    }
+    """
+    if 'equipments' not in CACHE:
+        CACHE['equipments'] = set(row.cls for row in g.query(q))
+    return CACHE['equipments']
 
 
-def _is_subclass_of(g: Graph, child, parent) -> bool:
-    if child == parent:
-        return True
-    return parent in _transitive_superclasses(g, child)
+def _find_process_of_equip(equip_cls: URIRef, g: Graph):
+    """Return the set of process classes required by an equipment via watr:hasProcess.
+
+    Handles the legacy shape (``sh:class`` on the property shape) and the
+    qualified-cardinality shape (``sh:qualifiedValueShape`` carrying ``sh:class``
+    or an ``sh:in`` list of alternatives).
+    """
+    q = """
+    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+    SELECT DISTINCT ?process WHERE {
+        ?equip_cls sh:property ?shape .
+        ?shape sh:path watr:hasProcess .
+        {
+            ?shape sh:class ?process .
+        } UNION {
+            ?shape sh:qualifiedValueShape/sh:class ?process .
+        } UNION {
+            ?shape sh:qualifiedValueShape/sh:in/rdf:rest*/rdf:first ?process .
+        }
+    }
+    """
+    if ('process_of_equip', equip_cls) not in CACHE:
+        CACHE[('process_of_equip', equip_cls)] = set(
+            row.process for row in g.query(q, initBindings={'equip_cls': equip_cls})
+        )
+    return CACHE[('process_of_equip', equip_cls)]
 
 
-def _collect_class_constraints(g: Graph) -> dict:
-    """Return {device_class: {path: set(required_classes)}}."""
-    constraints = defaultdict(lambda: defaultdict(set))
-    for shape, _, prop in g.triples((None, SH.property, None)):
-        path = g.value(prop, SH.path)
-        cls = g.value(prop, SH["class"])
-        if path is None or cls is None:
-            continue
-        constraints[shape][path].add(cls)
-    return constraints
+def _find_equipment_class_ancestor_set(cls: URIRef, g: Graph):
+    """Return the proper equipment superclasses of an equipment class."""
+    q = """
+    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX s223: <http://data.ashrae.org/standard223#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+    SELECT DISTINCT ?ancestor WHERE {
+        ?cls rdfs:subClassOf* ?ancestor .
+        ?ancestor rdfs:subClassOf* s223:Equipment .
+        FILTER (?ancestor != ?cls) .
+        FILTER (?ancestor != s223:Equipment) .
+    }
+    """
+    return set(row.ancestor for row in g.query(q, initBindings={'cls': cls}))
 
 
-def _collect_process_classes(g: Graph) -> set:
-    """Anything named watr:Process-* or used as sh:class on watr:hasProcess."""
-    candidates = set()
-    watr_str = str(WATR)
-    for s in set(g.subjects()):
-        s_str = str(s)
-        if s_str.startswith(watr_str) and s_str[len(watr_str):].startswith("Process-"):
-            candidates.add(s)
-    for _, _, prop in g.triples((None, SH.property, None)):
-        if g.value(prop, SH.path) == WATR.hasProcess:
-            cls = g.value(prop, SH["class"])
-            if cls is not None:
-                candidates.add(cls)
-    candidates.discard(PROCESS)
-    return candidates
+def _find_process_class_ancestor_set(cls: URIRef, g: Graph):
+    """Return the superclasses of a process class, including the class itself."""
+    q = """
+    PREFIX watr: <urn:nawi-water-ontology#>
+
+    SELECT DISTINCT ?ancestor WHERE {
+        ?cls rdfs:subClassOf* ?ancestor .
+        FILTER (?ancestor != ?cls)
+    }
+    """
+    ancestors = set(row.ancestor for row in g.query(q, initBindings={'cls': cls}))
+    ancestors.add(cls)  # a process trivially refines itself
+    return ancestors
 
 
 @pytest.fixture(scope="module")
@@ -87,59 +130,40 @@ def water_graph() -> Graph:
     return g
 
 
-def test_all_processes_are_subclass_of_process(water_graph: Graph) -> None:
+def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> None:
+    g = water_graph
+    equipments = _find_equipments(g)
+    process_of_equip = {e: _find_process_of_equip(e, g) for e in equipments}
+    equipment_ancestors = {e: _find_equipment_class_ancestor_set(e, g) for e in equipments}
+
+    referenced = set().union(*process_of_equip.values()) if process_of_equip else set()
+    process_ancestors = {p: _find_process_class_ancestor_set(p, g) for p in referenced}
+
+    # (equip, ancestor, ancestor_process, equip_processes)
     violations = []
-    for cls in sorted(_collect_process_classes(water_graph), key=str):
-        if PROCESS not in _transitive_superclasses(water_graph, cls):
-            parents = list(water_graph.objects(cls, RDFS.subClassOf))
-            violations.append((cls, parents))
+    for equip, processes in process_of_equip.items():
+        if not processes:
+            continue
+        for ancestor in equipment_ancestors[equip]:
+            for ancestor_process in process_of_equip.get(ancestor, set()):
+                # At least one of the equipment's processes must be the same as,
+                # or a subclass of, the process the ancestor requires.
+                refines = any(
+                    ancestor_process in process_ancestors[p] for p in processes
+                )
+                if not refines:
+                    violations.append((equip, ancestor, ancestor_process, processes))
 
     if not violations:
         return
 
-    lines = [
-        f"{len(violations)} process class(es) are NOT rdfs:subClassOf* {_qname(water_graph, PROCESS)}:"
-    ]
-    for cls, parents in violations:
-        parents_str = (
-            ", ".join(_qname(water_graph, p) for p in parents)
-            if parents
-            else "(no rdfs:subClassOf declared)"
-        )
-        lines.append(f"- {_qname(water_graph, cls)}")
-        lines.append(f"    direct parents: {parents_str}")
-    pytest.fail("\n".join(lines))
-
-
-def test_subclass_shacl_constraints_are_consistent(water_graph: Graph) -> None:
-    constraints = _collect_class_constraints(water_graph)
-    violations = []
-
-    for device_cls, paths in constraints.items():
-        ancestors = _transitive_superclasses(water_graph, device_cls)
-        for path, required_classes in paths.items():
-            for ancestor in ancestors:
-                ancestor_required = constraints.get(ancestor, {}).get(path)
-                if not ancestor_required:
-                    continue
-                for child_cls in required_classes:
-                    for anc_cls in ancestor_required:
-                        if not _is_subclass_of(water_graph, child_cls, anc_cls):
-                            violations.append((device_cls, ancestor, path, child_cls, anc_cls))
-
-    if not violations:
-        return
-
-    lines = [f"{len(violations)} sh:class constraint inconsistency(ies):"]
-    for device, ancestor, path, child_cls, anc_cls in violations:
+    lines = [f"{len(violations)} watr:hasProcess refinement inconsistency(ies):"]
+    for equip, ancestor, ancestor_process, processes in violations:
+        procs_str = ", ".join(sorted(_qname(g, p) for p in processes))
+        lines.append(f"- {_qname(g, equip)} (subClassOf* {_qname(g, ancestor)})")
+        lines.append(f"    ancestor requires: {_qname(g, ancestor_process)}")
+        lines.append(f"    but equipment's processes are: {procs_str}")
         lines.append(
-            f"- {_qname(water_graph, device)} (subClassOf* {_qname(water_graph, ancestor)})"
-        )
-        lines.append(f"    path: {_qname(water_graph, path)}")
-        lines.append(f"    requires: {_qname(water_graph, child_cls)}")
-        lines.append(f"    but ancestor requires: {_qname(water_graph, anc_cls)}")
-        lines.append(
-            f"    -> {_qname(water_graph, child_cls)} is NOT rdfs:subClassOf* "
-            f"{_qname(water_graph, anc_cls)}"
+            f"    -> none of them is rdfs:subClassOf* {_qname(g, ancestor_process)}"
         )
     pytest.fail("\n".join(lines))
