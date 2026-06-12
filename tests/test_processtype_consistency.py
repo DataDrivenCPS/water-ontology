@@ -29,8 +29,6 @@ ROOT = Path(__file__).resolve().parents[1]
 WATER_TTL = ROOT / "libraries" / "water.ttl"
 WATR = Namespace("urn:nawi-water-ontology#")
 
-# Reuse the consistency helpers from the standalone script unchanged.
-sys.path.insert(0, str(ROOT / "scripts"))
 
 CACHE = {}
 
