@@ -26,7 +26,7 @@ watr:Tank a sh:NodeShape ;
             sh:class s223:InletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
         ] ;
     ] ;
@@ -38,7 +38,7 @@ watr:Tank a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
             sh:not [
                 # this is NOT a drain connection point! Tanks with a drain connection point must have a separate outlet connection point for the drain.
@@ -58,7 +58,7 @@ watr:Tank a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
@@ -74,7 +74,7 @@ watr:Tank a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
@@ -97,7 +97,7 @@ watr:Reactor a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
@@ -120,15 +120,16 @@ watr:SeparationTank a sh:NodeShape ;
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
         ] ;
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Separation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Separation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SeparationTank must have the Separation process." ;
     ] ;
 .
@@ -141,9 +142,10 @@ watr:SequencingBatchReactor
     rdfs:subClassOf watr:Reactor, watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-ActivatedSludge ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SequencingBatchReactor must have the ActivatedSludge process." ;
     ] ;
     # has 1 in, 1out (both water),  OR 1 bidirectional (water)
@@ -155,7 +157,7 @@ watr:SequencingBatchReactor
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Fluid-Sludge ;
+                sh:class watr:Fluid-Sludge ;
             ] ;
         ] ;
     ] ;
@@ -169,7 +171,7 @@ watr:SequencingBatchReactor
                 sh:class s223:InletConnectionPoint ;
                 sh:property [
                     sh:path s223:hasMedium ;
-                    sh:hasValue s223:Mix-Fluid ;
+                    sh:class s223:Mix-Fluid ;
                 ] ;
             ] ;
         ] ;
@@ -181,7 +183,7 @@ watr:SequencingBatchReactor
                 sh:class s223:OutletConnectionPoint ;
                 sh:property [
                     sh:path s223:hasMedium ;
-                    sh:hasValue s223:Mix-Fluid ;
+                    sh:class s223:Mix-Fluid ;
                 ] ;
             ] ;
             
@@ -195,7 +197,7 @@ watr:SequencingBatchReactor
                 sh:class s223:BidirectionalConnectionPoint ;
                 sh:property [
                     sh:path s223:hasMedium ;
-                    sh:hasValue s223:Mix-Fluid ;
+                    sh:class s223:Mix-Fluid ;
                 ] ;
             ] ;
         ] ]
@@ -214,7 +216,7 @@ watr:PlugFlowReactor
             sh:class s223:InletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
         ] ;
     ] ;
@@ -226,7 +228,7 @@ watr:PlugFlowReactor
             sh:class s223:OutletConnectionPoint ;
             sh:property [
                 sh:path s223:hasMedium ;
-                sh:hasValue s223:Mix-Fluid ;
+                sh:class s223:Mix-Fluid ;
             ] ;
         ] ;
     ] ;
@@ -247,9 +249,10 @@ watr:StaticMixer
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Mixing ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Mixing ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of StaticMixer must have the Mixing process." ;
     ] .
 
@@ -261,9 +264,10 @@ watr:AerationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Aeration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Aeration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of AerationBasin must have the Aeration process." ;
     ] ;
     sh:property [
@@ -281,9 +285,10 @@ watr:MixingBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Mixing ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Mixing ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MixingBasin must have the Mixing process." ;
     ] ;
     sh:property [
@@ -301,9 +306,10 @@ watr:MembraneAeratedBiofilmReaactor
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Aeration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Aeration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MembraneAeratedBiofilmReaactor must have the Aeration process." ;
     ] .
     
@@ -315,9 +321,10 @@ watr:CoagulationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Coagulation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Coagulation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of CoagulationBasin must have the Coagulation process." ;
     ] .
 
@@ -329,9 +336,10 @@ watr:FlocculationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Flocculation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Flocculation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of FlocculationBasin must have the Flocculation process." ;
     ] .
 
@@ -343,9 +351,10 @@ watr:Digester
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Digestion ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Digestion ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Digester must have the Digestion process." ;
     ] .
 
@@ -357,9 +366,10 @@ watr:AnaerobicDigester
     rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-AnaerobicDigestion ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-AnaerobicDigestion ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of AnaerobicDigester must have the AnaerobicDigestion process." ;
     ] .
 
@@ -371,9 +381,10 @@ watr:AerobicDigester
     rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-AerobicDigestion ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-AerobicDigestion ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of AerobicDigester must have the AerobicDigestion process." ;
     ] .
 
@@ -385,9 +396,10 @@ watr:DisinfectionUnit
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Disinfection ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Disinfection ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of DisinfectionUnit must have the Disinfection process." ;
     ] .
 
@@ -399,9 +411,10 @@ watr:ChlorinationUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Chlorination ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Chlorination ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ChlorinationUnit must have the Chlorination process." ;
     ] .
 
@@ -413,9 +426,10 @@ watr:UltravioletLightUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-UVDisinfection ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-UVDisinfection ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of UltravioletLightUnit must have the UVDisinfection process." ;
     ] .
 
@@ -427,9 +441,10 @@ watr:SedimentationTank
     rdfs:subClassOf watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
     ] .
 
@@ -441,9 +456,10 @@ watr:ImhoffTank
     rdfs:subClassOf watr:SedimentationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ImhoffTank must have the Sedimentation process." ;
     ] .
 
@@ -455,9 +471,10 @@ watr:Screen
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Screening ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Screening ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Screen must have the Screening process." ;
     ] .
 
@@ -469,9 +486,10 @@ watr:GritChamber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of GritChamber must have the Sedimentation process." ;
     ] .
 
@@ -511,9 +529,10 @@ watr:Cogenerator
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Cogeneration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Cogeneration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Cogenerator must have the Cogeneration process." ;
     ] .
 
@@ -525,9 +544,10 @@ watr:Boiler
     rdfs:subClassOf s223:Boiler, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Incineration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Incineration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Boiler must have the Incineration process." ;
     ] .
 
@@ -567,9 +587,10 @@ watr:DewateringUnit
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Dewatering ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of DewateringUnit must have the Dewatering process." ;
     ] .
 
@@ -588,9 +609,10 @@ watr:DissolvedAirFlotationThickener
     rdfs:subClassOf watr:Thickener;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Flotation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Flotation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of DissolvedAirFlotationThickener must have the Flotation process." ;
     ] .
 
@@ -602,9 +624,10 @@ watr:CentrifugalThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Centrifugation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of CentrifugalThickener must have the Centrifugation process." ;
     ] .
 
@@ -616,9 +639,10 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of GravityThickener must have the Sedimentation process." ;
     ] .
 
@@ -630,9 +654,10 @@ watr:BeltThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Filtration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of BeltThickener must have the Filtration process." ;
     ] .
 
@@ -651,9 +676,10 @@ watr:RotaryDrumThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Filtration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RotaryDrumThickener must have the Filtration process." ;
     ] .
 
@@ -665,9 +691,10 @@ watr:Filter
     rdfs:subClassOf s223:Filter, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Filtration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Filter must have the Filtration process." ;
     ] .
 
@@ -679,9 +706,10 @@ watr:ReverseOsmosisMembrane
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-ReverseOsmosis ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ReverseOsmosisMembrane must have the ReverseOsmosis process." ;
     ] .
 
@@ -693,9 +721,10 @@ watr:RotatingBiologicalContactor
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Biofiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RotatingBiologicalContactor must have the Biofiltration process." ;
     ] .
 
@@ -707,9 +736,10 @@ watr:TricklingFilter
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-TricklingFiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-TricklingFiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of TricklingFilter must have the TricklingFiltration process." ;
     ] .
 
@@ -721,9 +751,10 @@ watr:OxidationDitch
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-ActivatedSludge ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of OxidationDitch must have the ActivatedSludge process." ;
     ] .
 
@@ -735,16 +766,18 @@ watr:MembraneBioreactor
     rdfs:subClassOf watr:Filter, watr:Reactor, watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:in ( watr:Process-Microfiltration watr:Process-Ultrafiltration ) ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:in ( watr:Process-Microfiltration watr:Process-Ultrafiltration ) ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MembraneBioreactor must have either the Microfiltration or Ultrafiltration process." ;
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Biofiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MembraneBioreactor must have the Biofiltration process." ;
     ] .
 
@@ -756,9 +789,10 @@ watr:MicrofiltrationUnit
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Microfiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Microfiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MicrofiltrationUnit must have the Microfiltration process." ;
     ] .
 
@@ -770,9 +804,10 @@ watr:UltrafiltrationUnit
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Ultrafiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Ultrafiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of UltrafiltrationUnit must have the Ultrafiltration process." ;
     ] .
 
@@ -791,9 +826,10 @@ watr:MediaFiltration
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-MediaFiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MediaFiltration must have the MediaFiltration process." ;
     ] .
 
@@ -805,9 +841,10 @@ watr:RapidSandFilter
     rdfs:subClassOf watr:MediaFiltration ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-RapidSandFiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-RapidSandFiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RapidSandFilter must have the RapidSandFiltration process." ;
     ] .
 
@@ -826,9 +863,10 @@ watr:IonExchangeMembrane
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-IonExchange ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-IonExchange ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of IonExchangeMembrane must have the IonExchange process." ;
     ] .
 
@@ -840,9 +878,10 @@ watr:ElectrodialysisUnit
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Electrodialysis ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ElectrodialysisUnit must have the Electrodialysis process." ;
     ] .
 
@@ -854,9 +893,10 @@ watr:Electrolyzer
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Electrolysis ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Electrolysis ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Electrolyzer must have the Electrolysis process." ;
     ] .
 
@@ -868,9 +908,10 @@ watr:Crystallizer
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Crystallization ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Crystallizer must have the Crystallization process." ;
     ] .
 
@@ -889,9 +930,10 @@ watr:Evaporator
     rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Evaporation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Evaporator must have the Evaporation process." ;
     ] .
 
@@ -903,9 +945,10 @@ watr:Condenser
     rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Condensation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Condensation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Condenser must have the Condensation process." ;
     ] .
 
@@ -1032,6 +1075,7 @@ watr:TotalOrganicCompoundConcentrationSensor
 watr:Valve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways." ;
     rdfs:label "Valve" ;
     rdfs:subClassOf s223:Valve 
 .
@@ -1039,6 +1083,7 @@ watr:Valve
 watr:VariableFrequencyDrive
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
+    rdfs:comment "A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity." ;
     rdfs:subClassOf s223:VariableFrequencyDrive ;
     rdfs:label "Variable Frequency Drive" 
 .
@@ -1046,6 +1091,7 @@ watr:VariableFrequencyDrive
 watr:ThreeWayValve 
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve that features three ports (connections)" ;
     rdfs:label "Three Way Valve" ;
     rdfs:subClassOf s223:Valve 
 .
@@ -1053,6 +1099,7 @@ watr:ThreeWayValve
 watr:CheckValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve that normally allows fluid (liquid or gas) to flow through it in only one direction" ;
     rdfs:label "Check Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1060,6 +1107,7 @@ watr:CheckValve
 watr:BallValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve which operates using a spherical ball with a hole (also known as a bore) through the middle." ;
     rdfs:label "Ball Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1067,6 +1115,7 @@ watr:BallValve
 watr:ButterflyValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids" ;
     rdfs:label "Butterfly Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1074,6 +1123,7 @@ watr:ButterflyValve
 watr:GlobeValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow" ;
     rdfs:label "Globe Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1081,6 +1131,7 @@ watr:GlobeValve
 watr:PlugValve
     a s223:Class, sh:NodeShape; 
     a watr:Class ;
+    rdfs:comment "A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve" ;
     rdfs:label "Plug Valve" ;
     rdfs:subClassOf s223:Valve
 .
@@ -1096,6 +1147,7 @@ watr:AirReleaseValve
 watr:Controller 
     a s223:Class, sh:NodeShape ;
     a watr:Class ;
+    rdfs:comment "A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s." ;
     rdfs:label "Controller" ;
     rdfs:subClassOf s223:Controller .
 
@@ -1132,19 +1184,21 @@ watr:ElectroDialyticCrystallizer
     a watr:Class ;
     rdfs:label "Electro-Dialytic Crystallizer (EDC)" ;
     rdfs:comment "A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization." ;
-    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess  ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Electrodialysis ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ElectroDialyticCrystallizer must have the Electrodialysis process." ;
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Crystallization ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ElectroDialyticCrystallizer must have the Crystallization process." ;
     ] .
 
@@ -1184,9 +1238,10 @@ watr:SolventExtractionSystem
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-SolventExtraction ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-SolventExtraction ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SolventExtractionSystem must have the SolventExtraction process." ;
     ] .
 
@@ -1212,9 +1267,10 @@ watr:UVH2O2Reactor
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-AdvancedOxidation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-AdvancedOxidation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of UVH2O2Reactor must have the AdvancedOxidation process." ;
     ] .
 
@@ -1226,9 +1282,10 @@ watr:BiologicalAeratedFilter
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-BiologicallyActiveFiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-BiologicallyActiveFiltration ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of BiologicalAeratedFilter must have the BiologicallyActiveFiltration process." ;
     ] .
 
@@ -1240,9 +1297,10 @@ watr:ElectrocoagulationUnit
     rdfs:subClassOf s223:Equipment, watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Electrocoagulation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Electrocoagulation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ElectrocoagulationUnit must have the Electrocoagulation process." ;
     ] .
 
@@ -1254,9 +1312,10 @@ watr:OzonationUnit
     rdfs:subClassOf s223:Equipment, watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Ozonation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Ozonation ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of OzonationUnit must have the Ozonation process." ;
     ] .
 
@@ -1268,9 +1327,10 @@ watr:GranularActivatedCarbonAdsorber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-GranularActivatedCarbon ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-GranularActivatedCarbon ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of GranulatedActivatedCarbonAdsorber must have the GranularActivatedCarbon process." ;
     ] .
 
@@ -1282,9 +1342,10 @@ watr:Grinder
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Comminution ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Comminution ];
+        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedMinCount 1 ;
+		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;
     ] 
 .
