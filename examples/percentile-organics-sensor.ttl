@@ -48,10 +48,7 @@
 .
 
 :Percentile-95
-    a watr:Class ;
-    # Should we keep punning? Should it just be a subclass of watr:Aggregation-Percentile?
-    a :Percentile-95 ;
-    rdfs:subClassOf watr:Aggregation-Percentile ;
+    a watr:Aggregation-Percentile ;
     rdfs:label "95th Percentile" ;
     s223:hasValue 95 ;
     qudt:hasUnit unit:PERCENT ;
