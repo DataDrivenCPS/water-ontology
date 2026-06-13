@@ -14,6 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "water"
+# s223 (and other vendored ontologies) live here; 223p.ttl declares the
+# `http://data.ashrae.org/standard223/1.0/model/all` ontology that the water
+# ontology imports, so it must be discoverable to resolve the import offline.
+LIBRARIES_DIR = ROOT / "libraries"
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -63,7 +67,7 @@ def _ontology_closure_for_example(example_graph: Graph) -> tuple[Graph, list[str
     env = OntoEnv(
         path=ROOT,
         recreate=True,
-        search_directories=[str(WATER_DIR)],
+        search_directories=[str(WATER_DIR), str(LIBRARIES_DIR)],
         includes=["*.ttl"],
     )
     env.update(all=True)
