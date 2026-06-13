@@ -42,7 +42,7 @@
     s223:ofMedium s223:Fluid-Water ;
     s223:ofSubstance watr:Constituent-Organics ;
     watr:hasTemporalResolution :rolling_window_24h ;
-    watr:hasAggregation watr:Aggregate-Max ;
+    watr:hasAggregation watr:Aggregation-Max ;
     qudt:hasQuantityKind quantitykind:MassConcentration ;
     qudt:hasUnit unit:MilliGM-PER-L ;
 .
