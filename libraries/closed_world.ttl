@@ -1,0 +1,107 @@
+# this file is a list of known Closed World shapes. These are expensive
+# shapes to run, and I have better things to do than wait for them to complete
+# when I just want to test something else. SO, I'm just going to collect all
+# of the deactivation statements in one place so I can easily disable these shapes
+# without having to edit a text file every time I want to run a test.
+#
+# if you're using my 'shifty' tool (https://github.com/gtfierro/shifty) you can use
+# this just by including this shape graph as part of your shape graph,
+# and it will automatically deactivate these shapes for you:
+#
+#       shifty validate --run-inference -d data.ttl -s shapes.ttl -s https://gtf.fyi/ttl/openworld.ttl
+#
+# if there are any other closed world shapes that you know of, send me an email!
+
+
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+
+
+<https://gtf.fyi/ttl/openworld.ttl> a owl:Ontology .
+
+# for ASHRAE Standard 223(P)
+<http://data.ashrae.org/standard223#ClosedWorldQUDTShape> sh:deactivated true .
+<http://data.ashrae.org/standard223#ClosedWorld223Shape> sh:deactivated true .
+<http://data.ashrae.org/standard223#ClosedWorldShape> sh:deactivated true .
+
+# QUDT 3.2.1 ships with deprecated PRODUCT-OF-INERTIA referenced by its own
+# successors. Not our data - silence the noise.
+<http://qudt.org/schema/qudt/DontReferToDeprecatedConceptConstraint> sh:deactivated true .
+
+# Ontoenv closure creates some duplicate triples that causes this rule to fire violations for qudt ontology (model independent)
+<http://qudt.org/schema/qudt/DatatypePropertyShape> sh:deactivated true . 
+
+
+## to avoid the rule in 223 that we want to avoid:
+## Deactivate the entire s223:Filter NodeShape so its "Incompatible Medium. Case 2"
+## (pure medium vs. medium-with-constituents) shape is skipped.
+<http://data.ashrae.org/standard223#Filter> sh:deactivated true .
+
+## Re-introduce the other Filter property shapes via a separate NodeShape
+## that targets s223:Filter, so we still validate Case 1, Case 3, and the
+## inlet/outlet cardinality rules. Full IRIs are used inside the SPARQL bodies
+## so we don't depend on an external sh:prefixes node being resolvable from
+## this shape graph.
+<https://gtf.fyi/ttl/openworld.ttl#FilterReplacement> a sh:NodeShape ;
+    sh:targetClass <http://data.ashrae.org/standard223#Filter> ;
+    sh:property [ rdfs:comment "Incompatible Medium. Case 3: Associated `ConnectionPoint`s with mediums having constituents."^^xsd:string ;
+            sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+            sh:sparql [ a sh:SPARQLConstraint ;
+                    rdfs:comment "Incompatible Medium. Case 3: Two mediums with constituents."^^xsd:string ;
+                    sh:message "s223: For `Filter` {$this} there is no compatible substance between medium {?m2} and medium {?m1}."^^xsd:string ;
+                    sh:select """
+SELECT ?this ?m2 ?m1
+WHERE {
+  ?this <http://data.ashrae.org/standard223#cnx> ?cp1, ?cp2 .
+  ?cp1 a/<http://www.w3.org/2000/01/rdf-schema#subClassOf>* <http://data.ashrae.org/standard223#ConnectionPoint> .
+  ?cp2 a/<http://www.w3.org/2000/01/rdf-schema#subClassOf>* <http://data.ashrae.org/standard223#ConnectionPoint> .
+  FILTER (?cp1 != ?cp2) .
+  ?cp1 <http://data.ashrae.org/standard223#hasMedium> ?m1 .
+  ?cp2 <http://data.ashrae.org/standard223#hasMedium> ?m2 .
+    ?m1 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s1 .
+    ?m2 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s11 .
+    ?m2 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s21 .
+    ?m2 <http://data.ashrae.org/standard223#composedOf>/<http://data.ashrae.org/standard223#ofConstituent> ?s22 .
+    {?s22 <http://www.w3.org/2000/01/rdf-schema#subClassOf>* ?s21} UNION {?s21 <http://www.w3.org/2000/01/rdf-schema#subClassOf>* ?s22} .
+  }
+}
+"""^^xsd:string ] ],
+        [ rdfs:comment "Incompatible Medium. Case 1: Associated `ConnectionPoint`s with two pure mediums."^^xsd:string ;
+            sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+            sh:sparql [ a sh:SPARQLConstraint ;
+                    rdfs:comment "Incompatible Medium. Case 1: Two pure mediums."^^xsd:string ;
+                    sh:message "s223: {$this} with inlet medium {?m2} is incompatible with outlet medium {?m1}."^^xsd:string ;
+                    sh:select """
+SELECT $this ?m2 ?m1
+WHERE {
+$this <http://data.ashrae.org/standard223#cnx> ?cp1, ?cp2 .
+?cp1 a/<http://www.w3.org/2000/01/rdf-schema#subClassOf>* <http://data.ashrae.org/standard223#ConnectionPoint> .
+?cp2 a/<http://www.w3.org/2000/01/rdf-schema#subClassOf>* <http://data.ashrae.org/standard223#ConnectionPoint> .
+FILTER (?cp1 != ?cp2) .
+?cp1 <http://data.ashrae.org/standard223#hasMedium> ?m1 .
+?cp2 <http://data.ashrae.org/standard223#hasMedium> ?m2 .
+FILTER NOT EXISTS {?m1 <http://data.ashrae.org/standard223#composedOf> ?c1} .
+FILTER NOT EXISTS {?m2 <http://data.ashrae.org/standard223#composedOf> ?c2}
+FILTER (NOT EXISTS {?m2 <http://www.w3.org/2000/01/rdf-schema#subClassOf>* ?m1}) .
+FILTER (NOT EXISTS {?m1 <http://www.w3.org/2000/01/rdf-schema#subClassOf>* ?m2}) .
+}
+"""^^xsd:string ] ],
+        [ rdfs:comment "A `Filter` shall have at least one outlet."^^xsd:string ;
+            sh:message "s223: A `Filter` shall have at least one outlet."^^xsd:string ;
+            sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> ] ],
+        [ rdfs:comment "A `Filter` shall have at least one inlet."^^xsd:string ;
+            sh:message "s223: A `Filter` shall have at least one inlet."^^xsd:string ;
+            sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> ] ] .
