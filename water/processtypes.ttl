@@ -204,6 +204,11 @@ watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
     skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
+watr:Process-Composting a watr:Class, watr:Process-Composting ;
+    rdfs:label "Composting" ;
+    skos:definition "Biological degradation of organic materials under controlled aerobic conditions." ;
+    rdfs:subClassOf watr:Process-BiosolidsDisposal .
+
 watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
     rdfs:label "Land Application" ;
     skos:definition "Beneficial reuse of biosolids by spreading on agricultural land." ;
