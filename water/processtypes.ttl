@@ -454,6 +454,16 @@ watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
+watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;
+    rdfs:label "Hydrolysis" ;
+    skos:definition "A process reaction in which a water molecule is consumed to split a larger molecule into smaller fragments." ;
+    rdfs:subClassOf watr:Process-ChemicalProcess .
+
+watr:Process-ThermalHydrolysis a watr:Class, watr:Process-ThermalHydrolysis ;
+    rdfs:label "Thermal Hydrolysis" ;
+    skos:definition "A process that breaks down complex organic matter into soluble compounds using heat and pressure." ;
+    rdfs:subClassOf watr:Process-Hydrolysis .
+
 watr:Process-Cleaning a watr:Class, watr:Process-Cleaning ;
     rdfs:label "Cleaning" ;
     skos:definition "A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment." ;
