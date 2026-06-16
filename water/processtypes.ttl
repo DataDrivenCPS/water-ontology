@@ -416,13 +416,13 @@ watr:Process-UCT a watr:Class, watr:Process-UCT ;
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
-    skos:definition "A filtration method that uses biological processes to remove contaminants (e.g., trickling filter)." ;
+    skos:definition "A filtration method that uses biological processes to remove contaminants." ;
     rdfs:subClassOf watr:Process-BiologicalProcess, watr:Process-Filtration .
 
-watr:Process-TricklingFiltration a watr:Class, watr:Process-Biofiltration ;
+watr:Process-TricklingFiltration a watr:Class, watr:Process-TricklingFiltration ;
     rdfs:label "TricklingFiltration" ;
     skos:definition "Trickling filter using any media (e.g., plastic, sand, gravel, etc.)" ;
-    rdfs:subClassOf watr:Process-Biofiltration .
+    rdfs:subClassOf watr:Process-BiologicallyActiveFiltration .
 
 watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-BiologicallyActiveFiltration ;
     rdfs:label "Biologically Active Filtration (BAF)" ;
