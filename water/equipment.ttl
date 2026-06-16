@@ -453,29 +453,14 @@ watr:SepticTank
     a watr:Class ;
     rdfs:label "Septic Tank" ;
     rdfs:comment "A septic tank for on-site wastewater treatment" ;
-    rdfs:subClassOf watr:Tank ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of SepticTank must have the Sedimentation process." ;
-    ] .
+    rdfs:subClassOf watr:SedimentationTank .
 
 watr:ImhoffTank
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Imhoff Tank" ;
     rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
-    rdfs:subClassOf watr:SedimentationTank ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of ImhoffTank must have the Sedimentation process." ;
-    ] .
+    rdfs:subClassOf watr:SepticTank .
 
 watr:Screen
     a  sh:NodeShape ;
@@ -799,14 +784,6 @@ watr:MembraneBioreactor
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MembraneBioreactor must have either the Microfiltration or Ultrafiltration process." ;
-    ] ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of MembraneBioreactor must have the Biofiltration process." ;
     ] .
 
 watr:MicrofiltrationUnit
@@ -854,11 +831,10 @@ watr:MediaFiltrationUnit
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of MediaFiltration must have the MediaFiltration process." ;
+        sh:hasValue watr:Process-MediaFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MediaFiltrationUnit must have the MediaFiltration process." ;
     ] .
 
 watr:RapidSandFilter
@@ -866,7 +842,7 @@ watr:RapidSandFilter
     a watr:Class ;
     rdfs:label "Rapid Sand Filter" ;
     rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
-    rdfs:subClassOf watr:MediaFiltration ;
+    rdfs:subClassOf watr:MediaFiltrationUnit ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-RapidSandFiltration ];

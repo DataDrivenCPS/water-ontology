@@ -422,7 +422,7 @@ watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
 watr:Process-TricklingFiltration a watr:Class, watr:Process-TricklingFiltration ;
     rdfs:label "TricklingFiltration" ;
     skos:definition "Trickling filter using any media (e.g., plastic, sand, gravel, etc.)" ;
-    rdfs:subClassOf watr:Process-BiologicallyActiveFiltration .
+    rdfs:subClassOf watr:Process-Biofiltration .
 
 watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-BiologicallyActiveFiltration ;
     rdfs:label "Biologically Active Filtration (BAF)" ;

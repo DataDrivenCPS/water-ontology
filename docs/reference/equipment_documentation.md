@@ -96,6 +96,18 @@
 
 **Superclass:** SeparationTank
 
+## SepticTank
+
+**Description:** A septic tank for on-site wastewater treatment
+
+**Superclass:** SedimentationTank
+
+## ImhoffTank
+
+**Description:** A sedimentation tank specifically designed for septic treatment
+
+**Superclass:** SepticTank
+
 ## Screen
 
 **Description:** An equipment used for separation
@@ -226,7 +238,13 @@
 
 **Description:** A filter system that treats wastewater by trickling it over a bed of rocks or plastic
 
-**Superclass:** Filter, Reactor
+**Superclass:** Filter
+
+## MovingBedBioreactor
+
+**Description:** MBBR process using suspended growth media in a tank
+
+**Superclass:** Filter
 
 ## MembraneBioreactor
 

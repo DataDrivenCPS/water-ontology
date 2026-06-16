@@ -138,6 +138,24 @@
 
 **Superclass:** HeavyMetalRemovalAgent
 
+## Oxidizing Agent
+
+**Description:** Class for oxidizing agents used in water treatment
+
+**Superclass:** WastewaterTreatmentChemical
+
+## Hydrogen Peroxide
+
+**Description:** Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes
+
+**Superclass:** OxidizingAgent
+
+## Reducing Agent
+
+**Description:** Class for reducing agents used in water treatment
+
+**Superclass:** WastewaterTreatmentChemical
+
 ## Constituent-Organics
 
 **Description:** Constituent-Organics

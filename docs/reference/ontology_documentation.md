@@ -134,6 +134,22 @@
 
 **Superclass URI :** urn:nawi-water-ontology#SeparationTank
 
+## SepticTank
+
+**Description:** A septic tank for on-site wastewater treatment
+
+**URI:** urn:nawi-water-ontology#SepticTank
+
+**Superclass URI :** urn:nawi-water-ontology#SedimentationTank
+
+## ImhoffTank
+
+**Description:** A sedimentation tank specifically designed for septic treatment
+
+**URI:** urn:nawi-water-ontology#ImhoffTank
+
+**Superclass URI :** urn:nawi-water-ontology#SepticTank
+
 ## Screen
 
 **Description:** An equipment used for separation
@@ -308,7 +324,15 @@
 
 **URI:** urn:nawi-water-ontology#TricklingFilter
 
-**Superclass URI :** urn:nawi-water-ontology#Filter, urn:nawi-water-ontology#Reactor
+**Superclass URI :** urn:nawi-water-ontology#Filter
+
+## MovingBedBioreactor
+
+**Description:** MBBR process using suspended growth media in a tank
+
+**URI:** urn:nawi-water-ontology#MovingBedBioreactor
+
+**Superclass URI :** urn:nawi-water-ontology#Filter
 
 ## MembraneBioreactor
 
@@ -346,7 +370,7 @@
 
 **Description:** A filter system that uses a bed of material to filter out contaminants
 
-**URI:** urn:nawi-water-ontology#MediaFiltration
+**URI:** urn:nawi-water-ontology#MediaFiltrationUnit
 
 **Superclass URI :** urn:nawi-water-ontology#Filter
 
