@@ -339,25 +339,25 @@ watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
     skos:definition "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 
-watr:Process-Incineration a watr:Class, watr:Process-Incineration ;
-    rdfs:label "Incineration" ;
+watr:Process-Combustion a watr:Class, watr:Process-Combustion ;
+    rdfs:label "Combustion" ;
     skos:definition "A process that combusts biosolids or biogas." ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
     rdfs:label "Fluidized Bed Incineration" ;
     skos:definition "A process that combusts a constantly moving bed of biosolids." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHearthIncineration ;
     rdfs:label "Multiple Hearth Incineration (MHI)" ;
     skos:definition "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
-    rdfs:subClassOf watr:Process-Incineration .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
     rdfs:label "Cogeneration" ;
     skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." ;
-    rdfs:subClassOf watr:Process-Incineration .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-BiologicalProcess a watr:Class, watr:Process-BiologicalProcess ;
     rdfs:label "Biological Process" ;
