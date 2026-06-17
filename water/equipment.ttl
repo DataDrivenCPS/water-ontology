@@ -310,7 +310,7 @@ watr:MembraneAeratedBiofilmReaactor
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of MembraneAeratedBiofilmReaactor must have the Aeration process." ;
+        sh:message "Instances of MembraneAeratedBiofilmReactor must have the Aeration process." ;
     ] .
     
 watr:CoagulationBasin
@@ -784,8 +784,15 @@ watr:MembraneBioreactor
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of MembraneBioreactor must have either the Microfiltration or Ultrafiltration process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MembraneBioreactor must have the Biofiltration process." ;
     ] .
-
+    
 watr:MicrofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;

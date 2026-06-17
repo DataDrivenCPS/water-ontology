@@ -378,7 +378,7 @@ watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
 
 watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
     rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
-    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zoneswith two anoxic and two aerobic zones." ;
+    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zones." ;
     rdfs:subClassOf watr:Process-ActivatedSludge ;
     rdfs:subClassOf watr:Process-Nitrification ;
     rdfs:subClassOf watr:Process-Denitrification .
