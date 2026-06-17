@@ -262,11 +262,11 @@
 
 **Superclass URI :** urn:nawi-water-ontology#Thickener
 
-## CentrifugalThickener
+## Centrifuge
 
 **Description:** A thickener that uses centrifugal force to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#CentrifugalThickener
+**URI:** urn:nawi-water-ontology#Centrifuge
 
 **Superclass URI :** urn:nawi-water-ontology#Thickener
 

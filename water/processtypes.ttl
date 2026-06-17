@@ -109,6 +109,11 @@ watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
     skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
+watr:Process-Thickening a watr:Class, watr:Process-Thickening ;
+    rdfs:label "Thickening" ;
+    skos:definition "A process to increase the solids content of a sludge or slurry." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
+
 watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
     rdfs:label "Dewatering" ;
     skos:definition "A process to remove or separate water from another material, typically solids." ;

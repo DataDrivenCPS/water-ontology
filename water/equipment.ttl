@@ -598,7 +598,14 @@ watr:Thickener
     a watr:Class ;
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
-    rdfs:subClassOf s223:Equipment, watr:UnitProcess.
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Thickening ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Thickener must have the Thickening process." ;
+    ] .
 
 watr:DissolvedAirFlotationThickener
     a  sh:NodeShape ;
@@ -680,6 +687,34 @@ watr:RotaryDrumThickener
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RotaryDrumThickener must have the Filtration process." ;
+    ] .
+
+watr:BeltFilterPress
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Belt Filter Press" ;
+    rdfs:comment "A dewatering unit that uses a belt system to separate solids from liquids" ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Filtration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of BeltFilterPress must have the Filtration process." ;
+    ] .
+
+watr:CentrifugalDewateringUnit
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Centrifugal Dewatering Unit" ;
+    rdfs:comment "A dewatering unit that uses centrifugal force to separate solids from liquids" ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Centrifugation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of CentrifugalDewateringUnit must have the Centrifugation process." ;
     ] .
 
 watr:Filter

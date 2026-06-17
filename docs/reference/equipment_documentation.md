@@ -192,7 +192,7 @@
 
 **Superclass:** Thickener
 
-## CentrifugalThickener
+## Centrifuge
 
 **Description:** A thickener that uses centrifugal force to separate solids from liquids
 
