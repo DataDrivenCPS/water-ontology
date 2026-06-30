@@ -1,164 +1,362 @@
 # EnumerationKinds Classes
 
-## Constituent-Metals
+## DataQuality
 
-**Description:** Constituent-Metals
+**Description:** This EnumerationKind describes methods of data processing, aggregation, or imputation
 
-**Superclass:** Medium-Constituent
+**Superclass:** EnumerationKind
 
-## Constituent-Salt
+## Filter
 
-**Description:** Constituent-Salt
+**Description:** Parent class for filtering methods to remove outliers or unwanted data points
 
-**Superclass:** Medium-Constituent
+**Superclass:** EnumerationKind-DataProcessing
 
-## Salt-NaCl
+## Aggregate
 
-**Description:** Salt-NaCl
+**Description:** Parent class for aggregation functions that combine multiple data points
 
-**Superclass:** Constituent-Salt
+**Superclass:** EnumerationKind-DataProcessing
 
-## Water-Brine
+## Mean
 
-**Description:** Water-Brine
+**Description:** Arithmetic mean (average) of data points
 
-**Superclass:** Fluid-Water
+**Superclass:** DataProcessing-Aggregate
 
-## Brine-15Percent
+## Median
 
-**Description:** Brine-15Percent
+**Description:** Middle value of sorted data points
 
-**Superclass:** Water-Brine
+**Superclass:** DataProcessing-Aggregate
 
-## Brine-5to10Percent
+## Maximum
 
-**Description:** Brine-5to10Percent
+**Description:** Maximum value from data points
 
-**Superclass:** Water-Brine
+**Superclass:** DataProcessing-Aggregate
 
-## Wastewater Treatment Chemical
+## Minimum
 
-**Description:** Base class for all chemicals used in wastewater treatment
+**Description:** Minimum value from data points
 
-**Superclass:** Medium-Constituent
+**Superclass:** DataProcessing-Aggregate
 
-## Coagulant
+## Sum
 
-**Description:** Class for coagulants used in wastewater treatment
+**Description:** Sum of all data points
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** DataProcessing-Aggregate
 
-## Alum
+## Count
 
-**Description:** Aluminum sulfate (alum), a common coagulant
+**Description:** Count of data points
 
-**Superclass:** Coagulant
+**Superclass:** DataProcessing-Aggregate
 
-## Ferric Chloride
+## Standard Deviation
 
-**Description:** Ferric chloride, a coagulant for wastewater treatment
+**Description:** Standard deviation of data points
 
-**Superclass:** Coagulant
+**Superclass:** DataProcessing-Aggregate
 
-## Polyaluminum Chloride
+## Variance
 
-**Description:** Polyaluminum chloride (PAC), a coagulant
+**Description:** Variance of data points
 
-**Superclass:** Coagulant
+**Superclass:** DataProcessing-Aggregate
 
-## Flocculant
+## Range
 
-**Description:** Class for flocculants used in wastewater treatment
+**Description:** Difference between maximum and minimum values
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** DataProcessing-Aggregate
 
-## Polyacrylamide
+## Mode
 
-**Description:** Polyacrylamide, a common flocculant
+**Description:** Most frequently occurring value in data points
 
-**Superclass:** Flocculant
+**Superclass:** DataProcessing-Aggregate
 
-## pH Adjuster
+## Aggregation
 
-**Description:** Class for pH adjusters used in wastewater treatment
+**Description:** EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aspect
 
-## Lime
+## Total
 
-**Description:** Calcium hydroxide (lime), used to increase pH
+**Description:** The associated property represents the total amount of the characterized quantity or substance.
 
-**Superclass:** pHAdjuster
+**Superclass:** EnumerationKind-Aggregation
 
-## Sulfuric Acid
+## Maximum
 
-**Description:** Sulfuric acid, used to decrease pH
+**Description:** The associated property represents the maximum value over an aggregation scope.
 
-**Superclass:** pHAdjuster
+**Superclass:** EnumerationKind-Aggregation
 
-## Disinfectant
+## Minimum
 
-**Description:** Class for disinfectants used in wastewater treatment
+**Description:** The associated property represents the minimum value over an aggregation scope.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aggregation
 
-## Chlorine
+## Mean
 
-**Description:** Chlorine, a common disinfectant
+**Description:** The associated property represents the arithmetic mean over an aggregation scope.
 
-**Superclass:** Disinfectant
+**Superclass:** EnumerationKind-Aggregation
 
-## Ozone
+## Median
 
-**Description:** Ozone, an advanced disinfectant
+**Description:** The associated property represents the median value over an aggregation scope.
 
-**Superclass:** Disinfectant
+**Superclass:** EnumerationKind-Aggregation
 
-## Odor Control Agent
+## Percentile
 
-**Description:** Class for chemicals used for odor control
+**Description:** The associated property represents the percentile value over an aggregation scope.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aggregation
 
-## Activated Carbon
+## Sum
 
-**Description:** Activated carbon, used to absorb odors
+**Description:** The associated property represents the sum over an aggregation scope.
 
-**Superclass:** OdorControlAgent
+**Superclass:** EnumerationKind-Aggregation
 
-## Heavy Metal Removal Agent
+## Count
 
-**Description:** Class for chemicals used to remove heavy metals
+**Description:** The associated property represents a count over an aggregation scope.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aggregation
 
-## Sodium Sulfide
+## Range
 
-**Description:** Sodium sulfide, used to precipitate heavy metals
+**Description:** The associated property represents the difference between maximum and minimum over an aggregation scope.
 
-**Superclass:** HeavyMetalRemovalAgent
+**Superclass:** EnumerationKind-Aggregation
 
-## Oxidizing Agent
+## Mode
 
-**Description:** Class for oxidizing agents used in water treatment
+**Description:** The associated property represents the most frequently occurring value over an aggregation scope.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aggregation
 
-## Hydrogen Peroxide
+## Variance
 
-**Description:** Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes
+**Description:** The associated property represents the variance over an aggregation scope.
 
-**Superclass:** OxidizingAgent
+**Superclass:** EnumerationKind-Aggregation
 
-## Reducing Agent
+## Standard Deviation
 
-**Description:** Class for reducing agents used in water treatment
+**Description:** The associated property represents the standard deviation over an aggregation scope.
 
-**Superclass:** WastewaterTreatmentChemical
+**Superclass:** EnumerationKind-Aggregation
 
-## Constituent-Organics
+## Interpolation
 
-**Description:** Constituent-Organics
+**Description:** Parent class for interpolation methods to estimate values between known data points
 
-**Superclass:** Medium-Constituent
+**Superclass:** EnumerationKind-DataProcessing
+
+## Linear Interpolation
+
+**Description:** Linear interpolation between two adjacent data points
+
+**Superclass:** DataProcessing-Interpolation
+
+## Spline Interpolation
+
+**Description:** Cubic spline interpolation for smooth curves
+
+**Superclass:** DataProcessing-Interpolation
+
+## Polynomial Interpolation
+
+**Description:** Polynomial interpolation using multiple data points
+
+**Superclass:** DataProcessing-Interpolation
+
+## Nearest Neighbor
+
+**Description:** Use the value of the nearest known data point
+
+**Superclass:** DataProcessing-Interpolation
+
+## Forward Fill
+
+**Description:** Propagate last valid observation forward to fill gaps
+
+**Superclass:** DataProcessing-Interpolation
+
+## Backward Fill
+
+**Description:** Propagate next valid observation backward to fill gaps
+
+**Superclass:** DataProcessing-Interpolation
+
+## Normalization
+
+**Description:** Parent class for normalization methods to scale data to a standard range
+
+**Superclass:** EnumerationKind-DataProcessing
+
+## Min-Max Normalization
+
+**Description:** Scale data to a fixed range, typically [0, 1]
+
+**Superclass:** DataProcessing-Normalization
+
+## Z-Score Normalization
+
+**Description:** Standardize data to have mean=0 and standard deviation=1
+
+**Superclass:** DataProcessing-Normalization
+
+## Decimal Scaling
+
+**Description:** Normalize by moving the decimal point of values
+
+**Superclass:** DataProcessing-Normalization
+
+## Synchronization
+
+**Description:** Parent class for synchronization methods to align data from multiple sources to common time intervals
+
+**Superclass:** EnumerationKind-DataProcessing
+
+## Resampling
+
+**Description:** Resample data to a different frequency or time interval
+
+**Superclass:** DataProcessing-Synchronization
+
+## Upsampling
+
+**Description:** Increase the sampling frequency of data to a higher rate
+
+**Superclass:** DataProcessing-Synchronization
+
+## Downsampling
+
+**Description:** Decrease the sampling frequency of data to a lower rate
+
+**Superclass:** DataProcessing-Synchronization
+
+## Time Alignment
+
+**Description:** Align data points from different sources to common timestamps
+
+**Superclass:** DataProcessing-Synchronization
+
+## Error Metrics
+
+**Description:** Parent class for error and uncertainty measurements
+
+**Superclass:** EnumerationKind-DataProcessing
+
+## Absolute Error
+
+**Description:** Absolute difference between measured and true/reference value
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Relative Error
+
+**Description:** Error expressed as a percentage of the true/reference value
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Mean Absolute Error (MAE)
+
+**Description:** Average of absolute errors across multiple measurements
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Mean Squared Error (MSE)
+
+**Description:** Average of squared errors
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Root Mean Squared Error (RMSE)
+
+**Description:** Square root of MSE, in same units as measurements
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Mean Absolute Percentage Error (MAPE)
+
+**Description:** Average of absolute percentage errors
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Bias
+
+**Description:** Systematic deviation from true value (trueness measure)
+
+**Superclass:** DataProcessing-ErrorMetrics
+
+## Precision Metrics
+
+**Description:** Metrics for precision and repeatability measurements
+
+**Superclass:** EnumerationKind-DataProcessing
+
+## Repeatability Standard Deviation
+
+**Description:** Standard deviation under repeatability conditions (same operator, equipment, short time)
+
+**Superclass:** DataProcessing-PrecisionMetrics
+
+## Reproducibility Standard Deviation
+
+**Description:** Standard deviation under reproducibility conditions (different operators, equipment, time)
+
+**Superclass:** DataProcessing-PrecisionMetrics
+
+## Coefficient of Variation
+
+**Description:** Ratio of standard deviation to mean (relative precision)
+
+**Superclass:** DataProcessing-PrecisionMetrics
+
+## Confidence Interval
+
+**Description:** Range within which true value likely falls with specified confidence level
+
+**Superclass:** DataProcessing-PrecisionMetrics
+
+## Accuracy Metrics
+
+**Description:** Combined accuracy measures (precision and trueness)
+
+**Superclass:** EnumerationKind-DataProcessing
+
+## Total Uncertainty
+
+**Description:** Combined standard uncertainty from all sources
+
+**Superclass:** DataProcessing-AccuracyMetrics
+
+## Expanded Uncertainty
+
+**Description:** Total uncertainty multiplied by coverage factor
+
+**Superclass:** DataProcessing-AccuracyMetrics
+
+## Percent Recovery
+
+**Description:** Ratio of measured to known value (for spike/recovery tests)
+
+**Superclass:** DataProcessing-AccuracyMetrics
+
+## R-Squared
+
+**Description:** Coefficient of determination for calibration curves
+
+**Superclass:** DataProcessing-AccuracyMetrics
 
