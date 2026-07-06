@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from brick_tq_shacl import validate
+import shifty
 from ontoenv import OntoEnv
 from rdflib import Graph, Namespace
 
@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "water"
+S223_DIR = ROOT / "s223"
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -63,7 +64,7 @@ def _ontology_closure_for_example(example_graph: Graph) -> tuple[Graph, list[str
     env = OntoEnv(
         path=ROOT,
         recreate=True,
-        search_directories=[str(WATER_DIR)],
+        search_directories=[str(WATER_DIR), str(S223_DIR)],
         includes=["*.ttl"],
     )
     env.update(all=True)
@@ -74,10 +75,9 @@ def _validation_result(example_file: Path) -> dict:
     """Validate one example graph and return the SHACL result payload."""
     data_graph = Graph().parse(example_file)
     ontology_shapes_graph, imported = _ontology_closure_for_example(data_graph)
-    valid, report_graph, report_string = validate(
+    valid, report_graph, report_string = shifty.validate(
         data_graph,
-        shape_graphs=ontology_shapes_graph,
-        min_iterations=5,
+        shacl_graph=ontology_shapes_graph,
     )
     return {
         "valid": valid,

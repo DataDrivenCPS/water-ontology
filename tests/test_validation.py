@@ -1,7 +1,7 @@
 import logging
 import rdflib
 from ontoenv import OntoEnv
-from brick_tq_shacl import validate
+import shifty
 
 
 logger = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ def test_ontology_validates():
     g = rdflib.Graph().parse("libraries/water.ttl")
     imported = env.import_dependencies(g)
     print(f"Imported {imported}")
-    valid, _, report_string = validate(g, min_iterations=5)
+    valid, _, report_string = shifty.validate(g)
     print(report_string)
     assert valid, f"Ontology does not pass SHACL validation:\n{report_string}"
 
