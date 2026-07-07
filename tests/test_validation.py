@@ -1,32 +1,24 @@
 import logging
-from pathlib import Path
 
-import rdflib
-from ontoenv import OntoEnv
 import shifty
+from rdflib import Graph
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-ROOT = Path(__file__).resolve().parents[1]
-WATER_DIR = ROOT / "water"
-S223_DIR = ROOT / "s223"
 
-def test_ontology_validates():
-    g = rdflib.Graph()
-    for path in sorted(WATER_DIR.glob("*.ttl")):
-        g.parse(path, format="ttl")
-    env = OntoEnv(
-        path=ROOT,
-        recreate=True,
-        search_directories=[str(WATER_DIR), str(S223_DIR)],
-        includes=["*.ttl"],
+def test_ontology_validates(water_graph: Graph, ontology_shapes_graph: Graph):
+    # Default graph_mode="union" selects focus nodes from water_graph alone
+    # (so we only validate the water ontology's own classes/shapes, not every
+    # node in the imported closure) while still evaluating constraints (e.g.
+    # sh:class checks against qudt-defined types) against the full closure.
+    valid, _, report_string = shifty.validate(
+        water_graph,
+        shacl_graph=ontology_shapes_graph,
+        # match conftest.py's examples: only sh:Violation fails the test,
+        # not sh:Warning/sh:Info (shifty's own default is "info").
+        minimum_severity="violation",
     )
-    env.update(all=True)
-    imported = env.import_dependencies(g, fetch_missing=True)
-    print(f"Imported {imported}")
-    valid, _, report_string = shifty.validate(g)
     print(report_string)
     assert valid, f"Ontology does not pass SHACL validation:\n{report_string}"
-
