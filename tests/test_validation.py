@@ -16,8 +16,6 @@ def test_ontology_validates(water_graph: Graph, ontology_shapes_graph: Graph):
     valid, _, report_string = shifty.validate(
         water_graph,
         shacl_graph=ontology_shapes_graph,
-        # match conftest.py's examples: only sh:Violation fails the test,
-        # not sh:Warning/sh:Info (shifty's own default is "info").
         minimum_severity="violation",
     )
     print(report_string)

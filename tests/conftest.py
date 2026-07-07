@@ -79,10 +79,6 @@ def ontology_shapes_graph(water_graph: Graph) -> Graph:
     )
     env.update(all=True)
     shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
-    # get_dependencies only returns ontologies reached via an owl:imports triple;
-    # water_graph is the import root itself (nothing imports it), so its own
-    # triples (e.g. water/ontology.ttl's `watr:Class rdfs:subClassOf rdfs:Class`,
-    # which makes implicit SHACL class-targeting work at all) must be added back.
     shapes_graph += water_graph
     return shapes_graph
 
