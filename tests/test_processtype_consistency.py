@@ -26,7 +26,7 @@ from rdflib import Graph, Namespace, URIRef
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WATER_TTL = ROOT / "libraries" / "water.ttl"
+WATER_DIR = ROOT / "water"
 WATR = Namespace("urn:nawi-water-ontology#")
 
 
@@ -124,7 +124,8 @@ def _find_process_class_ancestor_set(cls: URIRef, g: Graph):
 @pytest.fixture(scope="module")
 def water_graph() -> Graph:
     g = Graph()
-    g.parse(WATER_TTL, format="ttl")
+    for path in sorted(WATER_DIR.glob("*.ttl")):
+        g.parse(path, format="ttl")
     return g
 
 

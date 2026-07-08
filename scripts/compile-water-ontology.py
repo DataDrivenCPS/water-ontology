@@ -1,6 +1,4 @@
 import rdflib
-from brick_tq_shacl import validate, infer
-import pyshacl
 import sys
 import ontoenv
 

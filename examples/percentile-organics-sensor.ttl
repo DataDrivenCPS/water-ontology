@@ -1,4 +1,4 @@
-@prefix : <urn:nawi-water-ontology/examples/aggregation-organics-sensor#> .
+@prefix : <urn:nawi-water-ontology/examples/percentile-organics-sensor#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
@@ -7,11 +7,11 @@
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix watr: <urn:nawi-water-ontology#> .
 
-<urn:nawi-water-ontology/examples/aggregation-organics-sensor>
+<urn:nawi-water-ontology/examples/percentile-organics-sensor>
     a owl:Ontology ;
     owl:imports <urn:nawi-water-ontology> ;
-    rdfs:label "Aggregation Property Example" ;
-    rdfs:comment "Example of a sensor observing an organics concentration property with a water-specific aggregation marker on the property." ;
+    rdfs:label "Percentile Aggregation Property Example" ;
+    rdfs:comment "Example of a sensor observing an organics concentration property with a 95th-percentile aggregation marker on the derived property." ;
 .
 
 :sample_location
@@ -31,7 +31,7 @@
     rdfs:label "Organics Concentration" ;
     s223:ofMedium s223:Fluid-Water ;
     s223:ofSubstance watr:Constituent-Organics ;
-    watr:hasProcessedData :organics_daily_max ;
+    watr:hasProcessedData :organics_95th_percentile ;
     qudt:hasQuantityKind quantitykind:MassConcentration ;
     qudt:hasUnit unit:MilliGM-PER-L ;
 .
@@ -48,13 +48,8 @@
 .
 
 :Percentile-95
-    a watr:Class ;
-    # Should we keep punning? Should it just be a subclass of watr:Aggregation-Percentile?
-    a :Percentile-95 ;
-    rdfs:subClassOf watr:Aggregation-Percentile ;
+    a watr:Aggregation-Percentile ;
     rdfs:label "95th Percentile" ;
-    s223:hasValue 95 ;
-    qudt:hasUnit unit:PERCENT ;
 .
 
 :rolling_window_24h

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from brick_tq_shacl import validate
+import shifty
 from ontoenv import OntoEnv
 from rdflib import Graph, Namespace
 
@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "water"
+S223_DIR = ROOT / "s223"
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -58,46 +59,57 @@ def _has_example_violations(data_graph: Graph, report_graph: Graph) -> bool:
     return False
 
 
-def _ontology_closure_for_example(example_graph: Graph) -> tuple[Graph, list[str]]:
-    """Resolve an example graph's imports into a dedicated closure graph."""
+@pytest.fixture(scope="session")
+def water_graph() -> Graph:
+    """Parse the water ontology's own Turtle files, merged, once per session."""
+    g = Graph()
+    for path in sorted(WATER_DIR.glob("*.ttl")):
+        g.parse(path, format="ttl")
+    return g
+
+
+@pytest.fixture(scope="session")
+def ontology_shapes_graph(water_graph: Graph) -> Graph:
+    """Resolve the water ontology's full import closure once per session."""
     env = OntoEnv(
         path=ROOT,
         recreate=True,
-        search_directories=[str(WATER_DIR)],
+        search_directories=[str(WATER_DIR), str(S223_DIR)],
         includes=["*.ttl"],
     )
     env.update(all=True)
-    return env.get_dependencies(example_graph, fetch_missing=True)
+    shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
+    shapes_graph += water_graph
+    return shapes_graph
 
 
-def _validation_result(example_file: Path) -> dict:
+def _validation_result(example_file: Path, ontology_shapes_graph: Graph) -> dict:
     """Validate one example graph and return the SHACL result payload."""
     data_graph = Graph().parse(example_file)
-    ontology_shapes_graph, imported = _ontology_closure_for_example(data_graph)
-    valid, report_graph, report_string = validate(
+    valid, report_graph, report_string = shifty.validate(
         data_graph,
-        shape_graphs=ontology_shapes_graph,
-        min_iterations=5,
+        shacl_graph=ontology_shapes_graph,
     )
     return {
         "valid": valid,
         "report_graph": report_graph,
         "report_string": report_string,
         "data_graph": data_graph,
-        "imported_ontologies": imported,
         "has_example_violations": _has_example_violations(data_graph, report_graph),
     }
 
 
 @pytest.fixture
-def example_validation_result(example_file: Path) -> dict:
+def example_validation_result(
+    example_file: Path, ontology_shapes_graph: Graph
+) -> dict:
     """Return the SHACL validation result for a conforming example."""
-    return _validation_result(example_file)
+    return _validation_result(example_file, ontology_shapes_graph)
 
 
 @pytest.fixture
 def nonconforming_example_validation_result(
-    nonconforming_example_file: Path,
+    nonconforming_example_file: Path, ontology_shapes_graph: Graph
 ) -> dict:
     """Return the SHACL validation result for a nonconforming example."""
-    return _validation_result(nonconforming_example_file)
+    return _validation_result(nonconforming_example_file, ontology_shapes_graph)

@@ -1,19 +1,22 @@
 import logging
-import rdflib
-from ontoenv import OntoEnv
-from brick_tq_shacl import validate
+
+import shifty
+from rdflib import Graph
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-def test_ontology_validates():
-    env = OntoEnv(offline=False, recreate=True)
-    env.add("https://open223.info/223p.ttl")
-    g = rdflib.Graph().parse("libraries/water.ttl")
-    imported = env.import_dependencies(g)
-    print(f"Imported {imported}")
-    valid, _, report_string = validate(g, min_iterations=5)
+
+def test_ontology_validates(water_graph: Graph, ontology_shapes_graph: Graph):
+    # Default graph_mode="union" selects focus nodes from water_graph alone
+    # (so we only validate the water ontology's own classes/shapes, not every
+    # node in the imported closure) while still evaluating constraints (e.g.
+    # sh:class checks against qudt-defined types) against the full closure.
+    valid, _, report_string = shifty.validate(
+        water_graph,
+        shacl_graph=ontology_shapes_graph,
+        minimum_severity="violation",
+    )
     print(report_string)
     assert valid, f"Ontology does not pass SHACL validation:\n{report_string}"
-
