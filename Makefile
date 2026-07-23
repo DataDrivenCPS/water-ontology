@@ -5,6 +5,8 @@ libraries/water.ttl: initialize-environment
 
 initialize-environment:
 	uv run ontoenv init --offline -- water
+	uv run ontoenv config set offline true
+	uv run ontoenv config set remote_cache_ttl_secs 31536000
 
 install-jupyter-venv:
 	uv add ipykernel
