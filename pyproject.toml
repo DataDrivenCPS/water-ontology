@@ -30,3 +30,6 @@ buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "deve
 
 [tool.uv]
 override-dependencies = ["brick-tq-shacl==0.4.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
