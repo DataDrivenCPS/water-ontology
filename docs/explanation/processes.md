@@ -92,6 +92,38 @@ You can see the connections (the `Pipe`s) and connection points in the image at 
 
 We use [`s223:mapsTo`](https://explore.open223.info/s223/mapsTo.html) to relate the connection points of internal equipment to the connection points of the containing equipment. This allows us to model the connections between the unit process and the equipment inside it, for example.
 
+### Media and Constituents
+
+A `ConnectionPoint` or `Connection` carries a *medium* — the substance flowing through it (e.g. water, a chemical, air). S223 decides whether two media are *compatible* (so a connection point and a connection can be joined, or two connection points on the same equipment can carry different streams) by comparing the *constituents* the media are `s223:composedOf`. Two pure media are compatible only if one is a subclass of the other; two mixture media are compatible when they share at least one constituent (either the same one, or one that is a subclass of the other).
+
+WaTr defines several aqueous media as subclasses of `s223:Fluid-Water`: `Water-Seawater`, `Water-Brackish`, `Water-Freshwater`, and `Water-Brine`. To make S223's compatibility rules recognize that these are all, fundamentally, water, each is declared `s223:composedOf` one or more constituents, sharing `s223:Constituent-H2O` with `s223:Fluid-Water` itself:
+
+```ttl
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+watr:Water-Seawater
+    rdfs:subClassOf s223:Fluid-Water ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent s223:Constituent-H2O ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] .
+```
+
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible — a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. The saline media additionally declare `watr:Salt-NaCl`, so a modeler can pin a specific salinity on a concrete instance (see the `examples/brine-composition.ttl` and `examples/ro-mixture-test.ttl` examples). `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content. No salinity value is fixed at the class level; the classes act as reusable templates, and concrete salinity belongs to specific instances.
+
 ## Processes
 
 Tr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
@@ -116,6 +148,33 @@ The process enacted by a unit process is defined by the `watr:hasProcess` proper
 ```
 
 WaTr defines a set of process types that can be used to describe the processes enacted by unit processes. These process types are defined in the `watr:Process` class and its subclasses. The process type is a high-level description of what the unit process does, without specifying how it is constructed.
+
+### Abstract and Concrete Process Requirements
+
+Process types form a subclass hierarchy (e.g. `Process-ReverseOsmosis` is a `Process-MembraneProcess`, which is a `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies — an *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
+
+```ttl
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+watr:Filter
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:class watr:Process-Filtration ;   # any filtration process
+        sh:minCount 1 ;
+    ] .
+
+watr:ReverseOsmosisMembrane
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:class watr:Process-ReverseOsmosis ;   # specifically RO
+        sh:minCount 1 ;
+    ] .
+```
+
+Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one — the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
+
+These constraints use `sh:class` with `sh:minCount 1` rather than `sh:qualifiedValueShape` with `sh:qualifiedValueShapesDisjoint true`. With disjoint qualified slots, the single specific process would conform to both the parent's slot and the child's, and the disjoint rule forbids a value from counting toward two sibling qualified shapes — so the value would be rejected from both and no concrete instance could ever validate. (`sh:qualifiedValueShapesDisjoint true` is only meaningful within a single `sh:property` block that has *multiple* `sh:qualifiedValueShape` siblings, which WaTr uses for equipment that genuinely requires two distinct processes at once, such as `MembraneBioreactor` requiring both a membrane filtration process and a biofiltration process.)
 
 
 ## Putting It All Together
