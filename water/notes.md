@@ -89,3 +89,33 @@ Notes on modeling of equipment June, 2024
 - getting rid of qudt subset file for now since its empty, though I think its probably worth having. 
 - Still some confusion between roles and equipment, and if equipment can be multiclassed. For example, plug flow reactors can also be ultraviolet disinfection units. Will that be somethign that is A UltravioletUnit and A plug flow reactor, or should one of these things be moved to a role. 
 - in Brick we would probably create a new class like UltraVioletDisinfectionPlugFlowReacotr. 
+
+
+hasProcess modeling (abstract parents, concrete children)
+----------------------------------------------------------
+The watr:hasProcess constraint on "abstract" equipment classes (Filter, Digester,
+DisinfectionUnit, SeparationTank, MediaFiltration) is expressed as a plain
+sh:class + sh:minCount 1, e.g. a Filter must have at least one Process-Filtration.
+Concrete subclasses (ReverseOsmosisMembrane, AnaerobicDigester, ChlorinationUnit,
+SedimentationTank, RapidSandFilter, ...) narrow that with their own sh:class for
+the more specific process (Process-ReverseOsmosis, etc.).
+
+Because the specific process is an rdfs:subClassOf the general one
+(Process-ReverseOsmosis -> Process-MembraneProcess -> Process-Filtration), a
+single specific process on an instance satisfies BOTH the inherited general
+constraint and the concrete one. The parents are effectively abstract: they
+define the kind of process the equipment performs, and the concrete subclass pins
+down exactly which one.
+
+This is why BOTH the parent shapes AND the concrete subclass shapes use sh:class
++ sh:minCount 1 instead of sh:qualifiedValueShape + sh:qualifiedValueShapesDisjoint.
+With disjoint qualified slots, the one specific process conforms to both the
+parent's slot and the child's, and the disjoint rule forbids a value from
+counting toward two sibling qualified shapes -- so the value is rejected from
+both and no concrete instance can ever validate. (Empirically the disjoint flag
+on the *child's* block is what fires the failure, so converting only the parent
+is not enough; the children must be sh:class too.)
+sh:qualifiedMaxCount 1 (already present) is what actually enforces "one process
+per equipment" if that's desired; the disjoint flag is only meaningful on a
+single sh:property block that has multiple sh:qualifiedValueShape siblings
+(e.g. MembraneBioreactor, which requires both MF/UF and Biofiltration).
