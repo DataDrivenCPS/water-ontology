@@ -163,3 +163,36 @@ Where a class asserts "performs at least this mechanism", use
 sh:qualifiedValueShape + sh:qualifiedMinCount 1, with NO
 sh:qualifiedValueShapesDisjoint. Note the qualified form drops the upper bound;
 add sh:qualifiedMaxCount 1 per slot if "exactly one of each" is wanted.
+
+One exception to that rule is watr:ElectroDialyticCrystallizer, which carries two
+bare sh:class constraints (Process-Electrodialysis and Process-Crystallization)
+that look mutually unsatisfiable. They are fine, because
+Process-ElectroDialyticCrystallization is an rdfs:subClassOf both, so one value
+satisfies both. There is a comment in equipment.ttl saying so.
+
+Guards against this whole family of mistakes
+--------------------------------------------
+Two checks exist so these do not have to be caught by eye:
+
+1. watr:ProcessAndRoleConstraintsReferenceDefinedClasses (in ontology.ttl) is a
+   SHACL shape, so tests/test_validation.py's "the ontology validates against
+   itself" test enforces it. It flags a watr:hasProcess or s223:hasRole
+   constraint naming a class that is defined nowhere in the import closure --
+   the leftover of a rename. Such a shape still parses, but no value can ever
+   carry the missing type, so the equipment silently becomes impossible to
+   validate. It caught two live cases when it was added: watr:Boiler still
+   required Process-Incineration after that class was renamed to
+   Process-Combustion, and watr:Tank referenced s223:Role-Overflow, which S223
+   does not define (WaTr now defines watr:Role-Overflow next to watr:Role-Drain).
+
+2. tests/test_processtype_consistency.py checks that a subclass refines the
+   processes its ancestors require, and -- where the ancestor states its
+   requirement as a bare sh:class -- that EVERY process the subclass requires
+   refines it, since a bare sh:class must hold for every value on the path.
+
+Avoid sh:qualifiedMinCount 0. It asserts nothing at all: it reads as "may have
+one of these" but permits any graph whatsoever. Tank's drain and overflow
+constraints and Reactor's recirculation constraint were written that way and were
+silently vacuous. They now say what they meant -- "if such a connection point
+exists it must be a fluid outlet" -- expressed as sh:qualifiedMaxCount 0 over the
+counterexample (a connection point carrying the role that is NOT a fluid outlet).

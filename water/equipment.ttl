@@ -50,37 +50,51 @@ watr:Tank a sh:NodeShape ;
             ] ;
         ] ;
     ] ;
+    # A drain is optional, but if the tank has one it must be a fluid outlet.
+    # Expressed as "zero connection points carrying the drain role that are not
+    # fluid outlets" -- the earlier sh:qualifiedMinCount 0 form asserted nothing.
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A tank may have a drain connection point" ;
-        sh:qualifiedMinCount 0 ;
+        rdfs:comment "A tank's drain connection point, if it has one, is a fluid outlet" ;
+        sh:qualifiedMaxCount 0 ;
         sh:qualifiedValueShape [
-            sh:class s223:OutletConnectionPoint ;
-            sh:property [
-                sh:path s223:hasMedium ;
-                sh:class s223:Mix-Fluid ;
-            ] ;
             sh:property [
                 sh:path s223:hasRole ;
                 sh:hasValue watr:Role-Drain ;
+                sh:minCount 1 ;
+            ] ;
+            sh:not [
+                sh:class s223:OutletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:class s223:Mix-Fluid ;
+                    sh:minCount 1 ;
+                ] ;
             ] ;
         ] ;
+        sh:message "A drain connection point on a Tank must be an outlet carrying a fluid." ;
     ] ;
+    # Same treatment for the optional overflow connection point.
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A tank may have an overflow connection point" ;
-        sh:qualifiedMinCount 0 ;
+        rdfs:comment "A tank's overflow connection point, if it has one, is a fluid outlet" ;
+        sh:qualifiedMaxCount 0 ;
         sh:qualifiedValueShape [
-            sh:class s223:OutletConnectionPoint ;
-            sh:property [
-                sh:path s223:hasMedium ;
-                sh:class s223:Mix-Fluid ;
-            ] ;
             sh:property [
                 sh:path s223:hasRole ;
-                sh:hasValue s223:Role-Overflow ;
+                sh:hasValue watr:Role-Overflow ;
+                sh:minCount 1 ;
+            ] ;
+            sh:not [
+                sh:class s223:OutletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:class s223:Mix-Fluid ;
+                    sh:minCount 1 ;
+                ] ;
             ] ;
         ] ;
+        sh:message "An overflow connection point on a Tank must be an outlet carrying a fluid." ;
     ] ;
 .
 
@@ -89,21 +103,29 @@ watr:Reactor a sh:NodeShape ;
     rdfs:label "Reactor" ;
     rdfs:comment "A tank used for reaction or biological/chemical treatment processes" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
+    # Recirculation and return connection points are optional, but if present
+    # they must be fluid outlets. See the drain constraint on Tank for why this
+    # is phrased as "zero non-conforming ones" rather than sh:qualifiedMinCount 0.
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A reactor may have recirculation or return connection points" ;
-        sh:qualifiedMinCount 0 ;
+        rdfs:comment "A reactor's recirculation or return connection points, if any, are fluid outlets" ;
+        sh:qualifiedMaxCount 0 ;
         sh:qualifiedValueShape [
-            sh:class s223:OutletConnectionPoint ;
-            sh:property [
-                sh:path s223:hasMedium ;
-                sh:class s223:Mix-Fluid ;
-            ] ;
             sh:property [
                 sh:path s223:hasRole ;
-                sh:in ( s223:Role-Recirculating s223:Role-Return ) ;
+                sh:qualifiedValueShape [ sh:in ( s223:Role-Recirculating s223:Role-Return ) ] ;
+                sh:qualifiedMinCount 1 ;
+            ] ;
+            sh:not [
+                sh:class s223:OutletConnectionPoint ;
+                sh:property [
+                    sh:path s223:hasMedium ;
+                    sh:class s223:Mix-Fluid ;
+                    sh:minCount 1 ;
+                ] ;
             ] ;
         ] ;
+        sh:message "A recirculation or return connection point on a Reactor must be an outlet carrying a fluid." ;
     ] ;
 .
 
@@ -510,9 +532,9 @@ watr:Boiler
     rdfs:subClassOf s223:Boiler, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Incineration ;
+        sh:class watr:Process-Combustion ;
         sh:minCount 1 ;
-        sh:message "Instances of Boiler must have a Incineration process." ;
+        sh:message "Instances of Boiler must have a Combustion process." ;
     ] .
 
 watr:Conditioner
@@ -720,10 +742,9 @@ watr:MovingBedBioreactor
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Biofiltration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of MovingBedBioreactor must have the Biofiltration process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of MovingBedBioreactor must have a Biofiltration process." ;
     ] .
 
 watr:TricklingFilter
@@ -1159,6 +1180,11 @@ watr:ElectroDialyticCrystallizer
     rdfs:label "Electro-Dialytic Crystallizer (EDC)" ;
     rdfs:comment "A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization." ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess  ;
+    # These two bare sh:class constraints look mutually unsatisfiable -- each has
+    # to hold for EVERY watr:hasProcess value, and neither process subsumes the
+    # other -- but they are correct as written: Process-ElectroDialyticCrystallization
+    # is an rdfs:subClassOf BOTH, so a single value of that type satisfies both.
+    # Do not "fix" this into qualified slots.
     sh:property [
         sh:path watr:hasProcess ;
         sh:class watr:Process-Electrodialysis ;

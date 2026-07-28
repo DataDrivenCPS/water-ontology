@@ -530,6 +530,18 @@ watr:Role-Drain
     rdfs:subClassOf s223:Role-Discharge ;
 .
 
+# S223 has no Role-Overflow, so WaTr defines one alongside Role-Drain; an
+# overflow is a discharge, like a drain.
+watr:Role-Overflow
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Overflow ;
+    a sh:NodeShape ;
+    rdfs:label "Role-Overflow" ;
+    rdfs:comment "A connection point that discharges liquid above a tank's working level." ;
+    rdfs:subClassOf s223:Role-Discharge ;
+.
+
 watr:Role-NutrientRemoval
     a s223:EnumerationKind-Role ;
     a watr:Class ;

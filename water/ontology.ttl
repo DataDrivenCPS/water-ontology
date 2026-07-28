@@ -33,6 +33,57 @@ watr:Class
     ] ;
 .
 
+# A watr:hasProcess or s223:hasRole constraint that names a class which was never
+# defined -- typically the leftover of a rename -- silently makes the equipment
+# impossible to validate, because no value can ever carry the missing type and
+# the shape itself still parses. This guards against that: every class such a
+# constraint names must be defined somewhere in the import closure, which we test
+# for by requiring it to have at least one rdf:type.
+watr:ProcessAndRoleConstraintsReferenceDefinedClasses
+    a sh:NodeShape ;
+    rdfs:label "Process and role constraints reference defined classes" ;
+    rdfs:comment "Every class named by a watr:hasProcess or s223:hasRole constraint must be defined." ;
+    sh:targetSubjectsOf sh:path ;
+    sh:or (
+        # Not a hasProcess/hasRole property shape, so there is nothing to check.
+        [
+            sh:not [
+                sh:property [
+                    sh:path sh:path ;
+                    sh:in ( watr:hasProcess s223:hasRole ) ;
+                    sh:minCount 1 ;
+                ] ;
+            ] ;
+        ]
+        [
+            sh:property [
+                sh:path sh:class ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path ( sh:qualifiedValueShape sh:class ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path sh:hasValue ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+        ]
+    ) ;
+    sh:message "A watr:hasProcess or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
+.
+
+watr:DefinedClassShape
+    a sh:NodeShape ;
+    rdfs:label "Defined class" ;
+    rdfs:comment "A class that exists: it carries at least one rdf:type." ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:minCount 1 ;
+        sh:message "This class is referenced by a shape but is never defined." ;
+    ] ;
+.
+
 watr:UnitProcess
     a rdfs:Class ;
     rdfs:label "Unit Process" ;

@@ -14,6 +14,11 @@ An equipment may pin more than one process (e.g. ``MembraneBioreactor`` requires
 both a filtration and a biofiltration process); each ancestor-required process
 just needs to be refined by *one* of them.
 
+Where the ancestor states its requirement as a bare ``sh:class``, the check is
+stricter: a bare ``sh:class`` has to hold for *every* value on the path, so every
+process the subclass requires must refine it as well, otherwise no instance can
+satisfy the parent and the child at the same time.
+
 This invariant holds only because ``watr:hasProcess`` carries *mechanisms* alone.
 A purpose a subclass achieves by some unrelated mechanism (thickening by
 filtration, dewatering by centrifugation) belongs on ``s223:hasRole``, not here --
@@ -96,6 +101,30 @@ def _find_process_of_equip(equip_cls: URIRef, g: Graph):
     return CACHE[('process_of_equip', equip_cls)]
 
 
+def _find_unqualified_process_of_equip(equip_cls: URIRef, g: Graph):
+    """Return the processes an equipment requires of *every* watr:hasProcess value.
+
+    That is only the bare ``sh:class`` form. A ``sh:qualifiedValueShape`` slot
+    constrains one value, not all of them, so it imposes nothing on the other
+    processes an instance may carry.
+    """
+    q = """
+    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+    SELECT DISTINCT ?process WHERE {
+        ?equip_cls sh:property ?shape .
+        ?shape sh:path watr:hasProcess .
+        ?shape sh:class ?process .
+    }
+    """
+    if ('unqualified_process_of_equip', equip_cls) not in CACHE:
+        CACHE[('unqualified_process_of_equip', equip_cls)] = set(
+            row.process for row in g.query(q, initBindings={'equip_cls': equip_cls})
+        )
+    return CACHE[('unqualified_process_of_equip', equip_cls)]
+
+
 def _find_equipment_class_ancestor_set(cls: URIRef, g: Graph):
     """Return the proper equipment superclasses of an equipment class."""
     q = """
@@ -140,6 +169,9 @@ def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> Non
     g = water_graph
     equipments = _find_equipments(g)
     process_of_equip = {e: _find_process_of_equip(e, g) for e in equipments}
+    unqualified_of_equip = {
+        e: _find_unqualified_process_of_equip(e, g) for e in equipments
+    }
     equipment_ancestors = {e: _find_equipment_class_ancestor_set(e, g) for e in equipments}
 
     referenced = set().union(*process_of_equip.values()) if process_of_equip else set()
@@ -159,6 +191,19 @@ def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> Non
                 )
                 if not refines:
                     violations.append((equip, ancestor, ancestor_process, processes))
+                    continue
+                # A bare sh:class on the ancestor is stronger than that: it has to
+                # hold for EVERY value on the path, so every process this
+                # equipment requires must refine it too, or no instance can
+                # satisfy both at once.
+                if ancestor_process in unqualified_of_equip.get(ancestor, set()):
+                    stragglers = {
+                        p for p in processes if ancestor_process not in process_ancestors[p]
+                    }
+                    if stragglers:
+                        violations.append(
+                            (equip, ancestor, ancestor_process, stragglers)
+                        )
 
     if not violations:
         return

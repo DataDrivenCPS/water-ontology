@@ -360,6 +360,12 @@
 
 **Superclass:** DataProcessing-AccuracyMetrics
 
+## Role-Overflow
+
+**Description:** A connection point that discharges liquid above a tank's working level.
+
+**Superclass:** Role-Discharge
+
 ## Thickening
 
 **Description:** Increasing the solids concentration of a sludge or slurry.
