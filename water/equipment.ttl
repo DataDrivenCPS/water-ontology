@@ -546,10 +546,14 @@ watr:DewateringUnit
     rdfs:label "Dewatering Unit" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    # Dewatering names the goal, not the mechanism: a concrete DewateringUnit
+    # also carries the process it dewaters *by* (filtration, centrifugation),
+    # and those are siblings of Process-Dewatering rather than subclasses. Both
+    # slots are therefore qualified, so neither constrains the other's value.
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Dewatering ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of DewateringUnit must have a Dewatering process." ;
     ] .
 
@@ -559,12 +563,14 @@ watr:Thickener
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    # As with DewateringUnit, Thickening is the goal and the subclasses add the
+    # mechanism they thicken by, so this slot is qualified rather than a bare
+    # sh:class (which would have to hold for every watr:hasProcess value).
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Thickening ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of Thickener must have the Thickening process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Thickening ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of Thickener must have a Thickening process." ;
     ] .
 
 watr:DissolvedAirFlotationThickener
@@ -575,8 +581,8 @@ watr:DissolvedAirFlotationThickener
     rdfs:subClassOf watr:Thickener;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Flotation ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Flotation ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of DissolvedAirFlotationThickener must have a Flotation process." ;
     ] .
 
@@ -588,8 +594,8 @@ watr:CentrifugalThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Centrifugation ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of CentrifugalThickener must have a Centrifugation process." ;
     ] .
 
@@ -601,8 +607,8 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Sedimentation ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of GravityThickener must have a Sedimentation process." ;
     ] .
 
@@ -614,8 +620,8 @@ watr:BeltThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Filtration ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of BeltThickener must have a Filtration process." ;
     ] .
 
@@ -634,8 +640,8 @@ watr:RotaryDrumThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Filtration ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of RotaryDrumThickener must have a Filtration process." ;
     ] .
 
@@ -647,10 +653,9 @@ watr:BeltFilterPress
     rdfs:subClassOf watr:DewateringUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Filtration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of BeltFilterPress must have the Filtration process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of BeltFilterPress must have a Filtration process." ;
     ] .
 
 watr:CentrifugalDewateringUnit
@@ -661,10 +666,9 @@ watr:CentrifugalDewateringUnit
     rdfs:subClassOf watr:DewateringUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Centrifugation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of CentrifugalDewateringUnit must have the Centrifugation process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of CentrifugalDewateringUnit must have a Centrifugation process." ;
     ] .
 
 watr:Filter

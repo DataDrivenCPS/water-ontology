@@ -119,3 +119,29 @@ sh:qualifiedMaxCount 1 (already present) is what actually enforces "one process
 per equipment" if that's desired; the disjoint flag is only meaningful on a
 single sh:property block that has multiple sh:qualifiedValueShape siblings
 (e.g. MembraneBioreactor, which requires both MF/UF and Biofiltration).
+
+The exception: goal + mechanism equipment
+-----------------------------------------
+The pattern above only works when the child's process is an rdfs:subClassOf the
+parent's, so that one value satisfies both. Some equipment instead needs TWO
+unrelated processes at once, because the parent names the *goal* and the child
+names the *mechanism* it achieves that goal by:
+
+  Thickener        -> Process-Thickening   (goal)
+    BeltThickener  -> Process-Filtration   (mechanism)
+  DewateringUnit   -> Process-Dewatering   (goal)
+    BeltFilterPress-> Process-Filtration   (mechanism)
+  MembraneBioreactor -> MF/UF *and* Process-Biofiltration
+
+Process-Filtration is not a subclass of Process-Thickening -- they are siblings
+under Process-PhysicalProcess/Process-Separation -- so an instance must carry
+both values. A bare sh:class cannot express this: it has to hold for EVERY value
+on watr:hasProcess, so the goal constraint rejects the mechanism value and vice
+versa. sh:hasValue + sh:maxCount 1 fails the same way, by capping the path at a
+single value when two are required.
+
+These shapes therefore use sh:qualifiedValueShape + sh:qualifiedMinCount 1 on
+both the parent and the child, with NO sh:qualifiedValueShapesDisjoint (the
+values are already distinct, and disjoint would reintroduce the failure
+described above). Note this drops the upper bound: extra processes are no longer
+rejected. Add sh:qualifiedMaxCount 1 per slot if "exactly one of each" is wanted.
