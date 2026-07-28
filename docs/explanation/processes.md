@@ -94,7 +94,7 @@ We use [`s223:mapsTo`](https://explore.open223.info/s223/mapsTo.html) to relate 
 
 ### Media and Constituents
 
-A `ConnectionPoint` or `Connection` carries a *medium* — the substance flowing through it (e.g. water, a chemical, air). S223 decides whether two media are *compatible* (so a connection point and a connection can be joined, or two connection points on the same equipment can carry different streams) by comparing the *constituents* the media are `s223:composedOf`. Two pure media are compatible only if one is a subclass of the other; two mixture media are compatible when they share at least one constituent (either the same one, or one that is a subclass of the other).
+A `ConnectionPoint` or `Connection` carries a *medium*, the substance flowing through it (e.g. water, a chemical, air). S223 decides whether two media are *compatible* (so a connection point and a connection can be joined, or two connection points on the same equipment can carry different streams) by comparing the *constituents* the media are `s223:composedOf`. Two pure media are compatible only if one is a subclass of the other; two mixture media are compatible when they share at least one constituent (either the same one, or one that is a subclass of the other).
 
 WaTr defines several aqueous media as subclasses of `s223:Fluid-Water`: `Water-Seawater`, `Water-Brackish`, `Water-Freshwater`, and `Water-Brine`. To make S223's compatibility rules recognize that these are all, fundamentally, water, each is declared `s223:composedOf` one or more constituents, sharing `s223:Constituent-H2O` with `s223:Fluid-Water` itself:
 
@@ -122,7 +122,7 @@ watr:Water-Seawater
     ] .
 ```
 
-Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible — a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. The saline media additionally declare `watr:Salt-NaCl`, so a modeler can pin a specific salinity on a concrete instance (see the `examples/brine-composition.ttl` and `examples/ro-mixture-test.ttl` examples). `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content. No salinity value is fixed at the class level; the classes act as reusable templates, and concrete salinity belongs to specific instances.
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. The saline media additionally declare `watr:Salt-NaCl`, so a modeler can pin a specific salinity on a concrete instance (see the `examples/brine-composition.ttl` and `examples/ro-mixture-test.ttl` examples). `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content. No salinity value is fixed at the class level; the classes act as reusable templates, and concrete salinity belongs to specific instances.
 
 ## Processes
 
@@ -151,7 +151,7 @@ WaTr defines a set of process types that can be used to describe the processes e
 
 ### Abstract and Concrete Process Requirements
 
-Process types form a subclass hierarchy (e.g. `Process-ReverseOsmosis` is a `Process-MembraneProcess`, which is a `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies — an *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
+Process types form a subclass hierarchy (e.g. `Process-ReverseOsmosis` is a `Process-MembraneProcess`, which is a `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies. An *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
 
 ```ttl
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -172,11 +172,11 @@ watr:ReverseOsmosisMembrane
     ] .
 ```
 
-Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one — the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
+Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one, because the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
 
 ### Additional processes
 
-Each slot means "performs **at least** this process". Equipment may declare further processes beyond the one its class requires — a moving bed bioreactor aerates, a granular media filter backwashes, an anaerobic digester mixes:
+Each slot means "performs **at least** this process". Equipment may declare further processes beyond the one its class requires. A moving bed bioreactor aerates, a granular media filter backwashes, an anaerobic digester mixes:
 
 ```ttl
 :myMBBR a watr:MovingBedBioreactor ;
@@ -221,7 +221,7 @@ The property grants permission; it does not claim a process is only ever ancilla
 
 ### Purpose vs. Mechanism
 
-The pattern above relies on the concrete process being a kind of the abstract one — reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but what it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*, and it is not a kind of thickening, so an instance states both.
+The pattern above relies on the concrete process being a kind of the abstract one: reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but what it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*, and it is not a kind of thickening, so an instance states both.
 
 WaTr keeps these on two different relationships:
 
@@ -230,7 +230,7 @@ WaTr keeps these on two different relationships:
 | Mechanism | `watr:hasProcess` | *what the equipment physically does* |
 | Purpose | `s223:hasRole` | *what it is there to accomplish* |
 
-`watr:hasProcess` carries mechanisms only. The process hierarchy is organized by mechanism from the top down — its first split is physical vs. chemical vs. biological, which is a statement about *means*, not *ends* — so a purpose placed there has nowhere sensible to sit.
+`watr:hasProcess` carries mechanisms only. The process hierarchy is organized by mechanism from the top down. Its first split is physical vs. chemical vs. biological, which is a statement about *means* rather than *ends*, so a purpose placed there has nowhere sensible to sit.
 
 Purposes go on `s223:hasRole`, which S223 already provides for exactly this, and which WaTr already uses for roles like `Role-NutrientRemoval`, `Role-Equalization`, and `Role-Primary`. Thickening and dewatering are modeled as `watr:Role-Thickening` and `watr:Role-Dewatering`, both subclasses of `watr:Role-SolidsHandling`:
 
@@ -247,9 +247,9 @@ Purposes go on `s223:hasRole`, which S223 already provides for exactly this, and
 
 The equipment shapes follow the same split: `watr:Thickener` requires the *role*, and each concrete subclass requires the *mechanism* it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
 
-Role constraints are qualified for the same reason process constraints are. Equipment carries several unrelated roles, so a bare `sh:class` or `sh:in` on `s223:hasRole` would reject every role but the required one — which is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state theirs as a qualified `sh:in`, leaving a modeler free to add `Role-Primary` or `Role-Detention`. Mechanism slots are qualified for a further reason: multiple inheritance combines them, and a `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation.
+Role constraints are qualified for the same reason process constraints are. Equipment carries several unrelated roles, so a bare `sh:class` or `sh:in` on `s223:hasRole` would reject every role but the required one. That is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state theirs as a qualified `sh:in`, leaving a modeler free to add `Role-Primary` or `Role-Detention`. Mechanism slots are qualified for a further reason: multiple inheritance combines them, and a `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation.
 
-When adding a new process type, ask whether it names something the equipment *does* or something it is *for*. If equipment could achieve it by more than one physical means — thickening by gravity, by centrifuge, or by belt — it is a role, not a process.
+When adding a new process type, ask whether it names something the equipment *does* or something it is *for*. If equipment could achieve it by more than one physical means (thickening by gravity, by centrifuge, or by belt), it is a role, not a process.
 
 
 ## Putting It All Together

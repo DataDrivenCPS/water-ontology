@@ -116,7 +116,7 @@ Two forms do NOT work here and should not be reintroduced:
   how these are written.
 - A bare sh:class + sh:minCount 1. A bare sh:class has to hold for EVERY value on
   the path, so it silently forbids any additional process: no equipment could
-  declare an auxiliary activity -- a filter its backwash, an AnaerobicDigester
+  declare an auxiliary activity: a filter its backwash, an AnaerobicDigester
   its mixing, a BiologicalAeratedFilter its aeration.
 
 The one bare sh:class in the ontology is on watr:UnitProcess (sh:class
@@ -134,8 +134,8 @@ rdfs:subClassOf the parent's, so that one value satisfies both. It broke for
 thickeners and dewatering units, where the parent named a *purpose*
 (Process-Thickening, Process-Dewatering) and the child named the *mechanism* that
 achieves it (Process-Filtration, Process-Centrifugation). Those are siblings, not
-subclasses, so an instance had to carry both values -- which a bare sh:class
-cannot express, because it has to hold for EVERY watr:hasProcess value.
+subclasses, so an instance had to carry both values. A bare sh:class cannot
+express that, because it has to hold for EVERY watr:hasProcess value.
 
 Rather than work around that in the shapes, the purposes were moved to the axis
 that already models function: s223:hasRole. Process-Thickening and
@@ -155,7 +155,7 @@ has been modeled as a process type by mistake.
 The role slots are qualified for the same reason the process slots are: equipment
 may carry other, unrelated roles (Role-Primary, Role-SolidsHandling, ...) and a
 bare sh:class would reject them. sh:in fails the same way, which is why
-AerationBasin and MixingBasin state their required role as a qualified sh:in --
+AerationBasin and MixingBasin state their required role as a qualified sh:in,
 so a basin can also be Role-Primary, Role-Detention, etc.
 
 Multiple inheritance makes this necessary rather than merely tidy:
@@ -170,17 +170,17 @@ Two checks exist so these do not have to be caught by eye:
 1. watr:ProcessAndRoleConstraintsReferenceDefinedClasses (in ontology.ttl) is a
    SHACL shape, so tests/test_validation.py's "the ontology validates against
    itself" test enforces it. It flags a watr:hasProcess or s223:hasRole
-   constraint naming a class that is defined nowhere in the import closure --
-   the leftover of a rename. Such a shape still parses, but no value can ever
+   constraint naming a class that is defined nowhere in the import closure,
+   typically the leftover of a rename. Such a shape still parses, but no value can
    carry the missing type, so the equipment silently becomes impossible to
    validate. This is not hypothetical: watr:Boiler named Process-Incineration
    after that class was renamed to Process-Combustion, and watr:Tank named
-   s223:Role-Overflow, which S223 does not define -- hence watr:Role-Overflow,
+   s223:Role-Overflow, which S223 does not define. Hence watr:Role-Overflow,
    defined next to watr:Role-Drain.
 
 2. tests/test_processtype_consistency.py checks that a subclass refines the
-   processes its ancestors require, and -- where the ancestor states its
-   requirement as a bare sh:class -- that EVERY process the subclass requires
+   processes its ancestors require. Where the ancestor states its requirement
+   as a bare sh:class, it also checks that EVERY process the subclass requires
    refines it, since a bare sh:class must hold for every value on the path. That
    second half is inert while watr:UnitProcess is the only bare sh:class on
    watr:hasProcess; it is kept so reintroducing one is caught.
@@ -188,14 +188,14 @@ Two checks exist so these do not have to be caught by eye:
 Avoid sh:qualifiedMinCount 0. It asserts nothing at all: it reads as "may have
 one of these" but permits any graph whatsoever. Tank's drain and overflow
 constraints and Reactor's recirculation constraint were written that way and were
-silently vacuous. They now say what they meant -- "if such a connection point
-exists it must be a fluid outlet" -- expressed as sh:qualifiedMaxCount 0 over the
+silently vacuous. They now say what they meant, "if such a connection point
+exists it must be a fluid outlet", expressed as sh:qualifiedMaxCount 0 over the
 counterexample (a connection point carrying the role that is NOT a fluid outlet).
 
 Plausibility of additional processes (watr:mayAlsoPerform)
 ----------------------------------------------------------
 Because every watr:hasProcess constraint says "at least", nothing objects to an
-implausible extra process -- a ChlorinationUnit could declare reverse osmosis.
+implausible extra process: a ChlorinationUnit could declare reverse osmosis.
 watr:mayAlsoPerform lists what an equipment class plausibly does BESIDES the
 process it requires, and watr:ProcessPlausibilityShape (ontology.ttl) warns about
 values outside the union of (required by the class or an ancestor) and (permitted
@@ -239,7 +239,7 @@ declare their aeration (in an RBC the rotation itself aerates the biofilm as it
 lifts clear of the liquid).
 Worth checking whether any other fixed-film equipment filed under Filter is
 really a Reactor; watr:TricklingFilter is the obvious candidate. "It is a media
-bed, not a tank" is NOT a reason to leave it out -- see the note on what
+bed, not a tank" is NOT a reason to leave it out; see the note on what
 watr:Tank actually means below.
 
 What watr:Tank means
@@ -256,8 +256,8 @@ the optional drain and overflow. Any flow-through device satisfies that. The cos
 is only that the name oversells it, so a query for tanks returns in-line mixers.
 
 The comments on watr:Tank and watr:Reactor now say this explicitly rather than
-implying a shape. The alternative -- making Reactor a UnitProcess that is not a
-Tank, and letting the genuinely tank-shaped reactors declare Tank themselves --
+implying a shape. The alternative, making Reactor a UnitProcess that is not a
+Tank and letting the genuinely tank-shaped reactors declare Tank themselves,
 is the same "one class carrying two orthogonal claims" untangling done for
 thickening and dewatering, but it moves the inlet/outlet requirement off 19
 classes and each would need checking. Not done; revisit if the conflation starts
