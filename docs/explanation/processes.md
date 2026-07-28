@@ -174,45 +174,30 @@ watr:ReverseOsmosisMembrane
 
 Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one — the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
 
-### Why every process constraint is qualified
+### Additional processes
 
-Each of these slots means "performs **at least** this process", never "performs **only** this process". That distinction is the whole reason for `sh:qualifiedValueShape` rather than a plain `sh:class`.
-
-A bare `sh:class` on a property shape has to hold for *every* value on the path. Written that way, `watr:Filter` would not read as "a filter performs filtration" but as "*every* process a filter performs is a filtration" — which forbids the equipment from declaring anything else it does. Real equipment routinely does more than its defining process:
-
-- a moving bed bioreactor aerates, both to supply oxygen and to keep its carriers circulating
-- a `BiologicalAeratedFilter` aerates, as the name says
-- a granular media filter backwashes
-- an anaerobic digester mixes
-- a sequencing batch reactor aerates
-
-With qualified slots, all of these are expressible, and the abstract/concrete chain above still works unchanged:
+Each slot means "performs **at least** this process". Equipment may declare further processes beyond the one its class requires — a moving bed bioreactor aerates, a granular media filter backwashes, an anaerobic digester mixes:
 
 ```ttl
 :myMBBR a watr:MovingBedBioreactor ;
     watr:hasProcess watr:Process-Biofiltration ,   # satisfies MBBR and, transitively, Filter
-                    watr:Process-Aeration .        # additional, no longer rejected
+                    watr:Process-Aeration .        # additional
 ```
 
-The required process is still genuinely required — an MBBR declaring only aeration fails, and a `ReverseOsmosisMembrane` declaring only microfiltration fails. The qualified form simply stops the constraint from also forbidding everything else.
+The required process is still required: an MBBR declaring only aeration does not validate, nor does a `ReverseOsmosisMembrane` declaring only microfiltration.
 
-Two related pitfalls to avoid when writing these:
+This is why the constraints are `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`. A bare `sh:class` applies to *every* value on the path, so it would forbid the additional processes; `sh:maxCount` caps the path and has the same effect. Use `sh:qualifiedMaxCount 1` when a particular process must appear exactly once, and avoid `sh:qualifiedValueShapesDisjoint`, which prevents a value from satisfying both a parent's slot and a child's.
 
-- **Do not use `sh:qualifiedValueShapesDisjoint true`.** The disjoint rule forbids a value from counting toward two sibling qualified shapes, so the single specific process would be rejected from both the parent's slot and the child's, and no concrete instance could validate. It is only meaningful within a single `sh:property` block that has *multiple* `sh:qualifiedValueShape` siblings.
-- **Do not use `sh:maxCount` to mean "one process of this kind".** `sh:maxCount` caps the whole path, so it forbids additional processes just as a bare `sh:class` does. If a particular process must appear exactly once, use `sh:qualifiedMaxCount 1` on that slot.
-
-The one place a bare `sh:class` is still correct is `watr:UnitProcess`, which requires every value to be a `watr:Process` — there, "every value" is exactly what is meant.
+`watr:UnitProcess` is the one class that uses a bare `sh:class`: it requires every value to be a `watr:Process`.
 
 ### Plausible additional processes
 
-Permitting additional processes has a cost: nothing objects to an *implausible* one. A `ChlorinationUnit` declaring reverse osmosis is not something the constraints above can catch, because they only ever say what must be present, never what must be absent.
+Because the constraints only say what must be present, `watr:mayAlsoPerform` records what a class plausibly performs *besides* what it requires. `watr:ProcessPlausibilityShape` warns about any `watr:hasProcess` value outside the union of
 
-`watr:mayAlsoPerform` records what a piece of equipment plausibly does *besides* its defining process. `watr:ProcessPlausibilityShape` then warns about any `watr:hasProcess` value that falls outside the union of
-
-- what the equipment's class, or any of its ancestors, **requires**, and
+- what the equipment's class, or any ancestor, **requires**, and
 - what those classes list via **`watr:mayAlsoPerform`**.
 
-The statements live on the abstract families, so subclasses inherit them:
+The statements live on the abstract families, and subclasses inherit them:
 
 | family | may also perform | rationale |
 |---|---|---|
@@ -222,7 +207,7 @@ The statements live on the abstract families, so subclasses inherit them:
 | `Filter` | Cleaning | backwashing, air scouring and purging are routine filter operations |
 | `Digester` | GasTransfer | digesters draw off biogas (mixing is inherited from `Reactor`) |
 
-Because `Digester` and `DisinfectionUnit` are both `Reactor` subclasses, an anaerobic digester may mix and a chlorination contact basin may mix without either needing its own statement. This is the intended way to use the property: **declare it on the family, not on every subclass**, and add a statement to a specific class only when it genuinely does something its family does not.
+`Digester` and `DisinfectionUnit` are both `Reactor` subclasses, so an anaerobic digester and a chlorination contact basin may both mix without needing their own statement. Declare the property on the family; add it to a specific class only when that class does something its family does not.
 
 ```ttl
 watr:Filter
@@ -230,17 +215,13 @@ watr:Filter
     .
 ```
 
-Two things to understand about this check:
+Findings are `sh:Warning`, not `sh:Violation`. A flagged model is still a valid WaTr model: `tests/test_validation.py` and the example tests validate at violation level, so these never fail them. To permit a combination the table does not yet cover, add a `watr:mayAlsoPerform` statement to the appropriate class.
 
-**It is a warning, not a violation.** Implausible is not impossible, and a real plant may do something the ontology did not anticipate. A flagged model is still a valid WaTr model — `tests/test_validation.py` and the example tests validate at violation level, so these findings never fail them. If you hit a warning you disagree with, the fix is to add a `watr:mayAlsoPerform` statement to the appropriate class; that is the intended feedback loop, and the table above is expected to grow.
-
-**It is a coarse filter.** It catches wildly wrong pairings — a chlorination unit doing reverse osmosis, a screen digesting sludge — and lets merely unusual ones through. Sharpening it further would mean per-class permission lists rather than per-family ones, which is a much larger amount of domain knowledge to elicit for a diminishing return.
-
-One subtlety worth recording: the permission is not a claim that a process is "merely ancillary". `Process-Aeration` is permitted on any `Reactor` *and* is the defining process of `AerationBasin`; `Process-Mixing` is permitted broadly *and* defines `MixingBasin` and `StaticMixer`. Whether a process is ancillary depends on the equipment, not on the process — the same lesson as [purpose vs. mechanism](#purpose-vs-mechanism) above. `watr:mayAlsoPerform` gets away with being a global-ish list only because it grants permission rather than imposing a requirement: an over-generous entry merely fails to flag something, and can never make a legitimate model invalid.
+The property grants permission; it does not claim a process is only ever ancillary. `Process-Aeration` is permitted on any `Reactor` and is also the process `AerationBasin` requires.
 
 ### Purpose vs. Mechanism
 
-The pattern above works because the concrete process *is a kind of* the abstract one — reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but the thing it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*. Filtration is not a kind of thickening — the two are unrelated branches of the process hierarchy — so an instance has to state both.
+The pattern above relies on the concrete process being a kind of the abstract one — reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but what it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*, and it is not a kind of thickening, so an instance states both.
 
 WaTr keeps these on two different relationships:
 
@@ -266,14 +247,9 @@ Purposes go on `s223:hasRole`, which S223 already provides for exactly this, and
 
 The equipment shapes follow the same split: `watr:Thickener` requires the *role*, and each concrete subclass requires the *mechanism* it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
 
-Both of these slots use `sh:qualifiedValueShape` rather than a bare `sh:class`, because a bare `sh:class` must hold for *every* value on the path:
+Role constraints are qualified for the same reason process constraints are. Equipment carries several unrelated roles, so a bare `sh:class` or `sh:in` on `s223:hasRole` would reject every role but the required one — which is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state theirs as a qualified `sh:in`, leaving a modeler free to add `Role-Primary` or `Role-Detention`. Mechanism slots are qualified for a further reason: multiple inheritance combines them, and a `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation.
 
-- Equipment may carry several unrelated roles, so a bare `sh:class` on `s223:hasRole` would reject any role but the required one. This applies to *every* role constraint in WaTr, not just these two — `sh:in` has the same problem, which is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state their required role as a qualified `sh:in` rather than a bare one. A modeler can then add `Role-Primary`, `Role-Detention`, or any other role to a basin without tripping validation.
-- Multiple inheritance can combine two mechanisms. A `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation; a bare `sh:class` on either parent would demand every process be its own kind and reject the other.
-
-This is the same rule as for the process constraints above: a shape saying "performs (or serves) at least this" is a `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`. A bare `sh:class` or `sh:in` says "every value must be this", which is almost never what an equipment class means.
-
-When you are adding a new process type, the question to ask is whether it names something the equipment *does* or something it is *for*. If a piece of equipment could achieve it by more than one physical means — thickening by gravity, by centrifuge, or by belt — it is a role, not a process.
+When adding a new process type, ask whether it names something the equipment *does* or something it is *for*. If equipment could achieve it by more than one physical means — thickening by gravity, by centrifuge, or by belt — it is a role, not a process.
 
 
 ## Putting It All Together
