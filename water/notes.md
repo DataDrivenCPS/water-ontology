@@ -106,28 +106,26 @@ general one (Process-ReverseOsmosis -> Process-MembraneProcess ->
 Process-Filtration), a single specific process on an instance satisfies BOTH the
 inherited general slot and the concrete one.
 
-Two forms were tried before this one and both were wrong:
+Two forms do NOT work here and should not be reintroduced:
 
 - sh:qualifiedValueShape + sh:qualifiedValueShapesDisjoint true. The disjoint rule
   forbids a value from counting toward two sibling qualified shapes, so the one
-  specific process was rejected from both the parent's slot and the child's and
-  no concrete instance could validate. The disjoint flag is only meaningful on a
-  single sh:property block with multiple sh:qualifiedValueShape siblings, which
-  is not how these are written.
-- A bare sh:class + sh:minCount 1. This fixed the above but overshot: a bare
-  sh:class has to hold for EVERY value on the path, so it silently forbade any
-  additional process. No equipment could declare an auxiliary activity -- a
-  filter could not state its backwash, an AnaerobicDigester could not state that
-  it mixes, and a BiologicalAeratedFilter could not state that it aerates.
+  specific process is rejected from both the parent's slot and the child's and no
+  concrete instance can validate. The disjoint flag is only meaningful on a single
+  sh:property block with multiple sh:qualifiedValueShape siblings, which is not
+  how these are written.
+- A bare sh:class + sh:minCount 1. A bare sh:class has to hold for EVERY value on
+  the path, so it silently forbids any additional process: no equipment could
+  declare an auxiliary activity -- a filter its backwash, an AnaerobicDigester
+  its mixing, a BiologicalAeratedFilter its aeration.
 
-The one bare sh:class left is on watr:UnitProcess (sh:class watr:Process), where
-"every value must be a Process" is exactly what is meant.
+The one bare sh:class in the ontology is on watr:UnitProcess (sh:class
+watr:Process), where "every value must be a Process" is exactly what is meant.
 
-Note the qualified form deliberately has no upper bound. Add
-sh:qualifiedMaxCount 1 to a slot only if that specific process must appear
-exactly once -- not as a way to limit how many processes the equipment has,
-which is what sh:maxCount used to do here and is what made several shapes
-unsatisfiable.
+The qualified form deliberately has no upper bound. Add sh:qualifiedMaxCount 1 to
+a slot only if that specific process must appear exactly once. Do not use
+sh:maxCount to limit how many processes the equipment has: it caps the whole path
+and makes any equipment needing two processes unsatisfiable.
 
 Purpose goes on the role axis, not the process axis
 ---------------------------------------------------
@@ -175,10 +173,10 @@ Two checks exist so these do not have to be caught by eye:
    constraint naming a class that is defined nowhere in the import closure --
    the leftover of a rename. Such a shape still parses, but no value can ever
    carry the missing type, so the equipment silently becomes impossible to
-   validate. It caught two live cases when it was added: watr:Boiler still
-   required Process-Incineration after that class was renamed to
-   Process-Combustion, and watr:Tank referenced s223:Role-Overflow, which S223
-   does not define (WaTr now defines watr:Role-Overflow next to watr:Role-Drain).
+   validate. This is not hypothetical: watr:Boiler named Process-Incineration
+   after that class was renamed to Process-Combustion, and watr:Tank named
+   s223:Role-Overflow, which S223 does not define -- hence watr:Role-Overflow,
+   defined next to watr:Role-Drain.
 
 2. tests/test_processtype_consistency.py checks that a subclass refines the
    processes its ancestors require, and -- where the ancestor states its
@@ -215,7 +213,7 @@ Digester and DisinfectionUnit are both Reactor subclasses, so digester mixing an
 contact-basin mixing need no statement of their own. Add one to a specific class
 only when it does something its family does not.
 
-Implementation notes, all learned the hard way:
+Implementation constraints:
 
 - It is a SHACL-SPARQL constraint (sh:sparql), not ordinary property shapes,
   because permissions must UNION across ancestors. Ordinary per-class shapes
@@ -226,7 +224,7 @@ Implementation notes, all learned the hard way:
   silently ignored and results come back as Violations.
 - The SPARQL sees the shapes graph as well as the data graph, so the
   mayAlsoPerform statements are visible when validating an instance file that
-  does not itself contain the ontology. This was verified before relying on it.
+  does not itself contain the ontology.
 - watr:Process is excluded from the "allowed" computation. watr:UnitProcess
   requires it of every value, so counting it would permit every process and make
   the check vacuous.
@@ -234,11 +232,11 @@ Implementation notes, all learned the hard way:
   example tests and test_validation.py validate at violation level and are
   unaffected. Measured overhead of the constraint is about 6% of validation time.
 
-watr:MovingBedBioreactor and watr:RotatingBiologicalContactor were both
-rdfs:subClassOf watr:Filter alone; both are now Reactors as well. That is more
-accurate -- an MBBR is a tank of suspended biofilm carriers, an RBC is a stack of
-discs turning in a tank -- and it is what lets them declare their aeration (in an
-RBC the rotation itself aerates the biofilm as it lifts clear of the liquid).
+watr:MovingBedBioreactor and watr:RotatingBiologicalContactor are Reactors as
+well as Filters. An MBBR is a tank of suspended biofilm carriers and an RBC is a
+stack of discs turning in a tank, and the Reactor parent is what lets them
+declare their aeration (in an RBC the rotation itself aerates the biofilm as it
+lifts clear of the liquid).
 Worth checking whether any other fixed-film equipment filed under Filter is
 really a Reactor; watr:TricklingFilter is the obvious candidate. "It is a media
 bed, not a tank" is NOT a reason to leave it out -- see the note on what
