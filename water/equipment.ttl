@@ -18,6 +18,9 @@ watr:Tank a sh:NodeShape ;
     rdfs:label "Tank" ;
     rdfs:comment "A tank with at least one inlet and one outlet" ;
     rdfs:subClassOf s223:Equipment ;
+    # Any tank may be drained or purged for maintenance. Inherited by every tank
+    # subclass; see watr:mayAlsoPerform in ontology.ttl.
+    watr:mayAlsoPerform watr:Process-Cleaning ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A tank has an inlet fluid connection point" ;
@@ -103,6 +106,9 @@ watr:Reactor a sh:NodeShape ;
     rdfs:label "Reactor" ;
     rdfs:comment "A tank used for reaction or biological/chemical treatment processes" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
+    # Reactors routinely mix, aerate and recirculate alongside whatever reaction
+    # defines them. Digesters and disinfection units inherit this.
+    watr:mayAlsoPerform watr:Process-Mixing, watr:Process-Aeration, watr:Process-Recirculation ;
     # Recirculation and return connection points are optional, but if present
     # they must be fluid outlets. See the drain constraint on Tank for why this
     # is phrased as "zero non-conforming ones" rather than sh:qualifiedMinCount 0.
@@ -134,6 +140,8 @@ watr:SeparationTank a sh:NodeShape ;
     rdfs:label "Separation Tank" ;
     rdfs:comment "A tank that has at least two outlets (e.g. overflow and underflow)" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
+    # Separated solids are commonly returned to the head of the unit.
+    watr:mayAlsoPerform watr:Process-Recirculation ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A separation tank has at least two outlet connection points" ;
@@ -355,6 +363,8 @@ watr:FlocculationBasin
 watr:Digester
     a  sh:NodeShape ;
     a watr:Class ;
+    # Digesters draw off and handle biogas; mixing comes from watr:Reactor.
+    watr:mayAlsoPerform watr:Process-GasTransfer ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
@@ -698,6 +708,9 @@ watr:CentrifugalDewateringUnit
 watr:Filter
     a  sh:NodeShape ;
     a watr:Class ;
+    # Backwashing, air scouring and purging are routine filter operations rather
+    # than treatment steps, so they are permitted on every filter subclass.
+    watr:mayAlsoPerform watr:Process-Cleaning ;
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter, watr:UnitProcess ;
@@ -739,7 +752,10 @@ watr:MovingBedBioreactor
     a watr:Class ;
     rdfs:label "Moving Bed Bioreactor (MBBR)" ;
     rdfs:comment "MBBR process using suspended growth media a tank" ;
-    rdfs:subClassOf watr:Filter ;
+    # Both a Reactor and a Filter: an MBBR is a tank of suspended biofilm
+    # carriers. The Reactor parent is what permits it to declare the aeration
+    # that supplies oxygen and keeps the carriers circulating.
+    rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ;

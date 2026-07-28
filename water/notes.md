@@ -193,3 +193,53 @@ constraints and Reactor's recirculation constraint were written that way and wer
 silently vacuous. They now say what they meant -- "if such a connection point
 exists it must be a fluid outlet" -- expressed as sh:qualifiedMaxCount 0 over the
 counterexample (a connection point carrying the role that is NOT a fluid outlet).
+
+Plausibility of additional processes (watr:mayAlsoPerform)
+----------------------------------------------------------
+Because every watr:hasProcess constraint says "at least", nothing objects to an
+implausible extra process -- a ChlorinationUnit could declare reverse osmosis.
+watr:mayAlsoPerform lists what an equipment class plausibly does BESIDES the
+process it requires, and watr:ProcessPlausibilityShape (ontology.ttl) warns about
+values outside the union of (required by the class or an ancestor) and (permitted
+by them).
+
+Declared on the abstract families only; subclasses inherit:
+
+  Tank            -> Process-Cleaning
+  Reactor         -> Process-Mixing, Process-Aeration, Process-Recirculation
+  SeparationTank  -> Process-Recirculation
+  Filter          -> Process-Cleaning
+  Digester        -> Process-GasTransfer   (mixing comes from Reactor)
+
+Digester and DisinfectionUnit are both Reactor subclasses, so digester mixing and
+contact-basin mixing need no statement of their own. Add one to a specific class
+only when it does something its family does not.
+
+Implementation notes, all learned the hard way:
+
+- It is a SHACL-SPARQL constraint (sh:sparql), not ordinary property shapes,
+  because permissions must UNION across ancestors. Ordinary per-class shapes
+  intersect: BiologicalAeratedFilter is both a Reactor and a Filter, and a
+  per-family all-values constraint from Filter would reject the aeration that
+  Reactor permits.
+- sh:severity must sit on the NodeShape. On the sh:SPARQLConstraint it is
+  silently ignored and results come back as Violations.
+- The SPARQL sees the shapes graph as well as the data graph, so the
+  mayAlsoPerform statements are visible when validating an instance file that
+  does not itself contain the ontology. This was verified before relying on it.
+- watr:Process is excluded from the "allowed" computation. watr:UnitProcess
+  requires it of every value, so counting it would permit every process and make
+  the check vacuous.
+- Warning, not Violation, so a flagged model is still a valid WaTr model. The
+  example tests and test_validation.py validate at violation level and are
+  unaffected. Measured overhead of the constraint is about 6% of validation time.
+
+watr:MovingBedBioreactor was rdfs:subClassOf watr:Filter alone; it is now a
+Reactor as well, which is both more accurate (it is a tank of suspended biofilm
+carriers) and what lets it declare aeration. watr:RotatingBiologicalContactor is
+also Filter-only and may deserve the same treatment -- left alone pending an
+opinion from someone who knows RBCs.
+
+The permission table is a starting point for a domain expert, not a finished
+answer. tests/test_process_plausibility.py writes the claims out as readable
+cases so they can be checked against what plants actually do.

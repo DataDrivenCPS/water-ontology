@@ -352,6 +352,12 @@
 
 **Description:** MBBR process using suspended growth media a tank
 
+**Superclass:** Reactor
+
+## Moving Bed Bioreactor (MBBR)
+
+**Description:** MBBR process using suspended growth media a tank
+
 **Superclass:** Filter
 
 ## Trickling Filter

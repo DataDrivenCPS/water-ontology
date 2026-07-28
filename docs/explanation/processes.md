@@ -203,6 +203,41 @@ Two related pitfalls to avoid when writing these:
 
 The one place a bare `sh:class` is still correct is `watr:UnitProcess`, which requires every value to be a `watr:Process` — there, "every value" is exactly what is meant.
 
+### Plausible additional processes
+
+Permitting additional processes has a cost: nothing objects to an *implausible* one. A `ChlorinationUnit` declaring reverse osmosis is not something the constraints above can catch, because they only ever say what must be present, never what must be absent.
+
+`watr:mayAlsoPerform` records what a piece of equipment plausibly does *besides* its defining process. `watr:ProcessPlausibilityShape` then warns about any `watr:hasProcess` value that falls outside the union of
+
+- what the equipment's class, or any of its ancestors, **requires**, and
+- what those classes list via **`watr:mayAlsoPerform`**.
+
+The statements live on the abstract families, so subclasses inherit them:
+
+| family | may also perform | rationale |
+|---|---|---|
+| `Tank` | Cleaning | any tank is drained or purged for maintenance |
+| `Reactor` | Mixing, Aeration, Recirculation | reactors mix, aerate and recirculate alongside their defining reaction |
+| `SeparationTank` | Recirculation | separated solids are returned to the head of the unit |
+| `Filter` | Cleaning | backwashing, air scouring and purging are routine filter operations |
+| `Digester` | GasTransfer | digesters draw off biogas (mixing is inherited from `Reactor`) |
+
+Because `Digester` and `DisinfectionUnit` are both `Reactor` subclasses, an anaerobic digester may mix and a chlorination contact basin may mix without either needing its own statement. This is the intended way to use the property: **declare it on the family, not on every subclass**, and add a statement to a specific class only when it genuinely does something its family does not.
+
+```ttl
+watr:Filter
+    watr:mayAlsoPerform watr:Process-Cleaning ;   # backwash, air scour, purge
+    .
+```
+
+Two things to understand about this check:
+
+**It is a warning, not a violation.** Implausible is not impossible, and a real plant may do something the ontology did not anticipate. A flagged model is still a valid WaTr model — `tests/test_validation.py` and the example tests validate at violation level, so these findings never fail them. If you hit a warning you disagree with, the fix is to add a `watr:mayAlsoPerform` statement to the appropriate class; that is the intended feedback loop, and the table above is expected to grow.
+
+**It is a coarse filter.** It catches wildly wrong pairings — a chlorination unit doing reverse osmosis, a screen digesting sludge — and lets merely unusual ones through. Sharpening it further would mean per-class permission lists rather than per-family ones, which is a much larger amount of domain knowledge to elicit for a diminishing return.
+
+One subtlety worth recording: the permission is not a claim that a process is "merely ancillary". `Process-Aeration` is permitted on any `Reactor` *and* is the defining process of `AerationBasin`; `Process-Mixing` is permitted broadly *and* defines `MixingBasin` and `StaticMixer`. Whether a process is ancillary depends on the equipment, not on the process — the same lesson as [purpose vs. mechanism](#purpose-vs-mechanism) above. `watr:mayAlsoPerform` gets away with being a global-ish list only because it grants permission rather than imposing a requirement: an over-generous entry merely fails to flag something, and can never make a legitimate model invalid.
+
 ### Purpose vs. Mechanism
 
 The pattern above works because the concrete process *is a kind of* the abstract one — reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but the thing it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*. Filtration is not a kind of thickening — the two are unrelated branches of the process hierarchy — so an instance has to state both.
