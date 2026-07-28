@@ -13,10 +13,16 @@
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
     owl:imports <urn:nawi-water-ontology/processtypes> ;
 .
+# Despite the name, watr:Tank asserts nothing about geometry or containment. Its
+# constraints are entirely about connection points: one fluid inlet and one fluid
+# outlet, plus rules for the optional drain and overflow. Anything fluid flows
+# through therefore qualifies, including in-line devices -- watr:StaticMixer and
+# watr:PlugFlowReactor are both Tanks by way of watr:Reactor. Read it as "a
+# flow-through vessel", not as a shape. See water/notes.md.
 watr:Tank a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Tank" ;
-    rdfs:comment "A tank with at least one inlet and one outlet" ;
+    rdfs:comment "A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify." ;
     rdfs:subClassOf s223:Equipment ;
     # Any tank may be drained or purged for maintenance. Inherited by every tank
     # subclass; see watr:mayAlsoPerform in ontology.ttl.
@@ -104,7 +110,11 @@ watr:Tank a sh:NodeShape ;
 watr:Reactor a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Reactor" ;
-    rdfs:comment "A tank used for reaction or biological/chemical treatment processes" ;
+    rdfs:comment "A vessel in which a reaction or biological/chemical treatment process takes place" ;
+    # rdfs:subClassOf watr:Tank does not claim a reactor is tank-shaped -- see the
+    # note on watr:Tank above. It claims only that fluid flows through it via an
+    # inlet and an outlet, which holds for tubular reactors and in-line mixers as
+    # much as for basins.
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
     # Reactors routinely mix, aerate and recirculate alongside whatever reaction
     # defines them. Digesters and disinfection units inherit this.

@@ -240,8 +240,30 @@ accurate -- an MBBR is a tank of suspended biofilm carriers, an RBC is a stack o
 discs turning in a tank -- and it is what lets them declare their aeration (in an
 RBC the rotation itself aerates the biofilm as it lifts clear of the liquid).
 Worth checking whether any other fixed-film equipment filed under Filter is
-really a Reactor; watr:TricklingFilter is the obvious candidate, though a
-trickling filter is a media bed rather than a tank so it may genuinely differ.
+really a Reactor; watr:TricklingFilter is the obvious candidate. "It is a media
+bed, not a tank" is NOT a reason to leave it out -- see the note on what
+watr:Tank actually means below.
+
+What watr:Tank means
+--------------------
+watr:Reactor is rdfs:subClassOf watr:Tank, and every one of the ~19 Reactor
+subclasses is therefore a Tank. That reads oddly for watr:PlugFlowReactor ("fluid
+flows in one direction through the tube") and watr:StaticMixer ("a device for
+mixing liquids without moving components"), neither of which is a tank in any
+physical sense.
+
+It is harmless, because watr:Tank asserts nothing about geometry. Its constraints
+are entirely connection points: one fluid inlet, one fluid outlet, plus rules for
+the optional drain and overflow. Any flow-through device satisfies that. The cost
+is only that the name oversells it, so a query for tanks returns in-line mixers.
+
+The comments on watr:Tank and watr:Reactor now say this explicitly rather than
+implying a shape. The alternative -- making Reactor a UnitProcess that is not a
+Tank, and letting the genuinely tank-shaped reactors declare Tank themselves --
+is the same "one class carrying two orthogonal claims" untangling done for
+thickening and dewatering, but it moves the inlet/outlet requirement off 19
+classes and each would need checking. Not done; revisit if the conflation starts
+causing real trouble rather than just reading badly.
 
 The permission table is a starting point for a domain expert, not a finished
 answer. tests/test_process_plausibility.py writes the claims out as readable

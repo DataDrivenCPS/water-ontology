@@ -2,19 +2,19 @@
 
 ## Tank
 
-**Description:** A tank with at least one inlet and one outlet
+**Description:** A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify.
 
 **Superclass:** Equipment
 
 ## Reactor
 
-**Description:** A tank used for reaction or biological/chemical treatment processes
+**Description:** A vessel in which a reaction or biological/chemical treatment process takes place
 
 **Superclass:** Tank
 
 ## Reactor
 
-**Description:** A tank used for reaction or biological/chemical treatment processes
+**Description:** A vessel in which a reaction or biological/chemical treatment process takes place
 
 **Superclass:** UnitProcess
 
