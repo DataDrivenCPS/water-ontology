@@ -546,15 +546,15 @@ watr:DewateringUnit
     rdfs:label "Dewatering Unit" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # Dewatering names the goal, not the mechanism: a concrete DewateringUnit
-    # also carries the process it dewaters *by* (filtration, centrifugation),
-    # and those are siblings of Process-Dewatering rather than subclasses. Both
-    # slots are therefore qualified, so neither constrains the other's value.
+    # Dewatering is what this equipment is *for*; the mechanism it dewaters by
+    # (filtration, centrifugation) is left to the concrete subclasses and stated
+    # on watr:hasProcess. The role slot is qualified because equipment may carry
+    # other, unrelated roles.
     sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ] ;
+        sh:path s223:hasRole ;
+        sh:qualifiedValueShape [ sh:class watr:Role-Dewatering ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of DewateringUnit must have a Dewatering process." ;
+        sh:message "Instances of DewateringUnit must have the Dewatering role." ;
     ] .
 
 watr:Thickener
@@ -563,14 +563,13 @@ watr:Thickener
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # As with DewateringUnit, Thickening is the goal and the subclasses add the
-    # mechanism they thicken by, so this slot is qualified rather than a bare
-    # sh:class (which would have to hold for every watr:hasProcess value).
+    # As with DewateringUnit, thickening is the purpose and the subclasses supply
+    # the mechanism they thicken by on watr:hasProcess.
     sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Thickening ] ;
+        sh:path s223:hasRole ;
+        sh:qualifiedValueShape [ sh:class watr:Role-Thickening ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of Thickener must have a Thickening process." ;
+        sh:message "Instances of Thickener must have the Thickening role." ;
     ] .
 
 watr:DissolvedAirFlotationThickener

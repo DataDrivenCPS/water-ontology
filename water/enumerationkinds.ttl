@@ -728,6 +728,30 @@ watr:Role-SolidsHandling
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
+# Thickening and dewatering name what a piece of equipment is *for*, not the
+# physical mechanism it uses to get there (filtration, centrifugation, gravity
+# settling, ...). They are therefore roles rather than watr:Process types; see
+# docs/explanation/processes.md.
+watr:Role-Thickening
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Thickening ;
+    a sh:NodeShape ;
+    rdfs:label "Thickening" ;
+    rdfs:comment "Increasing the solids concentration of a sludge or slurry." ;
+    rdfs:subClassOf watr:Role-SolidsHandling ;
+.
+
+watr:Role-Dewatering
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Dewatering ;
+    a sh:NodeShape ;
+    rdfs:label "Dewatering" ;
+    rdfs:comment "Removing or separating water from another material, typically solids." ;
+    rdfs:subClassOf watr:Role-SolidsHandling ;
+.
+
 watr:Role-Posttreatment
     a s223:EnumerationKind-Role ;
     a watr:Class ;

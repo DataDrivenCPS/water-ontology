@@ -360,3 +360,15 @@
 
 **Superclass:** DataProcessing-AccuracyMetrics
 
+## Thickening
+
+**Description:** Increasing the solids concentration of a sludge or slurry.
+
+**Superclass:** Role-SolidsHandling
+
+## Dewatering
+
+**Description:** Removing or separating water from another material, typically solids.
+
+**Superclass:** Role-SolidsHandling
+

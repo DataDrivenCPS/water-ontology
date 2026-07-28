@@ -176,6 +176,43 @@ Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a
 
 These constraints use `sh:class` with `sh:minCount 1` rather than `sh:qualifiedValueShape` with `sh:qualifiedValueShapesDisjoint true`. With disjoint qualified slots, the single specific process would conform to both the parent's slot and the child's, and the disjoint rule forbids a value from counting toward two sibling qualified shapes — so the value would be rejected from both and no concrete instance could ever validate. (`sh:qualifiedValueShapesDisjoint true` is only meaningful within a single `sh:property` block that has *multiple* `sh:qualifiedValueShape` siblings, which WaTr uses for equipment that genuinely requires two distinct processes at once, such as `MembraneBioreactor` requiring both a membrane filtration process and a biofiltration process.)
 
+### Purpose vs. Mechanism
+
+The pattern above works because the concrete process *is a kind of* the abstract one — reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but the thing it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*. Filtration is not a kind of thickening — the two are unrelated branches of the process hierarchy — so an instance has to state both.
+
+WaTr keeps these on two different relationships:
+
+| | relationship | answers |
+|---|---|---|
+| Mechanism | `watr:hasProcess` | *what the equipment physically does* |
+| Purpose | `s223:hasRole` | *what it is there to accomplish* |
+
+`watr:hasProcess` carries mechanisms only. The process hierarchy is organized by mechanism from the top down — its first split is physical vs. chemical vs. biological, which is a statement about *means*, not *ends* — so a purpose placed there has nowhere sensible to sit.
+
+Purposes go on `s223:hasRole`, which S223 already provides for exactly this, and which WaTr already uses for roles like `Role-NutrientRemoval`, `Role-Equalization`, and `Role-Primary`. Thickening and dewatering are modeled as `watr:Role-Thickening` and `watr:Role-Dewatering`, both subclasses of `watr:Role-SolidsHandling`:
+
+```ttl
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+@prefix : <urn:example/> .
+
+:myBeltThickener a watr:BeltThickener ;
+    s223:hasRole watr:Role-Thickening ;      # what it is for
+    watr:hasProcess watr:Process-Filtration ;  # how it does it
+.
+```
+
+The equipment shapes follow the same split: `watr:Thickener` requires the *role*, and each concrete subclass requires the *mechanism* it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
+
+Both of these slots use `sh:qualifiedValueShape` rather than a bare `sh:class`, because a bare `sh:class` must hold for *every* value on the path:
+
+- Equipment may carry several unrelated roles, so a bare `sh:class` on `s223:hasRole` would reject any role but the required one.
+- Multiple inheritance can combine two mechanisms. A `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation; a bare `sh:class` on either parent would demand every process be its own kind and reject the other.
+
+The rule of thumb: use a bare `sh:class` only where every `watr:hasProcess` value genuinely must be of that kind — the abstract families such as `Filter`, `Digester`, and `SeparationTank`. Where a class asserts "performs at least this mechanism", use `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`.
+
+When you are adding a new process type, the question to ask is whether it names something the equipment *does* or something it is *for*. If a piece of equipment could achieve it by more than one physical means — thickening by gravity, by centrifuge, or by belt — it is a role, not a process.
+
 
 ## Putting It All Together
 

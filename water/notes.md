@@ -120,28 +120,43 @@ per equipment" if that's desired; the disjoint flag is only meaningful on a
 single sh:property block that has multiple sh:qualifiedValueShape siblings
 (e.g. MembraneBioreactor, which requires both MF/UF and Biofiltration).
 
-The exception: goal + mechanism equipment
------------------------------------------
-The pattern above only works when the child's process is an rdfs:subClassOf the
-parent's, so that one value satisfies both. Some equipment instead needs TWO
-unrelated processes at once, because the parent names the *goal* and the child
-names the *mechanism* it achieves that goal by:
+Purpose goes on the role axis, not the process axis
+---------------------------------------------------
+The refinement pattern above only works when the child's process is an
+rdfs:subClassOf the parent's, so that one value satisfies both. It broke for
+thickeners and dewatering units, where the parent named a *purpose*
+(Process-Thickening, Process-Dewatering) and the child named the *mechanism* that
+achieves it (Process-Filtration, Process-Centrifugation). Those are siblings, not
+subclasses, so an instance had to carry both values -- which a bare sh:class
+cannot express, because it has to hold for EVERY watr:hasProcess value.
 
-  Thickener        -> Process-Thickening   (goal)
-    BeltThickener  -> Process-Filtration   (mechanism)
-  DewateringUnit   -> Process-Dewatering   (goal)
-    BeltFilterPress-> Process-Filtration   (mechanism)
-  MembraneBioreactor -> MF/UF *and* Process-Biofiltration
+Rather than work around that in the shapes, the purposes were moved to the axis
+that already models function: s223:hasRole. Process-Thickening and
+Process-Dewatering are gone; watr:Role-Thickening and watr:Role-Dewatering
+(both rdfs:subClassOf watr:Role-SolidsHandling) replace them.
 
-Process-Filtration is not a subclass of Process-Thickening -- they are siblings
-under Process-PhysicalProcess/Process-Separation -- so an instance must carry
-both values. A bare sh:class cannot express this: it has to hold for EVERY value
-on watr:hasProcess, so the goal constraint rejects the mechanism value and vice
-versa. sh:hasValue + sh:maxCount 1 fails the same way, by capping the path at a
-single value when two are required.
+  Thickener        -> s223:hasRole watr:Role-Thickening      (purpose)
+    BeltThickener  -> watr:hasProcess Process-Filtration     (mechanism)
+  DewateringUnit   -> s223:hasRole watr:Role-Dewatering      (purpose)
+    BeltFilterPress-> watr:hasProcess Process-Filtration     (mechanism)
 
-These shapes therefore use sh:qualifiedValueShape + sh:qualifiedMinCount 1 on
-both the parent and the child, with NO sh:qualifiedValueShapesDisjoint (the
-values are already distinct, and disjoint would reintroduce the failure
-described above). Note this drops the upper bound: extra processes are no longer
-rejected. Add sh:qualifiedMaxCount 1 per slot if "exactly one of each" is wanted.
+watr:hasProcess therefore carries mechanisms only. This keeps the refinement
+invariant in tests/test_processtype_consistency.py strict: a subclass must refine
+the process its ancestors require, and a failure there now signals that a purpose
+has been modeled as a process type by mistake.
+
+Two slots in this family stay qualified rather than bare sh:class:
+
+- The role slots, because equipment may carry other, unrelated roles
+  (Role-Primary, Role-SolidsHandling, ...) and a bare sh:class would reject them.
+- The mechanism slots on the concrete subclasses, because multiple inheritance
+  can combine two mechanisms: GravityBeltThickener is both a BeltThickener and a
+  GravityThickener, so it needs Filtration AND Sedimentation. A bare sh:class on
+  either parent would demand every process be its own kind and reject the other.
+
+The general rule: use a bare sh:class only where every watr:hasProcess value must
+be of that kind (the abstract families -- Filter, Digester, SeparationTank).
+Where a class asserts "performs at least this mechanism", use
+sh:qualifiedValueShape + sh:qualifiedMinCount 1, with NO
+sh:qualifiedValueShapesDisjoint. Note the qualified form drops the upper bound;
+add sh:qualifiedMaxCount 1 per slot if "exactly one of each" is wanted.

@@ -109,20 +109,14 @@ watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
     skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-Thickening a watr:Class, watr:Process-Thickening ;
-    rdfs:label "Thickening" ;
-    skos:definition "A process to increase the solids content of a sludge or slurry." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
-
-watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
-    rdfs:label "Dewatering" ;
-    skos:definition "A process to remove or separate water from another material, typically solids." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
+# Thickening and dewatering are purposes, not mechanisms, so they are modeled as
+# watr:Role-Thickening and watr:Role-Dewatering in enumerationkinds.ttl rather
+# than as process types here. See docs/explanation/processes.md.
 
 watr:Process-Drying a watr:Class, watr:Process-Drying ;
     rdfs:label "Drying" ;
     skos:definition "Drying of biosolids to reduce moisture content." ;
-    rdfs:subClassOf watr:Process-Dewatering, watr:Process-Evaporation .
+    rdfs:subClassOf watr:Process-Evaporation .
 
 watr:Process-Centrifugation a watr:Class, watr:Process-Centrifugation ;
     rdfs:label "Centrifugation" ;
