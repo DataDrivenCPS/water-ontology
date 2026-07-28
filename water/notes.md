@@ -93,32 +93,41 @@ Notes on modeling of equipment June, 2024
 
 hasProcess modeling (abstract parents, concrete children)
 ----------------------------------------------------------
-The watr:hasProcess constraint on "abstract" equipment classes (Filter, Digester,
-DisinfectionUnit, SeparationTank, MediaFiltration) is expressed as a plain
-sh:class + sh:minCount 1, e.g. a Filter must have at least one Process-Filtration.
-Concrete subclasses (ReverseOsmosisMembrane, AnaerobicDigester, ChlorinationUnit,
-SedimentationTank, RapidSandFilter, ...) narrow that with their own sh:class for
-the more specific process (Process-ReverseOsmosis, etc.).
+Every watr:hasProcess constraint in equipment.ttl is
+sh:qualifiedValueShape [ sh:class ... ] + sh:qualifiedMinCount 1, with NO
+sh:qualifiedValueShapesDisjoint. It reads "performs at least this process".
 
-Because the specific process is an rdfs:subClassOf the general one
-(Process-ReverseOsmosis -> Process-MembraneProcess -> Process-Filtration), a
-single specific process on an instance satisfies BOTH the inherited general
-constraint and the concrete one. The parents are effectively abstract: they
-define the kind of process the equipment performs, and the concrete subclass pins
-down exactly which one.
+"Abstract" equipment classes (Filter, Digester, DisinfectionUnit, SeparationTank,
+MediaFiltrationUnit) name the general kind, e.g. a Filter performs at least one
+Process-Filtration. Concrete subclasses (ReverseOsmosisMembrane,
+AnaerobicDigester, ChlorinationUnit, SedimentationTank, RapidSandFilter, ...) name
+the specific process. Because the specific process is an rdfs:subClassOf the
+general one (Process-ReverseOsmosis -> Process-MembraneProcess ->
+Process-Filtration), a single specific process on an instance satisfies BOTH the
+inherited general slot and the concrete one.
 
-This is why BOTH the parent shapes AND the concrete subclass shapes use sh:class
-+ sh:minCount 1 instead of sh:qualifiedValueShape + sh:qualifiedValueShapesDisjoint.
-With disjoint qualified slots, the one specific process conforms to both the
-parent's slot and the child's, and the disjoint rule forbids a value from
-counting toward two sibling qualified shapes -- so the value is rejected from
-both and no concrete instance can ever validate. (Empirically the disjoint flag
-on the *child's* block is what fires the failure, so converting only the parent
-is not enough; the children must be sh:class too.)
-sh:qualifiedMaxCount 1 (already present) is what actually enforces "one process
-per equipment" if that's desired; the disjoint flag is only meaningful on a
-single sh:property block that has multiple sh:qualifiedValueShape siblings
-(e.g. MembraneBioreactor, which requires both MF/UF and Biofiltration).
+Two forms were tried before this one and both were wrong:
+
+- sh:qualifiedValueShape + sh:qualifiedValueShapesDisjoint true. The disjoint rule
+  forbids a value from counting toward two sibling qualified shapes, so the one
+  specific process was rejected from both the parent's slot and the child's and
+  no concrete instance could validate. The disjoint flag is only meaningful on a
+  single sh:property block with multiple sh:qualifiedValueShape siblings, which
+  is not how these are written.
+- A bare sh:class + sh:minCount 1. This fixed the above but overshot: a bare
+  sh:class has to hold for EVERY value on the path, so it silently forbade any
+  additional process. No equipment could declare an auxiliary activity -- a
+  filter could not state its backwash, an AnaerobicDigester could not state that
+  it mixes, and a BiologicalAeratedFilter could not state that it aerates.
+
+The one bare sh:class left is on watr:UnitProcess (sh:class watr:Process), where
+"every value must be a Process" is exactly what is meant.
+
+Note the qualified form deliberately has no upper bound. Add
+sh:qualifiedMaxCount 1 to a slot only if that specific process must appear
+exactly once -- not as a way to limit how many processes the equipment has,
+which is what sh:maxCount used to do here and is what made several shapes
+unsatisfiable.
 
 Purpose goes on the role axis, not the process axis
 ---------------------------------------------------
@@ -145,30 +154,16 @@ invariant in tests/test_processtype_consistency.py strict: a subclass must refin
 the process its ancestors require, and a failure there now signals that a purpose
 has been modeled as a process type by mistake.
 
-Two slots in this family stay qualified rather than bare sh:class:
+The role slots are qualified for the same reason the process slots are: equipment
+may carry other, unrelated roles (Role-Primary, Role-SolidsHandling, ...) and a
+bare sh:class would reject them. sh:in fails the same way, which is why
+AerationBasin and MixingBasin state their required role as a qualified sh:in --
+so a basin can also be Role-Primary, Role-Detention, etc.
 
-- The role slots, because equipment may carry other, unrelated roles
-  (Role-Primary, Role-SolidsHandling, ...) and a bare sh:class would reject them.
-  This holds for every s223:hasRole constraint, and sh:in fails the same way:
-  AerationBasin and MixingBasin state their required role as a qualified sh:in
-  for this reason, so a basin can also be Role-Primary, Role-Detention, etc.
-- The mechanism slots on the concrete subclasses, because multiple inheritance
-  can combine two mechanisms: GravityBeltThickener is both a BeltThickener and a
-  GravityThickener, so it needs Filtration AND Sedimentation. A bare sh:class on
-  either parent would demand every process be its own kind and reject the other.
-
-The general rule: use a bare sh:class only where every watr:hasProcess value must
-be of that kind (the abstract families -- Filter, Digester, SeparationTank).
-Where a class asserts "performs at least this mechanism", use
-sh:qualifiedValueShape + sh:qualifiedMinCount 1, with NO
-sh:qualifiedValueShapesDisjoint. Note the qualified form drops the upper bound;
-add sh:qualifiedMaxCount 1 per slot if "exactly one of each" is wanted.
-
-One exception to that rule is watr:ElectroDialyticCrystallizer, which carries two
-bare sh:class constraints (Process-Electrodialysis and Process-Crystallization)
-that look mutually unsatisfiable. They are fine, because
-Process-ElectroDialyticCrystallization is an rdfs:subClassOf both, so one value
-satisfies both. There is a comment in equipment.ttl saying so.
+Multiple inheritance makes this necessary rather than merely tidy:
+GravityBeltThickener is both a BeltThickener and a GravityThickener, so it needs
+Filtration AND Sedimentation. A bare sh:class on either parent would demand every
+process be its own kind and reject the other.
 
 Guards against this whole family of mistakes
 --------------------------------------------
@@ -188,7 +183,9 @@ Two checks exist so these do not have to be caught by eye:
 2. tests/test_processtype_consistency.py checks that a subclass refines the
    processes its ancestors require, and -- where the ancestor states its
    requirement as a bare sh:class -- that EVERY process the subclass requires
-   refines it, since a bare sh:class must hold for every value on the path.
+   refines it, since a bare sh:class must hold for every value on the path. That
+   second half is inert while watr:UnitProcess is the only bare sh:class on
+   watr:hasProcess; it is kept so reintroducing one is caught.
 
 Avoid sh:qualifiedMinCount 0. It asserts nothing at all: it reads as "may have
 one of these" but permits any graph whatsoever. Tank's drain and overflow

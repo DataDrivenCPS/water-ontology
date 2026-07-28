@@ -160,21 +160,48 @@ Process types form a subclass hierarchy (e.g. `Process-ReverseOsmosis` is a `Pro
 watr:Filter
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-Filtration ;   # any filtration process
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;   # any filtration process
+        sh:qualifiedMinCount 1 ;
     ] .
 
 watr:ReverseOsmosisMembrane
     sh:property [
         sh:path watr:hasProcess ;
-        sh:class watr:Process-ReverseOsmosis ;   # specifically RO
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ] ;   # specifically RO
+        sh:qualifiedMinCount 1 ;
     ] .
 ```
 
 Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one — the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
 
-These constraints use `sh:class` with `sh:minCount 1` rather than `sh:qualifiedValueShape` with `sh:qualifiedValueShapesDisjoint true`. With disjoint qualified slots, the single specific process would conform to both the parent's slot and the child's, and the disjoint rule forbids a value from counting toward two sibling qualified shapes — so the value would be rejected from both and no concrete instance could ever validate. (`sh:qualifiedValueShapesDisjoint true` is only meaningful within a single `sh:property` block that has *multiple* `sh:qualifiedValueShape` siblings, which WaTr uses for equipment that genuinely requires two distinct processes at once, such as `MembraneBioreactor` requiring both a membrane filtration process and a biofiltration process.)
+### Why every process constraint is qualified
+
+Each of these slots means "performs **at least** this process", never "performs **only** this process". That distinction is the whole reason for `sh:qualifiedValueShape` rather than a plain `sh:class`.
+
+A bare `sh:class` on a property shape has to hold for *every* value on the path. Written that way, `watr:Filter` would not read as "a filter performs filtration" but as "*every* process a filter performs is a filtration" — which forbids the equipment from declaring anything else it does. Real equipment routinely does more than its defining process:
+
+- a moving bed bioreactor aerates, both to supply oxygen and to keep its carriers circulating
+- a `BiologicalAeratedFilter` aerates, as the name says
+- a granular media filter backwashes
+- an anaerobic digester mixes
+- a sequencing batch reactor aerates
+
+With qualified slots, all of these are expressible, and the abstract/concrete chain above still works unchanged:
+
+```ttl
+:myMBBR a watr:MovingBedBioreactor ;
+    watr:hasProcess watr:Process-Biofiltration ,   # satisfies MBBR and, transitively, Filter
+                    watr:Process-Aeration .        # additional, no longer rejected
+```
+
+The required process is still genuinely required — an MBBR declaring only aeration fails, and a `ReverseOsmosisMembrane` declaring only microfiltration fails. The qualified form simply stops the constraint from also forbidding everything else.
+
+Two related pitfalls to avoid when writing these:
+
+- **Do not use `sh:qualifiedValueShapesDisjoint true`.** The disjoint rule forbids a value from counting toward two sibling qualified shapes, so the single specific process would be rejected from both the parent's slot and the child's, and no concrete instance could validate. It is only meaningful within a single `sh:property` block that has *multiple* `sh:qualifiedValueShape` siblings.
+- **Do not use `sh:maxCount` to mean "one process of this kind".** `sh:maxCount` caps the whole path, so it forbids additional processes just as a bare `sh:class` does. If a particular process must appear exactly once, use `sh:qualifiedMaxCount 1` on that slot.
+
+The one place a bare `sh:class` is still correct is `watr:UnitProcess`, which requires every value to be a `watr:Process` — there, "every value" is exactly what is meant.
 
 ### Purpose vs. Mechanism
 
@@ -209,7 +236,7 @@ Both of these slots use `sh:qualifiedValueShape` rather than a bare `sh:class`, 
 - Equipment may carry several unrelated roles, so a bare `sh:class` on `s223:hasRole` would reject any role but the required one. This applies to *every* role constraint in WaTr, not just these two — `sh:in` has the same problem, which is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state their required role as a qualified `sh:in` rather than a bare one. A modeler can then add `Role-Primary`, `Role-Detention`, or any other role to a basin without tripping validation.
 - Multiple inheritance can combine two mechanisms. A `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation; a bare `sh:class` on either parent would demand every process be its own kind and reject the other.
 
-The rule of thumb: use a bare `sh:class` only where every `watr:hasProcess` value genuinely must be of that kind — the abstract families such as `Filter`, `Digester`, and `SeparationTank`. Where a class asserts "performs at least this mechanism", use `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`.
+This is the same rule as for the process constraints above: a shape saying "performs (or serves) at least this" is a `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`. A bare `sh:class` or `sh:in` says "every value must be this", which is almost never what an equipment class means.
 
 When you are adding a new process type, the question to ask is whether it names something the equipment *does* or something it is *for*. If a piece of equipment could achieve it by more than one physical means — thickening by gravity, by centrifuge, or by belt — it is a role, not a process.
 
