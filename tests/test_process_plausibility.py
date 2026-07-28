@@ -55,34 +55,50 @@ IMPLAUSIBLE = [
 ]
 
 
-def _warnings(cls: str, procs: list[str], shapes: Graph) -> list[str]:
-    """Return plausibility warning messages for one probe instance."""
-    body = (
-        f"ex:x a watr:{cls} ; watr:hasProcess "
-        + ", ".join(f"watr:Process-{p}" for p in procs)
-        + " ."
-    )
-    data = Graph().parse(data=PREFIX + body, format="ttl")
-    _, report, _ = shifty.validate(data, shacl_graph=shapes)
-    return [
-        str(report.value(r, SH.resultMessage))
-        for r in report.subjects(SH.sourceShape, WATR.ProcessPlausibilityShape)
-    ]
+def _probe_id(cls: str, procs: list[str]) -> str:
+    """Stable identifier for one probe instance, used as its URI local name."""
+    return f"{cls}_{'_'.join(procs)}"
+
+
+@pytest.fixture(scope="module")
+def plausibility_warnings(ontology_shapes_graph: Graph) -> dict[str, list[str]]:
+    """Warnings per probe, from a single validation.
+
+    Every probe is an independent focus node, so they all go in one graph and are
+    validated once. Validating each separately costs a full pass over the import
+    closure per case, which dominated the runtime of this module.
+    """
+    bodies = []
+    for cls, procs, _ in PLAUSIBLE + IMPLAUSIBLE:
+        node = _probe_id(cls, procs)
+        bodies.append(
+            f"ex:{node} a watr:{cls} ; watr:hasProcess "
+            + ", ".join(f"watr:Process-{p}" for p in procs)
+            + " ."
+        )
+    data = Graph().parse(data=PREFIX + "\n".join(bodies), format="ttl")
+
+    _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+    found: dict[str, list[str]] = {_probe_id(c, p): [] for c, p, _ in PLAUSIBLE + IMPLAUSIBLE}
+    for result in report.subjects(SH.sourceShape, WATR.ProcessPlausibilityShape):
+        focus = str(report.value(result, SH.focusNode)).rsplit("#", 1)[-1]
+        found.setdefault(focus, []).append(str(report.value(result, SH.resultMessage)))
+    return found
 
 
 @pytest.mark.parametrize(
     "cls,procs,why", PLAUSIBLE, ids=[f"{c}+{p[-1]}" for c, p, _ in PLAUSIBLE]
 )
-def test_plausible_combinations_are_not_flagged(cls, procs, why, ontology_shapes_graph):
-    msgs = _warnings(cls, procs, ontology_shapes_graph)
+def test_plausible_combinations_are_not_flagged(cls, procs, why, plausibility_warnings):
+    msgs = plausibility_warnings[_probe_id(cls, procs)]
     assert not msgs, f"{cls} with {procs} should be allowed ({why}):\n" + "\n".join(msgs)
 
 
 @pytest.mark.parametrize(
     "cls,procs,why", IMPLAUSIBLE, ids=[f"{c}+{p[-1]}" for c, p, _ in IMPLAUSIBLE]
 )
-def test_implausible_combinations_are_flagged(cls, procs, why, ontology_shapes_graph):
-    msgs = _warnings(cls, procs, ontology_shapes_graph)
+def test_implausible_combinations_are_flagged(cls, procs, why, plausibility_warnings):
+    msgs = plausibility_warnings[_probe_id(cls, procs)]
     assert msgs, f"{cls} with {procs} should be flagged ({why})"
 
 
