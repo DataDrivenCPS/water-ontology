@@ -71,14 +71,14 @@ def water_graph() -> Graph:
 @pytest.fixture(scope="session")
 def ontology_shapes_graph(water_graph: Graph) -> Graph:
     """Resolve the water ontology's full import closure once per session."""
-    env = OntoEnv(
-        path=ROOT,
-        recreate=True,
+    with OntoEnv.create(
+        str(ROOT),
+        overwrite=True,
         search_directories=[str(WATER_DIR), str(S223_DIR)],
         includes=["*.ttl"],
-    )
-    env.update(all=True)
-    shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
+    ) as env:
+        env.update(force=True)
+        shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
     shapes_graph += water_graph
     return shapes_graph
 
