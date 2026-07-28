@@ -149,6 +149,9 @@ Two slots in this family stay qualified rather than bare sh:class:
 
 - The role slots, because equipment may carry other, unrelated roles
   (Role-Primary, Role-SolidsHandling, ...) and a bare sh:class would reject them.
+  This holds for every s223:hasRole constraint, and sh:in fails the same way:
+  AerationBasin and MixingBasin state their required role as a qualified sh:in
+  for this reason, so a basin can also be Role-Primary, Role-Detention, etc.
 - The mechanism slots on the concrete subclasses, because multiple inheritance
   can combine two mechanisms: GravityBeltThickener is both a BeltThickener and a
   GravityThickener, so it needs Filtration AND Sedimentation. A bare sh:class on

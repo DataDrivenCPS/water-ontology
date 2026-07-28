@@ -206,7 +206,7 @@ The equipment shapes follow the same split: `watr:Thickener` requires the *role*
 
 Both of these slots use `sh:qualifiedValueShape` rather than a bare `sh:class`, because a bare `sh:class` must hold for *every* value on the path:
 
-- Equipment may carry several unrelated roles, so a bare `sh:class` on `s223:hasRole` would reject any role but the required one.
+- Equipment may carry several unrelated roles, so a bare `sh:class` on `s223:hasRole` would reject any role but the required one. This applies to *every* role constraint in WaTr, not just these two — `sh:in` has the same problem, which is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state their required role as a qualified `sh:in` rather than a bare one. A modeler can then add `Role-Primary`, `Role-Detention`, or any other role to a basin without tripping validation.
 - Multiple inheritance can combine two mechanisms. A `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation; a bare `sh:class` on either parent would demand every process be its own kind and reject the other.
 
 The rule of thumb: use a bare `sh:class` only where every `watr:hasProcess` value genuinely must be of that kind — the abstract families such as `Filter`, `Digester`, and `SeparationTank`. Where a class asserts "performs at least this mechanism", use `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`.

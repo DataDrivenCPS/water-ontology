@@ -264,9 +264,11 @@ watr:AerationBasin
     ] ;
     sh:property [
         sh:path s223:hasRole ;
-        sh:in ( watr:Role-Aerobic watr:Role-Anoxic ) ;
-        sh:minCount 1 ;
-        sh:message "Instances of AerationBasin must have the aerobic role." ;
+        # Qualified so the basin may also carry unrelated roles (Role-Primary,
+        # Role-Detention, ...); a bare sh:in would have to hold for every value.
+        sh:qualifiedValueShape [ sh:in ( watr:Role-Aerobic watr:Role-Anoxic ) ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of AerationBasin must have the aerobic or anoxic role." ;
     ] .
 
 watr:MixingBasin
@@ -283,8 +285,9 @@ watr:MixingBasin
     ] ;
     sh:property [
         sh:path s223:hasRole ;
-        sh:minCount 1 ;
-        sh:in ( watr:Role-Anoxic watr:Role-Anaerobic ) ;
+        # Qualified for the same reason as AerationBasin above.
+        sh:qualifiedValueShape [ sh:in ( watr:Role-Anoxic watr:Role-Anaerobic ) ] ;
+        sh:qualifiedMinCount 1 ;
         sh:message "Instances of MixingBasin must have the anoxic or anaerobic role." ;
     ] .
 
