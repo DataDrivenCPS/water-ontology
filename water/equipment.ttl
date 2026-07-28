@@ -310,7 +310,7 @@ watr:MembraneAeratedBiofilmReaactor
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of MembraneAeratedBiofilmReaactor must have the Aeration process." ;
+        sh:message "Instances of MembraneAeratedBiofilmReactor must have the Aeration process." ;
     ] .
     
 watr:CoagulationBasin
@@ -448,20 +448,19 @@ watr:SedimentationTank
         sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
     ] .
 
+watr:SepticTank
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Septic Tank" ;
+    rdfs:comment "A septic tank for on-site wastewater treatment" ;
+    rdfs:subClassOf watr:SedimentationTank .
+
 watr:ImhoffTank
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Imhoff Tank" ;
     rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
-    rdfs:subClassOf watr:SedimentationTank ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of ImhoffTank must have the Sedimentation process." ;
-    ] .
+    rdfs:subClassOf watr:SepticTank .
 
 watr:Screen
     a  sh:NodeShape ;
@@ -599,7 +598,14 @@ watr:Thickener
     a watr:Class ;
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
-    rdfs:subClassOf s223:Equipment, watr:UnitProcess.
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Thickening ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of Thickener must have the Thickening process." ;
+    ] .
 
 watr:DissolvedAirFlotationThickener
     a  sh:NodeShape ;
@@ -683,6 +689,34 @@ watr:RotaryDrumThickener
         sh:message "Instances of RotaryDrumThickener must have the Filtration process." ;
     ] .
 
+watr:BeltFilterPress
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Belt Filter Press" ;
+    rdfs:comment "A dewatering unit that uses a belt system to separate solids from liquids" ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Filtration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of BeltFilterPress must have the Filtration process." ;
+    ] .
+
+watr:CentrifugalDewateringUnit
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Centrifugal Dewatering Unit" ;
+    rdfs:comment "A dewatering unit that uses centrifugal force to separate solids from liquids" ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Centrifugation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of CentrifugalDewateringUnit must have the Centrifugation process." ;
+    ] .
+
 watr:Filter
     a  sh:NodeShape ;
     a watr:Class ;
@@ -726,6 +760,20 @@ watr:RotatingBiologicalContactor
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of RotatingBiologicalContactor must have the Biofiltration process." ;
+    ] .
+
+watr:MovingBedBioreactor 
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Moving Bed Bioreactor (MBBR)" ;
+    rdfs:comment "MBBR process using suspended growth media a tank" ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MovingBedBioreactor must have the Biofiltration process." ;
     ] .
 
 watr:TricklingFilter
@@ -774,13 +822,12 @@ watr:MembraneBioreactor
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
+        sh:hasValue watr:Process-Biofiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
         sh:message "Instances of MembraneBioreactor must have the Biofiltration process." ;
     ] .
-
+    
 watr:MicrofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
@@ -818,7 +865,7 @@ watr:NanofiltrationUnit
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
     rdfs:subClassOf watr:Filter .
 
-watr:MediaFiltration
+watr:MediaFiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "MediaFiltration Unit" ;
@@ -826,11 +873,10 @@ watr:MediaFiltration
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ];
-        sh:qualifiedValueShapesDisjoint true ;
-        sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of MediaFiltration must have the MediaFiltration process." ;
+        sh:hasValue watr:Process-MediaFiltration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Instances of MediaFiltrationUnit must have the MediaFiltration process." ;
     ] .
 
 watr:RapidSandFilter
@@ -838,7 +884,7 @@ watr:RapidSandFilter
     a watr:Class ;
     rdfs:label "Rapid Sand Filter" ;
     rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
-    rdfs:subClassOf watr:MediaFiltration ;
+    rdfs:subClassOf watr:MediaFiltrationUnit ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-RapidSandFiltration ];

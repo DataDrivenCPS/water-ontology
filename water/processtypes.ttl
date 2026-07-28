@@ -109,6 +109,11 @@ watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
     skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
+watr:Process-Thickening a watr:Class, watr:Process-Thickening ;
+    rdfs:label "Thickening" ;
+    skos:definition "A process to increase the solids content of a sludge or slurry." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
+
 watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
     rdfs:label "Dewatering" ;
     skos:definition "A process to remove or separate water from another material, typically solids." ;
@@ -203,6 +208,11 @@ watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
     rdfs:label "BiosolidsDisposal" ;
     skos:definition "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
+
+watr:Process-Composting a watr:Class, watr:Process-Composting ;
+    rdfs:label "Composting" ;
+    skos:definition "Biological degradation of organic materials under controlled aerobic conditions." ;
+    rdfs:subClassOf watr:Process-BiosolidsDisposal .
 
 watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
     rdfs:label "Land Application" ;
@@ -329,25 +339,25 @@ watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
     skos:definition "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 
-watr:Process-Incineration a watr:Class, watr:Process-Incineration ;
-    rdfs:label "Incineration" ;
+watr:Process-Combustion a watr:Class, watr:Process-Combustion ;
+    rdfs:label "Combustion" ;
     skos:definition "A process that combusts biosolids or biogas." ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
     rdfs:label "Fluidized Bed Incineration" ;
     skos:definition "A process that combusts a constantly moving bed of biosolids." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHearthIncineration ;
     rdfs:label "Multiple Hearth Incineration (MHI)" ;
     skos:definition "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
-    rdfs:subClassOf watr:Process-Incineration .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
     rdfs:label "Cogeneration" ;
     skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." ;
-    rdfs:subClassOf watr:Process-Incineration .
+    rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-BiologicalProcess a watr:Class, watr:Process-BiologicalProcess ;
     rdfs:label "Biological Process" ;
@@ -373,7 +383,7 @@ watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
 
 watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
     rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
-    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zoneswith two anoxic and two aerobic zones." ;
+    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zones." ;
     rdfs:subClassOf watr:Process-ActivatedSludge ;
     rdfs:subClassOf watr:Process-Nitrification ;
     rdfs:subClassOf watr:Process-Denitrification .
@@ -411,10 +421,10 @@ watr:Process-UCT a watr:Class, watr:Process-UCT ;
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
     rdfs:label "Biofiltration" ;
-    skos:definition "A filtration method that uses biological processes to remove contaminants (e.g., trickling filter)." ;
+    skos:definition "A filtration method that uses biological processes to remove contaminants." ;
     rdfs:subClassOf watr:Process-BiologicalProcess, watr:Process-Filtration .
 
-watr:Process-TricklingFiltration a watr:Class, watr:Process-Biofiltration ;
+watr:Process-TricklingFiltration a watr:Class, watr:Process-TricklingFiltration ;
     rdfs:label "TricklingFiltration" ;
     skos:definition "Trickling filter using any media (e.g., plastic, sand, gravel, etc.)" ;
     rdfs:subClassOf watr:Process-Biofiltration .
@@ -453,6 +463,16 @@ watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     rdfs:label "Digestion" ;
     skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
+
+watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;
+    rdfs:label "Hydrolysis" ;
+    skos:definition "A process reaction in which a water molecule is consumed to split a larger molecule into smaller fragments." ;
+    rdfs:subClassOf watr:Process-ChemicalProcess .
+
+watr:Process-ThermalHydrolysis a watr:Class, watr:Process-ThermalHydrolysis ;
+    rdfs:label "Thermal Hydrolysis" ;
+    skos:definition "A process that breaks down complex organic matter into soluble compounds using heat and pressure." ;
+    rdfs:subClassOf watr:Process-Hydrolysis .
 
 watr:Process-Cleaning a watr:Class, watr:Process-Cleaning ;
     rdfs:label "Cleaning" ;

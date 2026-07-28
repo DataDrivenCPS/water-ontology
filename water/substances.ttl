@@ -263,6 +263,15 @@ watr:OxidizingAgent-HydrogenPeroxide
   rdfs:subClassOf watr:OxidizingAgent ;
 .
 
+watr:ReducingAgent
+  a watr:Class ;
+  a watr:ReducingAgent ;
+  a sh:NodeShape ;
+  rdfs:comment "Class for reducing agents used in water treatment" ;
+  rdfs:label "Reducing Agent" ;
+  rdfs:subClassOf watr:WastewaterTreatmentChemical ;
+.
+
 # Odor Control Agents
 watr:OdorControlAgent
   a watr:Class ;
