@@ -234,11 +234,14 @@ Implementation notes, all learned the hard way:
   example tests and test_validation.py validate at violation level and are
   unaffected. Measured overhead of the constraint is about 6% of validation time.
 
-watr:MovingBedBioreactor was rdfs:subClassOf watr:Filter alone; it is now a
-Reactor as well, which is both more accurate (it is a tank of suspended biofilm
-carriers) and what lets it declare aeration. watr:RotatingBiologicalContactor is
-also Filter-only and may deserve the same treatment -- left alone pending an
-opinion from someone who knows RBCs.
+watr:MovingBedBioreactor and watr:RotatingBiologicalContactor were both
+rdfs:subClassOf watr:Filter alone; both are now Reactors as well. That is more
+accurate -- an MBBR is a tank of suspended biofilm carriers, an RBC is a stack of
+discs turning in a tank -- and it is what lets them declare their aeration (in an
+RBC the rotation itself aerates the biofilm as it lifts clear of the liquid).
+Worth checking whether any other fixed-film equipment filed under Filter is
+really a Reactor; watr:TricklingFilter is the obvious candidate, though a
+trickling filter is a media bed rather than a tank so it may genuinely differ.
 
 The permission table is a starting point for a domain expert, not a finished
 answer. tests/test_process_plausibility.py writes the claims out as readable

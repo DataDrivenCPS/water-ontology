@@ -346,6 +346,12 @@
 
 **Description:** Fixed-film process using a slowly rotating discs partially submerged in a tank
 
+**Superclass:** Reactor
+
+## Rotating Biological Contactor (RBC)
+
+**Description:** Fixed-film process using a slowly rotating discs partially submerged in a tank
+
 **Superclass:** Filter
 
 ## Moving Bed Bioreactor (MBBR)

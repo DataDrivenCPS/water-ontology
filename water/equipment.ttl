@@ -739,7 +739,10 @@ watr:RotatingBiologicalContactor
     a watr:Class ;
     rdfs:label "Rotating Biological Contactor (RBC)" ;
     rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
-    rdfs:subClassOf watr:Filter ;
+    # Both a Reactor and a Filter, like watr:MovingBedBioreactor: the discs turn
+    # in a tank, and the rotation is what aerates the biofilm as it lifts clear
+    # of the liquid. The Reactor parent is what permits declaring that aeration.
+    rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ;

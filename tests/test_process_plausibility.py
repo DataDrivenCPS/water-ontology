@@ -27,6 +27,8 @@ PLAUSIBLE = [
      "an MBBR aerates to oxygenate and to keep its carriers moving"),
     ("BiologicalAeratedFilter", ["BiologicallyActiveFiltration", "Aeration"],
      "a BAF aerates, as the name says"),
+    ("RotatingBiologicalContactor", ["Biofiltration", "Aeration"],
+     "an RBC aerates its biofilm by rotating it clear of the liquid"),
     ("MicrofiltrationUnit", ["Microfiltration", "Backwashing"],
      "membranes are backwashed"),
     ("RapidSandFilter", ["RapidSandFiltration", "AirScouring"],
