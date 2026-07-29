@@ -41,12 +41,16 @@ jobs:
       - name: Set up Python
         run: uv python install
       - name: Install the project
-        run: uv sync --all-extras --dev
+        run: uv sync --all-extras --dev --pre
+      - name: Build the ontology
+        run: make
       - name: build docs
         run: |
           # need to build twice for now...
           uv run jupyter-book build docs
           uv run jupyter-book build docs
+      - name: Publish compiled ontology
+        run: cp libraries/water.ttl docs/_build/html/water.ttl
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
