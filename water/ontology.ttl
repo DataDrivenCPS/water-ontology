@@ -68,6 +68,25 @@ watr:ProcessAndRoleConstraintsReferenceDefinedClasses
                 sh:path sh:hasValue ;
                 sh:node watr:DefinedClassShape ;
             ] ;
+            # Cover list-valued constraints as well as sh:class/sh:hasValue.
+            # Both the direct form and the qualified form occur in SHACL.
+            sh:property [
+                sh:path (
+                    sh:in
+                    [ sh:zeroOrMorePath rdf:rest ]
+                    rdf:first
+                ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path (
+                    sh:qualifiedValueShape
+                    sh:in
+                    [ sh:zeroOrMorePath rdf:rest ]
+                    rdf:first
+                ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
         ]
     ) ;
     sh:message "A watr:hasProcess or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
@@ -116,6 +135,96 @@ watr:mayAlsoPerform
     sh:declare [ sh:prefix "sh" ; sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "rdf" ; sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "s223" ; sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ] ;
+.
+
+# Some processes are performed by a *collection* of equipment and by no single
+# member of it. A backwash pump only pumps and a backwash tank only holds water;
+# backwashing is what the assembly does. Such a process is asserted on the
+# s223:System, which is why watr:hasProcess is not restricted to Equipment.
+#
+# watr:includesProcess records what a compound process decomposes into, stated
+# once on the process type rather than repeated in every model. It is what gives
+# the treatment-train process types (Process-MLE, Process-A2O, the Bardenphos)
+# content beyond a label: an MLE is not a thing a machine does, it is an
+# arrangement of nitrification, denitrification and recycle across several.
+#
+# Not to be confused with a subclass relation: a compound process *comprises*
+# its parts, it is not a kind of them. Nor with plausibility -- watr:mayAlsoPerform
+# grants permission to one piece of equipment, whereas this says what a train is
+# made of.
+watr:includesProcess
+    a rdf:Property ;
+    rdfs:label "includes process" ;
+    rdfs:comment "Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity." ;
+    rdfs:domain watr:Class ;
+    rdfs:range watr:Class ;
+.
+
+# watr:hasProcess is only meaningful on something that can perform a process.
+# Expressed as a shape rather than rdfs:domain deliberately: an OWL domain would
+# *infer* s223:Equipment onto whatever bears the property instead of rejecting
+# it, which is the opposite of a guard.
+watr:ProcessBearerShape
+    a sh:NodeShape ;
+    rdfs:label "Process bearers are equipment or systems" ;
+    rdfs:comment "watr:hasProcess may only be asserted on an s223:Equipment or an s223:System." ;
+    sh:targetSubjectsOf watr:hasProcess ;
+    sh:or (
+        [ sh:class s223:Equipment ]
+        [ sh:class s223:System ]
+    ) ;
+    sh:message "watr:hasProcess may only be asserted on s223:Equipment or s223:System. A process is performed by a machine or by a collection of them." ;
+.
+
+# The bearer guard above constrains the subject. This companion guard constrains
+# the object, including for s223:System, which does not inherit UnitProcess's
+# all-values sh:class constraint.
+watr:ProcessValueShape
+    a sh:NodeShape ;
+    rdfs:label "Process values are water processes" ;
+    rdfs:comment "Every object of watr:hasProcess must be a watr:Process." ;
+    sh:targetObjectsOf watr:hasProcess ;
+    sh:class watr:Process ;
+    sh:message "Every value of watr:hasProcess must be a watr:Process." ;
+.
+
+# Coverage check for compound processes. If a system claims a process that
+# includes constituent steps, something inside the system should be carrying each
+# of them out. Warning rather than violation: a model may legitimately be
+# partial, describing the train before every member has been entered.
+watr:SystemProcessCoverageShape
+    a sh:NodeShape ;
+    rdfs:label "System process coverage" ;
+    rdfs:comment "Warns when a system claims a compound process but nothing in it performs one of the constituent processes." ;
+    sh:targetClass s223:System ;
+    # As with ProcessPlausibilityShape, sh:severity must sit on the NodeShape.
+    sh:severity sh:Warning ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:prefixes <urn:nawi-water-ontology> ;
+        sh:message "{$this} claims a process that includes {?missing}, but neither it nor any member performs that process." ;
+        # hasMember* rather than hasMember+: the zero-length match makes the
+        # system itself a candidate performer, since a train may state a step
+        # directly instead of through a member. Nested subsystems are covered by
+        # the transitive part.
+        #
+        # Compound processes include their steps; they are not subclasses of
+        # those steps. This keeps the claimed compound process from satisfying
+        # its own coverage requirement.
+        sh:select """
+            SELECT $this ?missing
+            WHERE {
+                $this watr:hasProcess ?claimed .
+                ?claimed rdfs:subClassOf*/watr:includesProcess ?missing .
+                FILTER NOT EXISTS {
+                    $this s223:hasMember* ?performer .
+                    ?performer watr:hasProcess ?actual .
+                    ?actual rdfs:subClassOf* ?missing .
+                }
+            }
+        """ ;
+    ] ;
 .
 
 watr:ProcessPlausibilityShape
@@ -279,7 +388,7 @@ s223:Sensor
 watr:hasProcess
   a rdf:Property ;
   rdfs:label "has process" ;
-  rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
+  rdfs:comment "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape." ;
 .
 
 watr:hasAggregation

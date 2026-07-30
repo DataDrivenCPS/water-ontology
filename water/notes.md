@@ -106,100 +106,119 @@ general one (Process-ReverseOsmosis -> Process-MembraneProcess ->
 Process-Filtration), a single specific process on an instance satisfies BOTH the
 inherited general slot and the concrete one.
 
-Two forms do NOT work here and should not be reintroduced:
+Qualified process constraints have no upper bound and are not disjoint, allowing
+one specific process to satisfy its class's requirement and inherited general
+requirements. They also allow equipment to perform additional processes.
 
-- sh:qualifiedValueShape + sh:qualifiedValueShapesDisjoint true. The disjoint rule
-  forbids a value from counting toward two sibling qualified shapes, so the one
-  specific process is rejected from both the parent's slot and the child's and no
-  concrete instance can validate. The disjoint flag is only meaningful on a single
-  sh:property block with multiple sh:qualifiedValueShape siblings, which is not
-  how these are written.
-- A bare sh:class + sh:minCount 1. A bare sh:class has to hold for EVERY value on
-  the path, so it silently forbids any additional process: no equipment could
-  declare an auxiliary activity: a filter its backwash, an AnaerobicDigester
-  its mixing, a BiologicalAeratedFilter its aeration.
+The bare sh:class constraint on watr:UnitProcess applies to every hasProcess
+value and ensures that each value is a watr:Process.
 
-The one bare sh:class in the ontology is on watr:UnitProcess (sh:class
-watr:Process), where "every value must be a Process" is exactly what is meant.
+Process, role, and system
+-------------------------
+watr:hasProcess states an activity or treatment outcome performed by equipment
+or a system. s223:hasRole states how an entity can serve within a system. S223
+roles describe capabilities rather than the active state at a particular time.
 
-The qualified form deliberately has no upper bound. Add sh:qualifiedMaxCount 1 to
-a slot only if that specific process must appear exactly once. Do not use
-sh:maxCount to limit how many processes the equipment has: it caps the whole path
-and makes any equipment needing two processes unsatisfiable.
+WaTr roles cover treatment stages, zone capabilities, operational purposes, and
+connection-point purposes. A swing zone may carry both Role-Aerobic and
+Role-Anoxic; its active regime belongs on a time-varying property.
 
-Purpose goes on the role axis, not the process axis
----------------------------------------------------
-The refinement pattern above only works when the child's process is an
-rdfs:subClassOf the parent's, so that one value satisfies both. It broke for
-thickeners and dewatering units, where the parent named a *purpose*
-(Process-Thickening, Process-Dewatering) and the child named the *mechanism* that
-achieves it (Process-Filtration, Process-Centrifugation). Those are siblings, not
-subclasses, so an instance had to carry both values. A bare sh:class cannot
-express that, because it has to hold for EVERY watr:hasProcess value.
+watr:Role-Primary and watr:Role-Secondary refer to wastewater treatment stages.
+s223:Role-Primary and s223:Role-Secondary refer to primary and secondary loops.
 
-Rather than work around that in the shapes, the purposes were moved to the axis
-that already models function: s223:hasRole. Process-Thickening and
-Process-Dewatering are gone; watr:Role-Thickening and watr:Role-Dewatering
-(both rdfs:subClassOf watr:Role-SolidsHandling) replace them.
+Processes performed by a collection, not by a machine
+----------------------------------------------------
+Some processes are performed by an assembly and by no member of it. The backwash
+pump only pumps, the tank only holds water; backwashing is what the collection
+does. The claim therefore goes on the s223:System.
 
-  Thickener        -> s223:hasRole watr:Role-Thickening      (purpose)
+  :BackwashSystem a s223:System ;
+      s223:hasMember :pump, :tank, :valve ;
+      watr:hasProcess watr:Process-Backwashing .
+
+Backwashing is represented with Process-Backwashing, a subclass of
+Process-Cleaning, on the equipment or system that performs it. Role-Backwash is
+deprecated.
+
+watr:ProcessBearerShape enforces the subject boundary: hasProcess only on
+s223:Equipment or s223:System. watr:ProcessValueShape enforces the object
+boundary: every value is a watr:Process. Shapes rather than rdfs:domain/range
+deliberately -- axioms would *infer* types onto invalid data instead of rejecting
+it.
+
+watr:includesProcess
+--------------------
+watr:includesProcess records what a compound process decomposes into, stated once
+on the process type rather than per model. It may name a process family:
+Process-ActivatedSludge includes Process-Separation, which is satisfied by
+sedimentation in a conventional train or by microfiltration/ultrafiltration in an
+MBR. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
+(by inheritance), and the Bardenpho processes rather than on ActivatedSludge.
+watr:SystemProcessCoverageShape then warns when a system claims a compound process
+but neither it nor any member (hasMember*, so nested subsystems count and the
+system itself counts) performs one of the steps. Warning, not violation: a model
+may describe the train before every member is entered.
+
+A compound process uses rdfs:subClassOf for its process family and
+watr:includesProcess for its constituent steps. It is not a subclass of those
+steps.
+
+Outcome + mechanism, when the child does not refine the parent
+-------------------------------------------------------------
+The refinement pattern only works when the child's process is an rdfs:subClassOf
+the parent's, so one value satisfies both slots. Thickeners are the exception:
+Process-Thickening names the outcome, Process-Filtration the mechanism, and they
+are siblings under Process-Separation. An instance carries both.
+
+  Thickener        -> watr:hasProcess Process-Thickening     (outcome)
     BeltThickener  -> watr:hasProcess Process-Filtration     (mechanism)
-  DewateringUnit   -> s223:hasRole watr:Role-Dewatering      (purpose)
+  DewateringUnit   -> watr:hasProcess Process-Dewatering     (outcome)
     BeltFilterPress-> watr:hasProcess Process-Filtration     (mechanism)
 
-watr:hasProcess therefore carries mechanisms only. This keeps the refinement
-invariant in tests/test_processtype_consistency.py strict: a subclass must refine
-the process its ancestors require, and a failure there now signals that a purpose
-has been modeled as a process type by mistake.
+Both requirements use sh:qualifiedValueShape so that each process can satisfy its
+own slot.
 
-The role slots are qualified for the same reason the process slots are: equipment
-may carry other, unrelated roles (Role-Primary, Role-SolidsHandling, ...) and a
-bare sh:class would reject them. sh:in fails the same way, which is why
-AerationBasin and MixingBasin state their required role as a qualified sh:in,
-so a basin can also be Role-Primary, Role-Detention, etc.
+A GravityBeltThickener is a BeltThickener, not a GravityThickener: gravity drains
+water through a porous belt, while a conventional GravityThickener separates by
+sedimentation. It therefore needs Filtration alongside Thickening, not
+Sedimentation.
 
-Multiple inheritance makes this necessary rather than merely tidy:
-GravityBeltThickener is both a BeltThickener and a GravityThickener, so it needs
-Filtration AND Sedimentation. A bare sh:class on either parent would demand every
-process be its own kind and reject the other.
+Digestion and composting are kinds of stabilization, so they are subclasses of
+Process-Stabilization. Thickening mechanisms remain siblings of
+Process-Thickening because they describe a separate axis.
 
-Guards against this whole family of mistakes
---------------------------------------------
-Two checks exist so these do not have to be caught by eye:
+Nutrient-removal outcomes may be asserted on a system while its members carry the
+constituent mechanisms. Denitrification is a nitrogen-removal process;
+nitrification converts nitrogen without removing it. EBPR is a
+phosphorus-removal process. Chemical precipitation is not a phosphorus-removal
+subclass because it also applies to other constituents.
 
-1. watr:ProcessAndRoleConstraintsReferenceDefinedClasses (in ontology.ttl) is a
-   SHACL shape, so tests/test_validation.py's "the ontology validates against
-   itself" test enforces it. It flags a watr:hasProcess or s223:hasRole
-   constraint naming a class that is defined nowhere in the import closure,
-   typically the leftover of a rename. Such a shape still parses, but no value can
-   carry the missing type, so the equipment silently becomes impossible to
-   validate. This is not hypothetical: watr:Boiler named Process-Incineration
-   after that class was renamed to Process-Combustion, and watr:Tank named
-   s223:Role-Overflow, which S223 does not define. Hence watr:Role-Overflow,
-   defined next to watr:Role-Drain.
+Role slots are qualified for a related reason: equipment carries other unrelated
+roles (Role-Primary, ...) and a bare sh:class would reject them. sh:in fails the
+same way, which is why AerationBasin and MixingBasin state their required role as
+a qualified sh:in.
 
-2. tests/test_processtype_consistency.py checks that a subclass refines the
-   processes its ancestors require. Where the ancestor states its requirement
-   as a bare sh:class, it also checks that EVERY process the subclass requires
-   refines it, since a bare sh:class must hold for every value on the path. That
-   second half is inert while watr:UnitProcess is the only bare sh:class on
-   watr:hasProcess; it is kept so reintroducing one is caught.
+Structural guards
+-----------------
+Two checks enforce the process and role constraints:
 
-Avoid sh:qualifiedMinCount 0. It asserts nothing at all: it reads as "may have
-one of these" but permits any graph whatsoever. Tank's drain and overflow
-constraints and Reactor's recirculation constraint were written that way and were
-silently vacuous. They now say what they meant, "if such a connection point
-exists it must be a fluid outlet", expressed as sh:qualifiedMaxCount 0 over the
-counterexample (a connection point carrying the role that is NOT a fluid outlet).
+1. watr:ProcessAndRoleConstraintsReferenceDefinedClasses flags a watr:hasProcess
+   or s223:hasRole constraint naming a class that is not defined in the import
+   closure, including members of direct and qualified sh:in lists.
+
+2. The process-type consistency test checks that a subclass refines processes
+   required by its ancestors.
+
+Optional drain, overflow, recirculation, and return points are constrained by
+permitting zero nonconforming points. A matching point, when present, must be a
+fluid outlet.
 
 Plausibility of additional processes (watr:mayAlsoPerform)
 ----------------------------------------------------------
-Because every watr:hasProcess constraint says "at least", nothing objects to an
-implausible extra process: a ChlorinationUnit could declare reverse osmosis.
-watr:mayAlsoPerform lists what an equipment class plausibly does BESIDES the
-process it requires, and watr:ProcessPlausibilityShape (ontology.ttl) warns about
-values outside the union of (required by the class or an ancestor) and (permitted
-by them).
+watr:mayAlsoPerform lists processes that an equipment class can plausibly perform
+in addition to its requirements. watr:ProcessPlausibilityShape warns about values
+outside the union of processes required or permitted by the class and its
+ancestors.
 
 Declared on the abstract families only; subclasses inherit:
 
@@ -213,56 +232,17 @@ Digester and DisinfectionUnit are both Reactor subclasses, so digester mixing an
 contact-basin mixing need no statement of their own. Add one to a specific class
 only when it does something its family does not.
 
-Implementation constraints:
+ProcessPlausibilityShape is a warning-level SHACL-SPARQL constraint. It combines
+requirements and permissions across all equipment ancestors. Systems are not
+subject to this equipment-family plausibility table.
 
-- It is a SHACL-SPARQL constraint (sh:sparql), not ordinary property shapes,
-  because permissions must UNION across ancestors. Ordinary per-class shapes
-  intersect: BiologicalAeratedFilter is both a Reactor and a Filter, and a
-  per-family all-values constraint from Filter would reject the aeration that
-  Reactor permits.
-- sh:severity must sit on the NodeShape. On the sh:SPARQLConstraint it is
-  silently ignored and results come back as Violations.
-- The SPARQL sees the shapes graph as well as the data graph, so the
-  mayAlsoPerform statements are visible when validating an instance file that
-  does not itself contain the ontology.
-- watr:Process is excluded from the "allowed" computation. watr:UnitProcess
-  requires it of every value, so counting it would permit every process and make
-  the check vacuous.
-- Warning, not Violation, so a flagged model is still a valid WaTr model. The
-  example tests and test_validation.py validate at violation level and are
-  unaffected. Measured overhead of the constraint is about 6% of validation time.
-
-watr:MovingBedBioreactor and watr:RotatingBiologicalContactor are Reactors as
-well as Filters. An MBBR is a tank of suspended biofilm carriers and an RBC is a
-stack of discs turning in a tank, and the Reactor parent is what lets them
-declare their aeration (in an RBC the rotation itself aerates the biofilm as it
-lifts clear of the liquid).
-Worth checking whether any other fixed-film equipment filed under Filter is
-really a Reactor; watr:TricklingFilter is the obvious candidate. "It is a media
-bed, not a tank" is NOT a reason to leave it out; see the note on what
-watr:Tank actually means below.
+watr:MovingBedBioreactor and watr:RotatingBiologicalContactor are both Reactors
+and Filters. They inherit filtration requirements from Filter and the additional
+mixing, aeration, and recirculation permissions from Reactor.
 
 What watr:Tank means
 --------------------
-watr:Reactor is rdfs:subClassOf watr:Tank, and every one of the ~19 Reactor
-subclasses is therefore a Tank. That reads oddly for watr:PlugFlowReactor ("fluid
-flows in one direction through the tube") and watr:StaticMixer ("a device for
-mixing liquids without moving components"), neither of which is a tank in any
-physical sense.
-
-It is harmless, because watr:Tank asserts nothing about geometry. Its constraints
-are entirely connection points: one fluid inlet, one fluid outlet, plus rules for
-the optional drain and overflow. Any flow-through device satisfies that. The cost
-is only that the name oversells it, so a query for tanks returns in-line mixers.
-
-The comments on watr:Tank and watr:Reactor now say this explicitly rather than
-implying a shape. The alternative, making Reactor a UnitProcess that is not a
-Tank and letting the genuinely tank-shaped reactors declare Tank themselves,
-is the same "one class carrying two orthogonal claims" untangling done for
-thickening and dewatering, but it moves the inlet/outlet requirement off 19
-classes and each would need checking. Not done; revisit if the conflation starts
-causing real trouble rather than just reading badly.
-
-The permission table is a starting point for a domain expert, not a finished
-answer. tests/test_process_plausibility.py writes the claims out as readable
-cases so they can be checked against what plants actually do.
+watr:Tank identifies a flow-through vessel pattern: at least one fluid inlet and
+one fluid outlet, with constraints for optional drain and overflow points. It
+does not assert geometry. watr:Reactor is a subclass of watr:Tank, so tubular
+reactors and in-line mixers inherit the same connection-point pattern.

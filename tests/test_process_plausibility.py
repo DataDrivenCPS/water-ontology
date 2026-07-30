@@ -39,10 +39,21 @@ PLAUSIBLE = [
      "digesters draw off biogas"),
     ("ChlorinationUnit", ["Chlorination", "Mixing"],
      "contact basins mix"),
-    ("SequencingBatchReactor", ["ActivatedSludge", "Aeration"],
-     "SBRs aerate"),
-    ("SequencingBatchReactor", ["ActivatedSludge", "Recirculation"],
-     "SBRs return sludge"),
+    ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Sedimentation"],
+     "SBRs aerate and settle in successive phases"),
+    # The outcome + mechanism pattern: the outcome comes from the parent
+    # (Thickener, DewateringUnit) and the mechanism from the subclass, so both
+    # are required rather than additional and neither may be flagged.
+    ("GravityThickener", ["Thickening", "Sedimentation"],
+     "a gravity thickener thickens by settling"),
+    ("BeltThickener", ["Thickening", "Filtration"],
+     "a belt thickener thickens by filtering"),
+    ("GravityBeltThickener", ["Thickening", "Filtration"],
+     "a gravity belt thickener drains water through a porous belt"),
+    ("BeltFilterPress", ["Dewatering", "Filtration"],
+     "a belt filter press dewaters by filtering"),
+    ("CentrifugalDewateringUnit", ["Dewatering", "Centrifugation"],
+     "a centrifugal dewatering unit dewaters by spinning"),
 ]
 
 IMPLAUSIBLE = [

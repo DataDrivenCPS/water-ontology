@@ -15,9 +15,12 @@
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
 
+# A process is an activity or treatment outcome performed by equipment or by a
+# system. A role describes how an entity can serve within a system, such as a
+# treatment stage or zone capability. See docs/explanation/processes.md.
 watr:Process a watr:Class, sh:NodeShape ;
     rdfs:label "Water Process" ;
-    skos:definition "A process applied to water treatment." ;
+    skos:definition "An activity or treatment outcome performed by a piece of equipment or by a system." ;
     sh:property [
         sh:path rdfs:label ;
         sh:datatype xsd:string ;
@@ -57,6 +60,22 @@ watr:Process-Screening a watr:Class, watr:Process-Screening ;
 watr:Process-Sedimentation a watr:Class, watr:Process-Sedimentation ;
     rdfs:label "Sedimentation" ;
     skos:definition "A unit process that allows solids to settle out of water by gravity." ;
+    rdfs:subClassOf watr:Process-Separation .
+
+# Thickening and dewatering are separations distinguished by their *outcome*
+# rather than by their mechanism, so they sit alongside the mechanism processes
+# under Process-Separation rather than above them. A concrete thickener carries
+# both: the outcome it achieves and the mechanism it achieves it by. The two are
+# siblings, not parent and child, which is why both slots on the equipment are
+# sh:qualifiedValueShape. See docs/explanation/processes.md.
+watr:Process-Thickening a watr:Class, watr:Process-Thickening ;
+    rdfs:label "Thickening" ;
+    skos:definition "Separation of water from a sludge or slurry to raise its solids concentration while it remains pumpable. Distinguished from dewatering by the state of the product, not by the mechanism used." ;
+    rdfs:subClassOf watr:Process-Separation .
+
+watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
+    rdfs:label "Dewatering" ;
+    skos:definition "Separation of water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid. Distinguished from thickening by the state of the product, not by the mechanism used." ;
     rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-Stripping a watr:Class, watr:Process-Stripping ;
@@ -109,14 +128,10 @@ watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
     skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-# Thickening and dewatering are purposes, not mechanisms, so they are modeled as
-# watr:Role-Thickening and watr:Role-Dewatering in enumerationkinds.ttl rather
-# than as process types here. See docs/explanation/processes.md.
-
 watr:Process-Drying a watr:Class, watr:Process-Drying ;
     rdfs:label "Drying" ;
     skos:definition "Drying of biosolids to reduce moisture content." ;
-    rdfs:subClassOf watr:Process-Evaporation .
+    rdfs:subClassOf watr:Process-Dewatering, watr:Process-Evaporation .
 
 watr:Process-Centrifugation a watr:Class, watr:Process-Centrifugation ;
     rdfs:label "Centrifugation" ;
@@ -206,7 +221,7 @@ watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
 watr:Process-Composting a watr:Class, watr:Process-Composting ;
     rdfs:label "Composting" ;
     skos:definition "Biological degradation of organic materials under controlled aerobic conditions." ;
-    rdfs:subClassOf watr:Process-BiosolidsDisposal .
+    rdfs:subClassOf watr:Process-BiosolidsDisposal, watr:Process-Stabilization .
 
 watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
     rdfs:label "Land Application" ;
@@ -358,55 +373,112 @@ watr:Process-BiologicalProcess a watr:Class, watr:Process-BiologicalProcess ;
     skos:definition "A unit process that utilizes biological activity for water treatment." ;
     rdfs:subClassOf watr:Process .
 
+# Nutrient removal names an outcome reached by more than one means, and is
+# usually achieved by a treatment train rather than by one machine: the members
+# carry the mechanisms and the s223:System carries the outcome. It sits directly
+# under watr:Process because the means are biological or chemical, as with
+# Process-Stabilization.
+#
+# Note which mechanisms are NOT subclasses of it. Nitrification oxidizes ammonia
+# to nitrate and leaves the nitrogen in the water, so nitrifying alone does not
+# remove nitrogen -- a system claiming nitrogen removal is not satisfied by a
+# nitrifying member. Process-ChemicalPrecipitation is likewise left unwired,
+# being used for metals as well as phosphorus.
+watr:Process-NutrientRemoval a watr:Class, watr:Process-NutrientRemoval ;
+    rdfs:label "Nutrient Removal" ;
+    skos:definition "Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another." ;
+    rdfs:subClassOf watr:Process .
+
+watr:Process-NitrogenRemoval a watr:Class, watr:Process-NitrogenRemoval ;
+    rdfs:label "Nitrogen Removal" ;
+    skos:definition "Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas." ;
+    rdfs:subClassOf watr:Process-NutrientRemoval .
+
+watr:Process-PhosphorusRemoval a watr:Class, watr:Process-PhosphorusRemoval ;
+    rdfs:label "Phosphorus Removal" ;
+    skos:definition "Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted." ;
+    rdfs:subClassOf watr:Process-NutrientRemoval .
+
 watr:Process-Nitrification a watr:Class, watr:Process-Nitrification ;
     rdfs:label "Nitrification" ;
-    skos:definition "Process by which ammonia is oxidized to nitrite and subsequently nitrate." ;
+    skos:definition "Process by which ammonia is oxidized to nitrite and subsequently nitrate. Converts nitrogen rather than removing it; see watr:Process-NitrogenRemoval." ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
     rdfs:label "Denitrification" ;
     skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
-    rdfs:subClassOf watr:Process-BiologicalProcess .
+    rdfs:subClassOf watr:Process-BiologicalProcess, watr:Process-NitrogenRemoval .
+
+# The biological counterpart to Process-ChemicalPrecipitation for phosphorus.
+# Without it, the only phosphorus removal process WaTr could name was the
+# chemical one, so a BNR basin had no way to say what it actually does.
+watr:Process-EnhancedBiologicalPhosphorusRemoval a watr:Class, watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    rdfs:label "Enhanced Biological Phosphorus Removal (EBPR)" ;
+    skos:definition "Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions." ;
+    rdfs:subClassOf watr:Process-BiologicalProcess, watr:Process-PhosphorusRemoval .
 
 watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
     rdfs:label "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:includesProcess watr:Process-Recirculation ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
     rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zones." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-Recirculation ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
+# The treatment-train process types below name *arrangements*, not things a
+# single machine does -- which is why no equipment class requires any of them.
+# They are asserted on an s223:System, and watr:includesProcess records the steps
+# the train is made of so that watr:SystemProcessCoverageShape can check the
+# members actually cover them. See docs/explanation/processes.md.
+#
+# A compound process uses watr:includesProcess for its constituent steps and
+# rdfs:subClassOf for its process family. A Bardenpho is a kind of activated
+# sludge process that includes nitrification and denitrification; it is not a
+# kind of either constituent step.
 
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
-    skos:definition "Aerobic suspended-growth biological treatment" ;
-    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water." ;
+    watr:includesProcess watr:Process-Aeration ;
+    # Require the separation family, not sedimentation specifically. A
+    # conventional train can satisfy this with Process-Sedimentation, while a
+    # membrane bioreactor can satisfy it with Process-Microfiltration or
+    # Process-Ultrafiltration. Recirculation is configuration-specific and is
+    # declared by the process types that require it.
+    watr:includesProcess watr:Process-Separation ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 
 watr:Process-AO a watr:Class, watr:Process-AO ;
     rdfs:label "Anoxic-Aerobic" ;
     skos:definition "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-MLE a watr:Class, watr:Process-MLE ;
     rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
-    skos:definition "Modification of AO a with internal recycle." ;
+    skos:definition "Modification of AO with an internal recycle returning nitrate to the anoxic zone." ;
+    watr:includesProcess watr:Process-Recirculation ;
     rdfs:subClassOf watr:Process-AO .
 
 watr:Process-A2O a watr:Class, watr:Process-A2O ;
     rdfs:label "Anaerobic-Anoxic-Oxic (A2O)" ;
     skos:definition "Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:includesProcess watr:Process-Recirculation ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-UCT a watr:Class, watr:Process-UCT ;
     rdfs:label "University of Cape Town (UCT)" ;
@@ -453,10 +525,21 @@ watr:Process-Purging a watr:Class, watr:Process-Purging ;
     skos:definition "A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle." ;
     rdfs:subClassOf watr:Process-Cleaning .
 
+# Stabilization names an outcome -- reduced volatile solids, pathogens and odor
+# -- that is reached by more than one means. Unlike thickening, the means are
+# genuine kinds of stabilization rather than siblings of it, so digestion and
+# composting are modeled as subclasses and an instance needs only the specific
+# one. It sits directly under watr:Process because it is achieved both
+# biologically (digestion) and chemically (lime addition).
+watr:Process-Stabilization a watr:Class, watr:Process-Stabilization ;
+    rdfs:label "Stabilization" ;
+    skos:definition "Reduction of the volatile solids, pathogen and odor content of a sludge so that it can be stored, transported or applied to land." ;
+    rdfs:subClassOf watr:Process .
+
 watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     rdfs:label "Digestion" ;
     skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
-    rdfs:subClassOf watr:Process-BiologicalProcess .
+    rdfs:subClassOf watr:Process-BiologicalProcess, watr:Process-Stabilization .
 
 watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;
     rdfs:label "Hydrolysis" ;

@@ -122,11 +122,15 @@ watr:Water-Seawater
     ] .
 ```
 
-Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. The saline media additionally declare `watr:Salt-NaCl`, so a modeler can pin a specific salinity on a concrete instance (see the `examples/brine-composition.ttl` and `examples/ro-mixture-test.ttl` examples). `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content. No salinity value is fixed at the class level; the classes act as reusable templates, and concrete salinity belongs to specific instances.
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. This compatibility claim means only that the media share a compatible constituent; it does not say that their compositions are equivalent or check a material balance. `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content in this abstraction, while the saline media additionally declare `watr:Salt-NaCl`.
+
+WaTr follows S223's self-enumerated medium pattern: a reusable medium designation is both a class and an instance of itself, and it is used directly as the value of `s223:hasMedium`. For a reusable salinity such as 15-percent brine, mint a more specific medium class, type it as itself, subclass it from `Water-Brine`, and assert its quantified composition directly. The [`brine-composition.ttl`](../../examples/brine-composition.ttl) example demonstrates this pattern.
+
+Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium does not acquire the `s223:composedOf` statements of `Water-Brine`; it must repeat every constituent needed to describe its own composition. The superclass organizes the medium vocabulary and participates in class compatibility, but it is not an RDF template that copies constituent properties to subclasses or ordinary instances.
 
 ## Processes
 
-Tr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
+WaTr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
 For example, our UV Disinfection System is a unit process that performs UV disinfection, but it is made up of a plug flow reactor and two UV lamps.
 Another kind of UV disinfection system might use a different kind of reactor, or a different number of lamps, but it would still be performing UV disinfection.
 WaTr is designed so that consumers of a WaTr graph can query for all unit processes that perform UV disinfection, regardless of how they are constructed.
@@ -192,64 +196,121 @@ This is why the constraints are `sh:qualifiedValueShape` with `sh:qualifiedMinCo
 
 ### Plausible additional processes
 
-Because the constraints only say what must be present, `watr:mayAlsoPerform` records what a class plausibly performs *besides* what it requires. `watr:ProcessPlausibilityShape` warns about any `watr:hasProcess` value outside the union of
+`watr:mayAlsoPerform` records processes that an equipment class may perform in addition to its required processes. `watr:ProcessPlausibilityShape` warns about any `watr:hasProcess` value outside the union of
 
 - what the equipment's class, or any ancestor, **requires**, and
 - what those classes list via **`watr:mayAlsoPerform`**.
 
-The statements live on the abstract families, and subclasses inherit them:
+Permissions declared on an equipment family apply to its subclasses:
 
-| family | may also perform | rationale |
+| family | may also perform |
 |---|---|---|
-| `Tank` | Cleaning | any tank is drained or purged for maintenance |
-| `Reactor` | Mixing, Aeration, Recirculation | reactors mix, aerate and recirculate alongside their defining reaction |
-| `SeparationTank` | Recirculation | separated solids are returned to the head of the unit |
-| `Filter` | Cleaning | backwashing, air scouring and purging are routine filter operations |
-| `Digester` | GasTransfer | digesters draw off biogas (mixing is inherited from `Reactor`) |
-
-`Digester` and `DisinfectionUnit` are both `Reactor` subclasses, so an anaerobic digester and a chlorination contact basin may both mix without needing their own statement. Declare the property on the family; add it to a specific class only when that class does something its family does not.
+| `Tank` | Cleaning |
+| `Reactor` | Mixing, Aeration, Recirculation |
+| `SeparationTank` | Recirculation |
+| `Filter` | Cleaning |
+| `Digester` | GasTransfer |
 
 ```ttl
 watr:Filter
-    watr:mayAlsoPerform watr:Process-Cleaning ;   # backwash, air scour, purge
-    .
+    watr:mayAlsoPerform watr:Process-Cleaning .
 ```
 
-Findings are `sh:Warning`, not `sh:Violation`. A flagged model is still a valid WaTr model: `tests/test_validation.py` and the example tests validate at violation level, so these never fail them. To permit a combination the table does not yet cover, add a `watr:mayAlsoPerform` statement to the appropriate class.
+Plausibility findings have severity `sh:Warning`. A warning does not make the graph invalid at violation-level validation. The property grants permission; it does not assert that an equipment instance performs the process.
 
-The property grants permission; it does not claim a process is only ever ancillary. `Process-Aeration` is permitted on any `Reactor` and is also the process `AerationBasin` requires.
+### Process vs. Role
 
-### Purpose vs. Mechanism
+A WaTr model separates four claims:
 
-The pattern above relies on the concrete process being a kind of the abstract one: reverse osmosis is a kind of filtration, chlorination is a kind of disinfection. Some equipment is not like that. A belt thickener exists to **thicken** sludge, but what it physically does is **filter**. Thickening is the *purpose*; filtration is the *mechanism*, and it is not a kind of thickening, so an instance states both.
-
-WaTr keeps these on two different relationships:
-
-| | relationship | answers |
+| claim | representation |
 |---|---|---|
-| Mechanism | `watr:hasProcess` | *what the equipment physically does* |
-| Purpose | `s223:hasRole` | *what it is there to accomplish* |
+| equipment identity | `rdf:type`, such as `a watr:BeltThickener` |
+| performed process | `watr:hasProcess` |
+| role or capability in a system | `s223:hasRole` |
+| functional collection | `s223:System` with `s223:hasMember` |
 
-`watr:hasProcess` carries mechanisms only. The process hierarchy is organized by mechanism from the top down. Its first split is physical vs. chemical vs. biological, which is a statement about *means* rather than *ends*, so a purpose placed there has nowhere sensible to sit.
+A process is an activity or treatment outcome performed by equipment or by a system. Filtration, thickening, disinfection, and backwashing are processes. A role identifies how an entity can serve within a system, such as a treatment stage, a zone regime, or the purpose of a connection point.
 
-Purposes go on `s223:hasRole`, which S223 already provides for exactly this, and which WaTr already uses for roles like `Role-NutrientRemoval`, `Role-Equalization`, and `Role-Primary`. Thickening and dewatering are modeled as `watr:Role-Thickening` and `watr:Role-Dewatering`, both subclasses of `watr:Role-SolidsHandling`:
+S223 roles describe capabilities, not instantaneous operating state. A swing zone may carry both `Role-Aerobic` and `Role-Anoxic` because it can serve in either regime. Telemetry describing the regime active at a particular time belongs on a property, not in the static `hasRole` assertions.
+
+WaTr defines roles in these groups:
+
+| group | roles |
+|---|---|
+| treatment stage | `Role-Primary`, `Role-Secondary`, `Role-Tertiary`, `Role-Pretreatment`, `Role-Posttreatment` |
+| zone capability | `Role-Aerobic`, `Role-Anoxic`, `Role-Anaerobic` |
+| operational purpose | `Role-Storage`, `Role-Equalization`, `Role-Detention`, `Role-Retention`, `Role-Containment`, `Role-Extended`, `Role-Stepfeed` |
+| connection point | `Role-Drain`, `Role-Overflow`, `Role-Feed`, `Role-Permeate`, `Role-MakeUp` |
+
+`watr:Role-Primary` and `watr:Role-Secondary` refer to wastewater treatment stages. The similarly named S223 roles refer to primary and secondary loops.
+
+### Processes performed by systems
+
+Some processes belong to a collection rather than to one member. A backwash pump pumps, a tank stores water, and valves control flow; the backwash system performs backwashing:
 
 ```ttl
-@prefix s223: <http://data.ashrae.org/standard223#> .
+:BackwashSystem a s223:System ;
+    s223:hasMember :myBackwashPump, :myBackwashTank, :myBackwashValve ;
+    watr:hasProcess watr:Process-Backwashing .
+```
+
+`watr:ProcessBearerShape` enforces the subject boundary: `watr:hasProcess` may be asserted on an `s223:Equipment` or an `s223:System`, and nothing else. `watr:ProcessValueShape` enforces the other end of the relation: every value must be a `watr:Process`. These are shapes rather than `rdfs:domain` and `rdfs:range` axioms on purpose — axioms would infer types onto an invalid model instead of rejecting it.
+
+Treatment-train processes such as MLE, A2O, UCT, and Bardenpho are asserted on the system whose members perform their constituent steps. An integrated unit such as a sequencing batch reactor may carry a compound process itself.
+
+`watr:includesProcess` records what a compound process decomposes into, stated once on the process type rather than repeated in every model:
+
+```ttl
+watr:Process-ActivatedSludge
+    watr:includesProcess watr:Process-Aeration ,
+                         watr:Process-Separation .
+
+watr:Process-AO
+    watr:includesProcess watr:Process-Nitrification ,
+                         watr:Process-Denitrification .
+```
+
+`Process-Separation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train; microfiltration or ultrafiltration satisfies it in a membrane bioreactor. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
+
+`watr:SystemProcessCoverageShape` warns when neither a system nor any transitively nested member performs a required constituent process:
+
+```ttl
+:MLESystem a s223:System ;
+    s223:hasMember :anoxicZone, :aerationBasin, :secondaryClarifier, :rasPump ;
+    watr:hasProcess watr:Process-MLE .
+
+:anoxicZone a watr:MixingBasin ;
+    watr:hasProcess watr:Process-Mixing , watr:Process-Denitrification ;
+    s223:hasRole watr:Role-Anoxic .
+```
+
+Coverage findings have severity `sh:Warning`, allowing partial system models. A compound process uses `watr:includesProcess` for its steps; it is not an `rdfs:subClassOf` those steps.
+
+### Process assertions
+
+| strength | meaning | stated on | mechanism |
+|---|---|---|---|
+| **required** | an equipment class requires the process | equipment class | `sh:qualifiedValueShape` + `sh:qualifiedMinCount 1` |
+| **constituent** | a compound process includes the step | process class | `watr:includesProcess` |
+| **plausible** | an equipment family permits an additional process | equipment class | `watr:mayAlsoPerform` |
+
+### Outcome and mechanism
+
+Most specific process types refine a general process type: `Process-ReverseOsmosis` is a kind of `Process-Filtration`, so one value satisfies both requirements. Where outcome and mechanism are independent, an instance carries both. A belt thickener performs thickening by filtration:
+
+```ttl
 @prefix watr: <urn:nawi-water-ontology#> .
 @prefix : <urn:example/> .
 
 :myBeltThickener a watr:BeltThickener ;
-    s223:hasRole watr:Role-Thickening ;      # what it is for
-    watr:hasProcess watr:Process-Filtration ;  # how it does it
+    watr:hasProcess watr:Process-Thickening ,    # the outcome, required by Thickener
+                    watr:Process-Filtration .    # the mechanism, required by BeltThickener
 .
 ```
 
-The equipment shapes follow the same split: `watr:Thickener` requires the *role*, and each concrete subclass requires the *mechanism* it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
+`watr:Thickener` requires the outcome; each concrete subclass requires the mechanism it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
 
-Role constraints are qualified for the same reason process constraints are. Equipment carries several unrelated roles, so a bare `sh:class` or `sh:in` on `s223:hasRole` would reject every role but the required one. That is why `AerationBasin` (aerobic or anoxic) and `MixingBasin` (anoxic or anaerobic) state theirs as a qualified `sh:in`, leaving a modeler free to add `Role-Primary` or `Role-Detention`. Mechanism slots are qualified for a further reason: multiple inheritance combines them, and a `GravityBeltThickener` is both a `BeltThickener` and a `GravityThickener`, so it performs filtration *and* sedimentation.
-
-When adding a new process type, ask whether it names something the equipment *does* or something it is *for*. If equipment could achieve it by more than one physical means (thickening by gravity, by centrifuge, or by belt), it is a role, not a process.
+`GravityBeltThickener` is a `BeltThickener`: gravity drains water through a porous belt, so its mechanism is filtration. `GravityThickener` is a separate class whose mechanism is sedimentation.
 
 
 ## Putting It All Together

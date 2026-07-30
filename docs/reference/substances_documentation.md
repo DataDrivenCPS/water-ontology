@@ -360,21 +360,128 @@
 
 **Superclass:** DataProcessing-AccuracyMetrics
 
+## Role-Backwash
+
+**Description:** Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it.
+
+**Superclass:** EnumerationKind-Role
+
+## Role-Drain
+
+**Description:** A connection point that empties a vessel below its working level, for maintenance or solids removal.
+
+**Superclass:** Role-Discharge
+
 ## Role-Overflow
 
 **Description:** A connection point that discharges liquid above a tank's working level.
 
 **Superclass:** Role-Discharge
 
-## Thickening
+## MakeUp
 
-**Description:** Increasing the solids concentration of a sludge or slurry.
+**Description:** A connection point that admits water to replace what a process consumes or loses.
 
-**Superclass:** Role-SolidsHandling
+**Superclass:** EnumerationKind-Role
 
-## Dewatering
+## Feed
 
-**Description:** Removing or separating water from another material, typically solids.
+**Description:** A connection point that admits the stream a process acts on.
 
-**Superclass:** Role-SolidsHandling
+**Superclass:** EnumerationKind-Role
 
+## Permeate
+
+**Description:** A connection point carrying the stream that has passed through a membrane.
+
+**Superclass:** EnumerationKind-Role
+
+## Storage
+
+**Description:** The equipment holds water or sludge for later use rather than acting on it.
+
+**Superclass:** EnumerationKind-Role
+
+## Aerobic
+
+**Description:** The zone can serve in an aerobic regime with dissolved oxygen present.
+
+**Superclass:** EnumerationKind-Role
+
+## Anaerobic
+
+**Description:** The zone can serve in an anaerobic regime without dissolved oxygen or nitrate.
+
+**Superclass:** EnumerationKind-Role
+
+## Anoxic
+
+**Description:** The zone can serve in an anoxic regime without dissolved oxygen and with nitrate present.
+
+**Superclass:** EnumerationKind-Role
+
+## Equalization
+
+**Description:** The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream.
+
+**Superclass:** EnumerationKind-Role
+
+## Detention
+
+**Description:** The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete.
+
+**Superclass:** EnumerationKind-Role
+
+## Retention
+
+**Description:** The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate.
+
+**Superclass:** EnumerationKind-Role
+
+## Containment
+
+**Description:** The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant.
+
+**Superclass:** EnumerationKind-Role
+
+## Pretreatment
+
+**Description:** The equipment sits ahead of the main treatment train and conditions the influent for it.
+
+**Superclass:** EnumerationKind-Role
+
+## Primary
+
+**Description:** Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop.
+
+**Superclass:** EnumerationKind-Role
+
+## Secondary
+
+**Description:** Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop.
+
+**Superclass:** EnumerationKind-Role
+
+## Extended
+
+**Description:** The equipment is operated at an extended solids retention time.
+
+**Superclass:** EnumerationKind-Role
+
+## Stepfeed
+
+**Description:** The equipment is fed at multiple points along its length rather than only at its head.
+
+**Superclass:** EnumerationKind-Role
+
+## Tertiary
+
+**Description:** Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents.
+
+**Superclass:** EnumerationKind-Role
+
+## Posttreatment
+
+**Description:** The equipment sits after the main treatment train and conditions the effluent for discharge or reuse.
+
+**Superclass:** EnumerationKind-Role

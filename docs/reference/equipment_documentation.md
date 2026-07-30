@@ -296,15 +296,9 @@
 
 ## Gravity Belt Thickener
 
-**Description:** A thickener that combines gravity separation with a belt system
+**Description:** A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.
 
 **Superclass:** BeltThickener
-
-## Gravity Belt Thickener
-
-**Description:** A thickener that combines gravity separation with a belt system
-
-**Superclass:** GravityThickener
 
 ## Rotary Drum Thickener
 
@@ -833,4 +827,3 @@
 **Description:** Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins
 
 **Superclass:** Gate
-

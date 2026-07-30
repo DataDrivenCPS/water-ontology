@@ -288,7 +288,7 @@
 
 ## Gravity Belt Thickener
 
-**Description:** A thickener that combines gravity separation with a belt system
+**Description:** A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.
 
 **URI:** urn:nawi-water-ontology#GravityBeltThickener
 
@@ -771,4 +771,3 @@
 **URI:** urn:nawi-water-ontology#HeavyMetalRemovalAgent-SodiumSulfide
 
 **Superclass URI :** urn:nawi-water-ontology#HeavyMetalRemovalAgent
-

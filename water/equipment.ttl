@@ -59,9 +59,8 @@ watr:Tank a sh:NodeShape ;
             ] ;
         ] ;
     ] ;
-    # A drain is optional, but if the tank has one it must be a fluid outlet.
-    # Expressed as "zero connection points carrying the drain role that are not
-    # fluid outlets" -- the earlier sh:qualifiedMinCount 0 form asserted nothing.
+    # A drain is optional, but every drain must be a fluid outlet. The constraint
+    # permits zero counterexamples: drain-role points that are not fluid outlets.
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A tank's drain connection point, if it has one, is a fluid outlet" ;
@@ -119,9 +118,8 @@ watr:Reactor a sh:NodeShape ;
     # Reactors routinely mix, aerate and recirculate alongside whatever reaction
     # defines them. Digesters and disinfection units inherit this.
     watr:mayAlsoPerform watr:Process-Mixing, watr:Process-Aeration, watr:Process-Recirculation ;
-    # Recirculation and return connection points are optional, but if present
-    # they must be fluid outlets. See the drain constraint on Tank for why this
-    # is phrased as "zero non-conforming ones" rather than sh:qualifiedMinCount 0.
+    # Recirculation and return connection points are optional, but every such
+    # point must be a fluid outlet. The constraint permits zero counterexamples.
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A reactor's recirculation or return connection points, if any, are fluid outlets" ;
@@ -183,6 +181,15 @@ watr:SequencingBatchReactor
         sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SequencingBatchReactor must have a ActivatedSludge process." ;
+    ] ;
+    # An SBR performs the solid-liquid separation phase in the same vessel.
+    # State that step explicitly: Process-ActivatedSludge is a compound
+    # biological process, not itself a subclass of Process-Separation.
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of SequencingBatchReactor must have a Sedimentation process." ;
     ] ;
     # has 1 in, 1out (both water),  OR 1 bidirectional (water)
     sh:property [
@@ -591,15 +598,17 @@ watr:DewateringUnit
     rdfs:label "Dewatering Unit" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # Dewatering is what this equipment is *for*; the mechanism it dewaters by
-    # (filtration, centrifugation) is left to the concrete subclasses and stated
-    # on watr:hasProcess. The role slot is qualified because equipment may carry
-    # other, unrelated roles.
+    # Dewatering names the outcome; the concrete subclasses name the mechanism
+    # they reach it by (filtration, centrifugation). Those are siblings of
+    # Process-Dewatering under Process-Separation rather than subclasses of it,
+    # so an instance carries both values. Both slots are therefore qualified: a
+    # bare sh:class would have to hold for every watr:hasProcess value and so
+    # would reject the other one.
     sh:property [
-        sh:path s223:hasRole ;
-        sh:qualifiedValueShape [ sh:class watr:Role-Dewatering ] ;
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of DewateringUnit must have the Dewatering role." ;
+        sh:message "Instances of DewateringUnit must have a Dewatering process." ;
     ] .
 
 watr:Thickener
@@ -608,13 +617,14 @@ watr:Thickener
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # As with DewateringUnit, thickening is the purpose and the subclasses supply
-    # the mechanism they thicken by on watr:hasProcess.
+    # As with DewateringUnit, thickening is the outcome and the subclasses supply
+    # the mechanism they thicken by. None of these slots can be a bare sh:class,
+    # because an instance carries both the outcome and its mechanism.
     sh:property [
-        sh:path s223:hasRole ;
-        sh:qualifiedValueShape [ sh:class watr:Role-Thickening ] ;
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Thickening ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of Thickener must have the Thickening role." ;
+        sh:message "Instances of Thickener must have a Thickening process." ;
     ] .
 
 watr:DissolvedAirFlotationThickener
@@ -673,8 +683,8 @@ watr:GravityBeltThickener
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Gravity Belt Thickener" ;
-    rdfs:comment "A thickener that combines gravity separation with a belt system" ;
-    rdfs:subClassOf watr:BeltThickener, watr:GravityThickener .
+    rdfs:comment "A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener." ;
+    rdfs:subClassOf watr:BeltThickener .
 
 watr:RotaryDrumThickener
     a  sh:NodeShape ;

@@ -3,28 +3,29 @@
 Complements the SHACL validation tests by asserting one structural invariant:
 
 For every equipment class that constrains ``watr:hasProcess``, and for every
-process required by any of its ancestor equipment classes, at least one of the
-equipment's own required processes must be the same as, or a (transitive)
-subclass of, that ancestor-required process. In other words, a subclass may
-only *refine* (never contradict) the process rules it inherits
-(e.g. ``BiologicalAeratedFilter.hasProcess`` must be a subclass of
+process an ancestor equipment class requires *of every value* (a bare
+``sh:class`` on the property shape), at least one of the equipment's own
+required processes must be the same as, or a (transitive) subclass of, that
+ancestor-required process. In other words, a subclass may only *refine* (never
+contradict) the process rules it inherits (e.g.
+``BiologicalAeratedFilter.hasProcess`` must be a subclass of
 ``Filter.hasProcess``'s required class).
 
 An equipment may pin more than one process (e.g. ``MembraneBioreactor`` requires
 both a filtration and a biofiltration process); each ancestor-required process
 just needs to be refined by *one* of them.
 
-Where the ancestor states its requirement as a bare ``sh:class``, the check is
-stricter: a bare ``sh:class`` has to hold for *every* value on the path, so every
-process the subclass requires must refine it as well, otherwise no instance can
-satisfy the parent and the child at the same time.
+Only bare ``sh:class`` ancestors impose this, because a bare ``sh:class`` has to
+hold for every ``watr:hasProcess`` value -- so a child requiring an unrelated
+process could never validate. An ancestor whose slot is a
+``sh:qualifiedValueShape`` constrains only *some* value, so a child is free to
+require a process unrelated to it: the instance simply carries both. That is the
+"outcome + mechanism" pattern (``Thickener``/``BeltThickener``,
+``DewateringUnit``/``BeltFilterPress``) documented in
+``docs/explanation/processes.md``, and it is deliberately not a refinement.
 
-This invariant holds only because ``watr:hasProcess`` carries *mechanisms* alone.
-A purpose a subclass achieves by some unrelated mechanism (thickening by
-filtration, dewatering by centrifugation) belongs on ``s223:hasRole``, not here --
-see ``docs/explanation/processes.md``. So a failure of this test usually means a
-purpose has been modeled as a process type by mistake, rather than that the
-invariant needs loosening.
+So a failure here means a genuine contradiction -- an equipment that no instance
+can satisfy -- not merely a subclass that adds a process of its own.
 
 Process rules are read from both the legacy shape (``sh:class`` directly on the
 ``hasProcess`` property shape) and the qualified-cardinality shape
@@ -104,9 +105,9 @@ def _find_process_of_equip(equip_cls: URIRef, g: Graph):
 def _find_unqualified_process_of_equip(equip_cls: URIRef, g: Graph):
     """Return the processes an equipment requires of *every* watr:hasProcess value.
 
-    That is only the bare ``sh:class`` form. A ``sh:qualifiedValueShape`` slot
-    constrains one value, not all of them, so it imposes nothing on the other
-    processes an instance may carry.
+    That is only the bare ``sh:class`` form; a ``sh:qualifiedValueShape`` slot
+    constrains one value, not all of them, and so imposes nothing on what other
+    processes a subclass may additionally require.
     """
     q = """
     PREFIX watr: <urn:nawi-water-ontology#>
@@ -169,6 +170,8 @@ def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> Non
     g = water_graph
     equipments = _find_equipments(g)
     process_of_equip = {e: _find_process_of_equip(e, g) for e in equipments}
+    # Only an ancestor's bare sh:class constrains every value, so only those
+    # processes have to be refined by the subclass.
     unqualified_of_equip = {
         e: _find_unqualified_process_of_equip(e, g) for e in equipments
     }
@@ -183,7 +186,7 @@ def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> Non
         if not processes:
             continue
         for ancestor in equipment_ancestors[equip]:
-            for ancestor_process in process_of_equip.get(ancestor, set()):
+            for ancestor_process in unqualified_of_equip.get(ancestor, set()):
                 # At least one of the equipment's processes must be the same as,
                 # or a subclass of, the process the ancestor requires.
                 refines = any(
@@ -191,19 +194,6 @@ def test_equipment_process_constraints_are_consistent(water_graph: Graph) -> Non
                 )
                 if not refines:
                     violations.append((equip, ancestor, ancestor_process, processes))
-                    continue
-                # A bare sh:class on the ancestor is stronger than that: it has to
-                # hold for EVERY value on the path, so every process this
-                # equipment requires must refine it too, or no instance can
-                # satisfy both at once.
-                if ancestor_process in unqualified_of_equip.get(ancestor, set()):
-                    stragglers = {
-                        p for p in processes if ancestor_process not in process_ancestors[p]
-                    }
-                    if stragglers:
-                        violations.append(
-                            (equip, ancestor, ancestor_process, stragglers)
-                        )
 
     if not violations:
         return
