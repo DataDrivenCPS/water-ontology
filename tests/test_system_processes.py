@@ -213,6 +213,50 @@ def test_system_may_state_a_step_itself(ontology_shapes_graph):
     assert not _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
 
 
+def test_realistic_train_of_basins_draws_no_process_warnings(ontology_shapes_graph):
+    """An A2O train built from the vessels a plant actually uses.
+
+    The other coverage cases above use watr:Pump members so that the only
+    findings are the ones under test. That isolation hid a collision between the
+    two warning-level shapes: watr:SystemProcessCoverageShape expects the members
+    of a nutrient-removal train to declare nitrification, denitrification and
+    EBPR, while watr:ProcessPlausibilityShape flagged exactly those declarations
+    because no equipment family permitted them. Both are warnings, so nothing
+    failed -- every correctly modelled train just emitted a spurious warning per
+    zone. Reactor now permits the three conversions.
+
+    Only the two process shapes are inspected. Real basins carry s223 connection
+    point requirements that are not what this test is about.
+    """
+    body = (
+        "ex:A2O a s223:System ;\n"
+        "    s223:hasMember ex:anaerobicZone, ex:anoxicZone, ex:aerobicZone,\n"
+        "                   ex:finalClarifier ;\n"
+        "    watr:hasProcess watr:Process-A2O .\n"
+        "ex:anaerobicZone a watr:MixingBasin ;\n"
+        "    s223:hasRole watr:Role-Anaerobic ;\n"
+        "    watr:hasProcess watr:Process-Mixing ,\n"
+        "                    watr:Process-EnhancedBiologicalPhosphorusRemoval .\n"
+        "ex:anoxicZone a watr:MixingBasin ;\n"
+        "    s223:hasRole watr:Role-Anoxic ;\n"
+        "    watr:hasProcess watr:Process-Mixing, watr:Process-Denitrification .\n"
+        "ex:aerobicZone a watr:AerationBasin ;\n"
+        "    s223:hasRole watr:Role-Aerobic ;\n"
+        "    watr:hasProcess watr:Process-Aeration, watr:Process-Nitrification .\n"
+        "ex:finalClarifier a watr:SedimentationTank ;\n"
+        "    watr:hasProcess watr:Process-Sedimentation, watr:Process-Recirculation .\n"
+    )
+    data = Graph().parse(data=PREFIX + body, format="ttl")
+    _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+
+    for shape in (WATR.SystemProcessCoverageShape, WATR.ProcessPlausibilityShape):
+        msgs = [
+            str(report.value(r, SH.resultMessage))
+            for r in report.subjects(SH.sourceShape, shape)
+        ]
+        assert not msgs, f"{shape.split('#')[-1]} on a well-formed A2O train:\n" + "\n".join(msgs)
+
+
 def test_coverage_findings_are_warnings_not_violations(ontology_shapes_graph):
     """A partial model is still a valid model: the train may be described before
     every member has been entered.

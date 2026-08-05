@@ -118,6 +118,14 @@ watr:Reactor a sh:NodeShape ;
     # Reactors routinely mix, aerate and recirculate alongside whatever reaction
     # defines them. Digesters and disinfection units inherit this.
     watr:mayAlsoPerform watr:Process-Mixing, watr:Process-Aeration, watr:Process-Recirculation ;
+    # The biological conversions that a zone in a nutrient-removal train carries
+    # out. A train states the compound process on the system, and
+    # watr:includesProcess expands it into these steps, which the coverage check
+    # then looks for on the members. They are permitted rather than required
+    # because which zone nitrifies or denitrifies is an operating regime, not a
+    # property of the vessel.
+    watr:mayAlsoPerform watr:Process-Nitrification, watr:Process-Denitrification,
+                        watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     # Recirculation and return connection points are optional, but every such
     # point must be a fluid outlet. The constraint permits zero counterexamples.
     sh:property [

@@ -54,6 +54,18 @@ PLAUSIBLE = [
      "a belt filter press dewaters by filtering"),
     ("CentrifugalDewateringUnit", ["Dewatering", "Centrifugation"],
      "a centrifugal dewatering unit dewaters by spinning"),
+    # The zones of a nutrient-removal train. A system states the compound process
+    # and watr:includesProcess expands it into these steps, so the coverage check
+    # in test_system_processes.py expects to find them on the members. They must
+    # therefore not be implausible on the vessels that make up a train.
+    ("AerationBasin", ["Aeration", "Nitrification"],
+     "the aerobic zone of a nutrient-removal train nitrifies"),
+    ("AerationBasin", ["Aeration", "Denitrification"],
+     "a swing zone has diffusers but may be run unaerated to denitrify"),
+    ("MixingBasin", ["Mixing", "Denitrification"],
+     "the anoxic zone denitrifies while stirred rather than aerated"),
+    ("MixingBasin", ["Mixing", "EnhancedBiologicalPhosphorusRemoval"],
+     "the anaerobic zone releases phosphorus for EBPR"),
 ]
 
 IMPLAUSIBLE = [

@@ -224,6 +224,8 @@ Declared on the abstract families only; subclasses inherit:
 
   Tank            -> Process-Cleaning
   Reactor         -> Process-Mixing, Process-Aeration, Process-Recirculation
+                     Process-Nitrification, Process-Denitrification,
+                     Process-EnhancedBiologicalPhosphorusRemoval
   SeparationTank  -> Process-Recirculation
   Filter          -> Process-Cleaning
   Digester        -> Process-GasTransfer   (mixing comes from Reactor)
@@ -231,6 +233,14 @@ Declared on the abstract families only; subclasses inherit:
 Digester and DisinfectionUnit are both Reactor subclasses, so digester mixing and
 contact-basin mixing need no statement of their own. Add one to a specific class
 only when it does something its family does not.
+
+The three biological conversions on Reactor are what makes the permission table
+agree with the coverage check. A nutrient-removal train states its compound
+process on the system, watr:includesProcess expands it into those conversions,
+and SystemProcessCoverageShape looks for them on the members. They are permitted
+rather than required because which zone nitrifies or denitrifies is an operating
+regime, not a property of the vessel: the same basin serves as an anoxic or an
+aerobic zone depending on how it is run.
 
 ProcessPlausibilityShape is a warning-level SHACL-SPARQL constraint. It combines
 requirements and permissions across all equipment ancestors. Systems are not
