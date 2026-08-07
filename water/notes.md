@@ -163,35 +163,140 @@ A compound process uses rdfs:subClassOf for its process family and
 watr:includesProcess for its constituent steps. It is not a subclass of those
 steps.
 
-Outcome + mechanism, when the child does not refine the parent
--------------------------------------------------------------
-The refinement pattern only works when the child's process is an rdfs:subClassOf
-the parent's, so one value satisfies both slots. Thickeners are the exception:
-Process-Thickening names the outcome, Process-Filtration the mechanism, and they
-are siblings under Process-Separation. An instance carries both.
+Outcome and process
+-------------------
+What equipment is for and what it does are separate vocabularies. watr:Outcome-*
+names objectives, watr:Process-* names activities, and no term is both. Neither
+relation between them is a hierarchy, which is why one tree could not hold both:
 
-  Thickener        -> watr:hasProcess Process-Thickening     (outcome)
-    BeltThickener  -> watr:hasProcess Process-Filtration     (mechanism)
-  DewateringUnit   -> watr:hasProcess Process-Dewatering     (outcome)
-    BeltFilterPress-> watr:hasProcess Process-Filtration     (mechanism)
+  one process, several outcomes    a primary clarifier, a secondary clarifier and
+                                   a gravity thickener all sediment
+  one outcome, several processes   chlorination, ozonation, UV irradiation and
+                                   thermal treatment all disinfect
 
-Both requirements use sh:qualifiedValueShape so that each process can satisfy its
-own slot.
+Both axes are intrinsic and survive the P&ID test. What moves with position is
+the role: a primary and a secondary clarifier share outcome and process, and
+differ in their stage.
+
+watr:hasOutcome states the objective on a piece of equipment or a system.
+watr:hasProcess states the activity. watr:ProcessValueShape and
+watr:OutcomeValueShape keep the vocabularies apart in both directions;
+watr:OutcomeRequiresProcessShape rejects equipment that says what it is for
+without saying what it does.
+
+watr:achievesOutcome
+--------------------
+Class-level: what a process achieves wherever it is performed, stated once on the
+process type instead of on every machine.
+
+  Process-Nitrification    -> Outcome-AmmoniaRemoval
+  Process-Denitrification  -> Outcome-NitrogenRemoval
+  Process-EBPR             -> Outcome-PhosphorusRemoval
+  Process-Digestion        -> Outcome-Stabilization
+  Process-Composting       -> Outcome-Stabilization, Outcome-BiosolidsDisposal
+  Process-Chlorination     -> Outcome-Disinfection
+  Process-UVIrradiation    -> Outcome-Disinfection
+  Process-Ozonation        -> Outcome-Disinfection
+  Process-ThermalTreatment -> Outcome-Disinfection
+  Process-ActivatedSludge  -> Outcome-OrganicsRemoval
+  Process-AO / MLE / FourStageBardenpho    -> Outcome-NitrogenRemoval
+  Process-A2O / UCT / FiveStageBardenpho   -> Outcome-NitrogenRemoval,
+                                              Outcome-PhosphorusRemoval
+
+Most processes declare no outcome; filtration and sedimentation serve whatever
+objective the equipment is built for. Two cases are worth spelling out.
+
+Process-Nitrification -> Outcome-AmmoniaRemoval, NOT Outcome-NitrogenRemoval.
+Outcome-AmmoniaRemoval is deliberately not under Outcome-NutrientRemoval; the
+comment on it in outcomes.ttl says why.
+
+Process-ChemicalPrecipitation declares nothing: which constituent it targets
+depends on the reagent, so the outcome belongs on the equipment. The objectives
+it may serve are named so the equipment has something to point at --
+Outcome-Softening, Outcome-PhosphorusRemoval, Outcome-MetalsRemoval,
+Outcome-SulfateRemoval, Outcome-SilicaRemoval -- and all are left unwired. Lime
+softening, phosphorus precipitation and acid mine drainage treatment are one
+activity aimed at different targets.
+
+Renamed on the split
+--------------------
+Process-UVDisinfection  -> Process-UVIrradiation    + Outcome-Disinfection
+Process-ThermalDisinfection -> Process-ThermalTreatment + Outcome-Disinfection
+
+Both had baked the objective into the name of the activity, which made UV and
+chlorination incomparable: one named what it was for, the other what it did.
+
+Solids handling
+---------------
+The objective is the state of the product; the process is how the water is taken
+out. One process serves all three objectives, which is why they are on different
+axes.
+
+  Thickener      -> watr:hasOutcome Outcome-Thickening
+  DewateringUnit -> watr:hasOutcome Outcome-Dewatering
+  Outcome-Drying is a subclass of Outcome-Dewatering.
+
+  GravityThickener               -> watr:hasProcess Process-Sedimentation
+  BeltThickener, RotaryDrumThickener, GravityBeltThickener, BeltFilterPress
+                                 -> watr:hasProcess Process-Filtration
+  CentrifugalThickener, CentrifugalDewateringUnit
+                                 -> watr:hasProcess Process-Centrifugation
+  DissolvedAirFlotationThickener -> watr:hasProcess Process-Flotation
+
+Any class may require an outcome, a process, or both. These families put the
+outcome on the parent and the process on the subclass because there the objective
+is common and the mechanism varies; that is an organizing choice, not a rule.
+watr:SedimentationTank states both itself -- Outcome-Clarification and
+Process-Sedimentation -- as does watr:Digester, with Outcome-Stabilization and
+Process-Digestion.
+
+Materializing class defaults (rules/class-defaults.ttl)
+------------------------------------------------------
+Typing something as a watr:GravityThickener already says it thickens by settling.
+An optional SHACL-AF rule writes that onto the instance, reading the values from
+the sh:qualifiedValueShape constraints the classes already carry, so nothing has
+to be kept in step:
+
+  ex:gt a watr:GravityThickener .
+    ->  watr:hasProcess watr:Process-Sedimentation   (from GravityThickener)
+        watr:hasOutcome watr:Outcome-Thickening      (from Thickener)
+
+Default semantics, not additive: a class requiring Process-Filtration adds
+nothing to an instance already declaring Process-Microfiltration.
+
+The file is deliberately OUTSIDE the import closure of <urn:nawi-water-ontology>,
+and outside water/ so that the tests' water/*.ttl glob does not pick it up.
+shifty.validate runs SHACL-AF rules as part of validation (infer=True by
+default), so a rule in the closure fires before the constraints are checked and
+satisfies them itself: a bare "ex:gt a watr:GravityThickener ." goes from five
+violations to zero. That is what derivation means rather than a fault in the
+rule, but it removes the ability to tell a model that states what a machine does
+from one that merely types it -- a distinction worth keeping when the data comes
+from a plant rather than from the ontology. Load the file when you want the
+convenience; leave it out when you want models held to what they say.
+
+Why equipment carries more than one process
+------------------------------------------
+Two patterns remain, and both keep every value on watr:hasProcess.
+
+Refinement. The child's process is an rdfs:subClassOf the parent's, so one value
+satisfies both slots: ReverseOsmosisMembrane requires Process-Filtration from
+Filter and Process-ReverseOsmosis of its own. One axis stated at two levels.
+
+Co-occurrence. Several activities in one vessel, none the means to another: a
+SequencingBatchReactor aerates and settles in successive phases; an
+ElectroDialyticCrystallizer performs a process that subclasses both
+crystallization and electrodialysis.
+
+Requirements from ancestors combine conjunctively, as everywhere in SHACL.
 
 A GravityBeltThickener is a BeltThickener, not a GravityThickener: gravity drains
 water through a porous belt, while a conventional GravityThickener separates by
-sedimentation. It therefore needs Filtration alongside Thickening, not
-Sedimentation.
-
-Digestion and composting are kinds of stabilization, so they are subclasses of
-Process-Stabilization. Thickening mechanisms remain siblings of
-Process-Thickening because they describe a separate axis.
+sedimentation. Its process is therefore Filtration, inherited from BeltThickener,
+not Sedimentation.
 
 Nutrient-removal outcomes may be asserted on a system while its members carry the
-constituent mechanisms. Denitrification is a nitrogen-removal process;
-nitrification converts nitrogen without removing it. EBPR is a
-phosphorus-removal process. Chemical precipitation is not a phosphorus-removal
-subclass because it also applies to other constituents.
+processes that reach them.
 
 Role slots are qualified for a related reason: equipment carries other unrelated
 roles (Role-Primary, ...) and a bare sh:class would reject them. sh:in fails the

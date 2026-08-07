@@ -41,18 +41,18 @@ PLAUSIBLE = [
      "contact basins mix"),
     ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Sedimentation"],
      "SBRs aerate and settle in successive phases"),
-    # The outcome + mechanism pattern: the outcome comes from the parent
-    # (Thickener, DewateringUnit) and the mechanism from the subclass, so both
-    # are required rather than additional and neither may be flagged.
-    ("GravityThickener", ["Thickening", "Sedimentation"],
+    # Solids handling. The objective lives on watr:hasOutcome and is not this
+    # module's subject; what is checked here is that the process each unit
+    # thickens or dewaters by is not itself flagged as implausible.
+    ("GravityThickener", ["Sedimentation"],
      "a gravity thickener thickens by settling"),
-    ("BeltThickener", ["Thickening", "Filtration"],
+    ("BeltThickener", ["Filtration"],
      "a belt thickener thickens by filtering"),
-    ("GravityBeltThickener", ["Thickening", "Filtration"],
+    ("GravityBeltThickener", ["Filtration"],
      "a gravity belt thickener drains water through a porous belt"),
-    ("BeltFilterPress", ["Dewatering", "Filtration"],
+    ("BeltFilterPress", ["Filtration"],
      "a belt filter press dewaters by filtering"),
-    ("CentrifugalDewateringUnit", ["Dewatering", "Centrifugation"],
+    ("CentrifugalDewateringUnit", ["Centrifugation"],
      "a centrifugal dewatering unit dewaters by spinning"),
     # The zones of a nutrient-removal train. A system states the compound process
     # and watr:includesProcess expands it into these steps, so the coverage check
@@ -77,12 +77,18 @@ IMPLAUSIBLE = [
      "a microfiltration unit does not dose chlorine"),
     ("RapidSandFilter", ["RapidSandFiltration", "Crystallization"],
      "a sand filter does not crystallize"),
+    ("GravityThickener", ["Sedimentation", "AnaerobicDigestion"],
+     "a thickener does not digest"),
 ]
 
 
 def _probe_id(cls: str, procs: list[str]) -> str:
     """Stable identifier for one probe instance, used as its URI local name."""
     return f"{cls}_{'_'.join(procs)}"
+
+
+def _triples(procs: list[str]) -> str:
+    return "watr:hasProcess " + ", ".join(f"watr:Process-{p}" for p in procs)
 
 
 @pytest.fixture(scope="module")
@@ -96,11 +102,7 @@ def plausibility_warnings(ontology_shapes_graph: Graph) -> dict[str, list[str]]:
     bodies = []
     for cls, procs, _ in PLAUSIBLE + IMPLAUSIBLE:
         node = _probe_id(cls, procs)
-        bodies.append(
-            f"ex:{node} a watr:{cls} ; watr:hasProcess "
-            + ", ".join(f"watr:Process-{p}" for p in procs)
-            + " ."
-        )
+        bodies.append(f"ex:{node} a watr:{cls} ; {_triples(procs)} .")
     data = Graph().parse(data=PREFIX + "\n".join(bodies), format="ttl")
 
     _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)

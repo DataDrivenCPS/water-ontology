@@ -288,29 +288,64 @@ Coverage findings have severity `sh:Warning`, allowing partial system models. A 
 
 ### Process assertions
 
-| strength | meaning | stated on | mechanism |
+| strength | meaning | stated on | expressed by |
 |---|---|---|---|
 | **required** | an equipment class requires the process | equipment class | `sh:qualifiedValueShape` + `sh:qualifiedMinCount 1` |
 | **constituent** | a compound process includes the step | process class | `watr:includesProcess` |
 | **plausible** | an equipment family permits an additional process | equipment class | `watr:mayAlsoPerform` |
 
-### Outcome and mechanism
+### Outcome and process
 
-Most specific process types refine a general process type: `Process-ReverseOsmosis` is a kind of `Process-Filtration`, so one value satisfies both requirements. Where outcome and mechanism are independent, an instance carries both. A belt thickener performs thickening by filtration:
+What a piece of equipment is *for* is separate from what it *does*, and the two are separate vocabularies. `watr:Outcome-*` names objectives; `watr:Process-*` names activities. No term is both.
+
+The separation is needed because neither relation between them is a hierarchy. One process serves several outcomes:
 
 ```ttl
-@prefix watr: <urn:nawi-water-ontology#> .
-@prefix : <urn:example/> .
+:primaryClarifier   watr:hasProcess Process-Sedimentation ;
+                    watr:hasOutcome Outcome-Clarification ;
+                    s223:hasRole    watr:Role-Primary .
 
-:myBeltThickener a watr:BeltThickener ;
-    watr:hasProcess watr:Process-Thickening ,    # the outcome, required by Thickener
-                    watr:Process-Filtration .    # the mechanism, required by BeltThickener
-.
+:gravityThickener   watr:hasProcess Process-Sedimentation ;
+                    watr:hasOutcome Outcome-Thickening .
 ```
 
-`watr:Thickener` requires the outcome; each concrete subclass requires the mechanism it thickens by (`BeltThickener` → filtration, `CentrifugalThickener` → centrifugation, `GravityThickener` → sedimentation). `watr:DewateringUnit` and its subclasses work the same way.
+and one outcome is reached by several processes:
 
-`GravityBeltThickener` is a `BeltThickener`: gravity drains water through a porous belt, so its mechanism is filtration. `GravityThickener` is a separate class whose mechanism is sedimentation.
+```ttl
+:chlorinationUnit   watr:hasProcess Process-Chlorination ;
+                    watr:hasOutcome Outcome-Disinfection .
+
+:uvUnit             watr:hasProcess Process-UVIrradiation ;
+                    watr:hasOutcome Outcome-Disinfection .
+```
+
+A practitioner reads a clarifier the same way: its job is to clarify, and it does so by settling. Naming the mechanism alone leaves the objective unstated, which is why `Process-UVDisinfection` was split into the process `Process-UVIrradiation` and the outcome `Outcome-Disinfection` — the same irradiation also serves advanced oxidation.
+
+Outcome and process are both intrinsic, so both survive the P&ID test. What moves with position is the role: a primary and a secondary clarifier share their outcome and their process and differ only in their stage.
+
+#### Deriving the outcome from the process
+
+Where a process achieves the same thing wherever it is performed, the process type says so once with `watr:achievesOutcome`, rather than every machine repeating it:
+
+```ttl
+watr:Process-Denitrification  watr:achievesOutcome watr:Outcome-NitrogenRemoval .
+watr:Process-Chlorination     watr:achievesOutcome watr:Outcome-Disinfection .
+watr:Process-MLE              watr:achievesOutcome watr:Outcome-NitrogenRemoval .
+```
+
+Most processes declare no outcome: filtration and sedimentation serve whatever objective the equipment is built for, so the objective is stated on the equipment. Two cases are worth spelling out. `Process-Nitrification` achieves `Outcome-AmmoniaRemoval` and *not* `Outcome-NitrogenRemoval`, which is also why `Outcome-AmmoniaRemoval` sits outside `Outcome-NutrientRemoval`. `Process-ChemicalPrecipitation` declares nothing, because which constituent it targets depends on the reagent. The objectives it may serve are named so the equipment has something to point at — `Outcome-Softening`, `Outcome-PhosphorusRemoval`, `Outcome-MetalsRemoval`, `Outcome-SulfateRemoval`, `Outcome-SilicaRemoval` — and all are left unwired to the process.
+
+#### Constraints
+
+- `watr:ProcessValueShape` and `watr:OutcomeValueShape` keep the vocabularies apart: an objective asserted with `watr:hasProcess` is rejected, and an activity asserted with `watr:hasOutcome` likewise.
+- `watr:OutcomeRequiresProcessShape` rejects equipment that states what it is for without stating what it does.
+- `watr:ProcessBearerShape` restricts both predicates to `s223:Equipment` and `s223:System`.
+
+#### Equipment carrying several processes
+
+Two patterns remain, and both keep every value on `watr:hasProcess`. **Refinement** states one activity at two levels: a `ReverseOsmosisMembrane` requires `Process-Filtration` from `watr:Filter` and `Process-ReverseOsmosis` of its own, and a single value satisfies both. **Co-occurrence** is several activities in one vessel, as a `SequencingBatchReactor` aerates and settles in successive phases.
+
+Requirements from ancestors combine conjunctively, as everywhere in SHACL.
 
 
 ## Putting It All Together

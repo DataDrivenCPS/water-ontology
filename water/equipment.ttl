@@ -394,6 +394,12 @@ watr:Digester
     rdfs:comment "A container to promote decomposition of organic waste" ;
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
     sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Stabilization ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of Digester must have the Stabilization outcome." ;
+    ] ;
+    sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Digestion ] ;
         sh:qualifiedMinCount 1 ;
@@ -433,10 +439,10 @@ watr:DisinfectionUnit
     rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
     rdfs:subClassOf watr:Reactor ;
     sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Disinfection ] ;
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Disinfection ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of DisinfectionUnit must have at least one Disinfection process." ;
+        sh:message "Instances of DisinfectionUnit must have the Disinfection outcome." ;
     ] .
 
 watr:ChlorinationUnit
@@ -460,7 +466,7 @@ watr:UltravioletLightUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-UVDisinfection ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-UVIrradiation ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of UltravioletLightUnit must have a UVDisinfection process." ;
     ] .
@@ -471,6 +477,15 @@ watr:SedimentationTank
     rdfs:label "Sedimentation Tank" ;
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
     rdfs:subClassOf watr:SeparationTank ;
+    # Clarification is what the tank is for; sedimentation is what it does. The
+    # same process serves a gravity thickener, whose objective is thickening, and
+    # the role -- primary, secondary -- says which stage this one serves.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Clarification ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of SedimentationTank must have the Clarification outcome." ;
+    ] ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
@@ -606,17 +621,15 @@ watr:DewateringUnit
     rdfs:label "Dewatering Unit" ;
     rdfs:comment "A unit used to remove water from solid material" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # Dewatering names the outcome; the concrete subclasses name the mechanism
-    # they reach it by (filtration, centrifugation). Those are siblings of
-    # Process-Dewatering under Process-Separation rather than subclasses of it,
-    # so an instance carries both values. Both slots are therefore qualified: a
-    # bare sh:class would have to hold for every watr:hasProcess value and so
-    # would reject the other one.
+    # Dewatering is what the unit is for, so it sits on watr:hasOutcome. The
+    # concrete subclasses state the process they reach it by -- filtration,
+    # centrifugation -- on watr:hasProcess. The same processes serve thickening,
+    # which is why the objective cannot be read off the mechanism.
     sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ] ;
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Dewatering ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of DewateringUnit must have a Dewatering process." ;
+        sh:message "Instances of DewateringUnit must have the Dewatering outcome." ;
     ] .
 
 watr:Thickener
@@ -625,14 +638,13 @@ watr:Thickener
     rdfs:label "Thickener" ;
     rdfs:comment "A device used to increase the solids concentration of a slurry" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
-    # As with DewateringUnit, thickening is the outcome and the subclasses supply
-    # the mechanism they thicken by. None of these slots can be a bare sh:class,
-    # because an instance carries both the outcome and its mechanism.
+    # As with DewateringUnit, thickening is the objective and the subclasses
+    # supply the process they thicken by.
     sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Thickening ] ;
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Thickening ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of Thickener must have a Thickening process." ;
+        sh:message "Instances of Thickener must have the Thickening outcome." ;
     ] .
 
 watr:DissolvedAirFlotationThickener
@@ -1372,8 +1384,7 @@ watr:Grinder
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Comminution ];
-        sh:qualifiedValueShapesDisjoint true ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Comminution ] ;
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;

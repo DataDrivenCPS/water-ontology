@@ -1,0 +1,176 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/outcomes>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Treatment Outcomes Ontology" ;
+    rdfs:comment "An ontology for the objectives that water treatment equipment serves" .
+
+# An outcome is what a piece of equipment is *for*. A process is what it does.
+# The two are separate vocabularies because one process serves several outcomes
+# and one outcome is reached by several processes: a primary clarifier, a
+# secondary clarifier and a gravity thickener all settle, and chlorination,
+# ozonation and ultraviolet irradiation all disinfect. Neither relation fits in a
+# single hierarchy.
+#
+# Both are intrinsic to the equipment -- on the datasheet. What is positional
+# belongs to s223:hasRole. A primary and a secondary clarifier share their
+# outcome and their process, and differ in their role.
+#
+# See docs/explanation/processes.md.
+watr:Outcome a watr:Class, sh:NodeShape ;
+    rdfs:label "Treatment Outcome" ;
+    skos:definition "An objective that a piece of equipment or a system is intended to achieve." ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "A human-readable label for the outcome." ;
+    ] ;
+    sh:property [
+        sh:path skos:definition ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "A human-readable definition of the outcome." ;
+    ] ;
+.
+
+# --- clarification and bulk contaminant removal -----------------------------
+
+watr:Outcome-Clarification a watr:Class, watr:Outcome-Clarification ;
+    rdfs:label "Clarification" ;
+    skos:definition "Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-SolidsRemoval a watr:Class, watr:Outcome-SolidsRemoval ;
+    rdfs:label "Solids Removal" ;
+    skos:definition "Net removal of suspended or settleable solids from the treated stream." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-TurbidityRemoval a watr:Class, watr:Outcome-TurbidityRemoval ;
+    rdfs:label "Turbidity Removal" ;
+    skos:definition "Reduction of the turbidity of the treated stream, the objective of polishing filtration." ;
+    rdfs:subClassOf watr:Outcome-SolidsRemoval .
+
+watr:Outcome-OrganicsRemoval a watr:Class, watr:Outcome-OrganicsRemoval ;
+    rdfs:label "Organics Removal" ;
+    skos:definition "Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC." ;
+    rdfs:subClassOf watr:Outcome .
+
+# --- salinity and dissolved constituents ------------------------------------
+
+watr:Outcome-Desalination a watr:Class, watr:Outcome-Desalination ;
+    rdfs:label "Desalination" ;
+    skos:definition "Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-Softening a watr:Class, watr:Outcome-Softening ;
+    rdfs:label "Softening" ;
+    skos:definition "Reduction of hardness by removing calcium and magnesium from the treated stream." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-pHAdjustment a watr:Class, watr:Outcome-pHAdjustment ;
+    rdfs:label "pH Adjustment" ;
+    skos:definition "Bringing the pH of the treated stream to a target value." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-Neutralization a watr:Class, watr:Outcome-Neutralization ;
+    rdfs:label "Neutralization" ;
+    skos:definition "pH adjustment to neutral, typically with a base, as in high-density sludge treatment." ;
+    rdfs:subClassOf watr:Outcome-pHAdjustment .
+
+# --- constituents reached by precipitation ----------------------------------
+#
+# What a precipitation step is for depends on the reagent and the target, so
+# watr:Process-ChemicalPrecipitation declares no watr:achievesOutcome of its own
+# and the equipment states which of these it serves. Lime softening, phosphorus
+# precipitation and acid mine drainage treatment are the same activity aimed at
+# different constituents; watr:Outcome-Softening and
+# watr:Outcome-PhosphorusRemoval cover two of those cases already.
+
+watr:Outcome-MetalsRemoval a watr:Class, watr:Outcome-MetalsRemoval ;
+    rdfs:label "Metals Removal" ;
+    skos:definition "Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-SulfateRemoval a watr:Class, watr:Outcome-SulfateRemoval ;
+    rdfs:label "Sulfate Removal" ;
+    skos:definition "Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-SilicaRemoval a watr:Class, watr:Outcome-SilicaRemoval ;
+    rdfs:label "Silica Removal" ;
+    skos:definition "Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling." ;
+    rdfs:subClassOf watr:Outcome .
+
+# --- pathogens --------------------------------------------------------------
+
+watr:Outcome-Disinfection a watr:Class, watr:Outcome-Disinfection ;
+    rdfs:label "Disinfection" ;
+    skos:definition "Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself." ;
+    rdfs:subClassOf watr:Outcome .
+
+# --- nitrogen and phosphorus ------------------------------------------------
+
+# Deliberately NOT a subclass of watr:Outcome-NutrientRemoval. Nitrification
+# oxidizes ammonia to nitrate, which takes the ammonia out of the water but
+# leaves the nitrogen in it. A plant nitrifies to meet an ammonia limit, or to
+# remove its oxygen and chlorine demand; removing the nitrogen itself takes
+# denitrification as well. Keeping these apart is what stops a train whose only
+# biological step is nitrification from reading as nitrogen removal.
+watr:Outcome-AmmoniaRemoval a watr:Class, watr:Outcome-AmmoniaRemoval ;
+    rdfs:label "Ammonia Removal" ;
+    skos:definition "Removal of ammonia from the treated stream by converting it to another nitrogen species." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-NutrientRemoval a watr:Class, watr:Outcome-NutrientRemoval ;
+    rdfs:label "Nutrient Removal" ;
+    skos:definition "Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-NitrogenRemoval a watr:Class, watr:Outcome-NitrogenRemoval ;
+    rdfs:label "Nitrogen Removal" ;
+    skos:definition "Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas." ;
+    rdfs:subClassOf watr:Outcome-NutrientRemoval .
+
+watr:Outcome-PhosphorusRemoval a watr:Class, watr:Outcome-PhosphorusRemoval ;
+    rdfs:label "Phosphorus Removal" ;
+    skos:definition "Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted." ;
+    rdfs:subClassOf watr:Outcome-NutrientRemoval .
+
+# --- solids handling --------------------------------------------------------
+#
+# Thickening, dewatering and drying are one axis: the state of the product. The
+# mechanism that reaches them -- sedimentation, filtration, centrifugation,
+# flotation -- is a process, and a single mechanism serves all three.
+
+watr:Outcome-Thickening a watr:Class, watr:Outcome-Thickening ;
+    rdfs:label "Thickening" ;
+    skos:definition "Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-Dewatering a watr:Class, watr:Outcome-Dewatering ;
+    rdfs:label "Dewatering" ;
+    skos:definition "Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-Drying a watr:Class, watr:Outcome-Drying ;
+    rdfs:label "Drying" ;
+    skos:definition "Removing water from biosolids beyond the cake stage, to a dry product." ;
+    rdfs:subClassOf watr:Outcome-Dewatering .
+
+watr:Outcome-Stabilization a watr:Class, watr:Outcome-Stabilization ;
+    rdfs:label "Stabilization" ;
+    skos:definition "Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of." ;
+    rdfs:subClassOf watr:Outcome .
+
+watr:Outcome-BiosolidsDisposal a watr:Class, watr:Outcome-BiosolidsDisposal ;
+    rdfs:label "Biosolids Disposal" ;
+    skos:definition "Final disposition of biosolids, by land application, landfilling, incineration or another route." ;
+    rdfs:subClassOf watr:Outcome .
