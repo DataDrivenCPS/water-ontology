@@ -695,33 +695,25 @@ use it, so neither had ever appeared in `docs/reference/`.
    deleted. That file is currently untracked yet gates the test suite, which is
    worth resolving on its own.
 
-2. **`watr:AerationBasin` conflates two kinds of equipment.** Its comment describes an air
-   stripper — "aerated to remove gases and volatile organic compounds", which is
-   `Process-Stripping`, already defined — but it requires `Process-Aeration`,
-   defined as transferring oxygen *into* water, and a biological aerobic/anoxic
-   role that is meaningless for a stripper. Suggested resolution: keep
-   `AerationBasin` as the activated-sludge zone, since that is what the role slot
-   commits it to, and give air stripping its own class.
-
-3. **Are redox roles capability or state?** The definitions read "the zone *can
+2. **Are redox roles capability or state?** The definitions read "the zone *can
    serve in* an anoxic regime". Under that reading `AerationBasin` + `Role-Anoxic`
    is a swing zone — diffusers installed, run unaerated seasonally — which is real
    and consistent. Under a state reading it is a contradiction.
 
-4. **The process vocabulary has not been fully re-read** since the outcome split.
+3. **The process vocabulary has not been fully re-read** since the outcome split.
    Terms that were plainly objectives were moved; the rest were left as
    processes. `Process-Separation` most deserves a second look, since it sits
    above the mechanisms *and* is a step of `Process-ActivatedSludge`, so it is
    load-bearing for coverage. `Process-Solidification` and
    `Process-LandApplication` may be objectives.
 
-5. **Most equipment classes still state no outcome.** Only `Thickener`,
+4. **Most equipment classes still state no outcome.** Only `Thickener`,
    `DewateringUnit`, `DisinfectionUnit`, `Digester` and `SedimentationTank`
    require one. An RO membrane and a sand filter both have objectives the model
    can now express — `Outcome-Desalination`, `Outcome-TurbidityRemoval` — and do
    not state.
 
-6. **`watr:entailsProcess` and friends** remain proposed only, recorded in
+5. **`watr:entailsProcess` and friends** remain proposed only, recorded in
    `water/notes.md`: renaming `watr:UnitProcess` → `watr:TreatmentUnit`,
    inference for processes that are a natural consequence of another, system
    subclasses, and plausibility checking for systems. The first depends on

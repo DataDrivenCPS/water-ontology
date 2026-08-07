@@ -66,6 +66,8 @@ PLAUSIBLE = [
      "the anoxic zone denitrifies while stirred rather than aerated"),
     ("MixingBasin", ["Mixing", "EnhancedBiologicalPhosphorusRemoval"],
      "the anaerobic zone releases phosphorus for EBPR"),
+    ("AirStripper", ["Stripping", "Aeration"],
+     "blowing air through water oxygenates it as a side effect of stripping"),
 ]
 
 IMPLAUSIBLE = [
@@ -79,6 +81,8 @@ IMPLAUSIBLE = [
      "a sand filter does not crystallize"),
     ("GravityThickener", ["Sedimentation", "AnaerobicDigestion"],
      "a thickener does not digest"),
+    ("AirStripper", ["Stripping", "Nitrification"],
+     "a stripper holds no biomass; the aerobic zone it is confused with is AerationBasin"),
 ]
 
 

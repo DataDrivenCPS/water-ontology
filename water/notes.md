@@ -126,6 +126,14 @@ Role-Anoxic; its active regime belongs on a time-varying property.
 watr:Role-Primary and watr:Role-Secondary refer to wastewater treatment stages.
 s223:Role-Primary and s223:Role-Secondary refer to primary and secondary loops.
 
+AerationBasin and AirStripper are two classes, not one, because air serves two
+purposes. In a basin it is the oxygen supply for the biomass (Process-Aeration,
+gas transfer into the water, a redox role); in a stripper it is the carrier that
+sweeps ammonia and volatile organics out (Process-Stripping, a separation, no
+biology). AerationBasin once carried the stripper's description alongside the
+basin's constraints. A stripper does oxygenate incidentally, which is why
+Process-Aeration stays permitted on it via watr:mayAlsoPerform.
+
 Processes performed by a collection, not by a machine
 ----------------------------------------------------
 Some processes are performed by an assembly and by no member of it. The backwash

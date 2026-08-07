@@ -64,11 +64,19 @@
 
 ## AerationBasin
 
-**Description:** A tank where water is aerated to remove gases and volatile organic compounds
+**Description:** A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.
 
 **URI:** urn:nawi-water-ontology#AerationBasin
 
 **Superclass URI :** urn:nawi-water-ontology#Reactor
+
+## AirStripper
+
+**Description:** A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream
+
+**URI:** urn:nawi-water-ontology#AirStripper
+
+**Superclass URI :** urn:nawi-water-ontology#SeparationTank
 
 ## MixingBasin
 

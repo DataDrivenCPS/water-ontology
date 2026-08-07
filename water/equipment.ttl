@@ -305,11 +305,16 @@ watr:StaticMixer
         sh:message "Instances of StaticMixer must have a Mixing process." ;
     ] .
 
+# The comment used to describe an air stripper -- "aerated to remove gases and
+# volatile organic compounds" -- while the constraints described the aerobic zone
+# of an activated-sludge train. The constraints won: Process-Aeration is oxygen
+# transfer *into* water and the redox role slot is meaningless for a stripper.
+# Stripping moves gases the other way and now has its own class, watr:AirStripper.
 watr:AerationBasin
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Aeration Basin" ;
-    rdfs:comment "A tank where water is aerated to remove gases and volatile organic compounds" ;
+    rdfs:comment "A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic." ;
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
@@ -324,6 +329,33 @@ watr:AerationBasin
         sh:qualifiedValueShape [ sh:in ( watr:Role-Aerobic watr:Role-Anoxic ) ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of AerationBasin must have the aerobic or anoxic role." ;
+    ] .
+
+# Split out of watr:AerationBasin, which used to carry this description. Air is
+# the carrier here, not an oxygen supply: it sweeps ammonia or volatile organics
+# out of the water and leaves as off-gas. No biology, hence no redox role.
+watr:AirStripper
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Air Stripper" ;
+    rdfs:comment "A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream" ;
+    # A SeparationTank, not a Reactor: the treated water and the off-gas leave by
+    # separate outlets, and s223:Fluid-Air is a s223:Mix-Fluid, so the vent
+    # satisfies the two-fluid-outlet requirement. Process-Stripping is a
+    # Process-Separation, so one value satisfies both process slots.
+    rdfs:subClassOf watr:SeparationTank ;
+    # Contacting water with air oxygenates it as a side effect -- which is why a
+    # stripper is often sited ahead of iron and manganese removal. Incidental,
+    # not the objective, so it is permitted rather than required.
+    watr:mayAlsoPerform watr:Process-Aeration ;
+    # No outcome is required. Stripping serves ammonia removal at one plant and
+    # organics removal at another; which one is a property of the installation,
+    # so it belongs on the instance.
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Stripping ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of AirStripper must have a Stripping process." ;
     ] .
 
 watr:MixingBasin
