@@ -226,19 +226,39 @@ A WaTr model separates four claims:
 |---|---|---|
 | equipment identity | `rdf:type`, such as `a watr:BeltThickener` |
 | performed process | `watr:hasProcess` |
-| role or capability in a system | `s223:hasRole` |
+| commissioned function in a system | `s223:hasRole` |
 | functional collection | `s223:System` with `s223:hasMember` |
 
-A process is an activity or treatment outcome performed by equipment or by a system. Filtration, thickening, disinfection, and backwashing are processes. A role identifies how an entity can serve within a system, such as a treatment stage, a zone regime, or the purpose of a connection point.
+A process is an activity or treatment outcome performed by equipment or by a system. Filtration, thickening, disinfection, and backwashing are processes. A role identifies the function an entity is commissioned to serve within a system, such as a treatment stage, a zone regime, or the purpose of a connection point.
 
-S223 roles describe capabilities, not instantaneous operating state. A swing zone may carry both `Role-Aerobic` and `Role-Anoxic` because it can serve in either regime. Telemetry describing the regime active at a particular time belongs on a property, not in the static `hasRole` assertions.
+S223 roles describe commissioned function, not instantaneous operating state — a heating coil keeps `Role-Heating` while it is switched off. `Role-Aerobic`, `Role-Anoxic` and `Role-Anaerobic` say which regime a zone is commissioned to run in, which is what makes the role slots on `AerationBasin` and `MixingBasin` discriminate between the zones of a train: read as bare capability they would be vacuous, since any basin with diffusers *can* be run aerobic. A swing zone commissioned for either regime carries both `Role-Aerobic` and `Role-Anoxic`, and keeps both whatever its blowers are doing.
+
+The dissolved oxygen present at a point in time is a reading, not a role. It belongs on an `s223:QuantifiableObservableProperty` of the medium, which is what a `watr:OxygenMeter` observes:
+
+```ttl
+:swing_zone a watr:AerationBasin ;
+    s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;      # commissioned for either
+    watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification .
+
+:do_meter a watr:OxygenMeter ;
+    s223:hasObservationLocation :mixed_liquor ;
+    s223:observes :dissolved_oxygen .
+
+:dissolved_oxygen a s223:QuantifiableObservableProperty ;    # what it is doing now
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L .
+```
+
+A reading near zero does not withdraw `Role-Aerobic` from the basin, and a reading of 2 mg/L does not withdraw `Role-Anoxic`. `examples/swing-zone-dissolved-oxygen.ttl` is the whole model, validated with the rest of the examples.
 
 WaTr defines roles in these groups:
 
 | group | roles |
 |---|---|
 | treatment stage | `Role-Primary`, `Role-Secondary`, `Role-Tertiary`, `Role-Pretreatment`, `Role-Posttreatment` |
-| zone capability | `Role-Aerobic`, `Role-Anoxic`, `Role-Anaerobic` |
+| zone regime | `Role-Aerobic`, `Role-Anoxic`, `Role-Anaerobic` |
 | operational purpose | `Role-Storage`, `Role-Equalization`, `Role-Detention`, `Role-Retention`, `Role-Containment`, `Role-Extended`, `Role-Stepfeed` |
 | connection point | `Role-Drain`, `Role-Overflow`, `Role-Feed`, `Role-Permeate`, `Role-MakeUp` |
 

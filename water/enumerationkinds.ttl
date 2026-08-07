@@ -594,7 +594,7 @@ watr:Role-Aerobic
     a watr:Role-Aerobic ;
     a sh:NodeShape ;
     rdfs:label "Aerobic" ;
-    rdfs:comment "The zone can serve in an aerobic regime with dissolved oxygen present." ;
+    rdfs:comment "The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -604,7 +604,7 @@ watr:Role-Anaerobic
     a watr:Role-Anaerobic ;
     a sh:NodeShape ;
     rdfs:label "Anaerobic" ;
-    rdfs:comment "The zone can serve in an anaerobic regime without dissolved oxygen or nitrate." ;
+    rdfs:comment "The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -614,7 +614,7 @@ watr:Role-Anoxic
     a watr:Role-Anoxic ;
     a sh:NodeShape ;
     rdfs:label "Anoxic" ;
-    rdfs:comment "The zone can serve in an anoxic regime without dissolved oxygen and with nitrate present." ;
+    rdfs:comment "The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 

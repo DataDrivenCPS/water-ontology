@@ -404,19 +404,19 @@
 
 ## Aerobic
 
-**Description:** The zone can serve in an aerobic regime with dissolved oxygen present.
+**Description:** The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it.
 
 **Superclass:** EnumerationKind-Role
 
 ## Anaerobic
 
-**Description:** The zone can serve in an anaerobic regime without dissolved oxygen or nitrate.
+**Description:** The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate.
 
 **Superclass:** EnumerationKind-Role
 
 ## Anoxic
 
-**Description:** The zone can serve in an anoxic regime without dissolved oxygen and with nitrate present.
+**Description:** The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present.
 
 **Superclass:** EnumerationKind-Role
 

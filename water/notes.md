@@ -116,12 +116,20 @@ value and ensures that each value is a watr:Process.
 Process, role, and system
 -------------------------
 watr:hasProcess states an activity or treatment outcome performed by equipment
-or a system. s223:hasRole states how an entity can serve within a system. S223
-roles describe capabilities rather than the active state at a particular time.
+or a system. s223:hasRole states the function an entity is commissioned to serve
+within a system, in the sense s223 gives it: a heating coil keeps Role-Heating
+while it is switched off. Not the state at a particular time.
 
-WaTr roles cover treatment stages, zone capabilities, operational purposes, and
-connection-point purposes. A swing zone may carry both Role-Aerobic and
-Role-Anoxic; its active regime belongs on a time-varying property.
+WaTr roles cover treatment stages, zone regimes, operational purposes, and
+connection-point purposes. Role-Aerobic, Role-Anoxic and Role-Anaerobic say which
+regime a zone is commissioned to run in, which is why the role slots on
+AerationBasin and MixingBasin discriminate between zones of a train at all -- read
+as bare capability they would be vacuous, since any basin with diffusers can be
+run aerobic and any stirred basin can be run anoxic given the right feed. A swing
+zone commissioned for either regime carries both Role-Aerobic and Role-Anoxic. The
+dissolved oxygen at a point in time is a reading, not a role: it belongs on an
+s223:QuantifiableObservableProperty of the medium, which is what a
+watr:OxygenMeter observes. See examples/swing-zone-dissolved-oxygen.ttl.
 
 watr:Role-Primary and watr:Role-Secondary refer to wastewater treatment stages.
 s223:Role-Primary and s223:Role-Secondary refer to primary and secondary loops.
