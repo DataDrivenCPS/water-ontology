@@ -3,7 +3,8 @@ from pathlib import Path
 import pytest
 import shifty
 from ontoenv import OntoEnv
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, URIRef
+from rdflib.namespace import OWL
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
@@ -15,6 +16,9 @@ EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "water"
 S223_DIR = ROOT / "s223"
+
+CLASS_DEFAULTS_FILE = WATER_DIR / "class-defaults.ttl"
+CLASS_DEFAULTS_URI = URIRef("urn:nawi-water-ontology/class-defaults")
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -69,8 +73,26 @@ def water_graph() -> Graph:
 
 
 @pytest.fixture(scope="session")
-def ontology_shapes_graph(water_graph: Graph) -> Graph:
-    """Resolve the water ontology's full import closure once per session."""
+def water_graph_without_class_defaults() -> Graph:
+    """The water ontology with the class-defaults rule not imported.
+
+    Built the way the ontology itself would be if it did not ship the rule: the
+    file is left unparsed and the owl:imports triple naming it is dropped, so the
+    closure resolved from this graph never reaches it. Contrast
+    ``water_graph``, which imports it -- see ``water/ontology.ttl``.
+    """
+    g = Graph()
+    for path in sorted(WATER_DIR.glob("*.ttl")):
+        if path == CLASS_DEFAULTS_FILE:
+            continue
+        g.parse(path, format="ttl")
+    g.remove((None, OWL.imports, CLASS_DEFAULTS_URI))
+    return g
+
+
+@pytest.fixture(scope="session")
+def ontoenv():
+    """One resolver for the session; building it is the expensive part."""
     with OntoEnv.create(
         str(ROOT),
         overwrite=True,
@@ -78,8 +100,26 @@ def ontology_shapes_graph(water_graph: Graph) -> Graph:
         includes=["*.ttl"],
     ) as env:
         env.update(force=True)
-        shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
+        yield env
+
+
+@pytest.fixture(scope="session")
+def ontology_shapes_graph(water_graph: Graph, ontoenv: OntoEnv) -> Graph:
+    """Resolve the water ontology's full import closure once per session."""
+    shapes_graph, _imported = ontoenv.get_dependencies(water_graph, fetch_missing=True)
     shapes_graph += water_graph
+    return shapes_graph
+
+
+@pytest.fixture(scope="session")
+def shapes_graph_without_class_defaults(
+    water_graph_without_class_defaults: Graph, ontoenv: OntoEnv
+) -> Graph:
+    """The same closure resolved from a graph that does not import the rule."""
+    shapes_graph, _imported = ontoenv.get_dependencies(
+        water_graph_without_class_defaults, fetch_missing=True
+    )
+    shapes_graph += water_graph_without_class_defaults
     return shapes_graph
 
 

@@ -81,27 +81,34 @@ def test_a_bare_typed_instance_is_now_complete(ontology_shapes_graph):
     assert valid, text
 
 
-def test_the_distinction_is_recoverable_without_the_rule(water_graph):
+def test_the_distinction_is_recoverable_without_the_rule(
+    shapes_graph_without_class_defaults,
+):
     """The cost, and the way back.
 
     With the rule in the closure the ontology can no longer distinguish a model
     that *states* what a piece of equipment does from one that only types it.
-    Validating against the ontology with the rule removed restores that, so the
-    distinction is available to anyone who needs it rather than lost.
+    Validating against a closure that does not import the rule restores that, so
+    the distinction is available to anyone who needs it rather than lost.
+
+    The closure is built by dropping the owl:imports rather than by filtering the
+    rule's triples out of the merged graph: it is the import that puts the rule
+    in the closure, so removing the import is what a consumer would actually do,
+    and the test exercises the same resolution path they would.
     """
-    shapes = Graph()
-    for triple in water_graph:
-        if triple[0] == WATR.ClassDefaultsRule:
-            continue
-        shapes.add(triple)
-    for rule in water_graph.objects(WATR.ClassDefaultsRule, SH.rule):
-        shapes.remove((WATR.ClassDefaultsRule, SH.rule, rule))
+    assert (WATR.ClassDefaultsRule, None, None) not in shapes_graph_without_class_defaults, (
+        "dropping the owl:imports should keep the rule out of the closure; if it "
+        "is back, the resolver found it some other way and the rest of this test "
+        "proves nothing"
+    )
 
     data = Graph().parse(
         data=PREFIX + "ex:bare2 a watr:GravityThickener .\n", format="ttl"
     )
     _, report, _ = shifty.validate(
-        data, shacl_graph=shapes, minimum_severity="violation"
+        data,
+        shacl_graph=shapes_graph_without_class_defaults,
+        minimum_severity="violation",
     )
     messages = [
         str(report.value(r, SH.resultMessage))
