@@ -697,13 +697,7 @@ use it, so neither had ever appeared in `docs/reference/`.
    deleted. That file is currently untracked yet gates the test suite, which is
    worth resolving on its own.
 
-2. **Most equipment classes still state no outcome.** Only `Thickener`,
-   `DewateringUnit`, `DisinfectionUnit`, `Digester` and `SedimentationTank`
-   require one. An RO membrane and a sand filter both have objectives the model
-   can now express — `Outcome-Desalination`, `Outcome-TurbidityRemoval` — and do
-   not state.
-
-3. **`watr:entailsProcess` and friends** remain proposed only, recorded in
+2. **`watr:entailsProcess` and friends** remain proposed only, recorded in
    `water/notes.md`: renaming `watr:UnitProcess` → `watr:TreatmentUnit`,
    inference for processes that are a natural consequence of another, system
    subclasses, and plausibility checking for systems. The first depends on
