@@ -249,8 +249,12 @@ watr:Filter
     ] .
 
 watr:Reactor
+    # what a reactor does alongside whatever reaction defines it
     watr:mayAlsoPerform watr:Process-Mixing, watr:Process-Aeration,
                         watr:Process-Recirculation ;
+    # the conversions a zone of a nutrient-removal train carries out; permitted
+    # rather than required, because which zone nitrifies is an operating regime
+    # and not a property of the vessel -- see "Warning, not violation" below
     watr:mayAlsoPerform watr:Process-Nitrification, watr:Process-Denitrification,
                         watr:Process-EnhancedBiologicalPhosphorusRemoval .
 ```
