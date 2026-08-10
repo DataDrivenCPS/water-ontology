@@ -116,6 +116,17 @@ watr:Outcome-Disinfection a watr:Class, watr:Outcome-Disinfection ;
     skos:definition "Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself." ;
     rdfs:subClassOf watr:Outcome .
 
+# The other half of disinfecting with chlorine: the residual that protected the
+# water has to come back out before discharge, since it is toxic to the receiving
+# water, and ahead of membranes that it would oxidize. Was Process-Dechlorination,
+# which named this objective rather than any activity -- and no single activity
+# would have done, since sulfite dosing, activated carbon and ultraviolet light
+# all reach it.
+watr:Outcome-Dechlorination a watr:Class, watr:Outcome-Dechlorination ;
+    rdfs:label "Dechlorination" ;
+    skos:definition "Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage." ;
+    rdfs:subClassOf watr:Outcome .
+
 # --- nitrogen and phosphorus ------------------------------------------------
 
 # Deliberately NOT a subclass of watr:Outcome-NutrientRemoval. Nitrification

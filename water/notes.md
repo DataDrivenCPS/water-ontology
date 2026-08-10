@@ -261,9 +261,17 @@ Renamed on the split
 --------------------
 Process-UVDisinfection  -> Process-UVIrradiation    + Outcome-Disinfection
 Process-ThermalDisinfection -> Process-ThermalTreatment + Outcome-Disinfection
+Process-Dechlorination  -> Outcome-Dechlorination   (no replacement process)
 
-Both had baked the objective into the name of the activity, which made UV and
-chlorination incomparable: one named what it was for, the other what it did.
+The first two had baked the objective into the name of the activity, which made
+UV and chlorination incomparable: one named what it was for, the other what it
+did.
+
+Dechlorination went further and was only an objective, so nothing was left to
+rename it to. It is the clearest one-outcome-several-processes case in the
+vocabulary: sulfite dosing reduces the residual, activated carbon adsorbs and
+catalyses it, ultraviolet light photolyses it. A dechlorination unit states the
+activity it uses and Outcome-Dechlorination.
 
 Solids handling
 ---------------

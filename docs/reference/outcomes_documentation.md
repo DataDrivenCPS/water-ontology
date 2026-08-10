@@ -76,6 +76,12 @@
 
 **Superclass:** Outcome
 
+## Dechlorination
+
+**Description:** Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage.
+
+**Superclass:** Outcome
+
 ## Ammonia Removal
 
 **Description:** Removal of ammonia from the treated stream by converting it to another nitrogen species. Distinct from nitrogen removal, which requires the nitrogen to leave the water altogether, and deliberately not placed under Outcome-NutrientRemoval for that reason: nitrifying converts ammonia to nitrate and removes no nitrogen.

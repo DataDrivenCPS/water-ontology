@@ -257,10 +257,13 @@ watr:Process-Chlorination a watr:Class, watr:Process-Chlorination ;
     watr:achievesOutcome watr:Outcome-Disinfection ;
     rdfs:subClassOf watr:Process-ChemicalAddition .
 
-watr:Process-Dechlorination a watr:Class, watr:Process-Dechlorination ;
-    rdfs:label "Dechlorination" ;
-    skos:definition "Removal of excess chlorine compounds remaining after disinfection, typically by dosing a reducing agent." ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
+# Process-Dechlorination was removed here. It named an objective, the way
+# Process-UVDisinfection did before the split, and it is the clearest case of one
+# outcome reached by several activities: dosing sulfite reduces the residual
+# (Process-Reduction, a Process-ChemicalAddition), activated carbon adsorbs and
+# catalyses it away (Process-Adsorption), and ultraviolet light photolyses it
+# (Process-UVIrradiation). None of those is dechlorination; all of them
+# dechlorinate. The objective is watr:Outcome-Dechlorination.
 
 watr:Process-ThermalTreatment a watr:Class, watr:Process-ThermalTreatment ;
     rdfs:label "Thermal Treatment" ;

@@ -280,12 +280,6 @@
 
 **Superclass:** Process-ChemicalAddition
 
-## Dechlorination
-
-**Description:** Removal of excess chlorine compounds remaining after disinfection, typically by dosing a reducing agent.
-
-**Superclass:** Process-ChemicalAddition
-
 ## Thermal Treatment
 
 **Description:** Heating of water or biosolids, as in pasteurization.
