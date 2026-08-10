@@ -257,6 +257,41 @@ Outcome-SulfateRemoval, Outcome-SilicaRemoval -- and all are left unwired. Lime
 softening, phosphorus precipitation and acid mine drainage treatment are one
 activity aimed at different targets.
 
+Which equipment classes require an outcome
+------------------------------------------
+Two grounds, and the second is the harder one.
+
+The first is mechanical: if a class requires a process that declares
+watr:achievesOutcome, the class states that outcome, or watr:OutcomeFromProcessShape
+reports every instance of it. OxidationDitch and SequencingBatchReactor require
+Process-ActivatedSludge and now state Outcome-OrganicsRemoval; OzonationUnit
+became a DisinfectionUnit, which is what ChlorinationUnit and UltravioletLightUnit
+already were.
+
+The second is the datasheet test: require an outcome only where the class fixes
+it, not where the installation does. An RO membrane rejects salt wherever it is
+plumbed (Outcome-Desalination), an electrodialysis stack likewise, a media bed
+polishes turbidity (Outcome-TurbidityRemoval, inherited by the sand filters),
+nanofiltration softens, a GAC adsorber takes out dissolved organics, an AOP
+reactor destroys them, and a screen and a grit chamber take out solids.
+
+Deliberately left unstated, because the objective moves with the installation:
+
+  Filter                 a media bed polishes, an MBR's membrane separates
+                         biomass, an RO membrane desalinates
+  MicrofiltrationUnit,   turbidity removal in a drinking water train,
+  UltrafiltrationUnit    clarification of mixed liquor in an MBR
+  TricklingFilter,       organics removal, nitrification or denitrification,
+  MovingBedBioreactor,   depending on the stage and the operating regime --
+  RotatingBiological-    which is also why Process-Biofiltration declares no
+  Contactor, BAF         outcome
+  CoagulationBasin,      they condition the water; the clarifier downstream is
+  FlocculationBasin      what meets the objective
+  AerationBasin,         a zone of a train, serving the train's objective
+  MixingBasin
+  Crystallizer,          brine handling, where the objective is the
+  Evaporator             configuration's rather than the vessel's
+
 Renamed on the split
 --------------------
 Process-UVDisinfection  -> Process-UVIrradiation    + Outcome-Disinfection

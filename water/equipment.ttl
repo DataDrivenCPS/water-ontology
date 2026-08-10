@@ -199,6 +199,12 @@ watr:SequencingBatchReactor
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SequencingBatchReactor must have a Sedimentation process." ;
     ] ;
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-OrganicsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of SequencingBatchReactor must have the OrganicsRemoval outcome." ;
+    ] ;
     # has 1 in, 1out (both water),  OR 1 bidirectional (water)
     sh:property [
         sh:path s223:hasConnectionPoint ;
@@ -550,6 +556,12 @@ watr:Screen
         sh:qualifiedValueShape [ sh:class watr:Process-Screening ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of Screen must have a Screening process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-SolidsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of Screen must have the SolidsRemoval outcome." ;
     ] .
 
 watr:GritChamber
@@ -563,6 +575,16 @@ watr:GritChamber
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of GritChamber must have a Sedimentation process." ;
+    ] ;
+    # Sedimentation serves clarification in a clarifier and thickening in a
+    # gravity thickener; in a grit chamber it takes grit out. Same process,
+    # third objective -- which is why the outcome is stated here and not on
+    # Process-Sedimentation.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-SolidsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of GritChamber must have the SolidsRemoval outcome." ;
     ] .
 
 watr:Reservoir
@@ -804,6 +826,16 @@ watr:ReverseOsmosisMembrane
         sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of ReverseOsmosisMembrane must have a ReverseOsmosis process." ;
+    ] ;
+    # An RO membrane rejects dissolved salts wherever it is installed, so the
+    # objective is on the datasheet rather than in the position. A membrane
+    # serving potable reuse also removes trace organics; that is an additional
+    # outcome on the instance, not a replacement for this one.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Desalination ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of ReverseOsmosisMembrane must have the Desalination outcome." ;
     ] .
 
 watr:RotatingBiologicalContactor 
@@ -862,6 +894,12 @@ watr:OxidationDitch
         sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of OxidationDitch must have a ActivatedSludge process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-OrganicsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of OxidationDitch must have the OrganicsRemoval outcome." ;
     ] .
 
 watr:MembraneBioreactor
@@ -918,7 +956,16 @@ watr:NanofiltrationUnit
     a watr:Class ;
     rdfs:label "Nanofiltration Unit" ;
     rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
-    rdfs:subClassOf watr:Filter .
+    rdfs:subClassOf watr:Filter ;
+    # The comment already committed the class to softening; this states it where
+    # the model can check it. The process is Process-Filtration, inherited from
+    # watr:Filter -- NF has no process term of its own.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Softening ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of NanofiltrationUnit must have the Softening outcome." ;
+    ] .
 
 watr:MediaFiltrationUnit
     a  sh:NodeShape ;
@@ -931,6 +978,16 @@ watr:MediaFiltrationUnit
         sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of MediaFiltrationUnit must have at least one MediaFiltration process." ;
+    ] ;
+    # Outcome-TurbidityRemoval is the objective of polishing filtration, and a
+    # media bed is built for it. Inherited by RapidSandFilter and
+    # SlowSandFilter. Deliberately not stated on watr:Filter above: a membrane
+    # bioreactor's filter separates biomass and an RO membrane desalinates.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-TurbidityRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of MediaFiltrationUnit must have the TurbidityRemoval outcome." ;
     ] .
 
 watr:RapidSandFilter
@@ -977,6 +1034,14 @@ watr:ElectrodialysisUnit
         sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of ElectrodialysisUnit must have a Electrodialysis process." ;
+    ] ;
+    # Outcome-Desalination covers the electrical route as well as the membrane
+    # and thermal ones -- see its definition.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-Desalination ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of ElectrodialysisUnit must have the Desalination outcome." ;
     ] .
 
 watr:Electrolyzer
@@ -1354,6 +1419,16 @@ watr:UVH2O2Reactor
         sh:qualifiedValueShape [ sh:class watr:Process-AdvancedOxidation ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of UVH2O2Reactor must have a AdvancedOxidation process." ;
+    ] ;
+    # What an AOP is built to destroy. Note this is not a DisinfectionUnit even
+    # though it irradiates: Process-UVIrradiation carries the disinfection
+    # outcome, and an AOP reactor doses peroxide to consume the photons on
+    # hydroxyl radical production instead.
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-OrganicsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of UVH2O2Reactor must have the OrganicsRemoval outcome." ;
     ] .
 
 watr:BiologicalAeratedFilter
@@ -1387,7 +1462,12 @@ watr:OzonationUnit
     a watr:Class ;
     rdfs:label "Ozonation Unit" ;
     rdfs:comment "A unit that uses ozone for water treatment." ;
-    rdfs:subClassOf s223:Equipment, watr:Reactor ;
+    # A DisinfectionUnit, as ChlorinationUnit and UltravioletLightUnit already
+    # were: Process-Ozonation declares watr:achievesOutcome Outcome-Disinfection,
+    # so an ozone contactor that did not state the outcome was reported by
+    # watr:OutcomeFromProcessShape. Ozone also oxidizes iron, manganese and
+    # taste-and-odour compounds; those objectives go on the instance.
+    rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Ozonation ] ;
@@ -1406,6 +1486,12 @@ watr:GranularActivatedCarbonAdsorber
         sh:qualifiedValueShape [ sh:class watr:Process-GranularActivatedCarbon ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of GranulatedActivatedCarbonAdsorber must have a GranularActivatedCarbon process." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasOutcome ;
+        sh:qualifiedValueShape [ sh:class watr:Outcome-OrganicsRemoval ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of GranularActivatedCarbonAdsorber must have the OrganicsRemoval outcome." ;
     ] .
 
 watr:Grinder
