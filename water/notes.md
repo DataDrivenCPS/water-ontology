@@ -266,12 +266,12 @@ watr:SedimentationTank states both itself -- Outcome-Clarification and
 Process-Sedimentation -- as does watr:Digester, with Outcome-Stabilization and
 Process-Digestion.
 
-Materializing class defaults (rules/class-defaults.ttl)
+Materializing class defaults (water/class-defaults.ttl)
 ------------------------------------------------------
 Typing something as a watr:GravityThickener already says it thickens by settling.
-An optional SHACL-AF rule writes that onto the instance, reading the values from
-the sh:qualifiedValueShape constraints the classes already carry, so nothing has
-to be kept in step:
+A SHACL-AF rule writes that onto the instance, reading the values from the
+sh:qualifiedValueShape constraints the classes already carry, so nothing has to
+be kept in step:
 
   ex:gt a watr:GravityThickener .
     ->  watr:hasProcess watr:Process-Sedimentation   (from GravityThickener)
@@ -280,16 +280,20 @@ to be kept in step:
 Default semantics, not additive: a class requiring Process-Filtration adds
 nothing to an instance already declaring Process-Microfiltration.
 
-The file is deliberately OUTSIDE the import closure of <urn:nawi-water-ontology>,
-and outside water/ so that the tests' water/*.ttl glob does not pick it up.
-shifty.validate runs SHACL-AF rules as part of validation (infer=True by
-default), so a rule in the closure fires before the constraints are checked and
-satisfies them itself: a bare "ex:gt a watr:GravityThickener ." goes from five
-violations to zero. That is what derivation means rather than a fault in the
-rule, but it removes the ability to tell a model that states what a machine does
-from one that merely types it -- a distinction worth keeping when the data comes
-from a plant rather than from the ontology. Load the file when you want the
-convenience; leave it out when you want models held to what they say.
+The file is INSIDE the import closure: water/ontology.ttl imports
+<urn:nawi-water-ontology/class-defaults>, so the rule ships with the ontology and
+fires wherever it is used. That is deliberate. shifty.validate runs SHACL-AF
+rules as part of validation (infer=True by default), so the rule fires before the
+constraints are checked and satisfies them itself: a bare
+"ex:gt a watr:GravityThickener ." goes from five violations to zero.
+
+Know what that costs. A class's process and outcome requirements can no longer
+fail for an instance that merely declares its type, so the ontology no longer
+distinguishes a model that states what a machine does from one that only types
+it. If you need that distinction -- when the data comes from a plant rather than
+from the ontology -- validate against the closure with watr:ClassDefaultsRule
+removed. tests/test_class_defaults.py does exactly that, and pins both what
+including the rule buys and what removing it restores.
 
 Why equipment carries more than one process
 ------------------------------------------

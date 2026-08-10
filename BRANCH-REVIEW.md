@@ -522,8 +522,7 @@ predicates on `s223:Equipment` or `s223:System`.
 ### Materializing defaults from the class
 
 Typing something as a `watr:GravityThickener` already says it thickens by
-settling. `rules/class-defaults.ttl` holds an optional SHACL-AF rule that fills
-that in:
+settling. `water/class-defaults.ttl` holds a SHACL-AF rule that fills that in:
 
 ```ttl
 ex:gt a watr:GravityThickener .
@@ -538,16 +537,16 @@ a class requiring `Process-Filtration` adds nothing to an instance already
 declaring `Process-Microfiltration`, because the specific value already answers
 the general requirement.
 
-**The file is deliberately outside the import closure.** `shifty.validate` runs
-SHACL-AF rules as part of validation, so a rule living in the closure fires
-*before* the constraints are checked and satisfies them itself: a bare
-`ex:gt a watr:GravityThickener` stops being reported as incomplete. That is what
-derivation means rather than a fault in the rule, but it costs the ability to
-tell a model that *states* what a piece of equipment does from one that merely
-types it —
-worth keeping when the data comes from a plant rather than from the ontology.
-Load the file when you want the convenience; leave it out when you want models
-held to what they say.
+**The file ships inside the import closure**, imported by `water/ontology.ttl`,
+so the rule fires wherever the ontology is used. `shifty.validate` runs SHACL-AF
+rules as part of validation, so it fires *before* the constraints are checked and
+satisfies them itself: a bare `ex:gt a watr:GravityThickener` stops being
+reported as incomplete. That is what derivation means rather than a fault in the
+rule, but it costs the ability to tell a model that *states* what a piece of
+equipment does from one that merely types it. That distinction is recoverable
+rather than lost: validate against the closure with `watr:ClassDefaultsRule`
+removed, which is what `tests/test_class_defaults.py` does to pin the cost
+alongside the benefit.
 
 ---
 
@@ -668,8 +667,9 @@ and flagged pairings — a BAF aerating and a membrane backwashing on one side, 
 chlorination unit doing reverse osmosis on the other.
 `tests/test_system_processes.py` covers the bearer and value guards, train
 coverage over nested subsystems, and the outcome/process contract in both
-directions. `tests/test_class_defaults.py` pins both the materialization rule and
-the reason it stays out of the import closure.
+directions. `tests/test_class_defaults.py` pins the materialization rule, what
+shipping it in the import closure buys, and how the distinction it costs is
+recovered.
 
 Tooling: `pyontoenv` 0.5.3 → 0.6.0 and `pyshifty` 0.2.4 → 0.2.7, with
 `conftest.py` moved to the `OntoEnv.create(...)` context-manager API;
