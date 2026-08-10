@@ -284,37 +284,49 @@ conversions above for that reason.
 
 ---
 
-## 4. What equipment is *for*, versus what it *does*
+## 4. Three axes: what equipment is *for*, what it *does*, where it *sits*
 
-This is the largest change on the branch.
+The largest change on the branch, and it is one design rather than a series of
+fixes: three questions about a piece of equipment that `main` answered with a
+single predicate over a single tree.
 
-### On `main`
+| | predicate | vocabulary | intrinsic? | fixed by the class? |
+|---|---|---|---|---|
+| what it is **for** | `watr:hasOutcome` | `watr:Outcome-*` | yes — on the datasheet | often |
+| what it **does** | `watr:hasProcess` | `watr:Process-*` | yes — on the datasheet | almost always |
+| where it **sits** | `s223:hasRole` | `watr:Role-*`, `s223:Role-*` | no — positional | never |
+
+```ttl
+:primary-clarifier a watr:SedimentationTank ;
+    watr:hasOutcome watr:Outcome-Clarification ;   # what it is for
+    watr:hasProcess watr:Process-Sedimentation ;   # what it does
+    s223:hasRole    watr:Role-Primary .            # where it sits
+```
+
+The last column is the one that drives everything downstream — which axis a class
+may require, and which can be inherited onto instances.
+
+### On `main`: one tree, all three questions
 
 ```ttl
 watr:SedimentationTank                         # main
     rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
     rdfs:subClassOf watr:SeparationTank ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
-        sh:qualifiedMinCount 1 ;
-    ] .
+    sh:property [ sh:path watr:hasProcess ;
+                  sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+                  sh:qualifiedMinCount 1 ] .
 
-watr:Thickener                                 # main -- no requirement at all
+watr:Thickener                                 # no requirement at all
     rdfs:subClassOf s223:Equipment, watr:UnitProcess .
 
 watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
-    sh:property [
-        sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
-        sh:qualifiedMinCount 1 ;
-    ] .
+    sh:property [ sh:path watr:hasProcess ;
+                  sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+                  sh:qualifiedMinCount 1 ] .
 ```
 
-### Current modeling
-
-Both classes end up saying the same thing, and neither says what it is for:
+A clarifier and a thickener come out identical, and neither says what it is for:
 
 ```ttl
 :primary-clarifier a watr:SedimentationTank ;
@@ -324,29 +336,68 @@ Both classes end up saying the same thing, and neither says what it is for:
     watr:hasProcess watr:Process-Sedimentation .
 ```
 
-Two pieces of equipment with different jobs, indistinguishable in the model. An
-engineer
-would not say a clarifier's job *is* sedimentation — they would say its job is to
-clarify, and that it does so by settling. `SedimentationTank`'s own
-`rdfs:comment` says precisely that: *"remove solids from liquids through
-sedimentation."* The comment names an objective the shape cannot express, because
-there is one `Process-*` tree holding both objectives and activities, and
-`watr:hasProcess` is the only place to put either.
+An engineer would not say a clarifier's job *is* sedimentation — its job is to
+clarify, and it does so by settling. `SedimentationTank`'s own `rdfs:comment`
+says exactly that: *"remove solids from liquids through sedimentation."* The
+comment names an objective the shape cannot express, because one `Process-*` tree
+holds objectives and activities together and `watr:hasProcess` is the only place
+to put either.
 
-The same conflation seen from the other side:
+The same conflation from the other side, where the two kinds sit as siblings and
+neither can be compared to nor substituted for the other:
 
 ```ttl
 watr:Process-Chlorination    rdfs:subClassOf watr:Process-Disinfection .
 watr:Process-UVDisinfection  rdfs:subClassOf watr:Process-Disinfection .
 ```
 
-`Process-UVDisinfection` names what equipment is *for*; `Process-Chlorination`
-names what it *does*. Sitting side by side under one parent, they cannot be
-compared and neither can be substituted for the other in a query.
+And the third axis leaking into the same space: `main` carried `Role-Thickening`,
+`Role-Dewatering`, `Role-Stabilization`, `Role-SolidsHandling`,
+`Role-NutrientRemoval`, `Role-NitrogenRemoval` and `Role-PhosphorusRemoval`
+alongside process types covering the same ground — objectives written as roles,
+next to objectives written as processes.
 
-### The fix on this branch
+### Why three vocabularies, and not one deeper tree
 
-Objectives are their own vocabulary, in `water/outcomes.ttl`:
+Because none of the relations between them is a hierarchy, so no arrangement of
+`rdfs:subClassOf` holds them.
+
+**One process serves several objectives.** Sedimentation is the mechanism in a
+primary clarifier, a secondary clarifier, a gravity thickener and a grit chamber
+alike. Making `Process-Sedimentation` a subclass of any one objective is wrong
+for the other three.
+
+**One objective is reached by several processes.** Chlorination, ozonation,
+ultraviolet irradiation and thermal treatment all disinfect; sulfite dosing,
+activated carbon and ultraviolet light all dechlorinate.
+
+**Role is orthogonal to both.** The test:
+
+> Move the equipment: same unit, new position in the train. If the answer
+> changes, it is a role.
+
+A gravity thickener thickens wherever you put it. Whether a clarifier is
+*primary* depends entirely on what sits upstream — which is why a primary and a
+secondary clarifier are identical in outcome and process and differ only in
+`s223:hasRole`. The seven objective-shaped roles above are retired for that
+reason. Aerobic / anoxic / anaerobic stay, because they name the regime a zone is
+commissioned to run in (§7). Primary / Secondary / Tertiary stay as wastewater
+treatment *stages*, each definition noting the divergence from S223, where
+`s223:Role-Secondary` denotes a secondary *loop*.
+
+Two renames were needed before the objectives could be said separately, because
+the old names had the objective baked into the activity:
+
+```
+Process-UVDisinfection       →  Process-UVIrradiation    + Outcome-Disinfection
+Process-ThermalDisinfection  →  Process-ThermalTreatment + Outcome-Disinfection
+```
+
+Ultraviolet irradiation is now named for what it is, which is also why it can
+serve advanced oxidation without the term lying about it. §6 covers the further
+terms this exposed, including one that had no activity left to rename it to.
+
+### Objectives as a vocabulary
 
 ```ttl
 watr:Outcome-Clarification a watr:Class, watr:Outcome-Clarification ;
@@ -367,10 +418,11 @@ watr:Outcome-Thickening a watr:Class, watr:Outcome-Thickening ;
 Thickening, dewatering and drying form one axis: the state of the product —
 pumpable, a cake, dry.
 
-BIG TODO: do we want to have validation on the *product* of a process? downstream
+BIG TODO/QUESTION: do we want to have validation on the *product* of a process? downstream
 things would need to have the right substance associated with them.
 
-The equipment then states both axes:
+The objective goes on the family and the mechanism on the model, each at the
+level that fixes it:
 
 ```ttl
 watr:SedimentationTank
@@ -393,79 +445,10 @@ watr:GravityThickener                          # the mechanism, on the model
                   sh:qualifiedMinCount 1 ] .
 ```
 
-The two are now distinguishable, and each says what an engineer would
-say about it:
-
-```ttl
-:primary-clarifier a watr:SedimentationTank ;
-    watr:hasOutcome watr:Outcome-Clarification ;   # what it is for
-    watr:hasProcess watr:Process-Sedimentation ;   # what it does
-    s223:hasRole    watr:Role-Primary .            # where it sits
-
-:gravity-thickener a watr:GravityThickener ;
-    watr:hasOutcome watr:Outcome-Thickening ;
-    watr:hasProcess watr:Process-Sedimentation .
-```
-
-### Why two vocabularies, not one deeper tree
-
-Because neither relation between them is a hierarchy, so no arrangement of
-`rdfs:subClassOf` can hold both.
-
-**One process serves several objectives.** Sedimentation is the mechanism in a
-primary clarifier, a secondary clarifier and a gravity thickener alike. Making
-`Process-Sedimentation` a subclass of any one objective would be wrong for the
-other two.
-
-**One objective is reached by several processes.** Chlorination, ozonation,
-ultraviolet irradiation and thermal treatment all disinfect:
-
-```ttl
-:contact-basin a watr:ChlorinationUnit ;
-    watr:hasProcess watr:Process-Chlorination ;
-    watr:hasOutcome watr:Outcome-Disinfection .
-
-:lpuv-1 a watr:UltravioletLightUnit ;
-    watr:hasProcess watr:Process-UVIrradiation ;
-    watr:hasOutcome watr:Outcome-Disinfection .
-```
-
-Two renames were needed before that was sayable, because the old names had the
-objective baked into the activity:
-
-```
-Process-UVDisinfection       →  Process-UVIrradiation    + Outcome-Disinfection
-Process-ThermalDisinfection  →  Process-ThermalTreatment + Outcome-Disinfection
-```
-
-Ultraviolet irradiation is now named for what it is, which is also why it can
-serve advanced oxidation without the term lying about it.
-
-### The third axis: role
-
-Outcome and process are both intrinsic — on the datasheet. Role is positional:
-
-> Move the equipment: same unit, new position in the train. If the answer
-> changes, it is a role.
-
-A gravity thickener thickens wherever you put it. Whether a clarifier is
-*primary* depends entirely on what sits upstream — which is why a primary and a
-secondary clarifier are identical in outcome and process and differ only in
-`s223:hasRole`.
-
-`main` had this confused in the vocabulary itself, carrying `Role-Thickening`,
-`Role-Dewatering`, `Role-Stabilization`, `Role-SolidsHandling`,
-`Role-NutrientRemoval`, `Role-NitrogenRemoval` and `Role-PhosphorusRemoval`
-alongside process types covering the same ground. Those are retired. Aerobic /
-anoxic / anaerobic stay, because they describe the regime a zone is operated in.
-Primary / Secondary / Tertiary now carry definitions saying they are wastewater
-treatment *stages*, each noting where this diverges from S223 —
-`s223:Role-Secondary` denotes a secondary *loop*.
-
-### `watr:achievesOutcome`
+### Linking the axes without merging them
 
 Where a process achieves the same thing wherever it is performed, the process
-type says so, rather than every piece of equipment repeating it:
+type says so once instead of every piece of equipment repeating it:
 
 ```ttl
 watr:Process-Chlorination     watr:achievesOutcome watr:Outcome-Disinfection .
@@ -477,28 +460,17 @@ This carries what the old subclass links were reaching for —
 `Chlorination ⊑ Disinfection`, `Denitrification ⊑ NitrogenRemoval` — without
 claiming an activity is a kind of an objective.
 
-Most processes declare no outcome at all — filtration, sedimentation and
-adsorption serve whatever objective the equipment is built for, so the objective
-is stated there. Two cases are worth spelling out, because both look like
-oversights and neither is.
-
-**Nitrification and denitrification reach different objectives.**
-
-```ttl
-watr:Process-Nitrification    watr:achievesOutcome watr:Outcome-AmmoniaRemoval .
-watr:Process-Denitrification  watr:achievesOutcome watr:Outcome-NitrogenRemoval .
-```
-
-`Outcome-AmmoniaRemoval` is deliberately not under `Outcome-NutrientRemoval`;
-`water/outcomes.ttl` says why.
-
-**`Process-ChemicalPrecipitation` declares nothing.** Lime softening, phosphorus
-precipitation and acid mine drainage treatment are one activity aimed at
-different constituents, so which objective applies depends on the reagent and the
-target. The objectives it may serve are all named, so the equipment has something
-to point at, and all are left unwired to the process: `Outcome-Softening`,
-`Outcome-PhosphorusRemoval`, `Outcome-MetalsRemoval`, `Outcome-SulfateRemoval`
-and `Outcome-SilicaRemoval`.
+Most processes declare no outcome: filtration, sedimentation and adsorption serve
+whatever objective the equipment is built for, so the objective is stated there.
+Two cases look like oversights and are not. **Nitrification and denitrification
+reach different objectives** — `Outcome-AmmoniaRemoval` and
+`Outcome-NitrogenRemoval` respectively, the former deliberately not under
+`Outcome-NutrientRemoval`, since nitrifying converts ammonia to nitrate and
+removes no nitrogen. And **`Process-ChemicalPrecipitation` declares nothing**:
+lime softening, phosphorus precipitation and acid mine drainage treatment are one
+activity aimed at different constituents, so the objectives it may serve are all
+named and all left unwired — `Outcome-Softening`, `Outcome-PhosphorusRemoval`,
+`Outcome-MetalsRemoval`, `Outcome-SulfateRemoval`, `Outcome-SilicaRemoval`.
 
 `watr:OutcomeCompletenessShape` reads these and warns when equipment performs a
 process whose objective it has not stated. It runs in that direction only: the
@@ -506,37 +478,100 @@ converse, demanding every stated objective be achieved by some stated process,
 would be wrong, since most objectives are not derivable from the mechanism. That
 is the whole reason they are a separate axis.
 
-### Which classes state an outcome
+### Which classes fix which axis
 
-The shape above is also a way to ask the question of the ontology itself.
-Instantiating all 111 equipment classes and validating turned up three that
-require a process declaring `watr:achievesOutcome` without stating it:
-`OxidationDitch` and `SequencingBatchReactor`, which require
-`Process-ActivatedSludge`, and `OzonationUnit`, which requires
-`Process-Ozonation`. The first two now state `Outcome-OrganicsRemoval`. The third
-was fixed structurally: `ChlorinationUnit` and `UltravioletLightUnit` were
-already `DisinfectionUnit`s and the ozone contactor was not, which is where its
-missing outcome came from. It is one now — which is also why the finding against
-`dpr:ozone-generator` in the union DPR model is gone.
+Process is fixed by the class almost always — that is what an equipment class
+names. Outcome is fixed *often*, and the shape above turns "often" into a
+question the ontology can answer about itself. Instantiating all 111 equipment
+classes and validating turned up three requiring a process that declares
+`watr:achievesOutcome` without stating it: `OxidationDitch` and
+`SequencingBatchReactor`, which require `Process-ActivatedSludge`, and
+`OzonationUnit`, which requires `Process-Ozonation`. The first two now state
+`Outcome-OrganicsRemoval`. The third was fixed structurally — `ChlorinationUnit`
+and `UltravioletLightUnit` were already `DisinfectionUnit`s and the ozone
+contactor was not, which is where its missing outcome came from — which is also
+why the finding against `dpr:ozone-generator` in the union DPR model is gone.
 
-Eight more state an outcome on a second ground, the datasheet test: require one
-where the class fixes the objective, never where the installation does. RO
-membranes and electrodialysis stacks desalinate; a media bed polishes turbidity,
-inherited by the sand filters; nanofiltration softens, which its own
-`rdfs:comment` had claimed where nothing could check it; a GAC adsorber and an
-AOP reactor remove organics; a screen and a grit chamber remove solids. Thirty-one
-of 111 classes now require an outcome, against nineteen before, and no class
-warns about a missing one.
+Eight more state an outcome on the datasheet test: require one where the class
+fixes the objective, never where the installation does. RO membranes and
+electrodialysis stacks desalinate; a media bed polishes turbidity, inherited by
+the sand filters; nanofiltration softens, which its own `rdfs:comment` had
+claimed where nothing could check it; a GAC adsorber and an AOP reactor remove
+organics; a screen and a grit chamber remove solids. Thirty-one of 111 classes
+require an outcome, against nineteen before, and none warns about a missing one.
 
-The omissions are deliberate and `water/notes.md` records each with its reason —
-`watr:Filter` itself, because a media bed polishes while an MBR's membrane
-separates biomass and an RO membrane desalinates; MF and UF for the same reason
-one level down; the attached-growth biological units, which serve organics
-removal, nitrification or denitrification by the stage they occupy, which is also
-why `Process-Biofiltration` declares no outcome; the coagulation and flocculation
-basins, which condition water the clarifier downstream actually clarifies; and
-the zones of a train, which serve the train's objective rather than one of their
-own.
+The omissions are as deliberate as the additions, and `water/notes.md` records
+each with its reason: `watr:Filter` itself, because a media bed polishes while an
+MBR's membrane separates biomass and an RO membrane desalinates; MF and UF for
+the same reason one level down; the attached-growth biological units, which serve
+organics removal, nitrification or denitrification by the stage they occupy,
+which is also why `Process-Biofiltration` declares no outcome; the coagulation
+and flocculation basins, which condition water the clarifier downstream actually
+clarifies; and the zones of a train, which serve the train's objective.
+
+Role is fixed by the class **never** — the third column of the table. The two
+classes that constrain it at all, `AerationBasin` and `MixingBasin`, do so as a
+disjunction (`sh:in ( watr:Role-Aerobic watr:Role-Anoxic )`), which says the zone
+is commissioned for one of these without saying which.
+
+### From the class onto the instance
+
+The point of putting these on classes is to be able to ask about *instances* —
+find every unit that desalinates, not every unit typed `ReverseOsmosisMembrane`.
+`water/class-defaults.ttl` holds one SHACL-AF rule that materializes the class's
+requirements onto its instances, reading the values out of the
+`sh:qualifiedValueShape` constraints the classes already carry, so adding a
+requirement extends it automatically:
+
+```ttl
+ex:sf a watr:RapidSandFilter .
+#  ->  watr:hasProcess watr:Process-RapidSandFiltration   (from RapidSandFilter)
+#      watr:hasProcess watr:Process-MediaFiltration       (from MediaFiltrationUnit)
+#      watr:hasProcess watr:Process-Filtration            (from Filter)
+#      watr:hasOutcome watr:Outcome-TurbidityRemoval      (from MediaFiltrationUnit)
+```
+
+It walks `rdf:type/rdfs:subClassOf*`, so every level's requirement lands, and
+`SELECT ?x WHERE { ?x watr:hasOutcome watr:Outcome-Desalination }` answers with
+the RO membranes without a reasoner and without naming a class. Semantics are
+*default*, not additive: a class requiring `Process-Filtration` adds nothing to
+an instance that already declares `Process-Microfiltration`, since the specific
+value already answers the general requirement.
+
+**Only two of the three axes are materialized.** The rule's
+`VALUES ?pred { watr:hasProcess watr:hasOutcome }` omits `s223:hasRole`
+deliberately: a class cannot determine its instances' roles, because role is
+positional, so there is nothing to inherit. Where a role slot exists it is a
+disjunction, and choosing one of its members would be inventing a fact rather
+than deriving one.
+
+Two limits are worth knowing before relying on this for identification.
+
+*What lands is the union of the class-level requirements along the ancestor
+chain, not the subsumption closure of the values.* An RO membrane gets
+`Process-ReverseOsmosis` and `Process-Filtration`, because `ReverseOsmosisMembrane`
+and `Filter` each require one — but not `Process-MembraneProcess`, which no class
+in that chain requires. Querying by an intermediate family still needs
+`?p rdfs:subClassOf* watr:Process-MembraneProcess`. The same holds on the outcome
+side: only the specific value is written, so finding everything under
+`Outcome-BiosolidsDisposal` means matching its subclasses too.
+
+*The triples exist only after an inference pass.* `shifty.validate` and
+`shifty.infer` run SHACL-AF rules, so they are present during validation; loading
+the Turtle straight into a triplestore and querying it gets nothing. That
+dependency is what open item 3 raises. The rule also targets `s223:Equipment`, so
+a train carrying `Process-A2O` on an `s223:System` has nothing materialized onto
+it.
+
+**The file ships inside the import closure**, imported by `water/ontology.ttl`,
+so the rule fires wherever the ontology is used — before the constraints are
+checked, which means it satisfies them itself and a bare
+`ex:gt a watr:GravityThickener` stops being reported as incomplete. That is what
+derivation means rather than a fault in the rule, but it costs the ability to
+tell a model that *states* what a piece of equipment does from one that merely
+types it. The distinction is recoverable rather than lost: validate against the
+closure with `watr:ClassDefaultsRule` removed, which is what
+`tests/test_class_defaults.py` does to pin the cost alongside the benefit.
 
 ### Keeping the axes apart
 
@@ -550,35 +585,6 @@ is a violation rather than a silent mismodelling.
 `watr:OutcomeRequiresProcessShape` additionally rejects equipment that says what
 it is for without saying what it does, and `watr:ProcessBearerShape` keeps both
 predicates on `s223:Equipment` or `s223:System`.
-
-### Materializing defaults from the class
-
-Typing something as a `watr:GravityThickener` already says it thickens by
-settling. `water/class-defaults.ttl` holds a SHACL-AF rule that fills that in:
-
-```ttl
-ex:gt a watr:GravityThickener .
-#  ->  watr:hasProcess watr:Process-Sedimentation   (from GravityThickener)
-#      watr:hasOutcome watr:Outcome-Thickening      (inherited from Thickener)
-```
-
-One rule rather than one per class: it reads the values out of the
-`sh:qualifiedValueShape` constraints the classes already carry, so adding a
-requirement extends it automatically. Its semantics are *default*, not additive —
-a class requiring `Process-Filtration` adds nothing to an instance already
-declaring `Process-Microfiltration`, because the specific value already answers
-the general requirement.
-
-**The file ships inside the import closure**, imported by `water/ontology.ttl`,
-so the rule fires wherever the ontology is used. `shifty.validate` runs SHACL-AF
-rules as part of validation, so it fires *before* the constraints are checked and
-satisfies them itself: a bare `ex:gt a watr:GravityThickener` stops being
-reported as incomplete. That is what derivation means rather than a fault in the
-rule, but it costs the ability to tell a model that *states* what a piece of
-equipment does from one that merely types it. That distinction is recoverable
-rather than lost: validate against the closure with `watr:ClassDefaultsRule`
-removed, which is what `tests/test_class_defaults.py` does to pin the cost
-alongside the benefit.
 
 ---
 
