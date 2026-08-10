@@ -306,27 +306,49 @@ single predicate over a single tree.
 The last column is the one that drives everything downstream — which axis a class
 may require, and which can be inherited onto instances.
 
-### On `main`: one tree, all three questions
+### On `main`: two problems, not one
+
+**Roles carried objectives.** Five of `main`'s twenty-five roles named a treatment
+objective rather than a position: `Role-NutrientRemoval`, `Role-NitrogenRemoval`,
+`Role-PhosphorusRemoval`, `Role-Stabilization` and `Role-SolidsHandling`. So "this
+removes nitrogen" was sayable as a role *and* as a process, with nothing relating
+the two, and a query for one found none of the other.
+
+The hierarchy under them was broken as well, in the manner of §2b:
 
 ```ttl
-watr:SedimentationTank                         # main
-    rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
-    rdfs:subClassOf watr:SeparationTank ;
-    sh:property [ sh:path watr:hasProcess ;
-                  sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
-                  sh:qualifiedMinCount 1 ] .
-
-watr:Thickener                                 # no requirement at all
-    rdfs:subClassOf s223:Equipment, watr:UnitProcess .
-
-watr:GravityThickener
-    rdfs:subClassOf watr:Thickener ;
-    sh:property [ sh:path watr:hasProcess ;
-                  sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
-                  sh:qualifiedMinCount 1 ] .
+watr:Role-NitrogenRemoval                      # main
+    rdfs:subClassOf s223:Role-NutrientRemoval .   # S223 defines no such term
+watr:Role-PhosphorusRemoval
+    rdfs:subClassOf s223:Role-NutrientRemoval .   # and watr: does, right above
 ```
 
-A clarifier and a thickener come out identical, and neither says what it is for:
+Both point at an `s223:` term that does not exist, while `watr:Role-NutrientRemoval`
+sits three lines up. Neither role was reachable from its own parent.
+
+**The process tree held objectives as parents of activities.** `Process-Disinfection`
+is an objective, and on `main` it was the parent of the things that achieve it:
+
+```ttl
+watr:Process-Disinfection        rdfs:subClassOf watr:Process-ChemicalProcess .
+watr:Process-Chlorination        rdfs:subClassOf watr:Process-Disinfection .
+watr:Process-UVDisinfection      rdfs:subClassOf watr:Process-Disinfection .
+watr:Process-ThermalDisinfection rdfs:subClassOf watr:Process-Disinfection .
+watr:Process-Dechlorination      rdfs:subClassOf watr:Process-Disinfection .
+```
+
+Two readings fall straight out of that and neither is defensible. **UV
+disinfection was a chemical process**, because the objective it inherited from is
+one. And **dechlorination was a kind of disinfection** — removing the residual
+classified under the objective it exists to undo, since "has to do with chlorine
+and pathogens" was the only relation the tree could express.
+
+The solids side had the same shape: `Process-Dewatering` names a state of the
+product, and `Process-Drying` subclassed it *and* `Process-Evaporation` — an
+objective and a mechanism as co-parents of one term.
+
+**What it cost at the equipment.** With one predicate over that tree, a clarifier
+and a thickener come out identical, and neither says what it is for:
 
 ```ttl
 :primary-clarifier a watr:SedimentationTank ;
@@ -337,25 +359,10 @@ A clarifier and a thickener come out identical, and neither says what it is for:
 ```
 
 An engineer would not say a clarifier's job *is* sedimentation — its job is to
-clarify, and it does so by settling. `SedimentationTank`'s own `rdfs:comment`
-says exactly that: *"remove solids from liquids through sedimentation."* The
-comment names an objective the shape cannot express, because one `Process-*` tree
-holds objectives and activities together and `watr:hasProcess` is the only place
-to put either.
-
-The same conflation from the other side, where the two kinds sit as siblings and
-neither can be compared to nor substituted for the other:
-
-```ttl
-watr:Process-Chlorination    rdfs:subClassOf watr:Process-Disinfection .
-watr:Process-UVDisinfection  rdfs:subClassOf watr:Process-Disinfection .
-```
-
-And the third axis leaking into the same space: `main` carried `Role-Thickening`,
-`Role-Dewatering`, `Role-Stabilization`, `Role-SolidsHandling`,
-`Role-NutrientRemoval`, `Role-NitrogenRemoval` and `Role-PhosphorusRemoval`
-alongside process types covering the same ground — objectives written as roles,
-next to objectives written as processes.
+clarify, and it does so by settling. `SedimentationTank`'s own `rdfs:comment` says
+exactly that: *"remove solids from liquids through sedimentation."* The comment
+names an objective the shape could not express, because `watr:hasProcess` was the
+only place to put either kind of claim.
 
 ### Why three vocabularies, and not one deeper tree
 
@@ -379,11 +386,12 @@ activated carbon and ultraviolet light all dechlorinate.
 A gravity thickener thickens wherever you put it. Whether a clarifier is
 *primary* depends entirely on what sits upstream — which is why a primary and a
 secondary clarifier are identical in outcome and process and differ only in
-`s223:hasRole`. The seven objective-shaped roles above are retired for that
-reason. Aerobic / anoxic / anaerobic stay, because they name the regime a zone is
-commissioned to run in (§7). Primary / Secondary / Tertiary stay as wastewater
-treatment *stages*, each definition noting the divergence from S223, where
-`s223:Role-Secondary` denotes a secondary *loop*.
+`s223:hasRole`. The five objective-shaped roles above are retired for that
+reason, and the objective they named is now an `Outcome-*`. Aerobic / anoxic /
+anaerobic stay, because they name the regime a zone is commissioned to run in
+(§7). Primary / Secondary / Tertiary stay as wastewater treatment *stages*, each
+definition noting the divergence from S223, where `s223:Role-Secondary` denotes a
+secondary *loop*.
 
 Two renames were needed before the objectives could be said separately, because
 the old names had the objective baked into the activity:
