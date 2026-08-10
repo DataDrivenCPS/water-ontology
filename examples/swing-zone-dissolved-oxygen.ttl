@@ -22,6 +22,9 @@
     rdfs:label "Swing Zone" ;
     s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;
     watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
+    # Denitrifying is what the zone does; nitrogen removal is what it is for.
+    # The ontology requires both to be said -- see watr:OutcomeRequiresProcessShape.
+    watr:hasOutcome watr:Outcome-NitrogenRemoval ;
     s223:hasConnectionPoint :zone_inlet, :zone_outlet ;
 .
 
@@ -40,16 +43,15 @@
 # What the zone is doing at a given moment. A dissolved oxygen reading near zero
 # does not withdraw watr:Role-Aerobic from the basin above, and a reading of
 # 2 mg/L does not withdraw watr:Role-Anoxic. Nothing here is a role.
-:mixed_liquor
-    a s223:Junction ;
-    s223:hasMedium s223:Fluid-Water ;
-    rdfs:label "Mixed Liquor Sample Point" ;
-.
-
+#
+# The meter observes the basin itself: s223:hasObservationLocation takes a
+# Connectable, and s223:Equipment is one. Naming the basin is what ties the
+# reading to the zone whose roles are asserted above -- a free-standing sample
+# point would leave the two halves of this example unrelated.
 :do_meter
     a watr:OxygenMeter ;
     rdfs:label "Dissolved Oxygen Meter" ;
-    s223:hasObservationLocation :mixed_liquor ;
+    s223:hasObservationLocation :swing_zone ;
     s223:observes :dissolved_oxygen ;
 .
 

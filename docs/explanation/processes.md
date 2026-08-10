@@ -238,10 +238,11 @@ The dissolved oxygen present at a point in time is a reading, not a role. It bel
 ```ttl
 :swing_zone a watr:AerationBasin ;
     s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;      # commissioned for either
-    watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification .
+    watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
+    watr:hasOutcome watr:Outcome-NitrogenRemoval .
 
 :do_meter a watr:OxygenMeter ;
-    s223:hasObservationLocation :mixed_liquor ;
+    s223:hasObservationLocation :swing_zone ;
     s223:observes :dissolved_oxygen .
 
 :dissolved_oxygen a s223:QuantifiableObservableProperty ;    # what it is doing now
