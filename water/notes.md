@@ -262,7 +262,7 @@ Which equipment classes require an outcome
 Two grounds, and the second is the harder one.
 
 The first is mechanical: if a class requires a process that declares
-watr:achievesOutcome, the class states that outcome, or watr:OutcomeFromProcessShape
+watr:achievesOutcome, the class states that outcome, or watr:OutcomeCompletenessShape
 reports every instance of it. OxidationDitch and SequencingBatchReactor require
 Process-ActivatedSludge and now state Outcome-OrganicsRemoval; OzonationUnit
 became a DisinfectionUnit, which is what ChlorinationUnit and UltravioletLightUnit

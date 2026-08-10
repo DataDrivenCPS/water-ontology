@@ -1465,7 +1465,7 @@ watr:OzonationUnit
     # A DisinfectionUnit, as ChlorinationUnit and UltravioletLightUnit already
     # were: Process-Ozonation declares watr:achievesOutcome Outcome-Disinfection,
     # so an ozone contactor that did not state the outcome was reported by
-    # watr:OutcomeFromProcessShape. Ozone also oxidizes iron, manganese and
+    # watr:OutcomeCompletenessShape. Ozone also oxidizes iron, manganese and
     # taste-and-odour compounds; those objectives go on the instance.
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [

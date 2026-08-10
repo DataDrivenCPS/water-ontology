@@ -502,9 +502,37 @@ converse, demanding every stated objective be achieved by some stated process,
 would be wrong, since most objectives are not derivable from the mechanism. That
 is the whole reason they are a separate axis.
 
-Run against `examples/union-dpr-model.ttl` it produces one warning, and it is a
-true one — `dpr:ozone-generator` performs ozonation, which disinfects, and the
-model does not say so.
+### Which classes state an outcome
+
+The shape above is also a way to ask the question of the ontology itself.
+Instantiating all 111 equipment classes and validating turned up three that
+require a process declaring `watr:achievesOutcome` without stating it:
+`OxidationDitch` and `SequencingBatchReactor`, which require
+`Process-ActivatedSludge`, and `OzonationUnit`, which requires
+`Process-Ozonation`. The first two now state `Outcome-OrganicsRemoval`. The third
+was fixed structurally: `ChlorinationUnit` and `UltravioletLightUnit` were
+already `DisinfectionUnit`s and the ozone contactor was not, which is where its
+missing outcome came from. It is one now — which is also why the finding against
+`dpr:ozone-generator` in the union DPR model is gone.
+
+Eight more state an outcome on a second ground, the datasheet test: require one
+where the class fixes the objective, never where the installation does. RO
+membranes and electrodialysis stacks desalinate; a media bed polishes turbidity,
+inherited by the sand filters; nanofiltration softens, which its own
+`rdfs:comment` had claimed where nothing could check it; a GAC adsorber and an
+AOP reactor remove organics; a screen and a grit chamber remove solids. Thirty-one
+of 111 classes now require an outcome, against nineteen before, and no class
+warns about a missing one.
+
+The omissions are deliberate and `water/notes.md` records each with its reason —
+`watr:Filter` itself, because a media bed polishes while an MBR's membrane
+separates biomass and an RO membrane desalinates; MF and UF for the same reason
+one level down; the attached-growth biological units, which serve organics
+removal, nitrification or denitrification by the stage they occupy, which is also
+why `Process-Biofiltration` declares no outcome; the coagulation and flocculation
+basins, which condition water the clarifier downstream actually clarifies; and
+the zones of a train, which serve the train's objective rather than one of their
+own.
 
 ### Keeping the axes apart
 
@@ -633,7 +661,147 @@ not.
 
 ---
 
-## 6. Why two checks are SPARQL and the rest are not
+## 6. Re-reading the vocabularies against the split
+
+The outcome split moved the terms that were plainly objectives. Re-reading the
+remaining 82 process terms against the same test — *is this an activity, or a
+thing an activity is for?* — found four more, and one structural defect that
+mattered more than any of them.
+
+### `Process-Separation` was the wrong shape of problem
+
+It was suspected of being an objective. It is not: it is a mechanism family above
+filtration, sedimentation, screening, stripping and elutriation, all activities.
+The defect was that the family did not contain the mechanisms most load-bearing
+for it. `Process-Flotation` and `Process-Centrifugation` sat directly under
+`Process-PhysicalProcess`, though `DissolvedAirFlotationThickener`,
+`CentrifugalThickener` and `CentrifugalDewateringUnit` all require them — so with
+`Process-ActivatedSludge` including `Process-Separation`, coverage came out
+backwards:
+
+```
+DAF (flotation) as the separator   -> COVERAGE WARNING
+centrifuge as the separator        -> COVERAGE WARNING
+bar screen as the separator        -> satisfies the separation step
+air stripper as the separator      -> satisfies the separation step
+```
+
+A DAF and a centrifuge were told they do not separate; a bar screen and an air
+stripper counted as the step in which a train parts its biomass from the treated
+water.
+
+`Process-SolidLiquidSeparation` now sits between, and the compound process names
+it rather than the family above. The layer cuts *across* filtration rather than
+containing it, because membrane process is a kind of filtration and reverse
+osmosis retains dissolved species rather than suspended ones:
+
+```
+Process-Separation
+├── Process-Filtration
+│   ├── Process-MediaFiltration ─────────┐  also SolidLiquidSeparation
+│   ├── Process-MembraneProcess          │
+│   │   ├── Process-Microfiltration ─────┤  also SolidLiquidSeparation
+│   │   ├── Process-Ultrafiltration ─────┤  also SolidLiquidSeparation
+│   │   ├── Process-ReverseOsmosis       │  not
+│   │   └── Process-MembraneDistillation │  not
+│   └── Process-GranularActivatedCarbon  │  not
+├── Process-SolidLiquidSeparation ───────┘
+│   ├── Process-Sedimentation
+│   ├── Process-Flotation
+│   └── Process-Centrifugation
+├── Process-Screening                       not
+└── Process-Stripping                       not
+```
+
+`Process-Microfiltration` and `Process-Ultrafiltration` were also not membrane
+processes — both sat as siblings of `Process-MembraneProcess` rather than beneath
+it — which is why an MBR can still satisfy the step while an RO train cannot.
+
+### Objectives still filed as processes
+
+`Process-Landfill` and `Process-LandApplication` named where biosolids end up
+rather than an activity performed on them. They are `Outcome-Landfill` and
+`Outcome-LandApplication` under `Outcome-BiosolidsDisposal`. Incineration, the
+third route, now declares that outcome as well — on the two incineration
+processes rather than on `Process-Combustion`, which also covers burning biogas
+for energy.
+
+`Process-Dechlorination` was the strongest case and needed a different remedy
+from the renames in §4. `Process-UVDisinfection` had an activity hiding inside it
+and could be renamed to `Process-UVIrradiation`; dechlorination has none, and
+three activities reach it — sulfite dosing reduces the residual, activated carbon
+adsorbs and catalyses it, ultraviolet light photolyses it. So there is no
+replacement process, only `watr:Outcome-Dechlorination`, and a dechlorination
+unit states whichever activity it uses.
+
+`Process-Solidification` was the third suspect and stays a process: turning a
+liquid into a solid is a phase change beside evaporation and condensation, and it
+is the parent of crystallization.
+
+### Definitions that defined nothing
+
+Five terms carried literature notes where a definition belongs —
+`Process-OsmoticallyAssistedReverseOsmosis` read *"A process with validated
+Computational Fluid Dynamics (CFD) models for cost optimization"*, which says
+nothing about what OARO is. Those, plus `Process-ReverseOsmosis` and
+`Process-ChemicalPrecipitation`, which named what the process is *for* rather
+than what it does, are rewritten.
+
+`Outcome-AmmoniaRemoval` had lost the sentence distinguishing it from nitrogen
+removal — `docs/reference/` still carried it and `water/notes.md` still claimed
+the comment explained the placement. Restored at the source.
+
+---
+
+## 7. Equipment that described one thing and constrained another
+
+`watr:AerationBasin`'s comment described an air stripper — *"aerated to remove
+gases and volatile organic compounds"* — while its constraints described the
+aerobic zone of an activated-sludge train: `Process-Aeration`, which is oxygen
+transfer *into* water, and a `Role-Aerobic`/`Role-Anoxic` slot meaningless for a
+stripper.
+
+The constraints won. `AerationBasin` keeps its shape and is now described as what
+it was already committed to. Air stripping became `watr:AirStripper`, a
+`SeparationTank` rather than a `Reactor` — treated water and off-gas leave by
+separate outlets, and `s223:Fluid-Air` is a `s223:Mix-Fluid`, so the vent
+satisfies the two-outlet requirement. `Process-Stripping` is a
+`Process-Separation`, so one value answers both process slots. No outcome is
+required: stripping serves ammonia removal at one plant and organics removal at
+another. `Process-Aeration` stays permitted via `watr:mayAlsoPerform`, because
+blowing air through water oxygenates it incidentally.
+
+### Redox roles are commissioned function
+
+The three redox roles were the only ones in the vocabulary hedged with "can serve
+in". The other nineteen assert design function flatly — `Role-Detention` "holds
+flow for a designed interval", `Role-Extended` "is operated at an extended solids
+retention time" — and the last of those is operating configuration stated without
+hedging, so the redox trio was the exception.
+
+S223 reads `hasRole` the same flat way: *"the role of an Equipment ... within a
+building (e.g., a heating coil will be associated with Role-Heating)"*. A heating
+coil keeps `Role-Heating` while switched off.
+
+Read as bare capability the roles also stop discriminating: any basin with
+diffusers *can* be run aerobic and any stirred basin *can* be run anoxic given
+the right feed, so the `sh:in` slots on `AerationBasin` and `MixingBasin` would
+admit every instance for every value. Read as commissioned function they say
+which zone of a train a vessel is — which is how the A2O train in
+`tests/test_system_processes.py` already used them.
+
+The instantaneous reading was never available: this is a static design graph, and
+one instance cannot hold mutually exclusive regimes at different times with no way
+to say when. `water/notes.md` and `docs/explanation/processes.md` had both said
+the active regime "belongs on a time-varying property" without defining one or
+showing it anywhere. `examples/swing-zone-dissolved-oxygen.ttl` closes that: a
+swing zone carrying both `Role-Aerobic` and `Role-Anoxic`, and an `OxygenMeter`
+observing a dissolved-oxygen `s223:QuantifiableObservableProperty`. A reading near
+zero withdraws no role.
+
+---
+
+## 8. Why two checks are SPARQL and the rest are not
 
 Most of the shapes above are core SHACL. Two are not, and neither can be:
 
@@ -659,19 +827,25 @@ and was at one point the dominant cost of validating a large model.
 
 ---
 
-## 7. Tests and tooling
+## 9. Tests and tooling
 
 `main` has four test functions, one per file, parametrized over the example
-graphs. The branch adds modules that state the domain claims directly, so a
-reader can check them against what plants do rather than against the shapes.
+graphs; the branch runs 91. The added modules state the domain claims directly,
+so a reader can check them against what plants do rather than against the shapes.
 `tests/test_process_plausibility.py` writes the permission table out as accepted
 and flagged pairings — a BAF aerating and a membrane backwashing on one side, a
-chlorination unit doing reverse osmosis on the other.
+chlorination unit doing reverse osmosis on the other, an air stripper oxygenating
+incidentally but holding no biomass.
 `tests/test_system_processes.py` covers the bearer and value guards, train
 coverage over nested subsystems, and the outcome/process contract in both
-directions. `tests/test_class_defaults.py` pins the materialization rule, what
-shipping it in the import closure buys, and how the distinction it costs is
-recovered.
+directions; it also pins the separation step from both sides, that a clarifier,
+an MBR membrane, a DAF and a centrifuge each cover it, and that a screen, an air
+stripper, an RO membrane and a membrane distillation unit do not.
+`tests/test_class_defaults.py` pins the materialization rule, what shipping it in
+the import closure buys, and how the distinction it costs is recovered — by
+resolving the closure from a graph that drops the `owl:imports`, which is what a
+consumer would actually do, rather than by filtering the rule's triples out of a
+merged graph.
 
 Tooling: `pyontoenv` 0.5.3 → 0.6.0 and `pyshifty` 0.2.4 → 0.2.7, with
 `conftest.py` moved to the `OntoEnv.create(...)` context-manager API;
@@ -682,13 +856,25 @@ the Jupyter Book table of contents.
 
 `scripts/ttl-to-md.py` now renders the process and outcome vocabularies too, and
 accepts `skos:definition` where a class has no `rdfs:comment` — those two files
-use it, so neither had ever appeared in `docs/reference/`.
+use it, so neither had ever appeared in `docs/reference/`. Two rough edges remain
+in it: result ordering is unstable, so regenerating churns lines that did not
+change, and a class with two superclasses is emitted twice, once per parent.
 
 ---
 
 ## Open items
 
-1. **`watr:Role-Backwash` is deprecated, not deleted.**
+1. **Examples are held to violations only.** `tests/test_examples.py` asserts on
+   `sh:Violation`, so warnings in the example models go unseen. Sweeping all
+   eight files turns up 72 in `examples/union-dpr-model.ttl`, of which one is
+   this branch's own check firing on a real gap — `dpr:chlorine-contactor`
+   declares an implausible `Process-Chlorination`. The rest are S223's, mostly
+   single-member subsystems and `Fluid-Air` against `Fluid-Water` constituents on
+   the BAF and GAC units. Two sensor examples also carry a free-standing
+   `s223:Junction` with no connection points. Tightening the test to fail on
+   warnings requires cleaning that model first, which is item 2.
+
+2. **`watr:Role-Backwash` is deprecated, not deleted.**
    `examples/union-dpr-model.ttl` asserts it on `dpr:backwash-dosing-pump` and
    `dpr:backwash-tank`, which are *also* `s223:hasMember` of
    `dpr:backwash_subsystem` — the redundancy being the argument for putting the
@@ -697,7 +883,7 @@ use it, so neither had ever appeared in `docs/reference/`.
    deleted. That file is currently untracked yet gates the test suite, which is
    worth resolving on its own.
 
-2. **`watr:entailsProcess` and friends** remain proposed only, recorded in
+3. **`watr:entailsProcess` and friends** remain proposed only, recorded in
    `water/notes.md`: renaming `watr:UnitProcess` → `watr:TreatmentUnit`,
    inference for processes that are a natural consequence of another, system
    subclasses, and plausibility checking for systems. The first depends on
