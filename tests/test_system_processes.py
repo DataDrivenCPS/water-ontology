@@ -331,7 +331,60 @@ def test_activated_sludge_without_separation_is_flagged(ontology_shapes_graph):
         + _member("basinOnly", "Aeration")
     )
     msgs = _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
-    assert any("Process-Separation" in m for m in msgs), msgs
+    assert any("Process-SolidLiquidSeparation" in m for m in msgs), msgs
+
+
+@pytest.mark.parametrize(
+    "process,why",
+    [
+        ("Sedimentation", "a conventional train settles the biomass out"),
+        ("Microfiltration", "an MBR separates it with a membrane"),
+        ("Flotation", "a DAF floats it off"),
+        ("Centrifugation", "a centrifuge spins it out"),
+    ],
+)
+def test_any_solid_liquid_separator_covers_activated_sludge(
+    process, why, ontology_shapes_graph
+):
+    """The step is the mechanism family, not one mechanism."""
+    body = (
+        "ex:AS a s223:System ;\n"
+        "    s223:hasMember ex:basin, ex:separator ;\n"
+        "    watr:hasProcess watr:Process-ActivatedSludge .\n"
+        + _member("basin", "Aeration")
+        + _member("separator", process)
+    )
+    msgs = _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
+    assert not msgs, f"{process} should cover the separation step ({why}):\n" + "\n".join(msgs)
+
+
+@pytest.mark.parametrize(
+    "process,why",
+    [
+        ("Screening", "a bar screen removes debris, not biomass"),
+        ("Stripping", "an air stripper separates gases, not solids"),
+    ],
+)
+def test_a_separation_that_is_not_solid_liquid_does_not_cover(
+    process, why, ontology_shapes_graph
+):
+    """Why the step names Process-SolidLiquidSeparation and not its parent.
+
+    Both of these are a watr:Process-Separation, so naming the family here would
+    accept them as the step in which an activated-sludge train separates its
+    biomass from the treated water.
+    """
+    body = (
+        "ex:AS2 a s223:System ;\n"
+        "    s223:hasMember ex:basin2, ex:notASeparator ;\n"
+        "    watr:hasProcess watr:Process-ActivatedSludge .\n"
+        + _member("basin2", "Aeration")
+        + _member("notASeparator", process)
+    )
+    msgs = _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
+    assert any("Process-SolidLiquidSeparation" in m for m in msgs), (
+        f"{process} should not cover the separation step ({why}): {msgs}"
+    )
 
 
 def test_system_may_state_a_step_itself(ontology_shapes_graph):

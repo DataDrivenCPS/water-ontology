@@ -284,14 +284,14 @@ Treatment-train processes such as MLE, A2O, UCT, and Bardenpho are asserted on t
 ```ttl
 watr:Process-ActivatedSludge
     watr:includesProcess watr:Process-Aeration ,
-                         watr:Process-Separation .
+                         watr:Process-SolidLiquidSeparation .
 
 watr:Process-AO
     watr:includesProcess watr:Process-Nitrification ,
                          watr:Process-Denitrification .
 ```
 
-`Process-Separation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train; microfiltration or ultrafiltration satisfies it in a membrane bioreactor. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
+`Process-SolidLiquidSeparation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train, microfiltration or ultrafiltration in a membrane bioreactor, flotation in a DAF, centrifugation in a centrifuge. The step names that family rather than `Process-Separation` above it, because screening and stripping are separations too and neither is the step in which a train parts its biomass from the treated water. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
 
 `watr:SystemProcessCoverageShape` warns when neither a system nor any transitively nested member performs a required constituent process:
 

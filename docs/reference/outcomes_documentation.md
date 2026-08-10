@@ -78,7 +78,7 @@
 
 ## Ammonia Removal
 
-**Description:** Removal of ammonia from the treated stream by converting it to another nitrogen species. Distinct from nitrogen removal, which requires the nitrogen to leave the water altogether.
+**Description:** Removal of ammonia from the treated stream by converting it to another nitrogen species. Distinct from nitrogen removal, which requires the nitrogen to leave the water altogether, and deliberately not placed under Outcome-NutrientRemoval for that reason: nitrifying converts ammonia to nitrate and removes no nitrogen.
 
 **Superclass:** Outcome
 
@@ -129,4 +129,16 @@
 **Description:** Final disposition of biosolids, by land application, landfilling, incineration or another route.
 
 **Superclass:** Outcome
+
+## Land Application
+
+**Description:** Final disposition of biosolids by beneficial reuse on agricultural or reclamation land.
+
+**Superclass:** Outcome-BiosolidsDisposal
+
+## Landfill
+
+**Description:** Final disposition of biosolids by landfilling.
+
+**Superclass:** Outcome-BiosolidsDisposal
 

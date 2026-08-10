@@ -625,9 +625,11 @@ FILTER NOT EXISTS {
 step directly, and the transitive part reaches nested subsystems. Findings are
 warnings, so a train may be described before every member has been entered.
 
-`Process-ActivatedSludge` includes `Process-Separation` — the family, not
-sedimentation specifically — so a membrane bioreactor satisfies the step with
-microfiltration.
+`Process-ActivatedSludge` includes `Process-SolidLiquidSeparation` — the family,
+not sedimentation specifically — so a membrane bioreactor satisfies the step with
+microfiltration, a DAF with flotation and a centrifuge with centrifugation, while
+a bar screen and an air stripper, which are separations of something else, do
+not.
 
 ---
 
@@ -695,20 +697,13 @@ use it, so neither had ever appeared in `docs/reference/`.
    deleted. That file is currently untracked yet gates the test suite, which is
    worth resolving on its own.
 
-2. **The process vocabulary has not been fully re-read** since the outcome split.
-   Terms that were plainly objectives were moved; the rest were left as
-   processes. `Process-Separation` most deserves a second look, since it sits
-   above the mechanisms *and* is a step of `Process-ActivatedSludge`, so it is
-   load-bearing for coverage. `Process-Solidification` and
-   `Process-LandApplication` may be objectives.
-
-3. **Most equipment classes still state no outcome.** Only `Thickener`,
+2. **Most equipment classes still state no outcome.** Only `Thickener`,
    `DewateringUnit`, `DisinfectionUnit`, `Digester` and `SedimentationTank`
    require one. An RO membrane and a sand filter both have objectives the model
    can now express — `Outcome-Desalination`, `Outcome-TurbidityRemoval` — and do
    not state.
 
-4. **`watr:entailsProcess` and friends** remain proposed only, recorded in
+3. **`watr:entailsProcess` and friends** remain proposed only, recorded in
    `water/notes.md`: renaming `watr:UnitProcess` → `watr:TreatmentUnit`,
    inference for processes that are a natural consequence of another, system
    subclasses, and plausibility checking for systems. The first depends on

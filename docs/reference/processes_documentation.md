@@ -16,6 +16,12 @@
 
 **Superclass:** Process-PhysicalProcess
 
+## Solid-Liquid Separation
+
+**Description:** Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents.
+
+**Superclass:** Process-Separation
+
 ## Elutriation
 
 **Description:** A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density.
@@ -32,7 +38,7 @@
 
 **Description:** A unit process that allows solids to settle out of water by gravity.
 
-**Superclass:** Process-Separation
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Stripping
 
@@ -44,7 +50,7 @@
 
 **Description:** A unit process that removes smaller particles from water by passing it through a filter.
 
-**Superclass:** Process-Separation
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Media Filtration
 
@@ -68,7 +74,7 @@
 
 **Description:** A unit process that uses buoyancy to separate solids from water, often using air bubbles.
 
-**Superclass:** Process-PhysicalProcess
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Gas Transfer
 
@@ -98,7 +104,7 @@
 
 **Description:** A process that uses centrifugal force to separate substances of different densities.
 
-**Superclass:** Process-PhysicalProcess
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Solidification
 
@@ -150,31 +156,31 @@
 
 ## Reverse Osmosis (RO)
 
-**Description:** A core membrane separation process for desalination and advanced purification.
+**Description:** Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.
 
 **Superclass:** Process-MembraneProcess
 
 ## Closed Circuit Reverse Osmosis (CCRO)
 
-**Description:** A specific RO configuration explored for optimization, capable of adapting to unmeasured changes like feed salinity.
+**Description:** Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage.
 
 **Superclass:** Process-ReverseOsmosis
 
 ## Osmotically Assisted Reverse Osmosis (OARO)
 
-**Description:** A process with validated Computational Fluid Dynamics (CFD) models for cost optimization.
+**Description:** Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow.
 
 **Superclass:** Process-ReverseOsmosis
 
 ## Feed Reversal Reverse Osmosis (FRRO)
 
-**Description:** A dynamic and cyclic design to mitigate scaling and balance salt/foulant load, enabling high recovery.
+**Description:** Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved.
 
 **Superclass:** Process-ReverseOsmosis
 
 ## Membrane Distillation (MD)
 
-**Description:** A thermal membrane process, often subject to CFD modeling for optimization of heat and mass transfer.
+**Description:** Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back.
 
 **Superclass:** Process-MembraneProcess
 
@@ -213,18 +219,6 @@
 **Description:** Biological degradation of organic materials under controlled aerobic conditions.
 
 **Superclass:** Process-BiologicalProcess
-
-## Land Application
-
-**Description:** Beneficial reuse of biosolids by spreading on agricultural land.
-
-**Superclass:** Process-PhysicalProcess
-
-## Biosolids Landfill
-
-**Description:** Disposal of biosolids in a landfill.
-
-**Superclass:** Process-PhysicalProcess
 
 ## Chemical Process
 
@@ -306,13 +300,13 @@
 
 ## Electrooxidation (EO)
 
-**Description:** An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses.
+**Description:** Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.
 
 **Superclass:** Process-Oxidation
 
 ## Electrooxidation (EO)
 
-**Description:** An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses.
+**Description:** Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.
 
 **Superclass:** Process-PhysicalProcess
 
@@ -324,7 +318,7 @@
 
 ## Chemical Precipitation
 
-**Description:** Removal of nutrients or metals using coagulants
+**Description:** Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here.
 
 **Superclass:** Process-ChemicalProcess
 
@@ -342,13 +336,13 @@
 
 ## High-Density Sludge (HDS) Process
 
-**Description:** A method for treating acid mine drainage involving neutralization.
+**Description:** Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.
 
 **Superclass:** Process-ChemicalProcess
 
 ## High-Density Sludge (HDS) Process
 
-**Description:** A method for treating acid mine drainage involving neutralization.
+**Description:** Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.
 
 **Superclass:** Process-PhysicalProcess
 

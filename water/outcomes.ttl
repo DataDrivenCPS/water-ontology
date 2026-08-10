@@ -126,7 +126,7 @@ watr:Outcome-Disinfection a watr:Class, watr:Outcome-Disinfection ;
 # biological step is nitrification from reading as nitrogen removal.
 watr:Outcome-AmmoniaRemoval a watr:Class, watr:Outcome-AmmoniaRemoval ;
     rdfs:label "Ammonia Removal" ;
-    skos:definition "Removal of ammonia from the treated stream by converting it to another nitrogen species." ;
+    skos:definition "Removal of ammonia from the treated stream by converting it to another nitrogen species. Distinct from nitrogen removal, which requires the nitrogen to leave the water altogether, and deliberately not placed under Outcome-NutrientRemoval for that reason: nitrifying converts ammonia to nitrate and removes no nitrogen." ;
     rdfs:subClassOf watr:Outcome .
 
 watr:Outcome-NutrientRemoval a watr:Class, watr:Outcome-NutrientRemoval ;
@@ -174,3 +174,19 @@ watr:Outcome-BiosolidsDisposal a watr:Class, watr:Outcome-BiosolidsDisposal ;
     rdfs:label "Biosolids Disposal" ;
     skos:definition "Final disposition of biosolids, by land application, landfilling, incineration or another route." ;
     rdfs:subClassOf watr:Outcome .
+
+# The disposal routes are objectives, not activities: they name where the
+# biosolids end up, not what is done to them. The activity in each case belongs
+# to the vehicle or the furnace -- spreading, tipping, combusting -- and
+# Process-FluidizedBedIncineration and Process-MultipleHearthIncineration are the
+# combustion routes, which declare Outcome-BiosolidsDisposal for the same reason.
+# Both of these were Process-LandApplication and Process-Landfill before.
+watr:Outcome-LandApplication a watr:Class, watr:Outcome-LandApplication ;
+    rdfs:label "Land Application" ;
+    skos:definition "Final disposition of biosolids by beneficial reuse on agricultural or reclamation land." ;
+    rdfs:subClassOf watr:Outcome-BiosolidsDisposal .
+
+watr:Outcome-Landfill a watr:Class, watr:Outcome-Landfill ;
+    rdfs:label "Landfill" ;
+    skos:definition "Final disposition of biosolids by landfilling." ;
+    rdfs:subClassOf watr:Outcome-BiosolidsDisposal .

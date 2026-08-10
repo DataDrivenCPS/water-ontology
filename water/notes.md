@@ -166,9 +166,14 @@ watr:includesProcess
 --------------------
 watr:includesProcess records what a compound process decomposes into, stated once
 on the process type rather than per model. It may name a process family:
-Process-ActivatedSludge includes Process-Separation, which is satisfied by
-sedimentation in a conventional train or by microfiltration/ultrafiltration in an
-MBR. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
+Process-ActivatedSludge includes Process-SolidLiquidSeparation, which is satisfied
+by sedimentation in a conventional train, microfiltration/ultrafiltration in an
+MBR, flotation in a DAF and centrifugation in a centrifuge. It deliberately does
+not name Process-Separation, the family above: screening and stripping are
+separations too, and neither is the step in which a train parts its biomass from
+the treated water. Flotation and Centrifugation sat outside the separation family
+entirely until that step was tightened, so the two mechanisms the family most
+needed were the two it did not cover. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
 (by inheritance), and the Bardenpho processes rather than on ActivatedSludge.
 watr:SystemProcessCoverageShape then warns when a system claims a compound process
 but neither it nor any member (hasMember*, so nested subsystems count and the
@@ -214,10 +219,19 @@ process type instead of on every machine.
   Process-UVIrradiation    -> Outcome-Disinfection
   Process-Ozonation        -> Outcome-Disinfection
   Process-ThermalTreatment -> Outcome-Disinfection
+  Process-HighDensitySludge -> Outcome-Neutralization
   Process-ActivatedSludge  -> Outcome-OrganicsRemoval
+  Process-FluidizedBedIncineration    -> Outcome-BiosolidsDisposal
+  Process-MultipleHearthIncineration  -> Outcome-BiosolidsDisposal
   Process-AO / MLE / FourStageBardenpho    -> Outcome-NitrogenRemoval
   Process-A2O / UCT / FiveStageBardenpho   -> Outcome-NitrogenRemoval,
                                               Outcome-PhosphorusRemoval
+
+Incineration declares Outcome-BiosolidsDisposal but its parent Process-Combustion
+does not: combustion also covers burning biogas for energy, which disposes of
+nothing. The other two disposal routes are not processes at all -- landfilling and
+land application name where the biosolids end up rather than an activity, so they
+are Outcome-Landfill and Outcome-LandApplication.
 
 Most processes declare no outcome; filtration and sedimentation serve whatever
 objective the equipment is built for. Two cases are worth spelling out.
