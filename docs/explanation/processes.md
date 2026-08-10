@@ -293,6 +293,17 @@ watr:Process-AO
 
 `Process-SolidLiquidSeparation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train, microfiltration or ultrafiltration in a membrane bioreactor, flotation in a DAF, centrifugation in a centrifuge. The step names that family rather than `Process-Separation` above it, because screening and stripping are separations too and neither is the step in which a train parts its biomass from the treated water. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
 
+Solid-liquid separation cuts across filtration rather than sitting above or below it. `Process-Filtration` is a `Process-Separation` and `Process-MembraneProcess` is a `Process-Filtration`, but reverse osmosis and membrane distillation retain dissolved species, so filtration as a family is not a solid-liquid separation. The subtypes that part solids from liquid — media filtration, microfiltration, ultrafiltration — declare both parents:
+
+```ttl
+watr:Process-Microfiltration
+    rdfs:subClassOf watr:Process-MembraneProcess ,
+                    watr:Process-SolidLiquidSeparation .
+
+watr:Process-ReverseOsmosis
+    rdfs:subClassOf watr:Process-MembraneProcess .
+```
+
 `watr:SystemProcessCoverageShape` warns when neither a system nor any transitively nested member performs a required constituent process:
 
 ```ttl

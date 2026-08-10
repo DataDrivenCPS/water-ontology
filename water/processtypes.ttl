@@ -78,15 +78,19 @@ watr:Process-Stripping a watr:Class, watr:Process-Stripping ;
     skos:definition "Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds." ;
     rdfs:subClassOf watr:Process-Separation .
 
+# Filtration is a Separation but not, as a family, a solid-liquid one: reverse
+# osmosis and membrane distillation are filtration and retain dissolved species,
+# not suspended solids. The filtration processes that do part solids from liquid
+# say so themselves, below.
 watr:Process-Filtration a watr:Class, watr:Process-Filtration ;
     rdfs:label "Filtration" ;
-    skos:definition "A unit process that removes smaller particles from water by passing it through a filter." ;
-    rdfs:subClassOf watr:Process-SolidLiquidSeparation .
+    skos:definition "A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass." ;
+    rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-MediaFiltration a watr:Class, watr:Process-MediaFiltration ;
     rdfs:label "Media Filtration" ;
     skos:definition "A filtration process that uses a bed of media (as opposed to a membrane-based process)." ;
-    rdfs:subClassOf watr:Process-Filtration .
+    rdfs:subClassOf watr:Process-Filtration, watr:Process-SolidLiquidSeparation .
 
 watr:Process-SlowSandFiltration a watr:Class, watr:Process-SlowSandFiltration ;
     rdfs:label "Slow Sand Filtration" ;
@@ -463,15 +467,20 @@ watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-Biologicall
     skos:definition "A biologically activated filtration column." ;
     rdfs:subClassOf watr:Process-Biofiltration .
 
+# Membrane processes, and solid-liquid separations: at these pore sizes what is
+# retained is suspended -- solids, colloids, biomass -- which is what lets an MBR
+# satisfy the separation step of Process-ActivatedSludge. Their coarser siblings
+# under Process-MembraneProcess, reverse osmosis and membrane distillation,
+# retain dissolved species instead and are deliberately not solid-liquid.
 watr:Process-Microfiltration a watr:Class, watr:Process-Microfiltration ;
     rdfs:label "Microfiltration" ;
-    skos:definition "0.1 to 1 micron-scale filtration" ;
-    rdfs:subClassOf watr:Process-Filtration .
+    skos:definition "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids." ;
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
     rdfs:label "Ultrafiltration" ;
-    skos:definition "0.01 to 0.1 micron-scale filtration" ;
-    rdfs:subClassOf watr:Process-Filtration .
+    skos:definition "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains." ;
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
     rdfs:label "Backwashing" ;

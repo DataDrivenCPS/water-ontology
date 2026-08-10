@@ -173,7 +173,16 @@ not name Process-Separation, the family above: screening and stripping are
 separations too, and neither is the step in which a train parts its biomass from
 the treated water. Flotation and Centrifugation sat outside the separation family
 entirely until that step was tightened, so the two mechanisms the family most
-needed were the two it did not cover. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
+needed were the two it did not cover.
+
+Solid-liquid separation cuts across filtration rather than containing it.
+Process-Filtration is a Process-Separation, and Process-MembraneProcess is a
+Process-Filtration, but reverse osmosis and membrane distillation retain
+dissolved species rather than suspended ones, so the family as a whole is not a
+solid-liquid separation. The subtypes that do part solids from liquid --
+MediaFiltration, Microfiltration, Ultrafiltration -- declare both parents. That
+is what lets an MBR satisfy the activated-sludge separation step with its
+membrane while an RO train does not. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
 (by inheritance), and the Bardenpho processes rather than on ActivatedSludge.
 watr:SystemProcessCoverageShape then warns when a system claims a compound process
 but neither it nor any member (hasMember*, so nested subsystems count and the

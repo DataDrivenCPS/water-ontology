@@ -48,15 +48,21 @@
 
 ## Filtration
 
-**Description:** A unit process that removes smaller particles from water by passing it through a filter.
+**Description:** A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass.
 
-**Superclass:** Process-SolidLiquidSeparation
+**Superclass:** Process-Separation
 
 ## Media Filtration
 
 **Description:** A filtration process that uses a bed of media (as opposed to a membrane-based process).
 
 **Superclass:** Process-Filtration
+
+## Media Filtration
+
+**Description:** A filtration process that uses a bed of media (as opposed to a membrane-based process).
+
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Slow Sand Filtration
 
@@ -486,15 +492,27 @@
 
 ## Microfiltration
 
-**Description:** 0.1 to 1 micron-scale filtration
+**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids.
 
-**Superclass:** Process-Filtration
+**Superclass:** Process-MembraneProcess
+
+## Microfiltration
+
+**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids.
+
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Ultrafiltration
 
-**Description:** 0.01 to 0.1 micron-scale filtration
+**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains.
 
-**Superclass:** Process-Filtration
+**Superclass:** Process-MembraneProcess
+
+## Ultrafiltration
+
+**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains.
+
+**Superclass:** Process-SolidLiquidSeparation
 
 ## Backwashing
 

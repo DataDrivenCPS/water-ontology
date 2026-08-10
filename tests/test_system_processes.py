@@ -363,6 +363,8 @@ def test_any_solid_liquid_separator_covers_activated_sludge(
     [
         ("Screening", "a bar screen removes debris, not biomass"),
         ("Stripping", "an air stripper separates gases, not solids"),
+        ("ReverseOsmosis", "RO retains dissolved salts, not suspended solids"),
+        ("MembraneDistillation", "MD separates by vapour pressure, not by size"),
     ],
 )
 def test_a_separation_that_is_not_solid_liquid_does_not_cover(
@@ -370,9 +372,12 @@ def test_a_separation_that_is_not_solid_liquid_does_not_cover(
 ):
     """Why the step names Process-SolidLiquidSeparation and not its parent.
 
-    Both of these are a watr:Process-Separation, so naming the family here would
+    All of these are a watr:Process-Separation, so naming the family here would
     accept them as the step in which an activated-sludge train separates its
-    biomass from the treated water.
+    biomass from the treated water. The last two are a watr:Process-Filtration
+    as well: filtration is not a solid-liquid separation as a family, only in the
+    subtypes that retain what is suspended -- which is why Microfiltration and
+    Ultrafiltration are declared as both and reverse osmosis is not.
     """
     body = (
         "ex:AS2 a s223:System ;\n"
