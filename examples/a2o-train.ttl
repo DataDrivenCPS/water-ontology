@@ -28,12 +28,12 @@ installation-specific activities (EBPR, denitrification, nitrification,
 recirculation) are stated explicitly. Validate through a SHACL-AF-capable engine
 (shifty) to materialize those defaults.
 
-Recycle media note: the s223:Pump class requires its inlet and outlet connection
-points to carry a water/oil/refrigerant medium, so the recycle pump connection
-points use s223:Fluid-Water while the rest of each recycle path carries the
-process medium (watr:Sludge-MixedLiquor for the internal recycle,
-watr:Fluid-Sludge for RAS). The two are compatible through their shared
-s223:Constituent-H2O, so S223 medium compatibility is satisfied at every join.
+Recycle media note: sludge is modeled as an aqueous fluid (watr:Fluid-Sludge
+is a subclass of s223:Fluid-Water), so the recycle pumps retain the actual
+process medium on their connection points: watr:Sludge-MixedLiquor for the
+internal recycle and watr:Fluid-Sludge for RAS. This also satisfies the S223
+pump requirement for a water-based fluid without changing the declared medium
+at a pump boundary.
 The pumps and valves are modeling scaffolding for the recycle assemblies, as
 the source figure gives no pump or valve counts.""" ;
     dcterms:source <https://www.epa.gov/sites/default/files/2019-08/documents/nutrient_control_design_manual.pdf> ;
@@ -262,19 +262,18 @@ the source figure gives no pump or valve counts.""" ;
     s223:hasMedium watr:Sludge-MixedLiquor ;
     s223:isConnectionPointOf :internalRecycleValve ;
     s223:connectsThrough :connIvToPump .
-# Pump connection points carry s223:Fluid-Water to satisfy the s223:Pump class
-# (water/oil/refrigerant); compatible with the adjacent Sludge-MixedLiquor via
-# shared s223:Constituent-H2O.
+# Sludge-MixedLiquor is an aqueous sludge medium, and therefore satisfies the
+# water-based-fluid requirement inherited from s223:Pump.
 :irPumpInlet
     a s223:InletConnectionPoint ;
     rdfs:label "Internal recycle pump inlet" ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
     s223:isConnectionPointOf :internalRecyclePump ;
     s223:connectsThrough :connIvToPump .
 :irPumpOutlet
     a s223:OutletConnectionPoint ;
     rdfs:label "Internal recycle pump outlet" ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
     s223:isConnectionPointOf :internalRecyclePump ;
     s223:connectsThrough :connInternalRecycle .
 
@@ -294,19 +293,18 @@ the source figure gives no pump or valve counts.""" ;
 :rasPumpInlet
     a s223:InletConnectionPoint ;
     rdfs:label "RAS pump inlet" ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Fluid-Sludge ;
     s223:isConnectionPointOf :rasPump ;
     s223:connectsThrough :connRvToPump .
 :rasPumpOutlet
     a s223:OutletConnectionPoint ;
     rdfs:label "RAS pump outlet to anaerobic zone" ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Fluid-Sludge ;
     s223:isConnectionPointOf :rasPump ;
     s223:connectsThrough :connRasToAnaerobic .
 
 # ===========================================================================
-# Connections (pipes). Each carries the medium of its process-side connection
-# point; the pump-side joins rely on shared s223:Constituent-H2O.
+# Connections (pipes) carry the actual process medium at both ends.
 # ===========================================================================
 
 # Forward path.

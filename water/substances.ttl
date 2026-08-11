@@ -128,7 +128,10 @@ watr:Fluid-Sludge
   a sh:NodeShape ;
   rdfs:comment "A semi-solid slurry composed of water and solids." ;
   rdfs:label "Sludge" ;
-  rdfs:subClassOf s223:Mix-Fluid ;
+  # Sludge is an aqueous slurry: this lets equipment that accepts water-based
+  # fluids (for example, s223:Pump) retain the actual sludge medium on its
+  # connection points rather than substituting the less-specific Fluid-Water.
+  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;

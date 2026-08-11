@@ -6,7 +6,7 @@ libraries/water.ttl: initialize-environment
 	uv run scripts/compile-water-ontology.py
 
 initialize-environment:
-	uv run ontoenv init --offline -- water
+	uv run ontoenv init water s223
 	uv run ontoenv config set offline true
 	uv run ontoenv config set remote_cache_ttl_secs 31536000
 
