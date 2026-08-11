@@ -20,9 +20,9 @@
 
 ## Building the Ontology
 
-Build the ontology with `make libraries/water.ttl`. The build creates a
-temporary OntoEnv 0.6 environment from `water/` and `s223/`; it does not
-create or require a repository-local `.ontoenv/` directory.
+Initialize the shared project environment with `make initialize-environment`,
+then build the ontology with `make libraries/water.ttl`. Both the compiler and
+test suite use the resulting repository-local `.ontoenv/` directory.
 
 ## BMotif Libraries and Template Documentation
 
