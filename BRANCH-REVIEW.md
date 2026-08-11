@@ -766,8 +766,9 @@ change, and a class with two superclasses is emitted twice, once per parent.
 ## Open items
 
 1. **Track and finish the DPR example.** `examples/union-dpr-model.ttl` is still
-   untracked, although pytest discovers it locally and includes it in the example
-   suite. A checkout of the branch therefore runs a different set of examples.
+   untracked and is explicitly excluded from the committed example suite. A
+   checkout of the branch therefore runs the same tests whether or not that local
+   integration model is present.
    Its backwash representation is current: `dpr:backwash_subsystem` performs
    `Process-Backwashing`, and its members no longer carry `Role-Backwash`.
    `dpr:chlorine-contactor` still needs to be typed `watr:ChlorinationUnit`
@@ -775,11 +776,7 @@ change, and a class with two superclasses is emitted twice, once per parent.
    `Process-Chlorination` and `Outcome-Disinfection`, and the more specific type
    makes that process plausible for the equipment class.
 
-2. **Decide whether examples must be warning-clean.** `tests/test_examples.py`
-   currently fails only on `sh:Violation`, so warnings are not part of the test
-   contract. The latest full sweep recorded 72 warnings in the DPR example. Most
-   come from S223 constraints, including single-member subsystems and air/water
-   constituent checks on the BAF and GAC units. The two sensor examples also use
-   a free-standing `s223:Junction` with no connection points. These models need
-   to be cleaned before the test can reasonably fail on `sh:Warning`; otherwise
-   the violations-only policy should be documented as intentional.
+2. **Decide how to validate the DPR integration model.** The committed example
+   suite now fails on either `sh:Warning` or `sh:Violation`, and the two sensor
+   examples are warning-clean. The local DPR model remains outside that contract;
+   its S223 warnings should be handled when the model is ready to be tracked.

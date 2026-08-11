@@ -14,6 +14,7 @@ WATR = Namespace("urn:nawi-water-ontology#")
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
+LOCAL_DPR_EXAMPLE = EXAMPLES_DIR / "union-dpr-model.ttl"
 WATER_DIR = ROOT / "water"
 S223_DIR = ROOT / "s223"
 
@@ -27,11 +28,15 @@ def _ttl_files(directory: Path) -> list[Path]:
 
 
 def _conforming_example_files() -> list[Path]:
-    """Return example files that are expected to pass SHACL validation."""
+    """Return committed examples expected to pass SHACL validation.
+
+    The local DPR integration model is not part of this example corpus.
+    """
     return [
         path
         for path in _ttl_files(EXAMPLES_DIR)
         if NONCONFORMING_EXAMPLES_DIR not in path.parents
+        and path != LOCAL_DPR_EXAMPLE
     ]
 
 
@@ -52,15 +57,34 @@ def nonconforming_example_file(request: pytest.FixtureRequest) -> Path:
     return request.param
 
 
-def _has_example_violations(data_graph: Graph, report_graph: Graph) -> bool:
-    """Return whether the SHACL report contains a violation on an example node."""
+def _has_example_result_with_severity(
+    data_graph: Graph, report_graph: Graph, severities: set
+) -> bool:
+    """Return whether example data has a validation result at a given severity."""
     example_nodes = set(data_graph.all_nodes())
     for result in report_graph.subjects(SH.focusNode, None):
-        if report_graph.value(result, SH.resultSeverity) != SH.Violation:
+        severity = report_graph.value(result, SH.resultSeverity)
+        if severity not in severities:
             continue
         if report_graph.value(result, SH.focusNode) in example_nodes:
             return True
     return False
+
+
+def _has_example_violations(data_graph: Graph, report_graph: Graph) -> bool:
+    """Return whether the SHACL report contains a violation on example data."""
+    return _has_example_result_with_severity(
+        data_graph, report_graph, {SH.Violation}
+    )
+
+
+def _has_example_warnings_or_violations(
+    data_graph: Graph, report_graph: Graph
+) -> bool:
+    """Return whether the report contains a warning or violation on example data."""
+    return _has_example_result_with_severity(
+        data_graph, report_graph, {SH.Warning, SH.Violation}
+    )
 
 
 @pytest.fixture(scope="session")
@@ -136,6 +160,9 @@ def _validation_result(example_file: Path, ontology_shapes_graph: Graph) -> dict
         "report_string": report_string,
         "data_graph": data_graph,
         "has_example_violations": _has_example_violations(data_graph, report_graph),
+        "has_example_warnings_or_violations": _has_example_warnings_or_violations(
+            data_graph, report_graph
+        ),
     }
 
 
