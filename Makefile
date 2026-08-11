@@ -1,14 +1,9 @@
-.PHONY: install-jupyter-venv local-docs llms-txt clean build-ontology initialize-environment
+.PHONY: install-jupyter-venv local-docs llms-txt clean build-ontology
 
 DOC_SOURCES := $(shell find docs -path 'docs/_build' -prune -o \( -name '*.md' -o -name '*.rst' -o -name '*.ipynb' \) -print)
 
-libraries/water.ttl: initialize-environment
+libraries/water.ttl:
 	uv run scripts/compile-water-ontology.py
-
-initialize-environment:
-	uv run ontoenv init --offline -- water
-	uv run ontoenv config set offline true
-	uv run ontoenv config set remote_cache_ttl_secs 31536000
 
 install-jupyter-venv:
 	uv add ipykernel
