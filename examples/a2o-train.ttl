@@ -1,0 +1,397 @@
+@prefix : <urn:nawi-water-ontology/examples/a2o-train#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/examples/a2o-train>
+    a owl:Ontology ;
+    rdfs:label "Three-Stage Pho-redox (A2/O) Biological Nutrient Removal Train" ;
+    rdfs:comment """Model of the three-stage anaerobic-anoxic-oxic (A2/O) wastewater treatment
+train shown in Figure 6-14 (page 6-23) of the US EPA Nutrient Control Design Manual,
+Section 6.4.1.1. The figure is itself attributed to Figure 2-22 of the EPA 2008
+Municipal Nutrient Removal Technologies Reference Document.
+
+The forward liquid path is anaerobic -> anoxic -> aerobic -> secondary clarifier
+-> effluent. A nitrate-rich internal recycle returns aerobic mixed liquor to the
+head of the anoxic zone, and return activated sludge (RAS) is recycled from the
+clarifier to the anaerobic zone. Waste activated sludge (WAS) leaves the
+clarifier as a distinct boundary flow.
+
+The compound process watr:Process-A2O is asserted on the system, not on any
+tank; its constituent steps are covered by the zones, the clarifier, and the two
+recycle subsystems. Class-default inference supplies the processes and outcomes
+fixed by each equipment class (mixing on the basins, aeration on the aerobic
+basin, sedimentation and clarification on the clarifier); only the
+installation-specific activities (EBPR, denitrification, nitrification,
+recirculation) are stated explicitly. Validate through a SHACL-AF-capable engine
+(shifty) to materialize those defaults.
+
+Recycle media note: the s223:Pump class requires its inlet and outlet connection
+points to carry a water/oil/refrigerant medium, so the recycle pump connection
+points use s223:Fluid-Water while the rest of each recycle path carries the
+process medium (watr:Sludge-MixedLiquor for the internal recycle,
+watr:Fluid-Sludge for RAS). The two are compatible through their shared
+s223:Constituent-H2O, so S223 medium compatibility is satisfied at every join.
+The pumps and valves are modeling scaffolding for the recycle assemblies, as
+the source figure gives no pump or valve counts.""" ;
+    dcterms:source <https://www.epa.gov/sites/default/files/2019-08/documents/nutrient_control_design_manual.pdf> ;
+    rdfs:seeAlso <https://www.epa.gov/sustainable-water-infrastructure/nutrient-control-design-manual> ;
+    owl:imports <urn:nawi-water-ontology> ,
+                <http://data.ashrae.org/standard223/1.0/model/all> ;
+.
+
+# ===========================================================================
+# System and recycle subsystems
+# ===========================================================================
+
+:a2oTrain
+    a s223:System ;
+    rdfs:label "A2/O Treatment Train" ;
+    s223:hasMember :anaerobicZone, :anoxicZone, :aerobicZone, :clarifier,
+                    :internalRecycleSystem, :rasSystem ;
+    # Process-A2O is asserted on the system, not on a tank. Its constituent steps
+    # (nitrification, denitrification, EBPR, recirculation, and the aeration and
+    # solid-liquid separation inherited from Process-ActivatedSludge) are covered
+    # by the members below. OrganicsRemoval is inherited from
+    # Process-ActivatedSludge, so the system states it too.
+    watr:hasProcess watr:Process-A2O ;
+    watr:hasOutcome watr:Outcome-NitrogenRemoval ,
+                    watr:Outcome-PhosphorusRemoval ,
+                    watr:Outcome-OrganicsRemoval ;
+.
+
+# Recirculation is performed by an assembly, not by a pump alone, so each
+# recycle loop is a nested s223:System carrying Process-Recirculation. The
+# transitive s223:hasMember* from the train lets watr:SystemProcessCoverageShape
+# find this step. Each assembly is given a pump and a valve as members.
+:internalRecycleSystem
+    a s223:System ;
+    rdfs:label "Internal Nitrate-Rich Recycle Assembly" ;
+    s223:hasMember :internalRecycleValve, :internalRecyclePump ;
+    watr:hasProcess watr:Process-Recirculation ;
+.
+
+:rasSystem
+    a s223:System ;
+    rdfs:label "Return Activated Sludge Assembly" ;
+    s223:hasMember :rasValve, :rasPump ;
+    watr:hasProcess watr:Process-Recirculation ;
+.
+
+# ===========================================================================
+# Treatment zones and clarifier
+# ===========================================================================
+
+:anaerobicZone
+    a watr:MixingBasin ;
+    rdfs:label "Anaerobic Zone" ;
+    s223:hasRole watr:Role-Anaerobic ;
+    # Process-Mixing is supplied by the MixingBasin class default (omitted).
+    watr:hasProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    # EBPR achieves PhosphorusRemoval; stated here for OutcomeCompleteness.
+    watr:hasOutcome watr:Outcome-PhosphorusRemoval ;
+    s223:hasConnectionPoint :anaerobicInfluentInlet, :anaerobicRasInlet,
+                             :anaerobicOutlet ;
+.
+
+:anoxicZone
+    a watr:MixingBasin ;
+    rdfs:label "Anoxic Zone" ;
+    s223:hasRole watr:Role-Anoxic ;
+    # Process-Mixing is supplied by the MixingBasin class default (omitted).
+    watr:hasProcess watr:Process-Denitrification ;
+    # Denitrification achieves NitrogenRemoval; stated here for OutcomeCompleteness.
+    watr:hasOutcome watr:Outcome-NitrogenRemoval ;
+    s223:hasConnectionPoint :anoxicForwardInlet, :anoxicRecycleInlet,
+                             :anoxicOutlet ;
+.
+
+:aerobicZone
+    a watr:AerationBasin ;
+    rdfs:label "Aerobic Zone" ;
+    s223:hasRole watr:Role-Aerobic ;
+    # Process-Aeration is supplied by the AerationBasin class default (omitted).
+    watr:hasProcess watr:Process-Nitrification ;
+    # Nitrification achieves AmmoniaRemoval (not NitrogenRemoval); stated here
+    # for OutcomeCompleteness.
+    watr:hasOutcome watr:Outcome-AmmoniaRemoval ;
+    s223:hasConnectionPoint :aerobicInlet, :aerobicOutlet,
+                             :aerobicRecirculationOutlet ;
+.
+
+:clarifier
+    a watr:SedimentationTank ;
+    rdfs:label "Secondary Clarifier" ;
+    s223:hasRole watr:Role-Secondary ;
+    # Process-Sedimentation and Outcome-Clarification are supplied by the
+    # SedimentationTank class defaults (omitted).
+    s223:hasConnectionPoint :clarifierInlet, :clarifierEffluentOutlet,
+                             :clarifierRasOutlet, :clarifierWasOutlet ;
+.
+
+# Recycle equipment (scaffolding). No WaTr process term is invented for a pump
+# or valve; recirculation lives on the assembly systems above.
+:internalRecycleValve
+    a watr:Valve ;
+    rdfs:label "Internal Recycle Isolation Valve" ;
+    s223:hasConnectionPoint :irValveInlet, :irValveOutlet ;
+.
+
+:internalRecyclePump
+    a watr:Pump ;
+    rdfs:label "Internal Recycle Pump" ;
+    s223:hasConnectionPoint :irPumpInlet, :irPumpOutlet ;
+.
+
+:rasValve
+    a watr:Valve ;
+    rdfs:label "RAS Isolation Valve" ;
+    s223:hasConnectionPoint :rasValveInlet, :rasValveOutlet ;
+.
+
+:rasPump
+    a watr:Pump ;
+    rdfs:label "RAS Pump" ;
+    s223:hasConnectionPoint :rasPumpInlet, :rasPumpOutlet ;
+.
+
+# ===========================================================================
+# Connection points
+# ===========================================================================
+
+# --- Anaerobic zone --------------------------------------------------------
+:anaerobicInfluentInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Anaerobic zone influent inlet (train boundary)" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :anaerobicZone .
+:anaerobicRasInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Anaerobic zone RAS return inlet" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :anaerobicZone ;
+    s223:connectsThrough :connRasToAnaerobic .
+:anaerobicOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Anaerobic zone outlet to anoxic zone" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :anaerobicZone ;
+    s223:connectsThrough :connAnaerobicToAnoxic .
+
+# --- Anoxic zone -----------------------------------------------------------
+:anoxicForwardInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Anoxic zone forward-flow inlet" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :anoxicZone ;
+    s223:connectsThrough :connAnaerobicToAnoxic .
+:anoxicRecycleInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Anoxic zone internal-recycle inlet" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :anoxicZone ;
+    s223:connectsThrough :connInternalRecycle .
+:anoxicOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Anoxic zone outlet to aerobic zone" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :anoxicZone ;
+    s223:connectsThrough :connAnoxicToAerobic .
+
+# --- Aerobic zone ----------------------------------------------------------
+:aerobicInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Aerobic zone inlet from anoxic zone" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :aerobicZone ;
+    s223:connectsThrough :connAnoxicToAerobic .
+:aerobicOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Aerobic zone outlet to clarifier" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :aerobicZone ;
+    s223:connectsThrough :connAerobicToClarifier .
+# Recirculation outlet: starts the internal recycle path. The Reactor class
+# requires a recirculation/return connection point to be a fluid outlet, which
+# this is (Sludge-MixedLiquor is a Mix-Fluid).
+:aerobicRecirculationOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Aerobic zone recirculation outlet (internal recycle)" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:hasRole s223:Role-Recirculating ;
+    s223:isConnectionPointOf :aerobicZone ;
+    s223:connectsThrough :connAerobicToIv .
+
+# --- Clarifier -------------------------------------------------------------
+:clarifierInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Clarifier inlet from aerobic zone" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :clarifier ;
+    s223:connectsThrough :connAerobicToClarifier .
+:clarifierEffluentOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Final effluent outlet (train boundary)" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :clarifier .
+:clarifierRasOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Clarifier RAS outlet (return activated sludge)" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:hasRole s223:Role-Return ;
+    s223:isConnectionPointOf :clarifier ;
+    s223:connectsThrough :connClarifierToRv .
+:clarifierWasOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Waste activated sludge outlet (train boundary)" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :clarifier .
+
+# --- Internal recycle valve and pump --------------------------------------
+:irValveInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Internal recycle valve inlet" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :internalRecycleValve ;
+    s223:connectsThrough :connAerobicToIv .
+:irValveOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Internal recycle valve outlet" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :internalRecycleValve ;
+    s223:connectsThrough :connIvToPump .
+# Pump connection points carry s223:Fluid-Water to satisfy the s223:Pump class
+# (water/oil/refrigerant); compatible with the adjacent Sludge-MixedLiquor via
+# shared s223:Constituent-H2O.
+:irPumpInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "Internal recycle pump inlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :internalRecyclePump ;
+    s223:connectsThrough :connIvToPump .
+:irPumpOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Internal recycle pump outlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :internalRecyclePump ;
+    s223:connectsThrough :connInternalRecycle .
+
+# --- RAS valve and pump ----------------------------------------------------
+:rasValveInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "RAS valve inlet" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :rasValve ;
+    s223:connectsThrough :connClarifierToRv .
+:rasValveOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "RAS valve outlet" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :rasValve ;
+    s223:connectsThrough :connRvToPump .
+:rasPumpInlet
+    a s223:InletConnectionPoint ;
+    rdfs:label "RAS pump inlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rasPump ;
+    s223:connectsThrough :connRvToPump .
+:rasPumpOutlet
+    a s223:OutletConnectionPoint ;
+    rdfs:label "RAS pump outlet to anaerobic zone" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rasPump ;
+    s223:connectsThrough :connRasToAnaerobic .
+
+# ===========================================================================
+# Connections (pipes). Each carries the medium of its process-side connection
+# point; the pump-side joins rely on shared s223:Constituent-H2O.
+# ===========================================================================
+
+# Forward path.
+:connAnaerobicToAnoxic
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Anaerobic to anoxic (forward)" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :anaerobicOutlet, :anoxicForwardInlet ;
+    s223:connectsAt :anaerobicOutlet, :anoxicForwardInlet ;
+    s223:connectsFrom :anaerobicZone ;
+    s223:connectsTo :anoxicZone ;
+.
+:connAnoxicToAerobic
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Anoxic to aerobic (forward)" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :anoxicOutlet, :aerobicInlet ;
+    s223:connectsAt :anoxicOutlet, :aerobicInlet ;
+    s223:connectsFrom :anoxicZone ;
+    s223:connectsTo :aerobicZone ;
+.
+:connAerobicToClarifier
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Aerobic to clarifier (forward)" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :aerobicOutlet, :clarifierInlet ;
+    s223:connectsAt :aerobicOutlet, :clarifierInlet ;
+    s223:connectsFrom :aerobicZone ;
+    s223:connectsTo :clarifier ;
+.
+
+# Internal recycle: aerobic recirculation outlet -> valve -> pump -> anoxic.
+:connAerobicToIv
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Aerobic recirculation outlet to internal recycle valve" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :aerobicRecirculationOutlet, :irValveInlet ;
+    s223:connectsAt :aerobicRecirculationOutlet, :irValveInlet ;
+    s223:connectsFrom :aerobicZone ;
+    s223:connectsTo :internalRecycleValve ;
+.
+:connIvToPump
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Internal recycle valve to pump" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :irValveOutlet, :irPumpInlet ;
+    s223:connectsAt :irValveOutlet, :irPumpInlet ;
+    s223:connectsFrom :internalRecycleValve ;
+    s223:connectsTo :internalRecyclePump ;
+.
+:connInternalRecycle
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Internal recycle pump to anoxic zone" ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:cnx :irPumpOutlet, :anoxicRecycleInlet ;
+    s223:connectsAt :irPumpOutlet, :anoxicRecycleInlet ;
+    s223:connectsFrom :internalRecyclePump ;
+    s223:connectsTo :anoxicZone ;
+.
+
+# RAS: clarifier RAS outlet -> valve -> pump -> anaerobic zone.
+:connClarifierToRv
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "Clarifier RAS outlet to RAS valve" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:cnx :clarifierRasOutlet, :rasValveInlet ;
+    s223:connectsAt :clarifierRasOutlet, :rasValveInlet ;
+    s223:connectsFrom :clarifier ;
+    s223:connectsTo :rasValve ;
+.
+:connRvToPump
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "RAS valve to pump" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:cnx :rasValveOutlet, :rasPumpInlet ;
+    s223:connectsAt :rasValveOutlet, :rasPumpInlet ;
+    s223:connectsFrom :rasValve ;
+    s223:connectsTo :rasPump ;
+.
+:connRasToAnaerobic
+    a s223:Connection, s223:Pipe ;
+    rdfs:label "RAS pump to anaerobic zone" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:cnx :rasPumpOutlet, :anaerobicRasInlet ;
+    s223:connectsAt :rasPumpOutlet, :anaerobicRasInlet ;
+    s223:connectsFrom :rasPump ;
+    s223:connectsTo :anaerobicZone ;
+.
