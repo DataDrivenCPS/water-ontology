@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "pyontoenv>=0.6.0a7",
+    "ontoenv>=0.6.1",
     "rdflib>=7.0.0",
     "brick-tq-shacl==0.4.0a7",
     "jupyterlab>=4.2.5",

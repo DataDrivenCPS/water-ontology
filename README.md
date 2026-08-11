@@ -16,11 +16,13 @@
 0. (to update 223, run the `download-s223.sh` script; this will only work for those with existing access to that repo)
 1. Install [`uv`](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) for working with Python
 2. Install the dependencies with `uv sync`
-3. Install `ontoenv` either by downloading the latest [release](https://github.com/gtfierro/ontoenv-rs/releases) or through `cargo install ontoenv-cli@0.3.0a1`
+3. `uv sync` installs OntoEnv 0.6 or later for both the Python API and CLI. Run it as `uv run ontoenv`; no separate CLI installation is needed. If you need a system-wide CLI, use `cargo install --locked ontoenv-cli`.
 
 ## Building the Ontology
 
-Build the ontology with `make libraries/water.ttl`
+Initialize the shared project environment with `make initialize-environment`,
+then build the ontology with `make libraries/water.ttl`. Both the compiler and
+test suite use the resulting repository-local `.ontoenv/` directory.
 
 ## BMotif Libraries and Template Documentation
 
