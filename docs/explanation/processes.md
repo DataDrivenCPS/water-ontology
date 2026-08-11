@@ -1,6 +1,9 @@
-# Modeling Composition, Topology, and Processes
+# Modeling Composition, Topology, and Treatment Function
 
-The WaTr ontology supports modeling the **processes** involved in a water treatment system (e.g. "UV disinfection), the **composition** of the system and its components (e.g. "this reactor contains a mixer"), and the **topology** of the system (e.g. "this pump is connected to this reactor").
+The WaTr ontology supports modeling the **treatment function** of equipment,
+the **composition** of the system and its components (for example, "this
+reactor contains a lamp"), and the **topology** of the system (for example,
+"this pump is connected to this reactor").
 
 To explain these concepts, we will use the following model of a ultraviolet disinfection system:
 
@@ -130,10 +133,17 @@ Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium
 
 ## Processes
 
-WaTr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
-For example, our UV Disinfection System is a unit process that performs UV disinfection, but it is made up of a plug flow reactor and two UV lamps.
-Another kind of UV disinfection system might use a different kind of reactor, or a different number of lamps, but it would still be performing UV disinfection.
-WaTr is designed so that consumers of a WaTr graph can query for all unit processes that perform UV disinfection, regardless of how they are constructed.
+The complete equipment modeling pattern is described in [Equipment Type,
+Outcome, Process, and Role](equipment_function.md). This section introduces the
+process portion of that pattern in the context of the UV system.
+
+WaTr differentiates what a treatment unit does from how that unit is put
+together. For example, the UV system performs ultraviolet irradiation for the
+outcome of disinfection, but it is made up of a plug flow reactor and two UV
+lamps. Another UV system might use a different kind of reactor or a different
+number of lamps, but it would still perform ultraviolet irradiation. Consumers
+can query for all units that have disinfection as their outcome regardless of
+how they are constructed.
 
 The process enacted by a unit process is defined by the `watr:hasProcess` property.
 
@@ -147,7 +157,8 @@ The process enacted by a unit process is defined by the `watr:hasProcess` proper
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
+    watr:hasProcess watr:Process-UVIrradiation ;
+    watr:hasOutcome watr:Outcome-Disinfection ;
 .
 ```
 
@@ -220,16 +231,20 @@ Plausibility findings have severity `sh:Warning`. A warning does not make the gr
 
 ### Process vs. Role
 
-A WaTr model separates four claims:
+A WaTr equipment model separates four claims:
 
 | claim | representation |
-|---|---|---|
+|---|---|
 | equipment identity | `rdf:type`, such as `a watr:BeltThickener` |
+| treatment objective | `watr:hasOutcome` |
 | performed process | `watr:hasProcess` |
 | commissioned function in a system | `s223:hasRole` |
-| functional collection | `s223:System` with `s223:hasMember` |
 
-A process is an activity or treatment outcome performed by equipment or by a system. Filtration, thickening, disinfection, and backwashing are processes. A role identifies the function an entity is commissioned to serve within a system, such as a treatment stage, a zone regime, or the purpose of a connection point.
+An outcome is a treatment objective, such as thickening or disinfection. A
+process is an activity performed by equipment or by a system, such as
+filtration, sedimentation, or backwashing. A role identifies the commissioned
+function of an entity within a system, such as a treatment stage, a zone regime,
+or the purpose of a connection point.
 
 S223 roles describe commissioned function, not instantaneous operating state — a heating coil keeps `Role-Heating` while it is switched off. `Role-Aerobic`, `Role-Anoxic` and `Role-Anaerobic` say which regime a zone is commissioned to run in, which is what makes the role slots on `AerationBasin` and `MixingBasin` discriminate between the zones of a train: read as bare capability they would be vacuous, since any basin with diffusers *can* be run aerobic. A swing zone commissioned for either regime carries both `Role-Aerobic` and `Role-Anoxic`, and keeps both whatever its blowers are doing.
 
@@ -266,6 +281,9 @@ WaTr defines roles in these groups:
 `watr:Role-Primary` and `watr:Role-Secondary` refer to wastewater treatment stages. The similarly named S223 roles refer to primary and secondary loops.
 
 ### Processes performed by systems
+
+See [Processes Performed by Systems](system_processes.md) for the complete
+treatment-train pattern and coverage queries.
 
 Some processes belong to a collection rather than to one member. A backwash pump pumps, a tank stores water, and valves control flow; the backwash system performs backwashing:
 
@@ -351,11 +369,14 @@ and one outcome is reached by several processes:
                     watr:hasOutcome Outcome-Disinfection .
 ```
 
-A practitioner reads a clarifier the same way: its job is to clarify, and it does so by settling. Naming the mechanism alone leaves the objective unstated, which is why `Process-UVDisinfection` was split into the process `Process-UVIrradiation` and the outcome `Outcome-Disinfection` — the same irradiation also serves advanced oxidation.
+A practitioner reads a clarifier the same way: its job is to clarify, and it
+does so by settling. Naming the mechanism alone leaves the objective unstated.
+Ultraviolet irradiation likewise names the activity, while disinfection names
+the treatment objective.
 
 Outcome and process are both intrinsic, so both survive the P&ID test. What moves with position is the role: a primary and a secondary clarifier share their outcome and their process and differ only in their stage.
 
-#### Deriving the outcome from the process
+#### Relating a process to its fixed outcome
 
 Where a process achieves the same thing wherever it is performed, the process type says so once with `watr:achievesOutcome`, rather than every machine repeating it:
 
@@ -394,7 +415,8 @@ All of this information is captured in a single graph (the "WaTr model" of a tre
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
+    watr:hasProcess watr:Process-UVIrradiation ;
+    watr:hasOutcome watr:Outcome-Disinfection ;
     s223:contains :myPFR, :myUVLamp1, :myUVLamp2 ;
     s223:cnx :UVInlet, :UVOutlet .
 

@@ -2,7 +2,7 @@
 
 ## Water Process
 
-**Description:** An activity or treatment outcome performed by a piece of equipment or by a system.
+**Description:** A physical, chemical, or biological activity performed by a piece of equipment or by a system.
 
 ## Physical Process
 
@@ -561,4 +561,3 @@
 **Description:** A biological process that breaks down organic matter in the presence of oxygen.
 
 **Superclass:** Process-Digestion
-

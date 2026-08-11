@@ -15,12 +15,12 @@
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
 
-# A process is an activity or treatment outcome performed by equipment or by a
-# system. A role describes how an entity can serve within a system, such as a
-# treatment stage or zone capability. See docs/explanation/processes.md.
+# A process is an activity performed by equipment or by a system. An outcome is
+# the treatment objective, and a role describes how an entity serves within a
+# particular system. See docs/explanation/equipment_function.md.
 watr:Process a watr:Class, sh:NodeShape ;
     rdfs:label "Water Process" ;
-    skos:definition "An activity or treatment outcome performed by a piece of equipment or by a system." ;
+    skos:definition "A physical, chemical, or biological activity performed by a piece of equipment or by a system." ;
     sh:property [
         sh:path rdfs:label ;
         sh:datatype xsd:string ;

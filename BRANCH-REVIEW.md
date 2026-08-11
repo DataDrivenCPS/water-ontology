@@ -379,9 +379,6 @@ watr:GravityThickener                          # the mechanism, on the model
 Thickening, dewatering and drying form one axis of their own: the state of the
 product — pumpable, a cake, dry.
 
-BIG TODO/QUESTION: do we want to have validation on the *product* of a process? downstream
-things would need to have the right substance associated with them.
-
 **Process** is fixed by the class almost always; that is what an equipment class
 names. **Outcome** is fixed where the class determines the objective and not
 where the installation does — RO membranes and electrodialysis stacks desalinate,
@@ -457,9 +454,9 @@ closure of the values — an RO membrane gets `Process-ReverseOsmosis` and
 `Process-MembraneProcess`, which no class requires, so an intermediate-family
 query still needs `rdfs:subClassOf*`. And the triples exist **only after an
 inference pass**: `shifty.validate` and `shifty.infer` run SHACL-AF rules, a
-triplestore loaded from the Turtle does not. That dependency is what open item 3
-raises. The rule targets `s223:Equipment`, so a train carrying `Process-A2O` on
-an `s223:System` gets nothing.
+triplestore loaded from the Turtle does not. Consumers querying these values
+must therefore run inference first. The rule targets `s223:Equipment`, so a train
+carrying `Process-A2O` on an `s223:System` gets nothing.
 
 The file ships inside the import closure, so the rule fires before constraints
 are checked and satisfies them itself: a bare `ex:gt a watr:GravityThickener` is
@@ -768,28 +765,21 @@ change, and a class with two superclasses is emitted twice, once per parent.
 
 ## Open items
 
-1. **Examples are held to violations only.** `tests/test_examples.py` asserts on
-   `sh:Violation`, so warnings in the example models go unseen. Sweeping all
-   eight files turns up 72 in `examples/union-dpr-model.ttl`, of which one is
-   this branch's own check firing on a real gap — `dpr:chlorine-contactor`
-   declares an implausible `Process-Chlorination`. The rest are S223's, mostly
-   single-member subsystems and `Fluid-Air` against `Fluid-Water` constituents on
-   the BAF and GAC units. Two sensor examples also carry a free-standing
-   `s223:Junction` with no connection points. Tightening the test to fail on
-   warnings requires cleaning that model first, which is item 2.
+1. **Track and finish the DPR example.** `examples/union-dpr-model.ttl` is still
+   untracked, although pytest discovers it locally and includes it in the example
+   suite. A checkout of the branch therefore runs a different set of examples.
+   Its backwash representation is current: `dpr:backwash_subsystem` performs
+   `Process-Backwashing`, and its members no longer carry `Role-Backwash`.
+   `dpr:chlorine-contactor` still needs to be typed `watr:ChlorinationUnit`
+   rather than the abstract `watr:DisinfectionUnit`; it already states
+   `Process-Chlorination` and `Outcome-Disinfection`, and the more specific type
+   makes that process plausible for the equipment class.
 
-2. **`watr:Role-Backwash` is deprecated, not deleted.**
-   `examples/union-dpr-model.ttl` asserts it on `dpr:backwash-dosing-pump` and
-   `dpr:backwash-tank`, which are *also* `s223:hasMember` of
-   `dpr:backwash_subsystem` — the redundancy being the argument for putting the
-   process on the system in the first place. Migration is one
-   `watr:hasProcess watr:Process-Backwashing` on the subsystem and two triples
-   deleted. That file is currently untracked yet gates the test suite, which is
-   worth resolving on its own.
-
-3. **`watr:entailsProcess` and friends** remain proposed only, recorded in
-   `water/notes.md`: renaming `watr:UnitProcess` → `watr:TreatmentUnit`,
-   inference for processes that are a natural consequence of another, system
-   subclasses, and plausibility checking for systems. The first depends on
-   whether Aquarium can rely on an inference step running — the same question the
-   defaults rule in §4 raises.
+2. **Decide whether examples must be warning-clean.** `tests/test_examples.py`
+   currently fails only on `sh:Violation`, so warnings are not part of the test
+   contract. The latest full sweep recorded 72 warnings in the DPR example. Most
+   come from S223 constraints, including single-member subsystems and air/water
+   constituent checks on the BAF and GAC units. The two sensor examples also use
+   a free-standing `s223:Junction` with no connection points. These models need
+   to be cleaned before the test can reasonably fail on `sh:Warning`; otherwise
+   the violations-only policy should be documented as intentional.

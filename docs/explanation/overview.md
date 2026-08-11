@@ -14,6 +14,18 @@ While its initial focus is building mechanical, electrical and plumbing systems,
 
 This standard provides well-defined classes used to describe entities relevant to water treatment system information. Entities in WaTr models will generally be instances of the many classes defined or referred to by the standard. The classes in the standard provide 'names' for the fundamental building blocks used in WaTr models (e.g. a pump will be an instance of the class `watr:Pump`) and also have rules defining how they are used (e.g. a pump must convey water).
 
+## Treatment Function
+
+WaTr describes treatment equipment along three axes. `watr:hasOutcome` states
+what the equipment is intended to accomplish, `watr:hasProcess` states the
+activity it performs, and `s223:hasRole` states where it is commissioned to
+serve in a particular treatment system. For example, a primary clarifier has
+clarification as its outcome, sedimentation as its process, and primary as its
+role. Equipment classes can supply fixed process and outcome values during
+inference, while installation-specific roles are stated on equipment instances.
+See [Equipment Type, Outcome, Process, and Role](equipment_function.md) for the
+modeling pattern and examples.
+
 ## Topology
 
 This standard can be used to describe the topology of the equipment and connections in a water treatment system, but not the geometric details. Topology refers to the way entities are connected and how some media (e.g. water, chemicals) is conveyed between them. There are several different classes used to describe which entities participate in connections and how they connect: Connectables, which include the entities that are capable of connecting to each other; ConnectionPoints, which model where Connectables can be connected; and Connections, which describe physical things through which the medium is conveyed, like pipes or channels. These Mediums (e.g. water, chemicals) are defined as an EnumerationKind in the standard. There are also multiple relations used to describe the details of these connections, and how the multiple entities involved in a connection relate to each other. Though there are many relations to describe different perspectives of a connection, only `s223:cnx` needs to be manually added to the model, and the rest can be automatically added to the model through the process of inference.

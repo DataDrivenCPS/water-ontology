@@ -113,12 +113,21 @@ requirements. They also allow equipment to perform additional processes.
 The bare sh:class constraint on watr:UnitProcess applies to every hasProcess
 value and ensures that each value is a watr:Process.
 
-Process, role, and system
--------------------------
-watr:hasProcess states an activity or treatment outcome performed by equipment
-or a system. s223:hasRole states the function an entity is commissioned to serve
-within a system, in the sense s223 gives it: a heating coil keeps Role-Heating
-while it is switched off. Not the state at a particular time.
+Process, outcome, role, and system
+---------------------------------
+watr:hasProcess states a physical, chemical, or biological activity performed
+by equipment or a system. watr:hasOutcome states the treatment objective that
+the equipment or system is intended to achieve. The two values come from
+separate vocabularies: every hasProcess value is a watr:Process, and every
+hasOutcome value is a watr:Outcome.
+
+s223:hasRole states the function an entity is commissioned to serve within a
+particular system, in the sense s223 gives it: a heating coil keeps Role-Heating
+while it is switched off. It does not describe state at a particular time.
+Process and outcome are intrinsic to equipment; role is installation-specific.
+Class-default inference can materialize process and outcome requirements from an
+equipment class and its ancestors, but it never supplies a role. Any applicable
+role must be stated on the instance.
 
 WaTr roles cover treatment stages, zone regimes, operational purposes, and
 connection-point purposes. Role-Aerobic, Role-Anoxic and Role-Anaerobic say which
