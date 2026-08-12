@@ -1,0 +1,65 @@
+@prefix : <urn:nawi-water-ontology/examples/swing-zone-dissolved-oxygen#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:nawi-water-ontology/examples/swing-zone-dissolved-oxygen>
+    a owl:Ontology ;
+    owl:imports <urn:nawi-water-ontology> ;
+    rdfs:label "Swing Zone Dissolved Oxygen Example" ;
+    rdfs:comment "Separates the regime a zone is commissioned to run in, which is a role, from the dissolved oxygen present in it at a point in time, which is a reading. The two are asserted with different constructs and neither substitutes for the other." ;
+.
+
+# The zone is commissioned for both regimes: diffusers installed, run unaerated
+# through the seasons when the plant denitrifies. Both roles are asserted, and
+# both remain true whatever the blowers are doing right now.
+:swing_zone
+    a watr:AerationBasin ;
+    rdfs:label "Swing Zone" ;
+    s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;
+    watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
+    # Denitrifying is what the zone does; nitrogen removal is what it is for.
+    # The ontology requires both to be said -- see watr:TreatmentObjectiveRequiresProcessShape.
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    s223:hasConnectionPoint :zone_inlet, :zone_outlet ;
+.
+
+:zone_inlet
+    a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :swing_zone ;
+.
+
+:zone_outlet
+    a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :swing_zone ;
+.
+
+# What the zone is doing at a given moment. A dissolved oxygen reading near zero
+# does not withdraw watr:Role-Aerobic from the basin above, and a reading of
+# 2 mg/L does not withdraw watr:Role-Anoxic. Nothing here is a role.
+#
+# The meter observes the basin itself: s223:hasObservationLocation takes a
+# Connectable, and s223:Equipment is one. Naming the basin is what ties the
+# reading to the zone whose roles are asserted above -- a free-standing sample
+# point would leave the two halves of this example unrelated.
+:do_meter
+    a watr:OxygenMeter ;
+    rdfs:label "Dissolved Oxygen Meter" ;
+    s223:hasObservationLocation :swing_zone ;
+    s223:observes :dissolved_oxygen ;
+.
+
+:dissolved_oxygen
+    a s223:QuantifiableObservableProperty ;
+    rdfs:label "Dissolved Oxygen Concentration" ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L ;
+.

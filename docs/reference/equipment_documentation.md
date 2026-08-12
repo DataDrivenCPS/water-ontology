@@ -2,19 +2,19 @@
 
 ## Tank
 
-**Description:** A tank with at least one inlet and one outlet
+**Description:** A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify.
 
 **Superclass:** Equipment
 
 ## Reactor
 
-**Description:** A tank used for reaction or biological/chemical treatment processes
+**Description:** A vessel in which a reaction or biological/chemical treatment process takes place
 
 **Superclass:** Tank
 
 ## Reactor
 
-**Description:** A tank used for reaction or biological/chemical treatment processes
+**Description:** A vessel in which a reaction or biological/chemical treatment process takes place
 
 **Superclass:** UnitProcess
 
@@ -62,9 +62,15 @@
 
 ## Aeration Basin
 
-**Description:** A tank where water is aerated to remove gases and volatile organic compounds
+**Description:** A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.
 
 **Superclass:** Reactor
+
+## Air Stripper
+
+**Description:** A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream
+
+**Superclass:** SeparationTank
 
 ## Mixing Basin
 
@@ -296,15 +302,9 @@
 
 ## Gravity Belt Thickener
 
-**Description:** A thickener that combines gravity separation with a belt system
+**Description:** A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.
 
 **Superclass:** BeltThickener
-
-## Gravity Belt Thickener
-
-**Description:** A thickener that combines gravity separation with a belt system
-
-**Superclass:** GravityThickener
 
 ## Rotary Drum Thickener
 
@@ -346,7 +346,19 @@
 
 **Description:** Fixed-film process using a slowly rotating discs partially submerged in a tank
 
+**Superclass:** Reactor
+
+## Rotating Biological Contactor (RBC)
+
+**Description:** Fixed-film process using a slowly rotating discs partially submerged in a tank
+
 **Superclass:** Filter
+
+## Moving Bed Bioreactor (MBBR)
+
+**Description:** MBBR process using suspended growth media a tank
+
+**Superclass:** Reactor
 
 ## Moving Bed Bioreactor (MBBR)
 
@@ -821,4 +833,3 @@
 **Description:** Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins
 
 **Superclass:** Gate
-

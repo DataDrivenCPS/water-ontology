@@ -16,7 +16,7 @@
 0. (to update 223, run the `download-s223.sh` script; this will only work for those with existing access to that repo)
 1. Install [`uv`](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) for working with Python
 2. Install the dependencies with `uv sync`
-3. `uv sync` installs OntoEnv 0.6 or later for both the Python API and CLI. Run it as `uv run ontoenv`; no separate CLI installation is needed. If you need a system-wide CLI, use `cargo install --locked ontoenv-cli`.
+3. The `ontoenv` CLI (v0.6) is installed by `uv sync` as part of the `pyontoenv` dependency; run it with `uv run ontoenv`. See the [docs](https://ontoenv.gtf.fyi/) for standalone installation options.
 
 ## Building the Ontology
 

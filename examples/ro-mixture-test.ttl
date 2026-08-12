@@ -1,0 +1,32 @@
+@prefix : <urn:example:ro-mixture-test#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+
+<urn:example:ro-mixture-test> a owl:Ontology ;
+    rdfs:label "RO Constituent Compatibility Test" ;
+    rdfs:comment "Demonstrates that, after modeling seawater/freshwater/brine as constituent-bearing mixtures sharing s223:Constituent-H2O, a ReverseOsmosisMembrane can accept a seawater feed and emit freshwater permeate and brine concentrate without S223 flagging the distinct media as incompatible." ;
+    owl:imports
+        <urn:nawi-water-ontology>,
+        <http://data.ashrae.org/standard223/1.0/model/all> .
+
+:ro a watr:ReverseOsmosisMembrane ;
+    rdfs:label "RO constituent compatibility test" ;
+    watr:hasProcess watr:Process-ReverseOsmosis ;
+    s223:hasConnectionPoint :feed, :permeate, :concentrate .
+
+:feed a s223:InletConnectionPoint ;
+    rdfs:label "Seawater feed" ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :ro .
+
+:permeate a s223:OutletConnectionPoint ;
+    rdfs:label "Freshwater permeate" ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :ro .
+
+:concentrate a s223:OutletConnectionPoint ;
+    rdfs:label "Brine concentrate" ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :ro .

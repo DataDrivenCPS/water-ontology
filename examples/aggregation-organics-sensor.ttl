@@ -15,8 +15,8 @@
 .
 
 :sample_location
-    a s223:Junction ;
-    s223:hasMedium s223:Fluid-Water ;
+    a s223:Equipment ;
+    rdfs:label "Sample location" ;
 .
 
 :organics_sensor
