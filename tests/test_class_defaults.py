@@ -115,4 +115,4 @@ def test_the_distinction_is_recoverable_without_the_rule(
         for r in report.subjects(SH.resultSeverity, None)
     ]
     assert any("Sedimentation process" in m for m in messages), messages
-    assert any("Thickening outcome" in m for m in messages), messages
+    assert any("Thickening treatment objective" in m for m in messages), messages
