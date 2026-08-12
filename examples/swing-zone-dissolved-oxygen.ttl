@@ -23,8 +23,8 @@
     s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;
     watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
     # Denitrifying is what the zone does; nitrogen removal is what it is for.
-    # The ontology requires both to be said -- see watr:OutcomeRequiresProcessShape.
-    watr:hasOutcome watr:Outcome-NitrogenRemoval ;
+    # The ontology requires both to be said -- see watr:TreatmentObjectiveRequiresProcessShape.
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     s223:hasConnectionPoint :zone_inlet, :zone_outlet ;
 .
 

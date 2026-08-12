@@ -438,7 +438,7 @@ chlorination-unit:
 
     P:name a watr:ChlorinationUnit ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Chlorination ;
+      watr:hasProcess watr:Process-ChlorineDosing ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .

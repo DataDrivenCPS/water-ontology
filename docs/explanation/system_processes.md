@@ -19,7 +19,7 @@ Model the collection as an `s223:System`, relate its components with
     watr:hasProcess watr:Process-Backwashing .
 ```
 
-`watr:hasProcess` and `watr:hasOutcome` can be used on either an
+`watr:hasProcess` and `watr:hasTreatmentObjective` can be used on either an
 `s223:Equipment` instance or an `s223:System`. The process should be stated at
 the level where it is performed.
 
@@ -34,8 +34,8 @@ members state the activities they perform:
     s223:hasMember :anaerobicZone, :anoxicZone,
                    :aerobicZone, :finalClarifier ;
     watr:hasProcess watr:Process-A2O ;
-    watr:hasOutcome watr:Outcome-NitrogenRemoval,
-                    watr:Outcome-PhosphorusRemoval .
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval,
+                    watr:TreatmentObjective-PhosphorusRemoval .
 
 :anaerobicZone a watr:MixingBasin ;
     s223:hasRole watr:Role-Anaerobic ;
@@ -56,7 +56,7 @@ members state the activities they perform:
     s223:hasRole watr:Role-Secondary ;
     watr:hasProcess watr:Process-Sedimentation,
                     watr:Process-Recirculation ;
-    watr:hasOutcome watr:Outcome-Clarification .
+    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
 ```
 
 The roles identify the commissioned zones and treatment stage. The processes
@@ -117,6 +117,6 @@ missing treatment steps for review.
 
 ```{note}
 Class-default inference targets `s223:Equipment`, not `s223:System`. State a
-system's compound process and outcome directly on the system. Equipment members
-can still receive class-defined processes and outcomes when inference runs.
+system's compound process and treatment objective directly on the system. Equipment members
+can still receive class-defined processes and treatment objectives when inference runs.
 ```

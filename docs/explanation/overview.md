@@ -16,14 +16,14 @@ This standard provides well-defined classes used to describe entities relevant t
 
 ## Treatment Function
 
-WaTr describes treatment equipment along three axes. `watr:hasOutcome` states
+WaTr describes treatment equipment along three axes. `watr:hasTreatmentObjective` states
 what the equipment is intended to accomplish, `watr:hasProcess` states the
 activity it performs, and `s223:hasRole` states where it is commissioned to
 serve in a particular treatment system. For example, a primary clarifier has
-clarification as its outcome, sedimentation as its process, and primary as its
-role. Equipment classes can supply fixed process and outcome values during
+clarification as its treatment objective, sedimentation as its process, and primary as its
+role. Equipment classes can supply fixed process and treatment objective values during
 inference, while installation-specific roles are stated on equipment instances.
-See [Equipment Type, Outcome, Process, and Role](equipment_function.md) for the
+See [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md) for the
 modeling pattern and examples.
 
 ## Topology

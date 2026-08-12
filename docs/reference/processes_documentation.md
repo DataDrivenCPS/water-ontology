@@ -228,13 +228,13 @@
 
 ## Chemical Process
 
-**Description:** A unit process that involves the addition of chemicals to water to achieve a desired effect.
+**Description:** A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect.
 
 **Superclass:** Process
 
-## Chemical Addition
+## Dosing
 
-**Description:** Addition of chemicals, such as coagulant, polymer, disinfectant, etc.
+**Description:** Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite.
 
 **Superclass:** Process-ChemicalProcess
 
@@ -242,7 +242,7 @@
 
 **Description:** A unit process that adds chemicals to water to cause small particles to clump together.
 
-**Superclass:** Process-ChemicalAddition
+**Superclass:** Process-Dosing
 
 ## Electrocoagulation (EC)
 
@@ -274,15 +274,15 @@
 
 **Superclass:** Process-PhysicalProcess
 
-## Chlorination
+## Chlorine Dosing
 
 **Description:** Dosing of chlorine or chlorine compounds into water.
 
-**Superclass:** Process-ChemicalAddition
+**Superclass:** Process-Dosing
 
 ## Thermal Treatment
 
-**Description:** Heating of water or biosolids, as in pasteurization.
+**Description:** Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result.
 
 **Superclass:** Process-PhysicalProcess
 
@@ -312,7 +312,7 @@
 
 ## Ozonation
 
-**Description:** A water treatment process that uses ozone as an oxidant.
+**Description:** A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control.
 
 **Superclass:** Process-Oxidation
 
@@ -486,25 +486,25 @@
 
 ## Microfiltration
 
-**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids.
+**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
 **Superclass:** Process-MembraneProcess
 
 ## Microfiltration
 
-**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids.
+**Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
 **Superclass:** Process-SolidLiquidSeparation
 
 ## Ultrafiltration
 
-**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains.
+**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
 **Superclass:** Process-MembraneProcess
 
 ## Ultrafiltration
 
-**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains.
+**Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
 **Superclass:** Process-SolidLiquidSeparation
 

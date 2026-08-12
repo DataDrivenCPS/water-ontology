@@ -134,15 +134,15 @@ Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium
 ## Processes
 
 The complete equipment modeling pattern is described in [Equipment Type,
-Outcome, Process, and Role](equipment_function.md). This section introduces the
+Treatment Objective, Process, and Role](equipment_function.md). This section introduces the
 process portion of that pattern in the context of the UV system.
 
 WaTr differentiates what a treatment unit does from how that unit is put
 together. For example, the UV system performs ultraviolet irradiation for the
-outcome of disinfection, but it is made up of a plug flow reactor and two UV
+treatment objective of disinfection, but it is made up of a plug flow reactor and two UV
 lamps. Another UV system might use a different kind of reactor or a different
 number of lamps, but it would still perform ultraviolet irradiation. Consumers
-can query for all units that have disinfection as their outcome regardless of
+can query for all units that have disinfection as their treatment objective regardless of
 how they are constructed.
 
 The process enacted by a unit process is defined by the `watr:hasProcess` property.
@@ -158,7 +158,7 @@ The process enacted by a unit process is defined by the `watr:hasProcess` proper
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
     watr:hasProcess watr:Process-UVIrradiation ;
-    watr:hasOutcome watr:Outcome-Disinfection ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
 .
 ```
 
@@ -236,11 +236,11 @@ A WaTr equipment model separates four claims:
 | claim | representation |
 |---|---|
 | equipment identity | `rdf:type`, such as `a watr:BeltThickener` |
-| treatment objective | `watr:hasOutcome` |
+| treatment objective | `watr:hasTreatmentObjective` |
 | performed process | `watr:hasProcess` |
 | commissioned function in a system | `s223:hasRole` |
 
-An outcome is a treatment objective, such as thickening or disinfection. A
+An treatment objective is a treatment objective, such as thickening or disinfection. A
 process is an activity performed by equipment or by a system, such as
 filtration, sedimentation, or backwashing. A role identifies the commissioned
 function of an entity within a system, such as a treatment stage, a zone regime,
@@ -254,7 +254,7 @@ The dissolved oxygen present at a point in time is a reading, not a role. It bel
 :swing_zone a watr:AerationBasin ;
     s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;      # commissioned for either
     watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
-    watr:hasOutcome watr:Outcome-NitrogenRemoval .
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 
 :do_meter a watr:OxygenMeter ;
     s223:hasObservationLocation :swing_zone ;
@@ -344,29 +344,29 @@ Coverage findings have severity `sh:Warning`, allowing partial system models. A 
 | **constituent** | a compound process includes the step | process class | `watr:includesProcess` |
 | **plausible** | an equipment family permits an additional process | equipment class | `watr:mayAlsoPerform` |
 
-### Outcome and process
+### Treatment Objective and process
 
-What a piece of equipment is *for* is separate from what it *does*, and the two are separate vocabularies. `watr:Outcome-*` names objectives; `watr:Process-*` names activities. No term is both.
+What a piece of equipment is *for* is separate from what it *does*, and the two are separate vocabularies. `watr:TreatmentObjective-*` names objectives; `watr:Process-*` names activities. No term is both.
 
-The separation is needed because neither relation between them is a hierarchy. One process serves several outcomes:
+The separation is needed because neither relation between them is a hierarchy. One process serves several treatment objectives:
 
 ```ttl
 :primaryClarifier   watr:hasProcess Process-Sedimentation ;
-                    watr:hasOutcome Outcome-Clarification ;
+                    watr:hasTreatmentObjective TreatmentObjective-Clarification ;
                     s223:hasRole    watr:Role-Primary .
 
 :gravityThickener   watr:hasProcess Process-Sedimentation ;
-                    watr:hasOutcome Outcome-Thickening .
+                    watr:hasTreatmentObjective TreatmentObjective-Thickening .
 ```
 
-and one outcome is reached by several processes:
+and one treatment objective is reached by several processes:
 
 ```ttl
-:chlorinationUnit   watr:hasProcess Process-Chlorination ;
-                    watr:hasOutcome Outcome-Disinfection .
+:chlorinationUnit   watr:hasProcess Process-ChlorineDosing ;
+                    watr:hasTreatmentObjective TreatmentObjective-Disinfection .
 
 :uvUnit             watr:hasProcess Process-UVIrradiation ;
-                    watr:hasOutcome Outcome-Disinfection .
+                    watr:hasTreatmentObjective TreatmentObjective-Disinfection .
 ```
 
 A practitioner reads a clarifier the same way: its job is to clarify, and it
@@ -374,24 +374,24 @@ does so by settling. Naming the mechanism alone leaves the objective unstated.
 Ultraviolet irradiation likewise names the activity, while disinfection names
 the treatment objective.
 
-Outcome and process are both intrinsic, so both survive the P&ID test. What moves with position is the role: a primary and a secondary clarifier share their outcome and their process and differ only in their stage.
+Treatment Objective and process are both intrinsic, so both survive the P&ID test. What moves with position is the role: a primary and a secondary clarifier share their treatment objective and their process and differ only in their stage.
 
-#### Relating a process to its fixed outcome
+#### Relating a process to its fixed treatment objective
 
-Where a process achieves the same thing wherever it is performed, the process type says so once with `watr:achievesOutcome`, rather than every machine repeating it:
+Where a process achieves the same thing wherever it is performed, the process type says so once with `watr:achievesTreatmentObjective`, rather than every machine repeating it:
 
 ```ttl
-watr:Process-Denitrification  watr:achievesOutcome watr:Outcome-NitrogenRemoval .
-watr:Process-Chlorination     watr:achievesOutcome watr:Outcome-Disinfection .
-watr:Process-MLE              watr:achievesOutcome watr:Outcome-NitrogenRemoval .
+watr:Process-Denitrification  watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+watr:Process-ChlorineDosing     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
+watr:Process-MLE              watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 ```
 
-Most processes declare no outcome: filtration and sedimentation serve whatever objective the equipment is built for, so the objective is stated on the equipment. Two cases are worth spelling out. `Process-Nitrification` achieves `Outcome-AmmoniaRemoval` and *not* `Outcome-NitrogenRemoval`, which is also why `Outcome-AmmoniaRemoval` sits outside `Outcome-NutrientRemoval`. `Process-ChemicalPrecipitation` declares nothing, because which constituent it targets depends on the reagent. The objectives it may serve are named so the equipment has something to point at — `Outcome-Softening`, `Outcome-PhosphorusRemoval`, `Outcome-MetalsRemoval`, `Outcome-SulfateRemoval`, `Outcome-SilicaRemoval` — and all are left unwired to the process.
+Most processes declare no treatment objective: filtration, sedimentation, ozonation, and thermal treatment serve whatever objective the equipment is built for, so the objective is stated on the equipment. Two cases are worth spelling out. `Process-Nitrification` achieves `TreatmentObjective-AmmoniaControl` and *not* `TreatmentObjective-NitrogenRemoval`, which is also why `TreatmentObjective-AmmoniaControl` sits outside `TreatmentObjective-NutrientRemoval`. `Process-ChemicalPrecipitation` declares nothing, because which constituent it targets depends on the reagent. The objectives it may serve are named so the equipment has something to point at — `TreatmentObjective-Softening`, `TreatmentObjective-PhosphorusRemoval`, `TreatmentObjective-MetalsRemoval`, `TreatmentObjective-SulfateRemoval`, `TreatmentObjective-SilicaRemoval` — and all are left unwired to the process.
 
 #### Constraints
 
-- `watr:ProcessValueShape` and `watr:OutcomeValueShape` keep the vocabularies apart: an objective asserted with `watr:hasProcess` is rejected, and an activity asserted with `watr:hasOutcome` likewise.
-- `watr:OutcomeRequiresProcessShape` rejects equipment that states what it is for without stating what it does.
+- `watr:ProcessValueShape` and `watr:TreatmentObjectiveValueShape` keep the vocabularies apart: an objective asserted with `watr:hasProcess` is rejected, and an activity asserted with `watr:hasTreatmentObjective` likewise.
+- `watr:TreatmentObjectiveRequiresProcessShape` rejects equipment that states what it is for without stating what it does.
 - `watr:ProcessBearerShape` restricts both predicates to `s223:Equipment` and `s223:System`.
 
 #### Equipment carrying several processes
@@ -416,7 +416,7 @@ All of this information is captured in a single graph (the "WaTr model" of a tre
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
     watr:hasProcess watr:Process-UVIrradiation ;
-    watr:hasOutcome watr:Outcome-Disinfection ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
     s223:contains :myPFR, :myUVLamp1, :myUVLamp2 ;
     s223:cnx :UVInlet, :UVOutlet .
 

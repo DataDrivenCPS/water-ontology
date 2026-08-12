@@ -113,19 +113,19 @@ requirements. They also allow equipment to perform additional processes.
 The bare sh:class constraint on watr:UnitProcess applies to every hasProcess
 value and ensures that each value is a watr:Process.
 
-Process, outcome, role, and system
+Process, treatment objective, role, and system
 ---------------------------------
 watr:hasProcess states a physical, chemical, or biological activity performed
-by equipment or a system. watr:hasOutcome states the treatment objective that
+by equipment or a system. watr:hasTreatmentObjective states the treatment objective that
 the equipment or system is intended to achieve. The two values come from
 separate vocabularies: every hasProcess value is a watr:Process, and every
-hasOutcome value is a watr:Outcome.
+hasTreatmentObjective value is a watr:TreatmentObjective.
 
 s223:hasRole states the function an entity is commissioned to serve within a
 particular system, in the sense s223 gives it: a heating coil keeps Role-Heating
 while it is switched off. It does not describe state at a particular time.
-Process and outcome are intrinsic to equipment; role is installation-specific.
-Class-default inference can materialize process and outcome requirements from an
+Process and treatment objective are intrinsic to equipment; role is installation-specific.
+Class-default inference can materialize process and treatment objective requirements from an
 equipment class and its ancestors, but it never supplies a role. Any applicable
 role must be stated on the instance.
 
@@ -202,85 +202,85 @@ A compound process uses rdfs:subClassOf for its process family and
 watr:includesProcess for its constituent steps. It is not a subclass of those
 steps.
 
-Outcome and process
+TreatmentObjective and process
 -------------------
-What equipment is for and what it does are separate vocabularies. watr:Outcome-*
+What equipment is for and what it does are separate vocabularies. watr:TreatmentObjective-*
 names objectives, watr:Process-* names activities, and no term is both. Neither
 relation between them is a hierarchy, which is why one tree could not hold both:
 
-  one process, several outcomes    a primary clarifier, a secondary clarifier and
+  one process, several treatment objectives    a primary clarifier, a secondary clarifier and
                                    a gravity thickener all sediment
-  one outcome, several processes   chlorination, ozonation, UV irradiation and
+  one treatment objective, several processes   chlorination, ozonation, UV irradiation and
                                    thermal treatment all disinfect
 
 Both axes are intrinsic and survive the P&ID test. What moves with position is
-the role: a primary and a secondary clarifier share outcome and process, and
+the role: a primary and a secondary clarifier share treatment objective and process, and
 differ in their stage.
 
-watr:hasOutcome states the objective on a piece of equipment or a system.
+watr:hasTreatmentObjective states the objective on a piece of equipment or a system.
 watr:hasProcess states the activity. watr:ProcessValueShape and
-watr:OutcomeValueShape keep the vocabularies apart in both directions;
-watr:OutcomeRequiresProcessShape rejects equipment that says what it is for
+watr:TreatmentObjectiveValueShape keep the vocabularies apart in both directions;
+watr:TreatmentObjectiveRequiresProcessShape rejects equipment that says what it is for
 without saying what it does.
 
-watr:achievesOutcome
+watr:achievesTreatmentObjective
 --------------------
 Class-level: what a process achieves wherever it is performed, stated once on the
 process type instead of on every machine.
 
-  Process-Nitrification    -> Outcome-AmmoniaRemoval
-  Process-Denitrification  -> Outcome-NitrogenRemoval
-  Process-EBPR             -> Outcome-PhosphorusRemoval
-  Process-Digestion        -> Outcome-Stabilization
-  Process-Composting       -> Outcome-Stabilization, Outcome-BiosolidsDisposal
-  Process-Chlorination     -> Outcome-Disinfection
-  Process-UVIrradiation    -> Outcome-Disinfection
-  Process-Ozonation        -> Outcome-Disinfection
-  Process-ThermalTreatment -> Outcome-Disinfection
-  Process-HighDensitySludge -> Outcome-Neutralization
-  Process-ActivatedSludge  -> Outcome-OrganicsRemoval
-  Process-FluidizedBedIncineration    -> Outcome-BiosolidsDisposal
-  Process-MultipleHearthIncineration  -> Outcome-BiosolidsDisposal
-  Process-AO / MLE / FourStageBardenpho    -> Outcome-NitrogenRemoval
-  Process-A2O / UCT / FiveStageBardenpho   -> Outcome-NitrogenRemoval,
-                                              Outcome-PhosphorusRemoval
+  Process-Nitrification    -> TreatmentObjective-AmmoniaControl
+  Process-Denitrification  -> TreatmentObjective-NitrogenRemoval
+  Process-EBPR             -> TreatmentObjective-PhosphorusRemoval
+  Process-Digestion        -> TreatmentObjective-Stabilization
+  Process-Composting       -> TreatmentObjective-Stabilization, TreatmentObjective-BiosolidsDisposal
+  Process-ChlorineDosing     -> TreatmentObjective-Disinfection
+  Process-UVIrradiation    -> TreatmentObjective-Disinfection
+  Process-Ozonation        -> TreatmentObjective-Disinfection
+  Process-ThermalTreatment -> TreatmentObjective-Disinfection
+  Process-HighDensitySludge -> TreatmentObjective-Neutralization
+  Process-ActivatedSludge  -> TreatmentObjective-OrganicsRemoval
+  Process-FluidizedBedIncineration    -> TreatmentObjective-BiosolidsDisposal
+  Process-MultipleHearthIncineration  -> TreatmentObjective-BiosolidsDisposal
+  Process-AO / MLE / FourStageBardenpho    -> TreatmentObjective-NitrogenRemoval
+  Process-A2O / UCT / FiveStageBardenpho   -> TreatmentObjective-NitrogenRemoval,
+                                              TreatmentObjective-PhosphorusRemoval
 
-Incineration declares Outcome-BiosolidsDisposal but its parent Process-Combustion
+Incineration declares TreatmentObjective-BiosolidsDisposal but its parent Process-Combustion
 does not: combustion also covers burning biogas for energy, which disposes of
 nothing. The other two disposal routes are not processes at all -- landfilling and
 land application name where the biosolids end up rather than an activity, so they
-are Outcome-Landfill and Outcome-LandApplication.
+are TreatmentObjective-Landfill and TreatmentObjective-LandApplication.
 
-Most processes declare no outcome; filtration and sedimentation serve whatever
+Most processes declare no treatment objective; filtration and sedimentation serve whatever
 objective the equipment is built for. Two cases are worth spelling out.
 
-Process-Nitrification -> Outcome-AmmoniaRemoval, NOT Outcome-NitrogenRemoval.
-Outcome-AmmoniaRemoval is deliberately not under Outcome-NutrientRemoval; the
-comment on it in outcomes.ttl says why.
+Process-Nitrification -> TreatmentObjective-AmmoniaControl, NOT TreatmentObjective-NitrogenRemoval.
+TreatmentObjective-AmmoniaControl is deliberately not under TreatmentObjective-NutrientRemoval; the
+comment on it in treatment objectives.ttl says why.
 
 Process-ChemicalPrecipitation declares nothing: which constituent it targets
-depends on the reagent, so the outcome belongs on the equipment. The objectives
+depends on the reagent, so the treatment objective belongs on the equipment. The objectives
 it may serve are named so the equipment has something to point at --
-Outcome-Softening, Outcome-PhosphorusRemoval, Outcome-MetalsRemoval,
-Outcome-SulfateRemoval, Outcome-SilicaRemoval -- and all are left unwired. Lime
+TreatmentObjective-Softening, TreatmentObjective-PhosphorusRemoval, TreatmentObjective-MetalsRemoval,
+TreatmentObjective-SulfateRemoval, TreatmentObjective-SilicaRemoval -- and all are left unwired. Lime
 softening, phosphorus precipitation and acid mine drainage treatment are one
 activity aimed at different targets.
 
-Which equipment classes require an outcome
+Which equipment classes require a treatment objective
 ------------------------------------------
 Two grounds, and the second is the harder one.
 
 The first is mechanical: if a class requires a process that declares
-watr:achievesOutcome, the class states that outcome, or watr:OutcomeCompletenessShape
+watr:achievesTreatmentObjective, the class states that treatment objective, or watr:TreatmentObjectiveCompletenessShape
 reports every instance of it. OxidationDitch and SequencingBatchReactor require
-Process-ActivatedSludge and now state Outcome-OrganicsRemoval; OzonationUnit
+Process-ActivatedSludge and now state TreatmentObjective-OrganicsRemoval; OzonationUnit
 became a DisinfectionUnit, which is what ChlorinationUnit and UltravioletLightUnit
 already were.
 
-The second is the datasheet test: require an outcome only where the class fixes
+The second is the datasheet test: require a treatment objective only where the class fixes
 it, not where the installation does. An RO membrane rejects salt wherever it is
-plumbed (Outcome-Desalination), an electrodialysis stack likewise, a media bed
-polishes turbidity (Outcome-TurbidityRemoval, inherited by the sand filters),
+plumbed (TreatmentObjective-Desalination), an electrodialysis stack likewise, a media bed
+polishes turbidity (TreatmentObjective-TurbidityRemoval, inherited by the sand filters),
 nanofiltration softens, a GAC adsorber takes out dissolved organics, an AOP
 reactor destroys them, and a screen and a grit chamber take out solids.
 
@@ -293,7 +293,7 @@ Deliberately left unstated, because the objective moves with the installation:
   TricklingFilter,       organics removal, nitrification or denitrification,
   MovingBedBioreactor,   depending on the stage and the operating regime --
   RotatingBiological-    which is also why Process-Biofiltration declares no
-  Contactor, BAF         outcome
+  Contactor, BAF         treatment objective
   CoagulationBasin,      they condition the water; the clarifier downstream is
   FlocculationBasin      what meets the objective
   AerationBasin,         a zone of a train, serving the train's objective
@@ -303,19 +303,19 @@ Deliberately left unstated, because the objective moves with the installation:
 
 Renamed on the split
 --------------------
-Process-UVDisinfection  -> Process-UVIrradiation    + Outcome-Disinfection
-Process-ThermalDisinfection -> Process-ThermalTreatment + Outcome-Disinfection
-Process-Dechlorination  -> Outcome-Dechlorination   (no replacement process)
+Process-UVDisinfection  -> Process-UVIrradiation    + TreatmentObjective-Disinfection
+Process-ThermalDisinfection -> Process-ThermalTreatment + TreatmentObjective-Disinfection
+Process-Dechlorination  -> TreatmentObjective-Dechlorination   (no replacement process)
 
 The first two had baked the objective into the name of the activity, which made
 UV and chlorination incomparable: one named what it was for, the other what it
 did.
 
 Dechlorination went further and was only an objective, so nothing was left to
-rename it to. It is the clearest one-outcome-several-processes case in the
+rename it to. It is the clearest one-treatment objective-several-processes case in the
 vocabulary: sulfite dosing reduces the residual, activated carbon adsorbs and
 catalyses it, ultraviolet light photolyses it. A dechlorination unit states the
-activity it uses and Outcome-Dechlorination.
+activity it uses and TreatmentObjective-Dechlorination.
 
 Solids handling
 ---------------
@@ -323,9 +323,9 @@ The objective is the state of the product; the process is how the water is taken
 out. One process serves all three objectives, which is why they are on different
 axes.
 
-  Thickener      -> watr:hasOutcome Outcome-Thickening
-  DewateringUnit -> watr:hasOutcome Outcome-Dewatering
-  Outcome-Drying is a subclass of Outcome-Dewatering.
+  Thickener      -> watr:hasTreatmentObjective TreatmentObjective-Thickening
+  DewateringUnit -> watr:hasTreatmentObjective TreatmentObjective-Dewatering
+  TreatmentObjective-Drying is a subclass of TreatmentObjective-Dewatering.
 
   GravityThickener               -> watr:hasProcess Process-Sedimentation
   BeltThickener, RotaryDrumThickener, GravityBeltThickener, BeltFilterPress
@@ -334,11 +334,11 @@ axes.
                                  -> watr:hasProcess Process-Centrifugation
   DissolvedAirFlotationThickener -> watr:hasProcess Process-Flotation
 
-Any class may require an outcome, a process, or both. These families put the
-outcome on the parent and the process on the subclass because there the objective
+Any class may require a treatment objective, a process, or both. These families put the
+treatment objective on the parent and the process on the subclass because there the objective
 is common and the mechanism varies; that is an organizing choice, not a rule.
-watr:SedimentationTank states both itself -- Outcome-Clarification and
-Process-Sedimentation -- as does watr:Digester, with Outcome-Stabilization and
+watr:SedimentationTank states both itself -- TreatmentObjective-Clarification and
+Process-Sedimentation -- as does watr:Digester, with TreatmentObjective-Stabilization and
 Process-Digestion.
 
 Materializing class defaults (water/class-defaults.ttl)
@@ -350,7 +350,7 @@ be kept in step:
 
   ex:gt a watr:GravityThickener .
     ->  watr:hasProcess watr:Process-Sedimentation   (from GravityThickener)
-        watr:hasOutcome watr:Outcome-Thickening      (from Thickener)
+        watr:hasTreatmentObjective watr:TreatmentObjective-Thickening      (from Thickener)
 
 Default semantics, not additive: a class requiring Process-Filtration adds
 nothing to an instance already declaring Process-Microfiltration.
@@ -362,7 +362,7 @@ rules as part of validation (infer=True by default), so the rule fires before th
 constraints are checked and satisfies them itself: a bare
 "ex:gt a watr:GravityThickener ." goes from five violations to zero.
 
-Know what that costs. A class's process and outcome requirements can no longer
+Know what that costs. A class's process and treatment objective requirements can no longer
 fail for an instance that merely declares its type, so the ontology no longer
 distinguishes a model that states what a machine does from one that only types
 it. If you need that distinction -- when the data comes from a plant rather than
@@ -390,7 +390,7 @@ water through a porous belt, while a conventional GravityThickener separates by
 sedimentation. Its process is therefore Filtration, inherited from BeltThickener,
 not Sedimentation.
 
-Nutrient-removal outcomes may be asserted on a system while its members carry the
+Nutrient-removal treatment objectives may be asserted on a system while its members carry the
 processes that reach them.
 
 Role slots are qualified for a related reason: equipment carries other unrelated

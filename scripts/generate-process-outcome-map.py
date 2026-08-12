@@ -1,0 +1,266 @@
+"""Render the process and treatment-objective taxonomies, and the correspondences between
+them, as a single Markdown reference.
+
+The two vocabularies are deliberately separate hierarchies -- one process serves
+several treatment objectives and one treatment objective is reached by several processes -- so the
+correspondence between them is a relation, not a containment. This script prints
+each tree once and then the relation in both directions.
+
+    uv run python scripts/generate-process-outcome-map.py
+
+Pass an output path to write somewhere other than
+docs/reference/process_outcome_map.md.
+"""
+
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+import rdflib
+from rdflib.namespace import RDFS, SKOS
+
+WATR = rdflib.Namespace("urn:nawi-water-ontology#")
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUT = ROOT / "docs" / "reference" / "process_outcome_map.md"
+
+
+def load():
+    g = rdflib.Graph()
+    for name in ("processtypes.ttl", "outcomes.ttl"):
+        g.parse(ROOT / "water" / name, format="turtle")
+    return g
+
+
+def local(uri):
+    return str(uri).split("#")[-1]
+
+
+def label(g, uri):
+    return str(g.value(uri, RDFS.label) or local(uri))
+
+
+def short(g, uri):
+    """The label with a long parenthetical spelled-out name dropped.
+
+    Keeps the acronym in "Reverse Osmosis (RO)" and drops the expansion in
+    "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)",
+    which is otherwise wide enough to break a table row on its own.
+    """
+    text = label(g, uri)
+    head, sep, tail = text.partition(" (")
+    if sep and len(tail.rstrip(")")) > 8:
+        return head
+    return text
+
+
+def definition(g, uri):
+    return str(g.value(uri, SKOS.definition) or "")
+
+
+def descendants(g, root):
+    """Every class reachable from root by rdfs:subClassOf, root included."""
+    seen = {root}
+    frontier = [root]
+    while frontier:
+        node = frontier.pop()
+        for child in g.subjects(RDFS.subClassOf, node):
+            if child not in seen:
+                seen.add(child)
+                frontier.append(child)
+    return seen
+
+
+def children_of(g, parent, family):
+    return sorted(
+        (c for c in g.subjects(RDFS.subClassOf, parent) if c in family),
+        key=lambda c: label(g, c),
+    )
+
+
+def render_tree(g, root, family, annotate=None):
+    """A bullet tree over rdfs:subClassOf.
+
+    A class with two parents appears under both; the second and later
+    appearances are marked and not expanded, so the tree stays finite and the
+    duplication is visible rather than silent.
+    """
+    lines = []
+    printed = set()
+
+    def walk(node, depth):
+        indent = "  " * depth
+        name = label(g, node)
+        if node in printed:
+            lines.append(f"{indent}- {name} *(also under another parent, above)*")
+            return
+        printed.add(node)
+        suffix = annotate(node) if annotate else ""
+        lines.append(f"{indent}- **{name}** — `watr:{local(node)}`{suffix}")
+        for child in children_of(g, node, family):
+            walk(child, depth + 1)
+
+    walk(root, 0)
+    return "\n".join(lines)
+
+
+def main():
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_OUT
+    g = load()
+
+    processes = descendants(g, WATR.Process)
+    outcomes = descendants(g, WATR.TreatmentObjective)
+
+    # Direct assertions, class-level.
+    achieves = defaultdict(list)
+    for proc, _, outcome in g.triples((None, WATR.achievesTreatmentObjective, None)):
+        achieves[proc].append(outcome)
+    includes = defaultdict(list)
+    for proc, _, step in g.triples((None, WATR.includesProcess, None)):
+        includes[proc].append(step)
+
+    def inherited(proc):
+        """Treatment objectives a process inherits from its ancestors, minus its own."""
+        result = set()
+        for ancestor in g.transitive_objects(proc, RDFS.subClassOf):
+            if ancestor != proc:
+                result.update(achieves.get(ancestor, ()))
+        return result - set(achieves.get(proc, ()))
+
+    def outcome_marker(node):
+        n = sum(1 for p in achieves if node in achieves[p])
+        if not n:
+            return ""
+        return f" — reached by {n} process" + ("es" if n > 1 else "")
+
+    def process_marker(node):
+        own = sorted(short(g, o) for o in achieves.get(node, ()))
+        return f" **→ {', '.join(own)}**" if own else ""
+
+    md = []
+    md.append("# Processes and Treatment Objectives\n")
+    md.append(
+        "A process is an activity performed by equipment or by a system; a treatment\n"
+        "objective is the intended change that activity serves. They are separate vocabularies because\n"
+        "neither relation fits inside the other's hierarchy: sedimentation serves\n"
+        "clarification and thickening alike, and disinfection is reached by chlorination,\n"
+        "ozonation, ultraviolet irradiation and heat. This page shows each hierarchy once\n"
+        "and then the correspondence between them, in both directions.\n\n"
+        "Generated by `scripts/generate-process-outcome-map.py` from `water/processtypes.ttl`\n"
+        "and `water/outcomes.ttl`.\n"
+    )
+
+    md.append("\n## Process tree\n")
+    md.append(
+        "`rdfs:subClassOf` only. Where a process declares `watr:achievesTreatmentObjective`, the\n"
+        "treatment objective follows the arrow — every subclass inherits it.\n"
+    )
+    md.append("")
+    md.append(render_tree(g, WATR.Process, processes, process_marker))
+
+    md.append("\n## Treatment-objective tree\n")
+    md.append(
+        "The count is the number of processes that assert the treatment objective directly. A\n"
+        "treatment objective with no count is not unreachable: most treatment objectives cannot be derived from a\n"
+        "mechanism and are stated on the equipment instead, which is the reason the two\n"
+        "axes are separate.\n"
+    )
+    md.append("")
+    md.append(render_tree(g, WATR.TreatmentObjective, outcomes, outcome_marker))
+
+    md.append("\n## Process → treatment objective\n")
+    md.append(
+        "Every process that reaches a treatment objective wherever it is performed. Inherited rows\n"
+        "come from an ancestor process, and hold for the subclass by subsumption.\n"
+    )
+    md.append("")
+    md.append("| Process | Achieves | Inherited from ancestors |")
+    md.append("| --- | --- | --- |")
+    for proc in sorted(processes, key=lambda p: label(g, p)):
+        own = achieves.get(proc, ())
+        inh = inherited(proc)
+        if not own and not inh:
+            continue
+        md.append(
+            "| {} | {} | {} |".format(
+                short(g, proc),
+                ", ".join(sorted(short(g, o) for o in own)) or "—",
+                ", ".join(sorted(short(g, o) for o in inh)) or "—",
+            )
+        )
+
+    md.append("\n## Treatment objective → process\n")
+    md.append(
+        "The same relation read the other way: what reaches each objective. Processes in\n"
+        "parentheses inherit the treatment objective from an ancestor rather than asserting it.\n"
+    )
+    md.append("")
+    md.append("| Treatment objective | Reached by |")
+    md.append("| --- | --- |")
+    def reached(outcome):
+        return {p for p in processes if outcome in achieves.get(p, ())}
+
+    for outcome in sorted(outcomes, key=lambda o: label(g, o)):
+        direct = sorted(short(g, p) for p in reached(outcome))
+        indirect = sorted(
+            f"({short(g, p)})" for p in processes if outcome in inherited(p)
+        )
+        if not direct and not indirect:
+            continue
+        md.append(f"| {short(g, outcome)} | {', '.join(direct + indirect)} |")
+
+    # An outcome whose subclass is reached is itself entailed -- nitrifying a
+    # stream removes ammonia, and removing nitrogen is nutrient removal -- so
+    # only outcomes with nothing reached anywhere below them are listed here.
+    unreached = [
+        o
+        for o in outcomes
+        if o != WATR.TreatmentObjective
+        and not any(reached(d) for d in descendants(g, o))
+        and not any(o in inherited(p) for p in processes)
+    ]
+    md.append("\n### Treatment objectives stated only on equipment\n")
+    md.append(
+        "No process asserts these, by design: what a clarifier or a precipitation step is\n"
+        "*for* depends on where it sits and what reagent it doses, so the objective is\n"
+        "declared on the equipment class in `water/equipment.ttl` instead. This is the\n"
+        "reason the two axes are separate, and the reason `watr:TreatmentObjectiveCompletenessShape`\n"
+        "only checks that a stated process implies a stated treatment objective and never the\n"
+        "converse. Treatment objectives left out below are entailed through a subclass — nothing\n"
+        "asserts Nutrient Removal, but a denitrification step reaches Nitrogen Removal\n"
+        "under it.\n"
+    )
+    md.append("")
+    for outcome in sorted(unreached, key=lambda o: label(g, o)):
+        md.append(f"- **{label(g, outcome)}** — {definition(g, outcome)}")
+
+    md.append("\n## Compound processes\n")
+    md.append(
+        "`watr:includesProcess` is a different relation from both of the above: it records\n"
+        "the steps a treatment train is made of, so that a system claiming the compound\n"
+        "process can be checked for members covering them. A compound process *comprises*\n"
+        "its steps; it is not a kind of them.\n"
+    )
+    md.append("")
+    md.append("| Compound process | Subclass of | Includes | Achieves |")
+    md.append("| --- | --- | --- | --- |")
+    for proc in sorted(includes, key=lambda p: label(g, p)):
+        parents = sorted(
+            short(g, s) for s in g.objects(proc, RDFS.subClassOf) if s in processes
+        )
+        md.append(
+            "| {} | {} | {} | {} |".format(
+                short(g, proc),
+                ", ".join(parents) or "—",
+                ", ".join(sorted(short(g, s) for s in includes[proc])),
+                ", ".join(sorted(short(g, o) for o in achieves.get(proc, ())))
+                or ", ".join(sorted(f"({short(g, o)})" for o in inherited(proc)))
+                or "—",
+            )
+        )
+
+    out.write_text("\n".join(md) + "\n")
+    print(f"wrote {out}")
+
+
+if __name__ == "__main__":
+    main()

@@ -37,11 +37,11 @@ PLAUSIBLE = [
      "digesters are mixed"),
     ("AnaerobicDigester", ["AnaerobicDigestion", "GasTransfer"],
      "digesters draw off biogas"),
-    ("ChlorinationUnit", ["Chlorination", "Mixing"],
+    ("ChlorinationUnit", ["ChlorineDosing", "Mixing"],
      "contact basins mix"),
     ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Sedimentation"],
      "SBRs aerate and settle in successive phases"),
-    # Solids handling. The objective lives on watr:hasOutcome and is not this
+    # Solids handling. The objective lives on watr:hasTreatmentObjective and is not this
     # module's subject; what is checked here is that the process each unit
     # thickens or dewaters by is not itself flagged as implausible.
     ("GravityThickener", ["Sedimentation"],
@@ -71,11 +71,11 @@ PLAUSIBLE = [
 ]
 
 IMPLAUSIBLE = [
-    ("ChlorinationUnit", ["Chlorination", "ReverseOsmosis"],
+    ("ChlorinationUnit", ["ChlorineDosing", "ReverseOsmosis"],
      "a chlorination unit does not do membrane separation"),
     ("Screen", ["Screening", "AnaerobicDigestion"],
      "a screen does not digest"),
-    ("MicrofiltrationUnit", ["Microfiltration", "Chlorination"],
+    ("MicrofiltrationUnit", ["Microfiltration", "ChlorineDosing"],
      "a microfiltration unit does not dose chlorine"),
     ("RapidSandFilter", ["RapidSandFiltration", "Crystallization"],
      "a sand filter does not crystallize"),

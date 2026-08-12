@@ -9,6 +9,7 @@
 
 <urn:nawi-water-ontology>
   a owl:Ontology ;
+  rdfs:label "test" ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
@@ -16,6 +17,7 @@
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/outcomes> ;
   owl:imports <urn:nawi-water-ontology/class-defaults> ;
+  owl:imports <urn:nawi-water-ontology/boundaries> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
   owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
   owl:imports sh: ;
@@ -35,7 +37,7 @@ watr:Class
     ] ;
 .
 
-# A watr:hasProcess, watr:hasOutcome or s223:hasRole constraint that names a
+# A watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint that names a
 # class which was never defined -- typically the leftover of a rename -- silently
 # makes the equipment impossible to validate, because no value can ever carry the
 # missing type and the shape itself still parses. This guards against that: every
@@ -44,7 +46,7 @@ watr:Class
 watr:ProcessAndRoleConstraintsReferenceDefinedClasses
     a sh:NodeShape ;
     rdfs:label "Process and role constraints reference defined classes" ;
-    rdfs:comment "Every class named by a watr:hasProcess, watr:hasOutcome or s223:hasRole constraint must be defined." ;
+    rdfs:comment "Every class named by a watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint must be defined." ;
     sh:targetSubjectsOf sh:path ;
     sh:or (
         # Not a process/outcome/role property shape, so there is nothing to check.
@@ -52,7 +54,7 @@ watr:ProcessAndRoleConstraintsReferenceDefinedClasses
             sh:not [
                 sh:property [
                     sh:path sh:path ;
-                    sh:in ( watr:hasProcess watr:hasOutcome s223:hasRole ) ;
+                    sh:in ( watr:hasProcess watr:hasTreatmentObjective s223:hasRole ) ;
                     sh:minCount 1 ;
                 ] ;
             ] ;
@@ -91,7 +93,7 @@ watr:ProcessAndRoleConstraintsReferenceDefinedClasses
             ] ;
         ]
     ) ;
-    sh:message "A watr:hasProcess, watr:hasOutcome or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
+    sh:message "A watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
 .
 
 watr:DefinedClassShape
@@ -165,20 +167,20 @@ watr:includesProcess
 
 # What a piece of equipment is *for*, as distinct from what it does.
 #
-# One process serves several outcomes and one outcome is reached by several
+# One process serves several treatment objectives and one treatment objective is reached by several
 # processes: a primary clarifier, a secondary clarifier and a gravity thickener
 # all settle, and chlorination, ozonation and ultraviolet irradiation all
-# disinfect. Neither relation fits in a single hierarchy, so outcomes are a
+# disinfect. Neither relation fits in a single hierarchy, so treatment objectives are a
 # separate vocabulary in water/outcomes.ttl and no term belongs to both.
 #
-# Outcome and process are both intrinsic -- on the datasheet. What is positional
+# Treatment objective and process are both intrinsic -- on the datasheet. What is positional
 # belongs to s223:hasRole: a primary and a secondary clarifier share their
-# outcome and their process, and differ in their role.
+# treatment objective and their process, and differ in their role.
 #
 # See docs/explanation/processes.md.
-watr:hasOutcome
+watr:hasTreatmentObjective
     a rdf:Property ;
-    rdfs:label "has outcome" ;
+    rdfs:label "has treatment objective" ;
     rdfs:comment "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess." ;
 .
 
@@ -187,111 +189,111 @@ watr:hasOutcome
 # performs it. Left off deliberately where what a process achieves depends on the
 # equipment -- Process-ChemicalPrecipitation serves phosphorus removal in one
 # machine and metals removal in another.
-watr:achievesOutcome
+watr:achievesTreatmentObjective
     a rdf:Property ;
-    rdfs:label "achieves outcome" ;
-    rdfs:comment "Relates a process type to the outcome it achieves wherever it is performed. Used to derive an equipment's outcome from its process." ;
+    rdfs:label "achieves treatment objective" ;
+    rdfs:comment "Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process." ;
     rdfs:domain watr:Class ;
     rdfs:range watr:Class ;
 .
 
-# The consumer of watr:achievesOutcome. If a process achieves an outcome wherever
+# The consumer of watr:achievesTreatmentObjective. If a process achieves a treatment objective wherever
 # it is performed, then equipment performing it has that objective whether or not
 # the model says so, and a model that leaves it unsaid is incomplete rather than
 # wrong -- hence a warning.
 #
 # The check runs in this direction only. The converse, requiring every stated
-# outcome to be achieved by some stated process, would be wrong: most outcomes
+# treatment objective to be achieved by some stated process, would be wrong: most treatment objectives
 # are not derivable from the mechanism, which is the whole reason they are a
 # separate axis. Sedimentation serves clarification and thickening alike, so
-# watr:achievesOutcome says nothing about it and a clarifier's objective can only
+# watr:achievesTreatmentObjective says nothing about it and a clarifier's objective can only
 # be stated, never inferred.
-watr:OutcomeCompletenessShape
+watr:TreatmentObjectiveCompletenessShape
     a sh:NodeShape ;
-    rdfs:label "Stated processes imply stated outcomes" ;
-    rdfs:comment "Warns when equipment performs a process that achieves an outcome the equipment does not state." ;
+    rdfs:label "Stated processes imply stated treatment objectives" ;
+    rdfs:comment "Warns when equipment performs a process that achieves a treatment objective the equipment does not state." ;
     sh:targetSubjectsOf watr:hasProcess ;
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes <urn:nawi-water-ontology> ;
-        sh:message "{$this} performs {?process}, which achieves {?outcome}, but does not state that outcome. Add watr:hasOutcome {?outcome}." ;
-        # A stated outcome related to the achieved one in either direction
+        sh:message "{$this} performs {?process}, which achieves treatment objective {?objective}, but does not state it. Add watr:hasTreatmentObjective {?objective}." ;
+        # A stated treatment objective related to the achieved one in either direction
         # counts: more specific is a refinement, more general is entailed.
         sh:select """
-            SELECT $this ?process ?outcome
+            SELECT $this ?process ?objective
             WHERE {
                 $this watr:hasProcess ?process .
-                ?process rdfs:subClassOf*/watr:achievesOutcome ?outcome .
+                ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
                 FILTER NOT EXISTS {
-                    $this watr:hasOutcome ?stated .
-                    { ?stated rdfs:subClassOf* ?outcome }
+                    $this watr:hasTreatmentObjective ?stated .
+                    { ?stated rdfs:subClassOf* ?objective }
                     UNION
-                    { ?outcome rdfs:subClassOf* ?stated }
+                    { ?objective rdfs:subClassOf* ?stated }
                 }
             }
         """ ;
     ] ;
 .
 
-# watr:hasProcess and watr:hasOutcome are only meaningful on something that can
+# watr:hasProcess and watr:hasTreatmentObjective are only meaningful on something that can
 # perform a process. Expressed as a shape rather than rdfs:domain deliberately:
 # an OWL domain would *infer* s223:Equipment onto whatever bears the property
 # instead of rejecting it, which is the opposite of a guard.
 watr:ProcessBearerShape
     a sh:NodeShape ;
     rdfs:label "Process bearers are equipment or systems" ;
-    rdfs:comment "watr:hasProcess and watr:hasOutcome may only be asserted on an s223:Equipment or an s223:System." ;
+    rdfs:comment "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on an s223:Equipment or an s223:System." ;
     sh:targetSubjectsOf watr:hasProcess ;
-    sh:targetSubjectsOf watr:hasOutcome ;
+    sh:targetSubjectsOf watr:hasTreatmentObjective ;
     sh:or (
         [ sh:class s223:Equipment ]
         [ sh:class s223:System ]
     ) ;
-    sh:message "watr:hasProcess and watr:hasOutcome may only be asserted on s223:Equipment or s223:System. A process is performed by a machine or by a collection of them." ;
+    sh:message "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on s223:Equipment or s223:System. A process is performed by a machine or by a collection of them." ;
 .
 
 # The bearer guard above constrains the subject. These companion guards constrain
 # the objects, including for s223:System, which does not inherit UnitProcess's
 # all-values sh:class constraint. They are also what keeps the two vocabularies
-# from being used interchangeably: an outcome asserted with watr:hasProcess is
-# rejected here, and a process asserted with watr:hasOutcome likewise.
+# from being used interchangeably: a treatment objective asserted with watr:hasProcess is
+# rejected here, and a process asserted with watr:hasTreatmentObjective likewise.
 watr:ProcessValueShape
     a sh:NodeShape ;
     rdfs:label "Process values are water processes" ;
     rdfs:comment "Every object of watr:hasProcess must be a watr:Process." ;
     sh:targetObjectsOf watr:hasProcess ;
     sh:class watr:Process ;
-    sh:message "Every value of watr:hasProcess must be a watr:Process. An objective belongs on watr:hasOutcome." ;
+    sh:message "Every value of watr:hasProcess must be a watr:Process. An objective belongs on watr:hasTreatmentObjective." ;
 .
 
-watr:OutcomeValueShape
+watr:TreatmentObjectiveValueShape
     a sh:NodeShape ;
-    rdfs:label "Outcome values are treatment outcomes" ;
-    rdfs:comment "Every object of watr:hasOutcome must be a watr:Outcome." ;
-    sh:targetObjectsOf watr:hasOutcome ;
-    sh:class watr:Outcome ;
-    sh:message "Every value of watr:hasOutcome must be a watr:Outcome. An activity belongs on watr:hasProcess." ;
+    rdfs:label "Treatment objective values are treatment objectives" ;
+    rdfs:comment "Every object of watr:hasTreatmentObjective must be a watr:TreatmentObjective." ;
+    sh:targetObjectsOf watr:hasTreatmentObjective ;
+    sh:class watr:TreatmentObjective ;
+    sh:message "Every value of watr:hasTreatmentObjective must be a watr:TreatmentObjective. An activity belongs on watr:hasProcess." ;
 .
 
-# An outcome is reached by doing something. Equipment that states only what it is
+# A treatment objective is reached by doing something. Equipment that states only what it is
 # for, without saying how, has said nothing checkable.
-watr:OutcomeRequiresProcessShape
+watr:TreatmentObjectiveRequiresProcessShape
     a sh:NodeShape ;
-    rdfs:label "An outcome is reached by a process" ;
-    rdfs:comment "Equipment declaring watr:hasOutcome must also declare the watr:hasProcess by which it reaches it." ;
-    sh:targetSubjectsOf watr:hasOutcome ;
+    rdfs:label "A treatment objective is reached by a process" ;
+    rdfs:comment "Equipment declaring watr:hasTreatmentObjective must also declare the watr:hasProcess by which it reaches it." ;
+    sh:targetSubjectsOf watr:hasTreatmentObjective ;
     # Named rather than a blank node so that sh:sourceShape on the result
     # identifies it: for a sh:property constraint the source is the property
     # shape, not the node shape that carries it.
-    sh:property watr:OutcomeRequiresProcessProperty ;
+    sh:property watr:TreatmentObjectiveRequiresProcessProperty ;
 .
 
-watr:OutcomeRequiresProcessProperty
+watr:TreatmentObjectiveRequiresProcessProperty
     a sh:PropertyShape ;
     sh:path watr:hasProcess ;
     sh:minCount 1 ;
-    sh:message "watr:hasOutcome says what the equipment is for, so the process it does to get there must be stated with watr:hasProcess as well." ;
+    sh:message "watr:hasTreatmentObjective says what the equipment is for, so the process it does to get there must be stated with watr:hasProcess as well." ;
 .
 
 watr:SystemProcessCoverageShape

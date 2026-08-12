@@ -7,7 +7,7 @@
 <urn:nawi-water-ontology/class-defaults>
     a owl:Ontology ;
     rdfs:label "NAWI Water Class Defaults" ;
-    rdfs:comment "SHACL-AF rules that materialize an instance's process and outcome from the requirements of its class" ;
+    rdfs:comment "SHACL-AF rules that materialize an instance's process and treatment objective from the requirements of its class" ;
 .
 
 # Typing something as a watr:GravityThickener already says it thickens by
@@ -20,7 +20,7 @@
 #
 #     ex:gt a watr:GravityThickener ;
 #         watr:hasProcess watr:Process-Sedimentation ;   # from GravityThickener
-#         watr:hasOutcome watr:Outcome-Thickening .      # inherited from Thickener
+#         watr:hasTreatmentObjective watr:TreatmentObjective-Thickening .      # inherited from Thickener
 #
 # The values are read from the sh:qualifiedValueShape constraints the classes
 # already carry, so there is nothing to keep in step: adding a requirement to a
@@ -33,7 +33,7 @@
 # validation (infer=True by default), which means the values below are in place
 # before the constraints are evaluated.
 #
-# The consequence is worth understanding: a class's process and outcome
+# The consequence is worth understanding: a class's process and treatment objective
 # requirements can no longer fail for an instance that merely declares its type.
 #
 #     ex:gt a watr:GravityThickener .        # complete, by derivation
@@ -48,11 +48,11 @@
 watr:ClassDefaultsRule
     a sh:NodeShape ;
     rdfs:label "Class defaults" ;
-    rdfs:comment "Materializes watr:hasProcess and watr:hasOutcome onto an instance from the qualified requirements of its class and that class's ancestors." ;
+    rdfs:comment "Materializes watr:hasProcess and watr:hasTreatmentObjective onto an instance from the qualified requirements of its class and that class's ancestors." ;
     sh:targetClass s223:Equipment ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label "Infer required process and outcome from the class" ;
+        rdfs:label "Infer required process and treatment objective from the class" ;
         sh:prefixes <urn:nawi-water-ontology> ;
         # The FILTER NOT EXISTS gives these default semantics rather than
         # additive ones: a class requiring Process-Filtration adds nothing to an
@@ -61,7 +61,7 @@ watr:ClassDefaultsRule
         sh:construct """
             CONSTRUCT { $this ?pred ?value . }
             WHERE {
-                VALUES ?pred { watr:hasProcess watr:hasOutcome }
+                VALUES ?pred { watr:hasProcess watr:hasTreatmentObjective }
                 $this rdf:type/rdfs:subClassOf* ?cls .
                 ?cls sh:property ?ps .
                 ?ps sh:path ?pred ;

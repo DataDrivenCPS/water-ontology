@@ -60,7 +60,7 @@ with open("../docs/reference/processes_documentation.md", "w") as f:
 with open("../docs/reference/outcomes_documentation.md", "w") as f:
     g = rdflib.Graph()
     g.parse('../water/outcomes.ttl', format="turtle")
-    f.write(get_md_description(g, 'Treatment Outcomes'))
+    f.write(get_md_description(g, 'Treatment Objectives'))
 
 with open("../docs/reference/substances_documentation.md", "w") as f:
     g = rdflib.Graph()

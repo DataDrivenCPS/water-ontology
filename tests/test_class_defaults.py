@@ -32,13 +32,13 @@ def test_process_and_outcome_are_both_materialized(ontology_shapes_graph):
     so a bare instance picks up one from each level of the hierarchy."""
     out = _materialize("ex:gt a watr:GravityThickener .\n", ontology_shapes_graph)
     assert (EX.gt, WATR.hasProcess, WATR["Process-Sedimentation"]) in out
-    assert (EX.gt, WATR.hasOutcome, WATR["Outcome-Thickening"]) in out
+    assert (EX.gt, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Thickening"]) in out
 
 
 def test_renamed_uv_unit_gets_both_axes(ontology_shapes_graph):
     out = _materialize("ex:uv a watr:UltravioletLightUnit .\n", ontology_shapes_graph)
     assert (EX.uv, WATR.hasProcess, WATR["Process-UVIrradiation"]) in out
-    assert (EX.uv, WATR.hasOutcome, WATR["Outcome-Disinfection"]) in out
+    assert (EX.uv, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Disinfection"]) in out
 
 
 def test_a_stated_specific_value_is_not_overridden(ontology_shapes_graph):

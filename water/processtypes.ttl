@@ -15,8 +15,9 @@
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
 
-# A process is an activity performed by equipment or by a system. An outcome is
-# the treatment objective, and a role describes how an entity serves within a
+# A process is an activity performed by equipment or by a system. A treatment
+# objective is the intended change that activity achieves, and a role describes
+# how an entity serves within a
 # particular system. See docs/explanation/equipment_function.md.
 watr:Process a watr:Class, sh:NodeShape ;
     rdfs:label "Water Process" ;
@@ -212,27 +213,27 @@ watr:Process-Comminution a watr:Class, watr:Process-Comminution ;
 watr:Process-Composting a watr:Class, watr:Process-Composting ;
     rdfs:label "Composting" ;
     skos:definition "Biological degradation of organic materials under controlled aerobic conditions." ;
-    watr:achievesOutcome watr:Outcome-Stabilization, watr:Outcome-BiosolidsDisposal ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization, watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 # Process-LandApplication and Process-Landfill were removed here: they named
 # where biosolids end up rather than an activity performed on them, so they are
-# watr:Outcome-LandApplication and watr:Outcome-Landfill in outcomes.ttl.
+# watr:TreatmentObjective-LandApplication and watr:TreatmentObjective-Landfill in treatment objectives.ttl.
 
 watr:Process-ChemicalProcess a watr:Class, watr:Process-ChemicalProcess ;
     rdfs:label "Chemical Process" ;
-    skos:definition "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
+    skos:definition "A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect." ;
     rdfs:subClassOf watr:Process .
 
-watr:Process-ChemicalAddition a watr:Class, watr:Process-ChemicalAddition ;
-    rdfs:label "Chemical Addition" ;
-    skos:definition "Addition of chemicals, such as coagulant, polymer, disinfectant, etc." ;
+watr:Process-Dosing a watr:Class, watr:Process-Dosing ;
+    rdfs:label "Dosing" ;
+    skos:definition "Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite." ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 
 watr:Process-Coagulation a watr:Class, watr:Process-Coagulation ;
     rdfs:label "Coagulation" ;
     skos:definition "A unit process that adds chemicals to water to cause small particles to clump together." ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
+    rdfs:subClassOf watr:Process-Dosing .
 
 watr:Process-Electrocoagulation a watr:Class, watr:Process-Electrocoagulation ;
     rdfs:label "Electrocoagulation (EC)" ;
@@ -247,28 +248,27 @@ watr:Process-Flocculation a watr:Class, watr:Process-Flocculation ;
 watr:Process-UVIrradiation a watr:Class, watr:Process-UVIrradiation ;
     rdfs:label "Ultraviolet Irradiation" ;
     skos:definition "Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation." ;
-    watr:achievesOutcome watr:Outcome-Disinfection ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
 
-watr:Process-Chlorination a watr:Class, watr:Process-Chlorination ;
-    rdfs:label "Chlorination" ;
+watr:Process-ChlorineDosing a watr:Class, watr:Process-ChlorineDosing ;
+    rdfs:label "Chlorine Dosing" ;
     skos:definition "Dosing of chlorine or chlorine compounds into water." ;
-    watr:achievesOutcome watr:Outcome-Disinfection ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection ;
+    rdfs:subClassOf watr:Process-Dosing .
 
 # Process-Dechlorination was removed here. It named an objective, the way
 # Process-UVDisinfection did before the split, and it is the clearest case of one
-# outcome reached by several activities: dosing sulfite reduces the residual
-# (Process-Reduction, a Process-ChemicalAddition), activated carbon adsorbs and
+# treatment objective reached by several activities: dosing sulfite reduces the residual
+# (Process-Reduction, a Process-Dosing), activated carbon adsorbs and
 # catalyses it away (Process-Adsorption), and ultraviolet light photolyses it
 # (Process-UVIrradiation). None of those is dechlorination; all of them
-# dechlorinate. The objective is watr:Outcome-Dechlorination.
+# dechlorinate. The objective is watr:TreatmentObjective-Dechlorination.
 
 watr:Process-ThermalTreatment a watr:Class, watr:Process-ThermalTreatment ;
     rdfs:label "Thermal Treatment" ;
-    skos:definition "Heating of water or biosolids, as in pasteurization." ;
-    watr:achievesOutcome watr:Outcome-Disinfection ;
+    skos:definition "Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
 
@@ -290,8 +290,7 @@ watr:Process-Electrooxidation a watr:Class, watr:Process-Electrooxidation ;
 
 watr:Process-Ozonation a watr:Class, watr:Process-Ozonation ;
     rdfs:label "Ozonation" ;
-    skos:definition "A water treatment process that uses ozone as an oxidant." ;
-    watr:achievesOutcome watr:Outcome-Disinfection ;
+    skos:definition "A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control." ;
     rdfs:subClassOf watr:Process-Oxidation .
 
 
@@ -313,7 +312,7 @@ watr:Process-SolventExtraction a watr:Class, watr:Process-SolventExtraction ;
 watr:Process-HighDensitySludge a watr:Class, watr:Process-HighDensitySludge ;
     rdfs:label "High-Density Sludge (HDS) Process" ;
     skos:definition "Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge." ;
-    watr:achievesOutcome watr:Outcome-Neutralization ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Neutralization ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 watr:Process-IonExchange a watr:Class, watr:Process-IonExchange ;
@@ -332,18 +331,18 @@ watr:Process-Combustion a watr:Class, watr:Process-Combustion ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 # Incinerating biosolids disposes of them, which is why these two declare the
-# outcome and their parent does not: Process-Combustion also covers burning
+# treatment objective and their parent does not: Process-Combustion also covers burning
 # biogas for energy, which disposes of nothing.
 watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
     rdfs:label "Fluidized Bed Incineration" ;
     skos:definition "A process that combusts a constantly moving bed of biosolids." ;
-    watr:achievesOutcome watr:Outcome-BiosolidsDisposal ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHearthIncineration ;
     rdfs:label "Multiple Hearth Incineration (MHI)" ;
     skos:definition "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
-    watr:achievesOutcome watr:Outcome-BiosolidsDisposal ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
@@ -362,20 +361,20 @@ watr:Process-BiologicalProcess a watr:Class, watr:Process-BiologicalProcess ;
 watr:Process-Nitrification a watr:Class, watr:Process-Nitrification ;
     rdfs:label "Nitrification" ;
     skos:definition "Process by which ammonia is oxidized to nitrite and subsequently nitrate." ;
-    # Not Outcome-NitrogenRemoval; see the note on watr:Outcome-AmmoniaRemoval.
-    watr:achievesOutcome watr:Outcome-AmmoniaRemoval ;
+    # Not TreatmentObjective-NitrogenRemoval; see the note on watr:TreatmentObjective-AmmoniaControl.
+    watr:achievesTreatmentObjective watr:TreatmentObjective-AmmoniaControl ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
     rdfs:label "Denitrification" ;
     skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-EnhancedBiologicalPhosphorusRemoval a watr:Class, watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     rdfs:label "Enhanced Biological Phosphorus Removal (EBPR)" ;
     skos:definition "Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions." ;
-    watr:achievesOutcome watr:Outcome-PhosphorusRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
@@ -385,7 +384,7 @@ watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
     watr:includesProcess watr:Process-Denitrification ;
     watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     watr:includesProcess watr:Process-Recirculation ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval, watr:Outcome-PhosphorusRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
@@ -394,7 +393,7 @@ watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
     watr:includesProcess watr:Process-Nitrification ;
     watr:includesProcess watr:Process-Denitrification ;
     watr:includesProcess watr:Process-Recirculation ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     rdfs:subClassOf watr:Process-ActivatedSludge .
 
 # The treatment-train process types below name *arrangements*, not things a
@@ -420,7 +419,7 @@ watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     # air stripper, which separate something else entirely. Recirculation is
     # configuration-specific and is declared by the process types that require it.
     watr:includesProcess watr:Process-SolidLiquidSeparation ;
-    watr:achievesOutcome watr:Outcome-OrganicsRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-OrganicsRemoval ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 
@@ -429,14 +428,14 @@ watr:Process-AO a watr:Class, watr:Process-AO ;
     skos:definition "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
     watr:includesProcess watr:Process-Nitrification ;
     watr:includesProcess watr:Process-Denitrification ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-MLE a watr:Class, watr:Process-MLE ;
     rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
     skos:definition "Modification of AO with an internal recycle returning nitrate to the anoxic zone." ;
     watr:includesProcess watr:Process-Recirculation ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     rdfs:subClassOf watr:Process-AO .
 
 watr:Process-A2O a watr:Class, watr:Process-A2O ;
@@ -446,13 +445,13 @@ watr:Process-A2O a watr:Class, watr:Process-A2O ;
     watr:includesProcess watr:Process-Denitrification ;
     watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     watr:includesProcess watr:Process-Recirculation ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval, watr:Outcome-PhosphorusRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-UCT a watr:Class, watr:Process-UCT ;
     rdfs:label "University of Cape Town (UCT)" ;
     skos:definition "Variant of A2O with modified recycle streams for phosphorus removal." ;
-    watr:achievesOutcome watr:Outcome-NitrogenRemoval, watr:Outcome-PhosphorusRemoval ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-A2O .
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
@@ -477,12 +476,12 @@ watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-Biologicall
 # retain dissolved species instead and are deliberately not solid-liquid.
 watr:Process-Microfiltration a watr:Class, watr:Process-Microfiltration ;
     rdfs:label "Microfiltration" ;
-    skos:definition "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids." ;
+    skos:definition "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
     rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
     rdfs:label "Ultrafiltration" ;
-    skos:definition "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains." ;
+    skos:definition "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
     rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
@@ -500,7 +499,7 @@ watr:Process-Purging a watr:Class, watr:Process-Purging ;
     skos:definition "A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle." ;
     rdfs:subClassOf watr:Process-Cleaning .
 
-# Stabilization names an outcome -- reduced volatile solids, pathogens and odor
+# Stabilization names a treatment objective -- reduced volatile solids, pathogens and odor
 # -- that is reached by more than one means. Unlike thickening, the means are
 # genuine kinds of stabilization rather than siblings of it, so digestion and
 # composting are modeled as subclasses and an instance needs only the specific
@@ -510,7 +509,7 @@ watr:Process-Purging a watr:Class, watr:Process-Purging ;
 watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     rdfs:label "Digestion" ;
     skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
-    watr:achievesOutcome watr:Outcome-Stabilization ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;

@@ -15,33 +15,33 @@ PREFIX watr: <urn:nawi-water-ontology#>
 ```
 
 The queries assume that the dataset contains both the instance model and the
-WaTr ontology, including the process and outcome hierarchies.
+WaTr ontology, including the process and treatment objective hierarchies.
 
 ```{important}
-Run SHACL-AF inference before querying class-supplied processes and outcomes.
+Run SHACL-AF inference before querying class-supplied processes and treatment objectives.
 For example, `:membrane a watr:ReverseOsmosisMembrane` receives its reverse
-osmosis process and desalination outcome from its class definitions during
+osmosis process and desalination treatment objective from its class definitions during
 inference. Roles are installation-specific and are never supplied by this rule.
 ```
 
-## Find equipment by outcome
+## Find equipment by treatment objective
 
-Use `watr:hasOutcome` to find equipment intended to achieve a treatment
-objective. Following the outcome hierarchy includes more specific outcomes:
+Use `watr:hasTreatmentObjective` to find equipment intended to achieve a treatment
+objective. Following the treatment objective hierarchy includes more specific treatment objectives:
 
 ```sparql
-SELECT DISTINCT ?unit ?outcome WHERE {
-  ?unit watr:hasOutcome ?outcome .
-  ?outcome rdfs:subClassOf* watr:Outcome-NutrientRemoval .
+SELECT DISTINCT ?unit ?treatment objective WHERE {
+  ?unit watr:hasTreatmentObjective ?treatment objective .
+  ?treatment objective rdfs:subClassOf* watr:TreatmentObjective-NutrientRemoval .
 }
-ORDER BY ?unit ?outcome
+ORDER BY ?unit ?treatment objective
 ```
 
-For an exact outcome such as desalination, the query can be shorter:
+For an exact treatment objective such as desalination, the query can be shorter:
 
 ```sparql
 SELECT DISTINCT ?unit WHERE {
-  ?unit watr:hasOutcome watr:Outcome-Desalination .
+  ?unit watr:hasTreatmentObjective watr:TreatmentObjective-Desalination .
 }
 ORDER BY ?unit
 ```
@@ -64,18 +64,18 @@ The path through `rdfs:subClassOf*` is important. Class-default inference adds
 the values required by equipment classes; it does not add every ancestor of a
 process value as another `watr:hasProcess` triple.
 
-## Compare outcomes for the same process
+## Compare treatment objectives for the same process
 
 Sedimentation is used for both clarification and thickening. Querying both axes
 shows the intended treatment function of each unit:
 
 ```sparql
-SELECT DISTINCT ?unit ?outcome ?role WHERE {
+SELECT DISTINCT ?unit ?treatment objective ?role WHERE {
   ?unit watr:hasProcess watr:Process-Sedimentation ;
-        watr:hasOutcome ?outcome .
+        watr:hasTreatmentObjective ?treatment objective .
   OPTIONAL { ?unit s223:hasRole ?role }
 }
-ORDER BY ?unit ?outcome ?role
+ORDER BY ?unit ?treatment objective ?role
 ```
 
 ## Find equipment by role
@@ -85,34 +85,34 @@ clarification equipment commissioned for the primary treatment stage:
 
 ```sparql
 SELECT DISTINCT ?unit WHERE {
-  ?unit watr:hasOutcome ?outcome ;
+  ?unit watr:hasTreatmentObjective ?treatment objective ;
         s223:hasRole watr:Role-Primary .
-  ?outcome rdfs:subClassOf* watr:Outcome-Clarification .
+  ?treatment objective rdfs:subClassOf* watr:TreatmentObjective-Clarification .
 }
 ORDER BY ?unit
 ```
 
 Do not substitute equipment type or process for the role. A primary and a
-secondary clarifier can have the same type, process, and outcome.
+secondary clarifier can have the same type, process, and treatment objective.
 
-## Inspect outcomes associated with processes
+## Inspect treatment objectives associated with processes
 
-Some process types declare an outcome that follows wherever the process is
+Some process types declare a treatment objective that follows wherever the process is
 performed. This query finds those associations for processes present in the
 model:
 
 ```sparql
-SELECT DISTINCT ?unit ?process ?outcome WHERE {
+SELECT DISTINCT ?unit ?process ?treatment objective WHERE {
   ?unit watr:hasProcess ?process .
-  ?process rdfs:subClassOf*/watr:achievesOutcome ?outcome .
+  ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?treatment objective .
 }
-ORDER BY ?unit ?process ?outcome
+ORDER BY ?unit ?process ?treatment objective
 ```
 
 This query is useful for checking or enriching query results, but it should not
-be used to assume that every process has a fixed outcome. Processes such as
+be used to assume that every process has a fixed treatment objective. Processes such as
 sedimentation and chemical precipitation intentionally have no
-`watr:achievesOutcome` value.
+`watr:achievesTreatmentObjective` value.
 
 ## Return the three axes together
 
@@ -120,17 +120,17 @@ The following query gives a practical equipment summary. Optional clauses keep
 equipment in the results when an installation-specific role is not applicable:
 
 ```sparql
-SELECT DISTINCT ?unit ?type ?outcome ?process ?role WHERE {
+SELECT DISTINCT ?unit ?type ?treatment objective ?process ?role WHERE {
   ?unit rdf:type ?type .
   ?type rdfs:subClassOf* s223:Equipment .
-  OPTIONAL { ?unit watr:hasOutcome ?outcome }
+  OPTIONAL { ?unit watr:hasTreatmentObjective ?treatment objective }
   OPTIONAL { ?unit watr:hasProcess ?process }
   OPTIONAL { ?unit s223:hasRole ?role }
 }
-ORDER BY ?unit ?outcome ?process ?role
+ORDER BY ?unit ?treatment objective ?process ?role
 ```
 
-Because an instance can have several outcomes, processes, or roles, this query
+Because an instance can have several treatment objectives, processes, or roles, this query
 may return several rows for one piece of equipment. Applications that need one
 record per unit can group the values after querying or use an aggregate suited
 to their triplestore.
