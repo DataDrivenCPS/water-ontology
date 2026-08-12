@@ -80,26 +80,6 @@ the source figure gives no pump or valve counts.""" ;
     watr:hasProcess watr:Process-Recirculation ;
 .
 
-# Scope-boundary connectables make all three external flows explicit without
-# asserting unobserved upstream or downstream equipment. Their port media are
-# inferred from the pipe that crosses the model boundary; an explicitly known
-# boundary-port medium could instead be stated with s223:hasMedium.
-:influentSource
-    a watr:BoundarySource ;
-    rdfs:label "Influent (outside modeled train)" ;
-    s223:hasConnectionPoint :influentSourceOutlet ;
-.
-:effluentSink
-    a watr:BoundarySink ;
-    rdfs:label "Final effluent destination (outside modeled train)" ;
-    s223:hasConnectionPoint :effluentSinkInlet ;
-.
-:wasteSludgeSink
-    a watr:BoundarySink ;
-    rdfs:label "Waste activated sludge destination (outside modeled train)" ;
-    s223:hasConnectionPoint :wasteSludgeSinkInlet ;
-.
-
 # ===========================================================================
 # Treatment zones and clarifier
 # ===========================================================================
@@ -186,8 +166,7 @@ the source figure gives no pump or valve counts.""" ;
     a s223:InletConnectionPoint ;
     rdfs:label "Anaerobic zone influent inlet (train boundary)" ;
     s223:hasMedium watr:Sludge-MixedLiquor ;
-    s223:isConnectionPointOf :anaerobicZone ;
-    s223:connectsThrough :connInfluentToAnaerobic .
+    s223:isConnectionPointOf :anaerobicZone .
 :anaerobicRasInlet
     a s223:InletConnectionPoint ;
     rdfs:label "Anaerobic zone RAS return inlet" ;
@@ -256,8 +235,7 @@ the source figure gives no pump or valve counts.""" ;
     a s223:OutletConnectionPoint ;
     rdfs:label "Final effluent outlet (train boundary)" ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :clarifier ;
-    s223:connectsThrough :connClarifierToEffluent .
+    s223:isConnectionPointOf :clarifier .
 :clarifierRasOutlet
     a s223:OutletConnectionPoint ;
     rdfs:label "Clarifier RAS outlet (return activated sludge)" ;
@@ -269,25 +247,7 @@ the source figure gives no pump or valve counts.""" ;
     a s223:OutletConnectionPoint ;
     rdfs:label "Waste activated sludge outlet (train boundary)" ;
     s223:hasMedium watr:Fluid-Sludge ;
-    s223:isConnectionPointOf :clarifier ;
-    s223:connectsThrough :connClarifierToWasteSludge .
-
-# --- Scope-boundary connection points -------------------------------------
-:influentSourceOutlet
-    a watr:BoundarySourceConnectionPoint ;
-    rdfs:label "Influent source outlet" ;
-    s223:isConnectionPointOf :influentSource ;
-    s223:connectsThrough :connInfluentToAnaerobic .
-:effluentSinkInlet
-    a watr:BoundarySinkConnectionPoint ;
-    rdfs:label "Final effluent destination inlet" ;
-    s223:isConnectionPointOf :effluentSink ;
-    s223:connectsThrough :connClarifierToEffluent .
-:wasteSludgeSinkInlet
-    a watr:BoundarySinkConnectionPoint ;
-    rdfs:label "Waste activated sludge destination inlet" ;
-    s223:isConnectionPointOf :wasteSludgeSink ;
-    s223:connectsThrough :connClarifierToWasteSludge .
+    s223:isConnectionPointOf :clarifier .
 
 # --- Internal recycle valve and pump --------------------------------------
 :irValveInlet
@@ -348,15 +308,6 @@ the source figure gives no pump or valve counts.""" ;
 # ===========================================================================
 
 # Forward path.
-:connInfluentToAnaerobic
-    a s223:Connection, s223:Pipe ;
-    rdfs:label "Influent source to anaerobic zone" ;
-    s223:hasMedium watr:Sludge-MixedLiquor ;
-    s223:cnx :influentSourceOutlet, :anaerobicInfluentInlet ;
-    s223:connectsAt :influentSourceOutlet, :anaerobicInfluentInlet ;
-    s223:connectsFrom :influentSource ;
-    s223:connectsTo :anaerobicZone ;
-.
 :connAnaerobicToAnoxic
     a s223:Connection, s223:Pipe ;
     rdfs:label "Anaerobic to anoxic (forward)" ;
@@ -441,24 +392,4 @@ the source figure gives no pump or valve counts.""" ;
     s223:connectsAt :rasPumpOutlet, :anaerobicRasInlet ;
     s223:connectsFrom :rasPump ;
     s223:connectsTo :anaerobicZone ;
-.
-
-# Products leaving the model scope.
-:connClarifierToEffluent
-    a s223:Connection, s223:Pipe ;
-    rdfs:label "Clarifier to final effluent destination" ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:cnx :clarifierEffluentOutlet, :effluentSinkInlet ;
-    s223:connectsAt :clarifierEffluentOutlet, :effluentSinkInlet ;
-    s223:connectsFrom :clarifier ;
-    s223:connectsTo :effluentSink ;
-.
-:connClarifierToWasteSludge
-    a s223:Connection, s223:Pipe ;
-    rdfs:label "Clarifier to waste activated sludge destination" ;
-    s223:hasMedium watr:Fluid-Sludge ;
-    s223:cnx :clarifierWasOutlet, :wasteSludgeSinkInlet ;
-    s223:connectsAt :clarifierWasOutlet, :wasteSludgeSinkInlet ;
-    s223:connectsFrom :clarifier ;
-    s223:connectsTo :wasteSludgeSink ;
 .

@@ -9,7 +9,6 @@
 
 <urn:nawi-water-ontology>
   a owl:Ontology ;
-  rdfs:label "test" ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
@@ -17,7 +16,6 @@
   owl:imports <urn:nawi-water-ontology/processtypes> ;
   owl:imports <urn:nawi-water-ontology/outcomes> ;
   owl:imports <urn:nawi-water-ontology/class-defaults> ;
-  owl:imports <urn:nawi-water-ontology/boundaries> ;
   owl:imports <urn:nawi-water-ontology/substances> ;
   owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
   owl:imports sh: ;
