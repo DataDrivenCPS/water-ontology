@@ -7,7 +7,7 @@ from rdflib import Graph, Namespace
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
 
 ROOT = Path(__file__).resolve().parents[1]

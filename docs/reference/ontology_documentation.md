@@ -4,13 +4,13 @@
 
 **Description:** An ontology for water equipment used in the NAWI project
 
-**URI:** urn:nawi-water-ontology/equip
+**URI:** https://watermetadata.org/ontology/modules/equipment
 
 ## Tank
 
 **Description:** A tank with at least one inlet and one outlet for liquid; may include optional drain or overflow connection points. Used for storage and as the base for reactors and separation tanks.
 
-**URI:** urn:nawi-water-ontology#Tank
+**URI:** https://watermetadata.org/ontology/watr#Tank
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -18,143 +18,143 @@
 
 **Description:** A tank used for reaction or biological/chemical treatment; may include recirculation or return connection points (e.g. for RAS, internal recycle).
 
-**URI:** urn:nawi-water-ontology#Reactor
+**URI:** https://watermetadata.org/ontology/watr#Reactor
 
-**Superclass URI :** urn:nawi-water-ontology#Tank
+**Superclass URI :** https://watermetadata.org/ontology/watr#Tank
 
 ## SeparationTank
 
 **Description:** A tank that separates phases or streams; must have at least two outlets (e.g. clarified flow and sludge, or overflow and underflow).
 
-**URI:** urn:nawi-water-ontology#SeparationTank
+**URI:** https://watermetadata.org/ontology/watr#SeparationTank
 
-**Superclass URI :** urn:nawi-water-ontology#Tank
+**Superclass URI :** https://watermetadata.org/ontology/watr#Tank
 
 ## SequencingBatchReactor
 
 **Description:** A type of activated sludge process for wastewater treatment
 
-**URI:** urn:nawi-water-ontology#SequencingBatchReactor
+**URI:** https://watermetadata.org/ontology/watr#SequencingBatchReactor
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor, urn:nawi-water-ontology#SeparationTank
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor, https://watermetadata.org/ontology/watr#SeparationTank
 
 ## PlugFlowReactor
 
 **Description:** A type of reactor where the fluid flows in one direction through the tube
 
-**URI:** urn:nawi-water-ontology#PlugFlowReactor
+**URI:** https://watermetadata.org/ontology/watr#PlugFlowReactor
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## ContinuouslyStirredTankReactor
 
 **Description:** A reactor in which contents are well mixed and reactants are added continuously
 
-**URI:** urn:nawi-water-ontology#ContinuouslyStirredTankReactor
+**URI:** https://watermetadata.org/ontology/watr#ContinuouslyStirredTankReactor
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## StaticMixer
 
 **Description:** A device for mixing liquids without moving components
 
-**URI:** urn:nawi-water-ontology#StaticMixer
+**URI:** https://watermetadata.org/ontology/watr#StaticMixer
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## AerationBasin
 
 **Description:** A tank where water is aerated to remove gases and volatile organic compounds
 
-**URI:** urn:nawi-water-ontology#AerationBasin
+**URI:** https://watermetadata.org/ontology/watr#AerationBasin
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## MixingBasin
 
 **Description:**  A tank where mixed liquor is stirred without aeration
 
-**URI:** urn:nawi-water-ontology#MixingBasin
+**URI:** https://watermetadata.org/ontology/watr#MixingBasin
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## Digester
 
 **Description:** A container to promote decomposition of organic waste
 
-**URI:** urn:nawi-water-ontology#Digester
+**URI:** https://watermetadata.org/ontology/watr#Digester
 
-**Superclass URI :** urn:nawi-water-ontology#Reactor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Reactor
 
 ## AnaerobicDigester
 
 **Description:** A container to promote decomposition of organic waste in anaerobic conditions
 
-**URI:** urn:nawi-water-ontology#AnaerobicDigester
+**URI:** https://watermetadata.org/ontology/watr#AnaerobicDigester
 
-**Superclass URI :** urn:nawi-water-ontology#Digester
+**Superclass URI :** https://watermetadata.org/ontology/watr#Digester
 
 ## AerobicDigester
 
 **Description:** A container to promote decomposition of organic waste in aerobic conditions
 
-**URI:** urn:nawi-water-ontology#AerobicDigester
+**URI:** https://watermetadata.org/ontology/watr#AerobicDigester
 
-**Superclass URI :** urn:nawi-water-ontology#Digester
+**Superclass URI :** https://watermetadata.org/ontology/watr#Digester
 
 ## Disinfection
 
 **Description:** A unit used to eliminate or reduce harmful microorganisms
 
-**URI:** urn:nawi-water-ontology#DisinfectionUnit
+**URI:** https://watermetadata.org/ontology/watr#DisinfectionUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Tank
+**Superclass URI :** https://watermetadata.org/ontology/watr#Tank
 
 ## UltravioletlightUnit
 
 **Description:** A unit using ultraviolet light for disinfection
 
-**URI:** urn:nawi-water-ontology#UltravioletLightUnit
+**URI:** https://watermetadata.org/ontology/watr#UltravioletLightUnit
 
-**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnit
+**Superclass URI :** https://watermetadata.org/ontology/watr#DisinfectionUnit
 
 ## ChlorinationUnit
 
 **Description:** A unit that uses chlorine or chlorine compounds for disinfection.
 
-**URI:** urn:nawi-water-ontology#ChlorinationUnit
+**URI:** https://watermetadata.org/ontology/watr#ChlorinationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#DisinfectionUnitUnit
+**Superclass URI :** https://watermetadata.org/ontology/watr#DisinfectionUnitUnit
 
 ## SedimentationTank
 
 **Description:** A tank used to remove solids from liquids through sedimentation
 
-**URI:** urn:nawi-water-ontology#SedimentationTank
+**URI:** https://watermetadata.org/ontology/watr#SedimentationTank
 
-**Superclass URI :** urn:nawi-water-ontology#SeparationTank
+**Superclass URI :** https://watermetadata.org/ontology/watr#SeparationTank
 
 ## SepticTank
 
 **Description:** A septic tank for on-site wastewater treatment
 
-**URI:** urn:nawi-water-ontology#SepticTank
+**URI:** https://watermetadata.org/ontology/watr#SepticTank
 
-**Superclass URI :** urn:nawi-water-ontology#SedimentationTank
+**Superclass URI :** https://watermetadata.org/ontology/watr#SedimentationTank
 
 ## ImhoffTank
 
 **Description:** A sedimentation tank specifically designed for septic treatment
 
-**URI:** urn:nawi-water-ontology#ImhoffTank
+**URI:** https://watermetadata.org/ontology/watr#ImhoffTank
 
-**Superclass URI :** urn:nawi-water-ontology#SepticTank
+**Superclass URI :** https://watermetadata.org/ontology/watr#SepticTank
 
 ## Screen
 
 **Description:** An equipment used for separation
 
-**URI:** urn:nawi-water-ontology#Screen
+**URI:** https://watermetadata.org/ontology/watr#Screen
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -162,7 +162,7 @@
 
 **Description:** A chamber used to remove grit from wastewater
 
-**URI:** urn:nawi-water-ontology#GritChamber
+**URI:** https://watermetadata.org/ontology/watr#GritChamber
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -170,7 +170,7 @@
 
 **Description:** A large natural or artificial body of water used for water supply
 
-**URI:** urn:nawi-water-ontology#Reservoir
+**URI:** https://watermetadata.org/ontology/watr#Reservoir
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -178,7 +178,7 @@
 
 **Description:** A body of still water smaller than a lake, used for treatment or storage
 
-**URI:** urn:nawi-water-ontology#Pond
+**URI:** https://watermetadata.org/ontology/watr#Pond
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -186,7 +186,7 @@
 
 **Description:** A device that stores energy for later use
 
-**URI:** urn:nawi-water-ontology#Battery
+**URI:** https://watermetadata.org/ontology/watr#Battery
 
 **Superclass URI :** http://data.ashrae.org/standard223#Battery
 
@@ -194,7 +194,7 @@
 
 **Description:** An equipment that produces both electricity and heat from the same energy source
 
-**URI:** urn:nawi-water-ontology#Cogenerator
+**URI:** https://watermetadata.org/ontology/watr#Cogenerator
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -202,7 +202,7 @@
 
 **Description:** A device for heating water
 
-**URI:** urn:nawi-water-ontology#Boiler
+**URI:** https://watermetadata.org/ontology/watr#Boiler
 
 **Superclass URI :** http://data.ashrae.org/standard223#Boiler
 
@@ -210,7 +210,7 @@
 
 **Description:** An equipment used to prepare raw biogas from a digester by removing impurities
 
-**URI:** urn:nawi-water-ontology#Conditioner
+**URI:** https://watermetadata.org/ontology/watr#Conditioner
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -218,7 +218,7 @@
 
 **Description:** A device used to burn off unwanted gas
 
-**URI:** urn:nawi-water-ontology#Flare
+**URI:** https://watermetadata.org/ontology/watr#Flare
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -226,7 +226,7 @@
 
 **Description:** A device used to move fluids by mechanical action
 
-**URI:** urn:nawi-water-ontology#Pump
+**URI:** https://watermetadata.org/ontology/watr#Pump
 
 **Superclass URI :** http://data.ashrae.org/standard223#Pump
 
@@ -234,7 +234,7 @@
 
 **Description:** A device used to transfer pressure energy from one fluid to another
 
-**URI:** urn:nawi-water-ontology#PressureExchanger
+**URI:** https://watermetadata.org/ontology/watr#PressureExchanger
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -242,7 +242,7 @@
 
 **Description:** A unit used to remove water from solid material
 
-**URI:** urn:nawi-water-ontology#DewateringUnit
+**URI:** https://watermetadata.org/ontology/watr#DewateringUnit
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -250,7 +250,7 @@
 
 **Description:** A device used to increase the solids concentration of a slurry
 
-**URI:** urn:nawi-water-ontology#Thickener
+**URI:** https://watermetadata.org/ontology/watr#Thickener
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -258,55 +258,55 @@
 
 **Description:** A thickener that uses dissolved air to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#DissolvedAirFlotationThickener
+**URI:** https://watermetadata.org/ontology/watr#DissolvedAirFlotationThickener
 
-**Superclass URI :** urn:nawi-water-ontology#Thickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#Thickener
 
 ## Centrifuge
 
 **Description:** A thickener that uses centrifugal force to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#Centrifuge
+**URI:** https://watermetadata.org/ontology/watr#Centrifuge
 
-**Superclass URI :** urn:nawi-water-ontology#Thickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#Thickener
 
 ## GravityThickener
 
 **Description:** A thickener that uses gravity to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#GravityThickener
+**URI:** https://watermetadata.org/ontology/watr#GravityThickener
 
-**Superclass URI :** urn:nawi-water-ontology#Thickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#Thickener
 
 ## BeltThickener
 
 **Description:** A thickener that uses a belt system to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#BeltThickener
+**URI:** https://watermetadata.org/ontology/watr#BeltThickener
 
-**Superclass URI :** urn:nawi-water-ontology#Thickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#Thickener
 
 ## Gravity Belt Thickener
 
 **Description:** A thickener that combines gravity separation with a belt system
 
-**URI:** urn:nawi-water-ontology#GravityBeltThickener
+**URI:** https://watermetadata.org/ontology/watr#GravityBeltThickener
 
-**Superclass URI :** urn:nawi-water-ontology#BeltThickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#BeltThickener
 
 ## Rotary Drum Thickener
 
 **Description:** A thickener that uses a rotating drum to separate solids from liquids
 
-**URI:** urn:nawi-water-ontology#RotaryDrumThickener
+**URI:** https://watermetadata.org/ontology/watr#RotaryDrumThickener
 
-**Superclass URI :** urn:nawi-water-ontology#Thickener
+**Superclass URI :** https://watermetadata.org/ontology/watr#Thickener
 
 ## Filter
 
 **Description:** An equipment used to remove impurities from liquids or gases
 
-**URI:** urn:nawi-water-ontology#Filter
+**URI:** https://watermetadata.org/ontology/watr#Filter
 
 **Superclass URI :** http://data.ashrae.org/standard223#Filter
 
@@ -314,79 +314,79 @@
 
 **Description:** A membrane used for reverse osmosis
 
-**URI:** urn:nawi-water-ontology#ReverseOsmosisMembrane
+**URI:** https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## TricklingFilter
 
 **Description:** A filter system that treats wastewater by trickling it over a bed of rocks or plastic
 
-**URI:** urn:nawi-water-ontology#TricklingFilter
+**URI:** https://watermetadata.org/ontology/watr#TricklingFilter
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## MovingBedBioreactor
 
 **Description:** MBBR process using suspended growth media in a tank
 
-**URI:** urn:nawi-water-ontology#MovingBedBioreactor
+**URI:** https://watermetadata.org/ontology/watr#MovingBedBioreactor
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## MembraneBioreactor
 
 **Description:** A filter system that combines a membrane process like microfiltration with a biological reactor
 
-**URI:** urn:nawi-water-ontology#MembraneBioreactor
+**URI:** https://watermetadata.org/ontology/watr#MembraneBioreactor
 
-**Superclass URI :** urn:nawi-water-ontology#Filter, urn:nawi-water-ontology#Reactor, urn:nawi-water-ontology#SeparationTank
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter, https://watermetadata.org/ontology/watr#Reactor, https://watermetadata.org/ontology/watr#SeparationTank
 
 ## MicrofiltrationUnit
 
 **Description:** A filter system which removes contaminants from a liquid by passing it through a microporous membrane
 
-**URI:** urn:nawi-water-ontology#MicrofiltrationUnit
+**URI:** https://watermetadata.org/ontology/watr#MicrofiltrationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## UltrafiltrationUnit
 
 **Description:** A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid
 
-**URI:** urn:nawi-water-ontology#UltrafiltrationUnit
+**URI:** https://watermetadata.org/ontology/watr#UltrafiltrationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## NanofiltrationUnit
 
 **Description:** A filter system that uses a membrane to soften water and remove organic contaminants
 
-**URI:** urn:nawi-water-ontology#NanofiltrationUnit
+**URI:** https://watermetadata.org/ontology/watr#NanofiltrationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## MediaFiltrationUnit
 
 **Description:** A filter system that uses a bed of material to filter out contaminants
 
-**URI:** urn:nawi-water-ontology#MediaFiltrationUnit
+**URI:** https://watermetadata.org/ontology/watr#MediaFiltrationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## CartridgeFiltrationUnit
 
 **Description:** A filter system using a cartridge to remove contaminants from fluids
 
-**URI:** urn:nawi-water-ontology#CartridgeFiltrationUnit
+**URI:** https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit
 
-**Superclass URI :** urn:nawi-water-ontology#Filter
+**Superclass URI :** https://watermetadata.org/ontology/watr#Filter
 
 ## IonExchangeMembrane
 
 **Description:** A membrane that selectively allows ions to pass through while blocking other substances
 
-**URI:** urn:nawi-water-ontology#IonExchangeMembrane
+**URI:** https://watermetadata.org/ontology/watr#IonExchangeMembrane
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -394,7 +394,7 @@
 
 **Description:** A unit that uses electricity to drive ion movement through a membrane
 
-**URI:** urn:nawi-water-ontology#ElectrodialysisUnit
+**URI:** https://watermetadata.org/ontology/watr#ElectrodialysisUnit
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -402,7 +402,7 @@
 
 **Description:** An equipment that uses electricity to split liquids into constituent elements
 
-**URI:** urn:nawi-water-ontology#Electrolyzer
+**URI:** https://watermetadata.org/ontology/watr#Electrolyzer
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -410,7 +410,7 @@
 
 **Description:** An equipment used to produce solid crystals from a solution
 
-**URI:** urn:nawi-water-ontology#Crystallizer
+**URI:** https://watermetadata.org/ontology/watr#Crystallizer
 
 **Superclass URI :** http://data.ashrae.org/standard223#Equipment
 
@@ -418,7 +418,7 @@
 
 **Description:** An equipment that increases the pressure of a gas
 
-**URI:** urn:nawi-water-ontology#Compressor
+**URI:** https://watermetadata.org/ontology/watr#Compressor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Compressor
 
@@ -426,7 +426,7 @@
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
-**URI:** urn:nawi-water-ontology#Evaporator
+**URI:** https://watermetadata.org/ontology/watr#Evaporator
 
 **Superclass URI :** http://data.ashrae.org/standard223#HeatExchanger
 
@@ -434,7 +434,7 @@
 
 **Description:** A device used to condense a gaseous substance back into a liquid
 
-**URI:** urn:nawi-water-ontology#Condenser
+**URI:** https://watermetadata.org/ontology/watr#Condenser
 
 **Superclass URI :** http://data.ashrae.org/standard223#HeatExchanger
 
@@ -442,7 +442,7 @@
 
 **Description:** A sensor used to measure the flow rate of liquids or gases
 
-**URI:** urn:nawi-water-ontology#FlowSensor
+**URI:** https://watermetadata.org/ontology/watr#FlowSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#FlowSensor
 
@@ -450,7 +450,7 @@
 
 **Description:** A sensor used to measure the volume of a substance
 
-**URI:** urn:nawi-water-ontology#VolumeSensor
+**URI:** https://watermetadata.org/ontology/watr#VolumeSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -458,7 +458,7 @@
 
 **Description:** A sensor used to detect the level of liquids or solids in a tank
 
-**URI:** urn:nawi-water-ontology#LevelSensor
+**URI:** https://watermetadata.org/ontology/watr#LevelSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -466,7 +466,7 @@
 
 **Description:** A sensor used to measure pressure
 
-**URI:** urn:nawi-water-ontology#PressureSensor
+**URI:** https://watermetadata.org/ontology/watr#PressureSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#PressureSensor
 
@@ -474,7 +474,7 @@
 
 **Description:** A sensor used to measure temperature
 
-**URI:** urn:nawi-water-ontology#TemperatureSensor
+**URI:** https://watermetadata.org/ontology/watr#TemperatureSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#TemperatureSensor
 
@@ -482,7 +482,7 @@
 
 **Description:** A sensor used to measure the operating time of equipment
 
-**URI:** urn:nawi-water-ontology#RunTimeSensor
+**URI:** https://watermetadata.org/ontology/watr#RunTimeSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -490,7 +490,7 @@
 
 **Description:** A sensor used to monitor the operational status of equipment
 
-**URI:** urn:nawi-water-ontology#RunStatusSensor
+**URI:** https://watermetadata.org/ontology/watr#RunStatusSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -498,7 +498,7 @@
 
 **Description:** A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)
 
-**URI:** urn:nawi-water-ontology#ConcentrationSensor
+**URI:** https://watermetadata.org/ontology/watr#ConcentrationSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#ConcentrationSensor
 
@@ -506,7 +506,7 @@
 
 **Description:** A sensor used to measure the concentration of oxygen
 
-**URI:** urn:nawi-water-ontology#OxygenMeter
+**URI:** https://watermetadata.org/ontology/watr#OxygenMeter
 
 **Superclass URI :** http://data.ashrae.org/standard223#ConcentrationSensor
 
@@ -514,7 +514,7 @@
 
 **Description:** A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)
 
-**URI:** urn:nawi-water-ontology#OxygenDemandSensor
+**URI:** https://watermetadata.org/ontology/watr#OxygenDemandSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -522,31 +522,31 @@
 
 **Description:** A sensor used to measure the pH of a solution
 
-**URI:** urn:nawi-water-ontology#pHSensor
+**URI:** https://watermetadata.org/ontology/watr#pHSensor
 
-**Superclass URI :** urn:nawi-water-ontology#ConcentrationSensor
+**Superclass URI :** https://watermetadata.org/ontology/watr#ConcentrationSensor
 
 ## ConductivitySensor
 
 **Description:** A sensor used to measure the electrical conductivity of a solution
 
-**URI:** urn:nawi-water-ontology#ConductivitySensor
+**URI:** https://watermetadata.org/ontology/watr#ConductivitySensor
 
-**Superclass URI :** urn:nawi-water-ontology#Sensor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Sensor
 
 ## TurbidityMeter
 
 **Description:** A sensor used to measure the turbidity (clarity) of a fluid
 
-**URI:** urn:nawi-water-ontology#TurbidityMeter
+**URI:** https://watermetadata.org/ontology/watr#TurbidityMeter
 
-**Superclass URI :** urn:nawi-water-ontology#Sensor
+**Superclass URI :** https://watermetadata.org/ontology/watr#Sensor
 
 ## RotationSensor
 
 **Description:** A sensor used to measure the rotational speed or position of an object
 
-**URI:** urn:nawi-water-ontology#RotationSensor
+**URI:** https://watermetadata.org/ontology/watr#RotationSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -554,7 +554,7 @@
 
 **Description:** A sensor used to measure the efficiency of a system or equipment
 
-**URI:** urn:nawi-water-ontology#EfficiencySensor
+**URI:** https://watermetadata.org/ontology/watr#EfficiencySensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -562,7 +562,7 @@
 
 **Description:** A sensor used to measure the remaining charge in a battery or energy storage system
 
-**URI:** urn:nawi-water-ontology#StateOfChargeSensor
+**URI:** https://watermetadata.org/ontology/watr#StateOfChargeSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -570,7 +570,7 @@
 
 **Description:** A sensor used to measure the speed of an object or fluid
 
-**URI:** urn:nawi-water-ontology#SpeedSensor
+**URI:** https://watermetadata.org/ontology/watr#SpeedSensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -578,7 +578,7 @@
 
 **Description:** A sensor used to measure the frequency of a signal or mechanical vibration
 
-**URI:** urn:nawi-water-ontology#FrequencySensor
+**URI:** https://watermetadata.org/ontology/watr#FrequencySensor
 
 **Superclass URI :** http://data.ashrae.org/standard223#Sensor
 
@@ -586,13 +586,13 @@
 
 **Description:** An ontology for water substances used in the NAWI project
 
-**URI:** urn:nawi-water-ontology/substances
+**URI:** https://watermetadata.org/ontology/modules/substances
 
 ## Constituent-Metals
 
 **Description:** Constituent-Metals
 
-**URI:** urn:nawi-water-ontology#Constituent-Metals
+**URI:** https://watermetadata.org/ontology/watr#Constituent-Metals
 
 **Superclass URI :** http://data.ashrae.org/standard223#Medium-Constituent
 
@@ -600,7 +600,7 @@
 
 **Description:** Constituent-Salt
 
-**URI:** urn:nawi-water-ontology#Constituent-Salt
+**URI:** https://watermetadata.org/ontology/watr#Constituent-Salt
 
 **Superclass URI :** http://data.ashrae.org/standard223#Medium-Constituent
 
@@ -608,15 +608,15 @@
 
 **Description:** Salt-NaCl
 
-**URI:** urn:nawi-water-ontology#Salt-NaCl
+**URI:** https://watermetadata.org/ontology/watr#Salt-NaCl
 
-**Superclass URI :** urn:nawi-water-ontology#Constituent-Salt
+**Superclass URI :** https://watermetadata.org/ontology/watr#Constituent-Salt
 
 ## Water-Brine
 
 **Description:** Water-Brine
 
-**URI:** urn:nawi-water-ontology#Water-Brine
+**URI:** https://watermetadata.org/ontology/watr#Water-Brine
 
 **Superclass URI :** http://data.ashrae.org/standard223#Fluid-Water
 
@@ -624,23 +624,23 @@
 
 **Description:** Brine-15Percent
 
-**URI:** urn:nawi-water-ontology#Brine-15Percent
+**URI:** https://watermetadata.org/ontology/watr#Brine-15Percent
 
-**Superclass URI :** urn:nawi-water-ontology#Water-Brine
+**Superclass URI :** https://watermetadata.org/ontology/watr#Water-Brine
 
 ## Brine-5to10Percent
 
 **Description:** Brine-5to10Percent
 
-**URI:** urn:nawi-water-ontology#Brine-5to10Percent
+**URI:** https://watermetadata.org/ontology/watr#Brine-5to10Percent
 
-**Superclass URI :** urn:nawi-water-ontology#Water-Brine
+**Superclass URI :** https://watermetadata.org/ontology/watr#Water-Brine
 
 ## Wastewater Treatment Chemical
 
 **Description:** Base class for all chemicals used in wastewater treatment
 
-**URI:** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**URI:** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 **Superclass URI :** http://data.ashrae.org/standard223#Medium-Constituent
 
@@ -648,127 +648,127 @@
 
 **Description:** Class for coagulants used in wastewater treatment
 
-**URI:** urn:nawi-water-ontology#Coagulant
+**URI:** https://watermetadata.org/ontology/watr#Coagulant
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Alum
 
 **Description:** Aluminum sulfate (alum), a common coagulant
 
-**URI:** urn:nawi-water-ontology#Coagulant-Alum
+**URI:** https://watermetadata.org/ontology/watr#Coagulant-Alum
 
-**Superclass URI :** urn:nawi-water-ontology#Coagulant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Coagulant
 
 ## Ferric Chloride
 
 **Description:** Ferric chloride, a coagulant for wastewater treatment
 
-**URI:** urn:nawi-water-ontology#Coagulant-FerricChloride
+**URI:** https://watermetadata.org/ontology/watr#Coagulant-FerricChloride
 
-**Superclass URI :** urn:nawi-water-ontology#Coagulant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Coagulant
 
 ## Polyaluminum Chloride
 
 **Description:** Polyaluminum chloride (PAC), a coagulant
 
-**URI:** urn:nawi-water-ontology#Coagulant-PolyaluminumChloride
+**URI:** https://watermetadata.org/ontology/watr#Coagulant-PolyaluminumChloride
 
-**Superclass URI :** urn:nawi-water-ontology#Coagulant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Coagulant
 
 ## Flocculant
 
 **Description:** Class for flocculants used in wastewater treatment
 
-**URI:** urn:nawi-water-ontology#Flocculant
+**URI:** https://watermetadata.org/ontology/watr#Flocculant
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Polyacrylamide
 
 **Description:** Polyacrylamide, a common flocculant
 
-**URI:** urn:nawi-water-ontology#Flocculant-Polyacrylamide
+**URI:** https://watermetadata.org/ontology/watr#Flocculant-Polyacrylamide
 
-**Superclass URI :** urn:nawi-water-ontology#Flocculant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Flocculant
 
 ## pH Adjuster
 
 **Description:** Class for pH adjusters used in wastewater treatment
 
-**URI:** urn:nawi-water-ontology#pHAdjuster
+**URI:** https://watermetadata.org/ontology/watr#pHAdjuster
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Lime
 
 **Description:** Calcium hydroxide (lime), used to increase pH
 
-**URI:** urn:nawi-water-ontology#pHAdjuster-Lime
+**URI:** https://watermetadata.org/ontology/watr#pHAdjuster-Lime
 
-**Superclass URI :** urn:nawi-water-ontology#pHAdjuster
+**Superclass URI :** https://watermetadata.org/ontology/watr#pHAdjuster
 
 ## Sulfuric Acid
 
 **Description:** Sulfuric acid, used to decrease pH
 
-**URI:** urn:nawi-water-ontology#pHAdjuster-SulfuricAcid
+**URI:** https://watermetadata.org/ontology/watr#pHAdjuster-SulfuricAcid
 
-**Superclass URI :** urn:nawi-water-ontology#pHAdjuster
+**Superclass URI :** https://watermetadata.org/ontology/watr#pHAdjuster
 
 ## Disinfectant
 
 **Description:** Class for disinfectants used in wastewater treatment
 
-**URI:** urn:nawi-water-ontology#Disinfectant
+**URI:** https://watermetadata.org/ontology/watr#Disinfectant
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Chlorine
 
 **Description:** Chlorine, a common disinfectant
 
-**URI:** urn:nawi-water-ontology#Disinfectant-Chlorine
+**URI:** https://watermetadata.org/ontology/watr#Disinfectant-Chlorine
 
-**Superclass URI :** urn:nawi-water-ontology#Disinfectant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Disinfectant
 
 ## Ozone
 
 **Description:** Ozone, an advanced disinfectant
 
-**URI:** urn:nawi-water-ontology#Disinfectant-Ozone
+**URI:** https://watermetadata.org/ontology/watr#Disinfectant-Ozone
 
-**Superclass URI :** urn:nawi-water-ontology#Disinfectant
+**Superclass URI :** https://watermetadata.org/ontology/watr#Disinfectant
 
 ## Odor Control Agent
 
 **Description:** Class for chemicals used for odor control
 
-**URI:** urn:nawi-water-ontology#OdorControlAgent
+**URI:** https://watermetadata.org/ontology/watr#OdorControlAgent
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Activated Carbon
 
 **Description:** Activated carbon, used to absorb odors
 
-**URI:** urn:nawi-water-ontology#OdorControlAgent-ActivatedCarbon
+**URI:** https://watermetadata.org/ontology/watr#OdorControlAgent-ActivatedCarbon
 
-**Superclass URI :** urn:nawi-water-ontology#OdorControlAgent
+**Superclass URI :** https://watermetadata.org/ontology/watr#OdorControlAgent
 
 ## Heavy Metal Removal Agent
 
 **Description:** Class for chemicals used to remove heavy metals
 
-**URI:** urn:nawi-water-ontology#HeavyMetalRemovalAgent
+**URI:** https://watermetadata.org/ontology/watr#HeavyMetalRemovalAgent
 
-**Superclass URI :** urn:nawi-water-ontology#WastewaterTreatmentChemical
+**Superclass URI :** https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical
 
 ## Sodium Sulfide
 
 **Description:** Sodium sulfide, used to precipitate heavy metals
 
-**URI:** urn:nawi-water-ontology#HeavyMetalRemovalAgent-SodiumSulfide
+**URI:** https://watermetadata.org/ontology/watr#HeavyMetalRemovalAgent-SodiumSulfide
 
-**Superclass URI :** urn:nawi-water-ontology#HeavyMetalRemovalAgent
+**Superclass URI :** https://watermetadata.org/ontology/watr#HeavyMetalRemovalAgent
 

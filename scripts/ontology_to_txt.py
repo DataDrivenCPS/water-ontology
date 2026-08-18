@@ -15,7 +15,7 @@ def equipment_to_txt (equipment_file):
 
 
     # Namespaces
-    WATR = Namespace("urn:nawi-water-ontology#")
+    WATR = Namespace("https://watermetadata.org/ontology/watr#")
     SH = Namespace("http://www.w3.org/ns/shacl#")
 
     def local_name(uri):
@@ -87,7 +87,7 @@ def processtypes_to_txt(process_file):
     g.parse(process_file, format="turtle", publicID="processtypes.ttl")
 
     # Namespaces
-    WATR = Namespace("urn:nawi-water-ontology#")
+    WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
     def local_name(uri):
         return uri.split("#")[-1]
@@ -123,7 +123,7 @@ def substance_to_txt(substance_file):
     g.parse(substance_file, format="turtle", publicID="substances.ttl")
 
     # Namespaces
-    WATR = Namespace("urn:nawi-water-ontology#")
+    WATR = Namespace("https://watermetadata.org/ontology/watr#")
     S223 = Namespace("http://data.ashrae.org/standard223#")
 
     def local_name(uri):
@@ -161,7 +161,7 @@ def roles_to_txt(enumerationkinds_file):
     g.parse(enumerationkinds_file, format="turtle", publicID="enumerationkinds.ttl")
 
     # Namespaces
-    WATR = Namespace("urn:nawi-water-ontology#")
+    WATR = Namespace("https://watermetadata.org/ontology/watr#")
     S223 = Namespace("http://data.ashrae.org/standard223#")
 
     def local_name(uri):

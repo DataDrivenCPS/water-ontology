@@ -4,14 +4,14 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/equip>
+<https://watermetadata.org/ontology/modules/equipment>
     a owl:Ontology ;
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    owl:imports <urn:nawi-water-ontology/processtypes> ;
+    owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
 .
 watr:Tank a sh:NodeShape ;
     a watr:Class ;

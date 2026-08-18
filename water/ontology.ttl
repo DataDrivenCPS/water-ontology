@@ -1,21 +1,27 @@
 @prefix all: <http://data.ashrae.org/standard223/model/all#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology>
+<https://watermetadata.org/ontology/watr>
   a owl:Ontology ;
+  rdfs:label "NAWI Water Ontology" ;
+  dcterms:title "NAWI Water Ontology" ;
+  dcterms:description "An ontology for describing water and wastewater treatment systems, built on ASHRAE Standard 223P." ;
+  dcterms:license <https://github.com/DataDrivenCPS/water-ontology/blob/main/LICENSE> ;
+  rdfs:seeAlso <https://watermetadata.org> ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
-  owl:imports <urn:nawi-water-ontology/equip> ;
-  owl:imports <urn:nawi-water-ontology/processtypes> ;
-  owl:imports <urn:nawi-water-ontology/substances> ;
-  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
+  owl:imports <https://watermetadata.org/ontology/modules/equipment> ;
+  owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
+  owl:imports <https://watermetadata.org/ontology/modules/substances> ;
+  owl:imports <https://watermetadata.org/ontology/modules/enumerationkinds> ;
   owl:imports sh: ;
 .
 

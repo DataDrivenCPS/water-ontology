@@ -1,5 +1,35 @@
 # NAWI Water Ontology
 
+## URIs and Versioning
+
+Terms live in a single, permanently unversioned namespace:
+
+```
+https://watermetadata.org/ontology/watr#Pump
+```
+
+A version identifies a *document*, never a term — the convention QUDT, Brick,
+and ASHRAE 223P all follow. `watr:Pump` means the same thing in every release,
+so upgrading the ontology never requires rewriting existing models.
+
+| Role | IRI |
+| --- | --- |
+| Term namespace (`watr:`) | `https://watermetadata.org/ontology/watr#` |
+| Published document, latest | `https://watermetadata.org/ontology/watr` |
+| Published document, versioned | `https://watermetadata.org/ontology/0.2/watr` |
+| Development modules (not published) | `https://watermetadata.org/ontology/modules/{equipment,processtypes,substances,enumerationkinds}` |
+
+The two published documents have identical term definitions. They differ only
+in their ontology IRI, `owl:versionIRI`, and the `rdfs:isDefinedBy` each term
+carries. Version numbers are two-part; patch-level fixes ship as an updated
+`latest` rather than a new versioned document.
+
+Terms are never renamed or re-namespaced when they change. Retire one with
+`owl:deprecated true` plus `dcterms:isReplacedBy` pointing at its successor.
+
+To cut a release, bump `ONTOLOGY_VERSION` in
+`scripts/compile-water-ontology.py` and the matching variable in the `Makefile`.
+
 ## Layout
 
 - `s223/` contains ontology files from the 223P ontology
@@ -20,9 +50,30 @@
 
 ## Building the Ontology
 
-Initialize the shared project environment with `make initialize-environment`,
-then build the ontology with `make libraries/water.ttl`. Both the compiler and
-test suite use the resulting repository-local `.ontoenv/` directory.
+Run `make build-ontology` to build the ontology, or `make test` to build and
+run the test suite. Neither needs a separate setup step: the OntoEnv
+environment in `.ontoenv/` is created on first use and then left alone.
+
+It only has to resolve the external dependencies (223P, QUDT, SHACL) — the
+compiler and the tests both read `water/` straight off disk — so editing a
+module never requires refreshing it. After updating `s223/`, run
+`uv run ontoenv update`, or delete `.ontoenv/` (`make clean`) to rebuild it.
+
+One compile emits both published documents:
+
+- `libraries/water.ttl` — the unversioned "latest" copy
+- `libraries/water-0.2.ttl` — the immutable versioned snapshot
+
+Only the modules under `water/` are merged. External dependencies (223P, QUDT,
+SHACL) stay as `owl:imports` on the published ontology rather than being copied
+in, so consumers resolve them at whatever version they already have. Loading the
+published document therefore requires an import resolver (OntoEnv, or
+BuildingMOTIF with 223P loaded alongside).
+
+Publishing means copying these to the site repo behind `watermetadata.org` as
+`/ontology/watr` and `/ontology/0.2/watr`. Note that GitHub Pages serves an
+extensionless file as `application/octet-stream`, so consumers may need to be
+told the format explicitly (`Graph().parse(url, format="turtle")`).
 
 ## BMotif Libraries and Template Documentation
 

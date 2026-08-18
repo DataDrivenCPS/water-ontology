@@ -13,7 +13,7 @@ from pathlib import Path
 from rdflib import Graph, URIRef
 from rdflib.namespace import RDF
 
-WATR_NS = "urn:nawi-water-ontology#"
+WATR_NS = "https://watermetadata.org/ontology/watr#"
 
 
 def collect_defined_terms(ontology_dir: Path) -> set[URIRef]:

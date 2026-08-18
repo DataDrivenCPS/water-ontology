@@ -4,13 +4,12 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix equip: <urn:nawi-water-ontology/equip#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/enumerationkinds>
+<https://watermetadata.org/ontology/modules/enumerationkinds>
     a owl:Ontology ;
     rdfs:label "NAWI Water EnumerationKinds Ontology" ;
     rdfs:comment "An ontology for enumerationkinds used in the NAWI project" ;

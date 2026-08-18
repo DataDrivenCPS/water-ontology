@@ -5,12 +5,11 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix equip: <urn:nawi-water-ontology/equip#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/processtypes>
+<https://watermetadata.org/ontology/modules/processtypes>
     a owl:Ontology ;
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
