@@ -1,10 +1,10 @@
 """Compile the development modules into the two published ontology documents.
 
-The five files under `water/` are development modules; they are never published.
+The five files under `ontology/` are development modules; they are never published.
 What ships is a single merged document, emitted twice:
 
-    libraries/water.ttl      IRI https://watermetadata.org/ontology/watr
-    libraries/water-0.2.ttl  IRI https://watermetadata.org/ontology/0.2/watr
+    build/water.ttl      IRI https://watermetadata.org/ontology/watr
+    build/water-0.2.ttl  IRI https://watermetadata.org/ontology/0.2/watr
 
 Only the water modules are merged. External dependencies (223P, QUDT, SHACL)
 stay as `owl:imports` on the published ontology, so consumers resolve them
@@ -34,12 +34,13 @@ VERSIONED_IRI = URIRef(f"{BASE}/{ONTOLOGY_VERSION}/watr")
 
 # The development modules are read straight off disk rather than through
 # ontoenv: ontoenv indexes the whole repository, so a previously compiled
-# libraries/water.ttl would shadow water/ontology.ttl and fold the entire
+# build/water.ttl would shadow ontology/ontology.ttl and fold the entire
 # external closure back into the next build.
-SOURCE_DIR = Path(__file__).resolve().parent.parent / "water"
+SOURCE_DIR = Path(__file__).resolve().parent.parent / "ontology"
 
-LATEST_PATH = "libraries/water.ttl"
-VERSIONED_PATH = f"libraries/water-{ONTOLOGY_VERSION}.ttl"
+BUILD_DIR = Path(__file__).resolve().parent.parent / "build"
+LATEST_PATH = "build/water.ttl"
+VERSIONED_PATH = f"build/water-{ONTOLOGY_VERSION}.ttl"
 
 
 def load_modules() -> tuple[rdflib.Graph, set[URIRef]]:
@@ -150,6 +151,7 @@ def build(iri: URIRef, path: str) -> None:
 
 
 def main() -> None:
+    BUILD_DIR.mkdir(exist_ok=True)
     build(LATEST_IRI, LATEST_PATH)
     build(VERSIONED_IRI, VERSIONED_PATH)
 

@@ -3,7 +3,7 @@ Check that every watr: term used in a directory of TTL files is defined in the
 water ontology.
 
 Usage:
-    python scripts/check_watr_terms.py <target-dir> [--ontology-dir water/]
+    python scripts/check_watr_terms.py <target-dir> [--ontology-dir ontology/]
 """
 
 import argparse
@@ -79,13 +79,13 @@ def main() -> None:
         "--ontology-dir",
         type=Path,
         default=None,
-        help="Directory containing the water ontology TTL files (default: <repo-root>/water/)",
+        help="Directory containing the water ontology TTL files (default: <repo-root>/ontology/)",
     )
     args = parser.parse_args()
 
     if args.ontology_dir is None:
-        # Default: water/ relative to this script's parent (the repo root)
-        args.ontology_dir = Path(__file__).parent.parent / "water"
+        # Default: ontology/ relative to this script's parent (the repo root)
+        args.ontology_dir = Path(__file__).parent.parent / "ontology"
 
     ontology_dir = args.ontology_dir.resolve()
     target_dir = args.target_dir.resolve()

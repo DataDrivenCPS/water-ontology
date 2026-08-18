@@ -32,13 +32,13 @@ To cut a release, bump `ONTOLOGY_VERSION` in
 
 ## Layout
 
+- `ontology/` contains our ontology source modules — edit these
+- `build/` contains the compiled ontology documents (generated, not tracked)
 - `s223/` contains ontology files from the 223P ontology
-- `water/` contains our ontology files
-- `libraries/` contains libraries and templates for building models
-    - `nrel-223p-templates` contains some generic templates for the 223P ontology
+- `libraries/` contains BuildingMOTIF libraries and templates for building models
     - `templates` contains some water-specific templates
+    - `nrel-223p-templates` contains some generic templates for the 223P ontology
     - `223p.ttl` is a recent copy of the 223P ontology
-    - `water.ttl` is the water ontology we are developing in this repository
 - `notebooks/` contains code showing how to build and query models.
 
 ## Development Setup
@@ -55,16 +55,16 @@ run the test suite. Neither needs a separate setup step: the OntoEnv
 environment in `.ontoenv/` is created on first use and then left alone.
 
 It only has to resolve the external dependencies (223P, QUDT, SHACL) — the
-compiler and the tests both read `water/` straight off disk — so editing a
+compiler and the tests both read `ontology/` straight off disk — so editing a
 module never requires refreshing it. After updating `s223/`, run
 `uv run ontoenv update`, or delete `.ontoenv/` (`make clean`) to rebuild it.
 
 One compile emits both published documents:
 
-- `libraries/water.ttl` — the unversioned "latest" copy
-- `libraries/water-0.2.ttl` — the immutable versioned snapshot
+- `build/water.ttl` — the unversioned "latest" copy
+- `build/water-0.2.ttl` — the immutable versioned snapshot
 
-Only the modules under `water/` are merged. External dependencies (223P, QUDT,
+Only the modules under `ontology/` are merged. External dependencies (223P, QUDT,
 SHACL) stay as `owl:imports` on the published ontology rather than being copied
 in, so consumers resolve them at whatever version they already have. Loading the
 published document therefore requires an import resolver (OntoEnv, or

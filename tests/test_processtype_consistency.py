@@ -26,7 +26,7 @@ from rdflib import Graph, Namespace, URIRef
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WATER_DIR = ROOT / "water"
+WATER_DIR = ROOT / "ontology"
 WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
 

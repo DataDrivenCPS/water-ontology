@@ -13,7 +13,7 @@ WATR = Namespace("https://watermetadata.org/ontology/watr#")
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
-WATER_DIR = ROOT / "water"
+WATER_DIR = ROOT / "ontology"
 S223_DIR = ROOT / "s223"
 
 

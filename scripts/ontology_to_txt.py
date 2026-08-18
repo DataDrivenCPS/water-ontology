@@ -191,13 +191,13 @@ def roles_to_txt(enumerationkinds_file):
 
 
 def main():
-    equipment = equipment_to_txt("water/equipment.ttl")
+    equipment = equipment_to_txt("ontology/equipment.ttl")
     print("\n--- Process Types ---\n")
-    processes = processtypes_to_txt("water/processtypes.ttl")
+    processes = processtypes_to_txt("ontology/processtypes.ttl")
     print("\n--- Roles ---\n")
-    roles = roles_to_txt("water/enumerationkinds.ttl")
+    roles = roles_to_txt("ontology/enumerationkinds.ttl")
     print("\n--- Substances ---\n")
-    substances = substance_to_txt("water/substances.ttl")
+    substances = substance_to_txt("ontology/substances.ttl")
 
 
     # Save to text file in compact format

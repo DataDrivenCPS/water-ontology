@@ -39,13 +39,13 @@ def get_md_description(g, title):
     return md_content
 
 # Write the Markdown content to a file
-g.parse('../water/equipment.ttl', format="turtle")
+g.parse('../ontology/equipment.ttl', format="turtle")
 with open("../docs/reference/equipment_documentation.md", "w") as f:
     g = rdflib.Graph()
-    g.parse('../water/equipment.ttl', format="turtle")
+    g.parse('../ontology/equipment.ttl', format="turtle")
     f.write(get_md_description(g, 'Equipment'))
 
 with open("../docs/reference/substances_documentation.md", "w") as f:
     g = rdflib.Graph()
-    g.parse('../water/enumerationkinds.ttl', format="turtle")
+    g.parse('../ontology/enumerationkinds.ttl', format="turtle")
     f.write(get_md_description(g, 'EnumerationKinds'))
