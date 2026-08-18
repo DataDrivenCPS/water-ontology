@@ -33,6 +33,7 @@ initialize-environment: $(ONTOENV_DIR)
 build-ontology: build/water.ttl build/water-$(ONTOLOGY_VERSION).ttl
 
 build/water.ttl: $(ONTOLOGY_SOURCES) scripts/compile-water-ontology.py
+	mkdir -p build
 	uv run scripts/compile-water-ontology.py
 
 # Written by the same compile as build/water.ttl, so it only needs its own
@@ -62,4 +63,4 @@ test: build-ontology | $(ONTOENV_DIR)
 clean:
 	rm -rf $(ONTOENV_DIR)
 	uv run jupyter-book clean docs
-	rm -f build/water.ttl build/water-$(ONTOLOGY_VERSION).ttl
+	rm -r build/

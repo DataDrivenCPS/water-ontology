@@ -34,7 +34,7 @@ VERSIONED_IRI = URIRef(f"{BASE}/{ONTOLOGY_VERSION}/watr")
 
 # The development modules are read straight off disk rather than through
 # ontoenv: ontoenv indexes the whole repository, so a previously compiled
-# build/water.ttl would shadow ontology/ontology.ttl and fold the entire
+# build/water.ttl would shadow ontology/watr.ttl and fold the entire
 # external closure back into the next build.
 SOURCE_DIR = Path(__file__).resolve().parent.parent / "ontology"
 
