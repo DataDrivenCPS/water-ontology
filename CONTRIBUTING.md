@@ -195,10 +195,20 @@ alphabetically adjacent:
 - `watr:Constituent-NaCl`, `watr:Constituent-Organics`
 - `watr:Coagulant-Alum`, `watr:Disinfectant-Ozone`, `watr:Water-Brine`
 
-**Every term needs a label and a definition.** A SHACL shape on `watr:Class`
-checks for `rdfs:label` (at warning severity, so validation will not fail, but
-do not rely on that). `rdfs:comment` or `skos:definition` explains what the term
-means and, where it is useful, how it differs from its siblings.
+**Every term needs a label and a definition — both are enforced.** The
+`watr:Class` shape requires an `rdfs:label` and an `rdfs:comment`. Both are
+violations, so a term missing either will fail `make test`.
+
+Use `rdfs:comment` for the definition. Say what the term means and, where useful, how it differs from its siblings.
+
+`watr:Class` is a **metaclass**, following `s223:Class`: terms are instances of
+it (`a watr:Class`), never subclasses of it. Keep it that way. SHACL gives a
+shape that is also an `rdfs:Class` an implicit target of every instance of
+itself *and of its subclasses*, so a single `rdfs:subClassOf watr:Class`
+anywhere in the hierarchy would silently extend these documentation rules to
+every instance in every user model (so a pump instance in a plant model would be asked for
+a definition). Water classes descend from the s223 hierarchy
+(`s223:Equipment`, `s223:Substance`, and so on), which is where they belong.
 
 A typical equipment class:
 

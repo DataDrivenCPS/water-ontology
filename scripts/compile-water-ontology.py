@@ -1,24 +1,37 @@
 """Compile the development modules into the two published ontology documents.
 
-The five files under `ontology/` are development modules; they are never published.
+The files under `ontology/` are development modules; they are never published.
 What ships is a single merged document, emitted twice:
 
-    build/water.ttl      IRI https://watermetadata.org/ontology/watr
-    build/water-0.2.ttl  IRI https://watermetadata.org/ontology/0.2/watr
+    build/watr.ttl      IRI https://watermetadata.org/ontology/watr
+    build/watr-0.2.ttl  IRI https://watermetadata.org/ontology/0.2/watr
 
-Only the water modules are merged. External dependencies (223P, QUDT, SHACL)
-stay as `owl:imports` on the published ontology, so consumers resolve them
-themselves rather than receiving a pinned copy baked into our distribution.
+Which modules get merged is decided by `owl:imports`, not by what happens to
+sit in the directory. The compile starts at `ontology/watr.ttl` and walks the
+import closure, keeping every graph whose IRI is under
+`https://watermetadata.org/ontology/`. A module is therefore included because
+something imports it: dropping a new .ttl into `ontology/` does nothing until
+`watr.ttl` (or a module it already reaches) imports it.
+
+Imports that leave that namespace -- 223P, QUDT, SHACL -- are not followed.
+They are re-declared as `owl:imports` on the published ontology, so consumers
+resolve them at whatever version they already have rather than receiving a
+pinned copy baked into our distribution.
 
 Both documents contain identical term definitions in the unversioned `watr:`
 namespace. Only the ontology IRI, `owl:versionIRI`, and the `rdfs:isDefinedBy`
 values differ, following QUDT's convention that a version identifies a document
 and never a term.
+
+Import resolution goes through OntoEnv, so the environment must be current:
+run `make build-ontology`, which refreshes it first, or `uv run ontoenv update`
+by hand.
 """
 
 from datetime import date
 from pathlib import Path
 
+import ontoenv
 import rdflib
 from rdflib import OWL, RDF, RDFS, Literal, URIRef
 from rdflib.namespace import DCTERMS, XSD
@@ -32,51 +45,85 @@ WATR = rdflib.Namespace(f"{BASE}/watr#")
 LATEST_IRI = URIRef(f"{BASE}/watr")
 VERSIONED_IRI = URIRef(f"{BASE}/{ONTOLOGY_VERSION}/watr")
 
-# The development modules are read straight off disk rather than through
-# ontoenv: ontoenv indexes the whole repository, so a previously compiled
-# build/water.ttl would shadow ontology/watr.ttl and fold the entire
-# external closure back into the next build.
-SOURCE_DIR = Path(__file__).resolve().parent.parent / "ontology"
+# Graphs under this prefix are ours: merged into the published document.
+# Anything else is an external dependency and stays an owl:imports.
+INTERNAL_PREFIX = f"{BASE}/"
 
-BUILD_DIR = Path(__file__).resolve().parent.parent / "build"
-LATEST_PATH = "build/water.ttl"
-VERSIONED_PATH = f"build/water-{ONTOLOGY_VERSION}.ttl"
-
-
-def load_modules() -> tuple[rdflib.Graph, set[URIRef]]:
-    """Merge every development module, and report the ontology IRIs they declare."""
-    graph = rdflib.Graph()
-    sources = sorted(SOURCE_DIR.glob("*.ttl"))
-    if not sources:
-        raise SystemExit(f"no ontology sources found in {SOURCE_DIR}")
-    for path in sources:
-        graph.parse(path, format="turtle")
-    internal = {
-        s for s in graph.subjects(RDF.type, OWL.Ontology) if isinstance(s, URIRef)
-    }
-    if LATEST_IRI not in internal:
-        raise SystemExit(f"{LATEST_IRI} is not declared in {SOURCE_DIR}")
-    return graph, internal
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BUILD_DIR = REPO_ROOT / "build"
+LATEST_PATH = "build/watr.ttl"
+VERSIONED_PATH = f"build/watr-{ONTOLOGY_VERSION}.ttl"
 
 
-def collect_external_imports(
-    graph: rdflib.Graph, internal: set[URIRef]
-) -> list[URIRef]:
-    """Return the non-water ontologies imported by the merged modules.
+def is_internal(iri: URIRef) -> bool:
+    return str(iri).startswith(INTERNAL_PREFIX)
 
-    Imports between water modules are an artifact of how the sources are split
-    up; once merged they mean nothing, so only external targets survive.
+
+def connect() -> ontoenv.OntoEnv:
+    """Open the OntoEnv environment, explaining how to create it if absent."""
+    try:
+        return ontoenv.OntoEnv.connect(str(REPO_ROOT), read_only=True)
+    except Exception as exc:  # noqa: BLE001 - surfaced verbatim below
+        raise SystemExit(
+            f"could not open the OntoEnv environment: {exc}\n"
+            "Run `make build-ontology`, or `uv run ontoenv update` to refresh it."
+        ) from exc
+
+
+def check_not_shadowed(env: ontoenv.OntoEnv) -> None:
+    """Fail loudly if a compiled artifact is standing in for the sources.
+
+    A published document declares the same ontology IRI as ontology/watr.ttl,
+    so an environment that indexes build/ will resolve the root to a previous
+    build and fold the whole external closure back in.
     """
-    return sorted(
-        {
-            o
-            for o in graph.objects(None, OWL.imports)
-            if isinstance(o, URIRef) and o not in internal
-        }
-    )
+    location = str(env.get_ontology(str(LATEST_IRI)).location)
+    if "/ontology/" not in location:
+        raise SystemExit(
+            f"{LATEST_IRI} resolves to {location}, not the sources in ontology/.\n"
+            "The environment is indexing a build artifact. Re-create it with "
+            "`make clean && make build-ontology`."
+        )
 
 
-def strip_module_metadata(graph: rdflib.Graph, internal: set[URIRef]) -> None:
+def walk_closure(env: ontoenv.OntoEnv) -> tuple[rdflib.Graph, list[URIRef], list[URIRef]]:
+    """Merge the internal import closure rooted at the published ontology.
+
+    Returns the merged graph, the internal IRIs that were merged, and the
+    external IRIs to re-declare as imports.
+    """
+    graph = rdflib.Graph()
+    merged: list[URIRef] = []
+    external: set[URIRef] = set()
+    queue = [LATEST_IRI]
+    seen: set[URIRef] = set()
+
+    while queue:
+        iri = queue.pop(0)
+        if iri in seen:
+            continue
+        seen.add(iri)
+        try:
+            module = env.copy_graph(str(iri))
+        except Exception as exc:  # noqa: BLE001 - surfaced verbatim below
+            raise SystemExit(
+                f"could not resolve {iri}, imported within the water ontology: {exc}\n"
+                "If you just added a module, run `uv run ontoenv update`."
+            ) from exc
+        graph += module
+        merged.append(iri)
+        for target in sorted(module.objects(None, OWL.imports)):
+            if not isinstance(target, URIRef):
+                continue
+            if is_internal(target):
+                queue.append(target)
+            else:
+                external.add(target)
+
+    return graph, merged, sorted(external)
+
+
+def strip_module_metadata(graph: rdflib.Graph, merged: list[URIRef]) -> None:
     """Drop the module ontology declarations and every `owl:imports` statement.
 
     The modules are an authoring convenience, not part of the published
@@ -85,7 +132,7 @@ def strip_module_metadata(graph: rdflib.Graph, internal: set[URIRef]) -> None:
     """
     for triple in list(graph.triples((None, OWL.imports, None))):
         graph.remove(triple)
-    for module in internal - {LATEST_IRI}:
+    for module in set(merged) - {LATEST_IRI}:
         for triple in list(graph.triples((module, None, None))):
             graph.remove(triple)
         for triple in list(graph.triples((None, None, module))):
@@ -136,24 +183,28 @@ def bind_prefixes(graph: rdflib.Graph) -> None:
     graph.bind("dcterms", DCTERMS)
 
 
-def build(iri: URIRef, path: str) -> None:
-    graph, internal = load_modules()
-    imports = collect_external_imports(graph, internal)
-    strip_module_metadata(graph, internal)
+def build(env: ontoenv.OntoEnv, iri: URIRef, path: str) -> None:
+    graph, merged, imports = walk_closure(env)
+    strip_module_metadata(graph, merged)
     add_ontology_header(graph, iri, imports)
     term_count = add_is_defined_by(graph, iri)
     bind_prefixes(graph)
     graph.serialize(path)
     print(f"{path}: {iri}")
     print(f"  {len(graph)} triples, {term_count} watr: terms")
+    for module in merged:
+        if module != LATEST_IRI:
+            print(f"  merged  {module}")
     for target in imports:
         print(f"  imports {target}")
 
 
 def main() -> None:
+    env = connect()
+    check_not_shadowed(env)
     BUILD_DIR.mkdir(exist_ok=True)
-    build(LATEST_IRI, LATEST_PATH)
-    build(VERSIONED_IRI, VERSIONED_PATH)
+    build(env, LATEST_IRI, LATEST_PATH)
+    build(env, VERSIONED_IRI, VERSIONED_PATH)
 
 
 if __name__ == "__main__":

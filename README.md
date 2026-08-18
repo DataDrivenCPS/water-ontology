@@ -52,23 +52,21 @@ To cut a release, bump `ONTOLOGY_VERSION` in
 
 Run `make build-ontology` to build the ontology, or `make test` to build and
 run the test suite. Neither needs a separate setup step: the OntoEnv
-environment in `.ontoenv/` is created on first use and then left alone.
-
-It only has to resolve the external dependencies (223P, QUDT, SHACL) — the
-compiler and the tests both read `ontology/` straight off disk — so editing a
-module never requires refreshing it. After updating `s223/`, run
-`uv run ontoenv update`, or delete `.ontoenv/` (`make clean`) to rebuild it.
+environment in `.ontoenv/` is created on first use, and refreshed
+(incrementally) before each compile.
 
 One compile emits both published documents:
 
-- `build/water.ttl` — the unversioned "latest" copy
-- `build/water-0.2.ttl` — the immutable versioned snapshot
+- `build/watr.ttl` — the unversioned "latest" copy
+- `build/watr-0.2.ttl` — the immutable versioned snapshot
 
-Only the modules under `ontology/` are merged. External dependencies (223P, QUDT,
-SHACL) stay as `owl:imports` on the published ontology rather than being copied
-in, so consumers resolve them at whatever version they already have. Loading the
-published document therefore requires an import resolver (OntoEnv, or
-BuildingMOTIF with 223P loaded alongside).
+Which modules get merged is driven by the `owl:imports` closure of
+`ontology/watr.ttl`, not by the directory listing — a module is included because
+something imports it. External dependencies (223P, QUDT, SHACL) are not
+followed; they stay as `owl:imports` on the published ontology rather than being
+copied in, so consumers resolve them at whatever version they already have.
+Loading the published document therefore requires an import resolver (OntoEnv,
+or BuildingMOTIF with 223P loaded alongside).
 
 Publishing means copying these to the site repo behind `watermetadata.org` as
 `/ontology/watr` and `/ontology/0.2/watr`. Note that GitHub Pages serves an

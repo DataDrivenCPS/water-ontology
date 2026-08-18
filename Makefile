@@ -2,46 +2,42 @@
 
 DOC_SOURCES := $(shell find docs -path 'docs/_build' -prune -o \( -name '*.md' -o -name '*.rst' -o -name '*.ipynb' \) -print)
 
-# Two-part version of the published ontology document; must match
-# ONTOLOGY_VERSION in scripts/compile-water-ontology.py.
-ONTOLOGY_VERSION := 0.2
-
 ONTOLOGY_SOURCES := $(wildcard ontology/*.ttl)
 
 ONTOENV_DIR := .ontoenv
 
 # --- ontology environment -------------------------------------------------
 
-# Built once, then left alone. The environment exists to resolve the external
-# dependencies (223P, QUDT, SHACL); the compile and the tests both read ontology/
-# straight off disk, so editing a module needs no refresh here. After updating
-# s223/, run `uv run ontoenv update` or delete the directory to rebuild it.
+# Created once here; `update-environment` below keeps it current. It resolves
+# both the external dependencies (223P, QUDT, SHACL) and the internal module
+# imports the compile walks.
 $(ONTOENV_DIR):
 	uv run ontoenv init ontology s223
 	uv run ontoenv config set offline true
 	uv run ontoenv config set remote_cache_ttl_secs 31536000
-	uv run ontoenv config add excludes 'build/water.ttl'
-	uv run ontoenv config add excludes 'build/water-*.ttl'
+	uv run ontoenv config add excludes 'build/*'
 
 initialize-environment: $(ONTOENV_DIR)
+
+# Refresh the environment from the sources. The compile resolves owl:imports
+# through OntoEnv, so a module added or re-pointed since the last run has to be
+# re-indexed before the closure is correct. `update` is incremental: it only
+# re-reads sources whose modification times changed.
+.PHONY: update-environment
+update-environment: | $(ONTOENV_DIR)
+	uv run ontoenv update --quiet
 
 # --- published ontology ---------------------------------------------------
 
 # One compile emits both published documents: the unversioned "latest" copy and
-# the immutable versioned snapshot. It reads ontology/ directly rather than going
-# through ontoenv, so it does not depend on the environment.
-build-ontology: build/water.ttl build/water-$(ONTOLOGY_VERSION).ttl
+# the immutable versioned snapshot. Which modules it merges is driven by the
+# owl:imports closure of ontology/watr.ttl, resolved through OntoEnv -- hence
+# the update-environment order-only prerequisite.
+build-ontology: build/watr.ttl
 
-build/water.ttl: $(ONTOLOGY_SOURCES) scripts/compile-water-ontology.py
+build/watr.ttl: $(ONTOLOGY_SOURCES) scripts/compile-water-ontology.py | update-environment
 	mkdir -p build
 	uv run scripts/compile-water-ontology.py
-
-# Written by the same compile as build/water.ttl, so it only needs its own
-# recipe when it has gone missing on its own.
-build/water-$(ONTOLOGY_VERSION).ttl: build/water.ttl
-	@test -f $@ || uv run scripts/compile-water-ontology.py
-
-# --- everything else ------------------------------------------------------
 
 install-jupyter-venv:
 	uv add ipykernel
@@ -63,4 +59,4 @@ test: build-ontology | $(ONTOENV_DIR)
 clean:
 	rm -rf $(ONTOENV_DIR)
 	uv run jupyter-book clean docs
-	rm -r build/
+	rm -rf build/

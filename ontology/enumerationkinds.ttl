@@ -517,6 +517,7 @@ watr:Role-Backwash
     a watr:Role-Backwash ;
     a sh:NodeShape ;
     rdfs:label "Role-Backwash" ;
+    rdfs:comment "A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -526,6 +527,7 @@ watr:Role-Drain
     a watr:Role-Drain ;
     a sh:NodeShape ;
     rdfs:label "Role-Drain" ;
+    rdfs:comment "A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance." ;
     rdfs:subClassOf s223:Role-Discharge ;
 .
 
@@ -535,6 +537,7 @@ watr:Role-NutrientRemoval
     a watr:Role-NutrientRemoval ; 
     a sh:NodeShape ;
     rdfs:label "Role-NutrientRemoval" ;
+    rdfs:comment "A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -544,6 +547,7 @@ watr:Role-NitrogenRemoval
     a watr:Role-NitrogenRemoval ; 
     a sh:NodeShape ;
     rdfs:label "Role-NitrogenRemoval" ;
+    rdfs:comment "A role for a process whose purpose is the removal of nitrogen species from water." ;
     rdfs:subClassOf s223:Role-NutrientRemoval ;
 .
 
@@ -554,6 +558,7 @@ watr:Role-PhosphorusRemoval
     a sh:NodeShape ;
     rdfs:subClassOf s223:Role-NutrientRemoval ;
     rdfs:label "Role-PhosphorusRemoval" ;
+    rdfs:comment "A role for a process whose purpose is the removal of phosphorus from water." ;
 .
 
 watr:Role-MakeUp 
@@ -562,6 +567,7 @@ watr:Role-MakeUp
     a watr:Role-Makeup ;
     a sh:NodeShape ;
     rdfs:label "MakeUp" ;
+    rdfs:comment "A role for a stream that adds water or chemical to replace losses and maintain volume or concentration." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -571,6 +577,7 @@ watr:Role-Feed
     a s223:Role-Feed ;
     a sh:NodeShape ;
     rdfs:label "Feed" ;
+    rdfs:comment "A role for a stream or vessel that supplies influent to a process." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -580,6 +587,7 @@ watr:Role-Permeate
     a watr:Role-Permeate ;
     a sh:NodeShape ;
     rdfs:label "Permeate" ;
+    rdfs:comment "A role for the stream that has passed through a membrane, as opposed to the retained concentrate." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
 
@@ -589,6 +597,7 @@ watr:Role-Storage
     a watr:Role-Storage ;
     a sh:NodeShape ;
     rdfs:label "Storage" ;
+    rdfs:comment "A role for a vessel that holds water or material for later use." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
 
@@ -598,6 +607,7 @@ watr:Role-Aerobic
     a watr:Role-Aerobic ;
     a sh:NodeShape ;
     rdfs:label "Aerobic" ;
+    rdfs:comment "A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -607,6 +617,7 @@ watr:Role-Anaerobic
     a watr:Role-Anaerobic ;
     a sh:NodeShape ;
     rdfs:label "Anaerobic" ;
+    rdfs:comment "A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -616,6 +627,7 @@ watr:Role-Anoxic
     a watr:Role-Anoxic ;
     a sh:NodeShape ;
     rdfs:label "Anoxic" ;
+    rdfs:comment "A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -625,6 +637,7 @@ watr:Role-Stabilization
     a watr:Role-Stabilization ;
     a sh:NodeShape ;
     rdfs:label "Stabilization" ;
+    rdfs:comment "A role for a process that reduces the biodegradability, odor, or pathogen content of solids." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -634,6 +647,7 @@ watr:Role-Equalization
     a watr:Role-Equalization ;
     a sh:NodeShape ;
     rdfs:label "Equalization" ;
+    rdfs:comment "A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -643,6 +657,7 @@ watr:Role-Detention
     a watr:Role-Detention ;
     a sh:NodeShape ;
     rdfs:label "Detention" ;
+    rdfs:comment "A role for a vessel that holds water for a defined period so that a treatment process can take place." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -652,6 +667,7 @@ watr:Role-Retention
     a watr:Role-Retention ;
     a sh:NodeShape ;
     rdfs:label "Retention" ;
+    rdfs:comment "A role for a vessel that holds water or solids for storage or continued settling." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -661,6 +677,7 @@ watr:Role-Containment
     a watr:Role-Containment ;
     a sh:NodeShape ;
     rdfs:label "Containment" ;
+    rdfs:comment "A role for a vessel or structure that holds material to prevent its release to the environment." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -670,6 +687,7 @@ watr:Role-Pretreatment
     a watr:Role-Pretreatment ;
     a sh:NodeShape ;
     rdfs:label "Pretreatment" ;
+    rdfs:comment "A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -679,6 +697,7 @@ watr:Role-Primary
     a watr:Role-Primary ;
     a sh:NodeShape ;
     rdfs:label "Primary" ;
+    rdfs:comment "A role for the first major treatment stage, typically removing settleable and floatable solids." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -688,6 +707,7 @@ watr:Role-Secondary
     a watr:Role-Secondary ;
     a sh:NodeShape ;
     rdfs:label "Secondary" ;
+    rdfs:comment "A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -697,6 +717,7 @@ watr:Role-Extended
     a watr:Role-Extended ;
     a sh:NodeShape ;
     rdfs:label "Extended" ;
+    rdfs:comment "A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -706,6 +727,7 @@ watr:Role-Stepfeed
     a watr:Role-Stepfeed ;
     a sh:NodeShape ;
     rdfs:label "Stepfeed" ;
+    rdfs:comment "A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -715,6 +737,7 @@ watr:Role-Tertiary
     a watr:Role-Tertiary ;
     a sh:NodeShape ;
     rdfs:label "Tertiary" ;
+    rdfs:comment "A role for treatment applied after secondary treatment to further improve effluent quality." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -724,6 +747,7 @@ watr:Role-SolidsHandling
     a watr:Role-SolidsHandling ;
     a sh:NodeShape ;
     rdfs:label "Solids handling (e.g., biosolids disposal)" ;
+    rdfs:comment "A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -733,6 +757,7 @@ watr:Role-Posttreatment
     a watr:Role-Posttreatment ;
     a sh:NodeShape ;
     rdfs:label "Posttreatment" ;
+    rdfs:comment "A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -742,5 +767,6 @@ watr:EnumerationKind-Runtime
     a s223:EnumerationKind-Runtime ;
     a sh:NodeShape ;
     rdfs:label "Runtime" ;
+    rdfs:comment "An enumeration kind describing the accumulated operating time of a piece of equipment." ;
     rdfs:subClassOf s223:EnumerationKind ;
 .

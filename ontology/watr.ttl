@@ -35,7 +35,13 @@ watr:Class
       sh:path rdfs:label ;
       rdfs:comment "A `Class` must be associated with at least one label using the relation `rdfs:label`." ;
       sh:minCount 1 ;
-      sh:severity sh:Warning ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:label." ;
+    ] ;
+  sh:property [
+      sh:path rdfs:comment ;
+      rdfs:comment "A `Class` must carry a human-readable definition using the relation `rdfs:comment`." ;
+      sh:minCount 1 ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:comment." ;
     ] ;
 .
 
@@ -43,7 +49,7 @@ watr:UnitProcess
     a rdfs:Class ;
     rdfs:label "Unit Process" ;
     rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
-    rdfs:subClassOf watr:Class, s223:Equipment ;
+    rdfs:subClassOf s223:Equipment ;
     sh:property [
       sh:path watr:hasProcess ;
       sh:minCount 1 ;

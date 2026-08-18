@@ -1,6 +1,5 @@
 from rdflib import Graph, Namespace, RDF, RDFS
 
-SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
 
 #list of equipment to skip : 
 skip_equip = [
@@ -97,9 +96,9 @@ def processtypes_to_txt(process_file):
     for cls in g.subjects(RDF.type, WATR.Class):
         cls_name = local_name(str(cls))
 
-        # definition (using skos:definition)
+        # definition (using rdfs:comment)
         definition = None
-        for c in g.objects(cls, SKOS.definition):
+        for c in g.objects(cls, RDFS.comment):
             definition = str(c)
             break
 
@@ -134,9 +133,9 @@ def substance_to_txt(substance_file):
     for cls in g.subjects(RDF.type, WATR.Class):
         cls_name = local_name(str(cls))
 
-        # definition (using skos:definition)
+        # definition (using rdfs:comment)
         definition = None
-        for c in g.objects(cls, SKOS.definition):
+        for c in g.objects(cls, RDFS.comment):
             definition = str(c)
             break
 
