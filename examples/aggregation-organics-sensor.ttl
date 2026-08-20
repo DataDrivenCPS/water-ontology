@@ -1,15 +1,15 @@
-@prefix : <urn:nawi-water-ontology/examples/aggregation-organics-sensor#> .
+@prefix : <https://watermetadata.org/ontology/examples/aggregation-organics-sensor#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/examples/aggregation-organics-sensor>
+<https://watermetadata.org/ontology/examples/aggregation-organics-sensor>
     a owl:Ontology ;
-    owl:imports <urn:nawi-water-ontology> ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
     rdfs:label "Aggregation Property Example" ;
     rdfs:comment "Example of a sensor observing an organics concentration property with a water-specific aggregation marker on the property." ;
 .

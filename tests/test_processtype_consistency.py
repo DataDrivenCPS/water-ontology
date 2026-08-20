@@ -26,8 +26,8 @@ from rdflib import Graph, Namespace, URIRef
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WATER_DIR = ROOT / "water"
-WATR = Namespace("urn:nawi-water-ontology#")
+WATER_DIR = ROOT / "ontology"
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
 
 CACHE = {}
@@ -44,7 +44,7 @@ def _qname(g: Graph, uri) -> str:
 def _find_equipments(g: Graph):
     """Return a set of all equipment classes."""
     q = """
-    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX watr: <https://watermetadata.org/ontology/watr#>
     PREFIX s223: <http://data.ashrae.org/standard223#>
     PREFIX sh: <http://www.w3.org/ns/shacl#>
 
@@ -66,7 +66,7 @@ def _find_process_of_equip(equip_cls: URIRef, g: Graph):
     or an ``sh:in`` list of alternatives).
     """
     q = """
-    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX watr: <https://watermetadata.org/ontology/watr#>
     PREFIX sh: <http://www.w3.org/ns/shacl#>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
@@ -92,7 +92,7 @@ def _find_process_of_equip(equip_cls: URIRef, g: Graph):
 def _find_equipment_class_ancestor_set(cls: URIRef, g: Graph):
     """Return the proper equipment superclasses of an equipment class."""
     q = """
-    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX watr: <https://watermetadata.org/ontology/watr#>
     PREFIX s223: <http://data.ashrae.org/standard223#>
     PREFIX sh: <http://www.w3.org/ns/shacl#>
 
@@ -109,7 +109,7 @@ def _find_equipment_class_ancestor_set(cls: URIRef, g: Graph):
 def _find_process_class_ancestor_set(cls: URIRef, g: Graph):
     """Return the superclasses of a process class, including the class itself."""
     q = """
-    PREFIX watr: <urn:nawi-water-ontology#>
+    PREFIX watr: <https://watermetadata.org/ontology/watr#>
 
     SELECT DISTINCT ?ancestor WHERE {
         ?cls rdfs:subClassOf* ?ancestor .
