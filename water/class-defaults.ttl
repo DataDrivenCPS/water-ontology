@@ -7,8 +7,19 @@
 <urn:nawi-water-ontology/class-defaults>
     a owl:Ontology ;
     rdfs:label "NAWI Water Class Defaults" ;
-    rdfs:comment "SHACL-AF rules that materialize an instance's process and treatment objective from the requirements of its class" ;
+    rdfs:comment "SHACL-AF rules that materialize an instance's process and treatment objective from the requirements of its class and from the processes it performs" ;
 .
+
+# Two rules, and they answer the two questions a model does not have to restate.
+#
+#   watr:ClassDefaultsRule       what does this class of equipment do, and what
+#                                is every unit of it built for?
+#   watr:ProcessObjectiveRule    what does performing this process always
+#                                achieve, whatever performs it?
+#
+# The first reads the class; the second reads the process. A chlorine contact
+# tank gets its objective from both, which is not a conflict: the same triple
+# arrives twice.
 
 # Typing something as a watr:GravityThickener already says it thickens by
 # settling -- that is what the class means. This rule writes those triples onto
@@ -72,6 +83,77 @@ watr:ClassDefaultsRule
                     $this ?pred ?existing .
                     ?existing rdfs:subClassOf* ?value .
                 }
+            }
+        """ ;
+    ] ;
+.
+
+# ---------------------------------------------------------------------------
+# The second rule: what a process achieves, wherever it is performed.
+#
+# Some processes always produce the same result, and say so with
+# watr:achievesTreatmentObjective -- denitrification always removes nitrogen,
+# chlorination always disinfects, digestion always stabilizes. The ontology
+# declares that only where the name of the process already names the result;
+# filtration, sedimentation and the membrane processes declare nothing, because
+# what they achieve depends on the unit.
+#
+#     ex:anoxicZone a watr:MixingBasin ;
+#         watr:hasProcess watr:Process-Denitrification .
+#
+#   becomes
+#
+#     ex:anoxicZone a watr:MixingBasin ;
+#         watr:hasProcess watr:Process-Mixing ;              # from MixingBasin
+#         watr:hasProcess watr:Process-Denitrification ;
+#         watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+#
+# This replaced a warning that fired when the model performed such a process and
+# did not state the objective. Deriving it is better than complaining about it:
+# the vocabulary already knows the answer, so a model that leaves it out is not
+# incomplete, and asking every modeler to copy it out was asking them to repeat
+# the ontology.
+#
+# Note what the rule does NOT do, which is the converse: it never infers a
+# process from a stated objective. Most objectives are not derivable from the
+# mechanism, which is the whole reason they are a separate axis. Sedimentation
+# serves clarification and thickening alike, so a clarifier's objective can only
+# be stated or inherited from its class, never worked out from what it does.
+#
+# Targeted by watr:hasProcess rather than by class, so that it reaches an
+# s223:System as well as equipment: a train carrying Process-A2O gets nitrogen
+# and phosphorus removal the same way its zones do. watr:ClassDefaultsRule
+# targets s223:Equipment, because only equipment has a class that requires
+# anything.
+#
+# The two rules compose because shifty runs rules to a fixed point: a bare
+# ex:tank a watr:ChlorinationUnit has no watr:hasProcess to target until the
+# first rule supplies Process-Chlorination, and this rule then sees it on the
+# next pass.
+#
+# No FILTER NOT EXISTS here, unlike the rule above. A class requirement is a
+# minimum, so a more specific stated value satisfies it and the default is
+# suppressed. An entailment is not a minimum: if the process achieves the
+# objective then the unit has it, and there is nothing for a stated value to
+# override.
+watr:ProcessObjectiveRule
+    a sh:NodeShape ;
+    rdfs:label "Objective from process" ;
+    rdfs:comment "Materializes watr:hasTreatmentObjective onto anything that performs a process which declares watr:achievesTreatmentObjective." ;
+    sh:targetSubjectsOf watr:hasProcess ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "Infer the treatment objective from the process performed" ;
+        sh:prefixes <urn:nawi-water-ontology> ;
+        # rdfs:subClassOf* so that a specific process inherits the entailment of
+        # its parent: Process-UCT declares nitrogen and phosphorus removal
+        # through Process-A2O, and organics removal through Process-ActivatedSludge
+        # above that.
+        sh:construct """
+            CONSTRUCT { $this watr:hasTreatmentObjective ?objective . }
+            WHERE {
+                $this watr:hasProcess ?process .
+                ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
             }
         """ ;
     ] ;

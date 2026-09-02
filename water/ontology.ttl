@@ -217,44 +217,20 @@ watr:targetsConstituent
     rdfs:comment "Relates a treatment objective to the constituent it removes, converts or controls. Inherited down the objective hierarchy: a child objective without one targets what its parent targets." ;
 .
 
-# The consumer of watr:achievesTreatmentObjective. If a process achieves a treatment objective wherever
-# it is performed, then equipment performing it has that objective whether or not
-# the model says so, and a model that leaves it unsaid is incomplete rather than
-# wrong -- hence a warning.
+# The consumer of watr:achievesTreatmentObjective is watr:ProcessObjectiveRule in
+# water/class-defaults.ttl, which copies the objective onto everything that
+# performs the process. A shape here used to warn instead, when a model
+# performed such a process and did not state the objective; deriving it is
+# better than complaining about it, since the vocabulary already knows the
+# answer and the modeler would only have been copying it out.
 #
-# The check runs in this direction only. The converse, requiring every stated
-# treatment objective to be achieved by some stated process, would be wrong: most treatment objectives
-# are not derivable from the mechanism, which is the whole reason they are a
-# separate axis. Sedimentation serves clarification and thickening alike, so
-# watr:achievesTreatmentObjective says nothing about it and a clarifier's objective can only
-# be stated, never inferred.
-watr:TreatmentObjectiveCompletenessShape
-    a sh:NodeShape ;
-    rdfs:label "Stated processes imply stated treatment objectives" ;
-    rdfs:comment "Warns when equipment performs a process that achieves a treatment objective the equipment does not state." ;
-    sh:targetSubjectsOf watr:hasProcess ;
-    sh:severity sh:Warning ;
-    sh:sparql [
-        a sh:SPARQLConstraint ;
-        sh:prefixes <urn:nawi-water-ontology> ;
-        sh:message "{$this} performs {?process}, which achieves treatment objective {?objective}, but does not state it. Add watr:hasTreatmentObjective {?objective}." ;
-        # A stated treatment objective related to the achieved one in either direction
-        # counts: more specific is a refinement, more general is entailed.
-        sh:select """
-            SELECT $this ?process ?objective
-            WHERE {
-                $this watr:hasProcess ?process .
-                ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
-                FILTER NOT EXISTS {
-                    $this watr:hasTreatmentObjective ?stated .
-                    { ?stated rdfs:subClassOf* ?objective }
-                    UNION
-                    { ?objective rdfs:subClassOf* ?stated }
-                }
-            }
-        """ ;
-    ] ;
-.
+# The entailment runs in this direction only. The converse, deriving a process
+# from a stated objective, would be wrong: most objectives are not derivable
+# from the mechanism, which is the whole reason they are a separate axis.
+# Sedimentation serves clarification and thickening alike, so
+# watr:achievesTreatmentObjective says nothing about it and a clarifier's
+# objective can only be stated or inherited from its class, never worked out
+# from what it does.
 
 # watr:hasProcess and watr:hasTreatmentObjective are only meaningful on something that can
 # perform a process. Expressed as a shape rather than rdfs:domain deliberately:

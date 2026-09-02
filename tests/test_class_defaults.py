@@ -1,4 +1,4 @@
-"""Materializing an instance's process and outcome from its class.
+"""Materializing an instance's process and objective, from its class and its process.
 
 ``water/class-defaults.ttl`` holds a SHACL-AF rule: typing something as a
 ``watr:GravityThickener`` already says it thickens by settling, so the rule
@@ -19,7 +19,11 @@ SH = Namespace("http://www.w3.org/ns/shacl#")
 WATR = Namespace("urn:nawi-water-ontology#")
 EX = Namespace("urn:defaults#")
 
-PREFIX = "@prefix watr: <urn:nawi-water-ontology#> .\n@prefix ex: <urn:defaults#> .\n"
+PREFIX = (
+    "@prefix watr: <urn:nawi-water-ontology#> .\n"
+    "@prefix s223: <http://data.ashrae.org/standard223#> .\n"
+    "@prefix ex: <urn:defaults#> .\n"
+)
 
 
 def _materialize(body: str, shapes: Graph) -> Graph:
@@ -90,6 +94,71 @@ def test_renamed_uv_unit_gets_both_axes(ontology_shapes_graph):
     out = _materialize("ex:uv a watr:UltravioletLightUnit .\n", ontology_shapes_graph)
     assert (EX.uv, WATR.hasProcess, WATR["Process-UVIrradiation"]) in out
     assert (EX.uv, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Disinfection"]) in out
+
+
+def test_the_objective_follows_from_the_process(ontology_shapes_graph):
+    """The second rule. A mixing basin only mixes as a class, so the modeler says
+    the plant runs this one to denitrify -- and nitrogen removal follows from
+    denitrification without anyone writing it."""
+    out = _materialize(
+        "ex:anoxic a watr:MixingBasin ;\n"
+        "    watr:hasProcess watr:Process-Denitrification .\n",
+        ontology_shapes_graph,
+    )
+    assert (EX.anoxic, WATR.hasProcess, WATR["Process-Mixing"]) in out
+    assert (
+        EX.anoxic,
+        WATR.hasTreatmentObjective,
+        WATR["TreatmentObjective-NitrogenRemoval"],
+    ) in out
+
+
+def test_nitrification_controls_ammonia_and_removes_no_nitrogen(ontology_shapes_graph):
+    """The distinction the entailments exist to keep. Nitrification oxidizes
+    ammonia to nitrate, which leaves the nitrogen in the water, so an aerobic
+    zone must not come out claiming nitrogen removal. The train it belongs to
+    does; the zone is found through its membership."""
+    out = _materialize(
+        "ex:aerobic a watr:AerationBasin ;\n"
+        "    s223:hasRole watr:Role-Aerobic ;\n"
+        "    watr:hasProcess watr:Process-Nitrification .\n",
+        ontology_shapes_graph,
+    )
+    assert set(out.objects(EX.aerobic, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-AmmoniaControl"]
+    }
+
+
+def test_the_two_rules_compose(ontology_shapes_graph):
+    """Nothing but a type, and two rules away from a complete unit.
+
+    A bare chlorine contact tank has no watr:hasProcess for the process rule to
+    target until the class rule supplies Process-Chlorination. The objective then
+    arrives by both routes at once -- from watr:DisinfectionUnit, and from
+    chlorination, which always disinfects -- and they agree.
+    """
+    out = _materialize("ex:contact a watr:ChlorinationUnit .\n", ontology_shapes_graph)
+    assert (EX.contact, WATR.hasProcess, WATR["Process-Chlorination"]) in out
+    assert set(out.objects(EX.contact, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-Disinfection"]
+    }
+
+
+def test_a_system_inherits_the_objectives_of_its_process(ontology_shapes_graph):
+    """A system has no equipment class, so the class rule reaches it with nothing.
+    The process rule targets watr:hasProcess instead, which a system carries, so a
+    train that claims A2O removes nitrogen and phosphorus -- and organics, through
+    Process-ActivatedSludge above it."""
+    out = _materialize(
+        "ex:train a s223:System ;\n"
+        "    watr:hasProcess watr:Process-A2O .\n",
+        ontology_shapes_graph,
+    )
+    assert set(out.objects(EX.train, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-NitrogenRemoval"],
+        WATR["TreatmentObjective-PhosphorusRemoval"],
+        WATR["TreatmentObjective-OrganicsRemoval"],
+    }
 
 
 def test_a_stated_specific_value_is_not_overridden(ontology_shapes_graph):

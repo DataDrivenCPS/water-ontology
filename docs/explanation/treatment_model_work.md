@@ -342,9 +342,18 @@ assisted RO — in case any of them restates it.
 required objective does not affect it, but `watr:Clarifier` inherits
 `SedimentationTank`'s permissions and should not need its own.
 
-## 5. Inference and validation
+## 5. Inference and validation — done
 
 *`water/class-defaults.ttl`, `water/ontology.ttl`. Described in sections 1a, 1b and 5.*
+
+The ordering worry in 5.1 turned out to be unfounded: `shifty.infer` runs
+SHACL-AF rules to a fixed point, so no `sh:order` was needed. A bare
+`watr:ChlorinationUnit` has no `watr:hasProcess` for the new rule to target
+until the class rule supplies `Process-Chlorination`, and the second pass
+picks it up. `tests/test_class_defaults.py` pins that, along with the system
+case and the nitrification-is-not-nitrogen-removal case. Every inference
+section 9 predicts was checked against the built ontology by hand before the
+tests were written.
 
 5.1. **Add the process-to-objective rule.** Sections 1b and 5 treat the
 objective of a process as inherited, and section 9's expected output has the

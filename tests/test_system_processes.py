@@ -18,6 +18,13 @@ Two pieces of machinery support that, both in ``water/ontology.ttl``:
     warns when a system claims a compound process (``Process-MLE``, the
     Bardenphos) but nothing inside it performs one of the constituent steps
     recorded by ``watr:includesProcess``.
+
+and one rule, in ``water/class-defaults.ttl``:
+
+``watr:ProcessObjectiveRule``
+    copies the ``watr:achievesTreatmentObjective`` of a process onto everything
+    that performs it, equipment and systems alike. A train carrying
+    ``Process-A2O`` removes nitrogen and phosphorus without the model saying so.
 """
 
 import pytest
@@ -27,6 +34,7 @@ from rdflib import Graph, Namespace, RDFS
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 WATR = Namespace("urn:nawi-water-ontology#")
+EX = Namespace("urn:systest#")
 
 PREFIX = (
     "@prefix watr: <urn:nawi-water-ontology#> .\n"
@@ -54,6 +62,16 @@ def _findings(data_ttl: str, shapes: Graph, shape) -> list[str]:
         str(report.value(r, SH.resultMessage))
         for r in report.subjects(SH.sourceShape, shape)
     ]
+
+
+def _materialized(data_ttl: str, shapes: Graph) -> Graph:
+    """The model as the rules leave it, which is what a query sees."""
+    data = Graph().parse(data=PREFIX + data_ttl, format="ttl")
+    return shifty.infer(data, shapes_graph=shapes).graph()
+
+
+def _objectives(graph: Graph, subject) -> set:
+    return set(graph.objects(subject, WATR.hasTreatmentObjective))
 
 
 # --- class-reference guard ---------------------------------------------------
@@ -521,47 +539,59 @@ def test_compound_process_is_not_a_subclass_of_its_own_steps(name, water_graph):
     )
 
 
-def test_stated_process_implies_stated_treatment_objective(ontology_shapes_graph):
-    """watr:achievesTreatmentObjective has a consumer: a machine that chlorinates disinfects,
-    whether or not the model says so."""
-    body = (
+def test_stated_process_implies_the_treatment_objective(ontology_shapes_graph):
+    """watr:achievesTreatmentObjective has a consumer: a machine that chlorinates
+    disinfects, whether or not the model says so, and watr:ProcessObjectiveRule
+    writes it down. This used to be a warning asking the modeler to write it."""
+    out = _materialized(
         "ex:doser a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-Chlorination .\n"
+        "    watr:hasProcess watr:Process-Chlorination .\n",
+        ontology_shapes_graph,
     )
-    msgs = _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)
-    assert any("Disinfection" in m for m in msgs), msgs
+    assert _objectives(out, EX.doser) == {WATR["TreatmentObjective-Disinfection"]}
 
 
-def test_stating_the_treatment_objective_silences_the_completeness_warning(
-    ontology_shapes_graph,
-):
-    body = (
+def test_stating_the_treatment_objective_changes_nothing(ontology_shapes_graph):
+    """A model that says what the vocabulary already knows is not penalised, and
+    the triple does not arrive twice: it is the same triple."""
+    out = _materialized(
         "ex:doser2 a watr:Pump ;\n"
         "    watr:hasProcess watr:Process-Chlorination ;\n"
-        "    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .\n"
+        "    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .\n",
+        ontology_shapes_graph,
     )
-    assert not _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)
+    assert _objectives(out, EX.doser2) == {WATR["TreatmentObjective-Disinfection"]}
 
 
-def test_completeness_accepts_a_more_general_treatment_objective(ontology_shapes_graph):
-    """Denitrification achieves nitrogen removal; a system claiming the broader
-    nutrient removal has not contradicted it."""
-    body = (
+def test_a_stated_general_objective_keeps_the_entailed_specific_one(
+    ontology_shapes_graph,
+):
+    """Denitrification achieves nitrogen removal. A plant claiming the broader
+    nutrient removal has not contradicted that, and both survive: the rule adds
+    rather than replaces, unlike the class defaults, because an entailment is not
+    a minimum for a stated value to satisfy."""
+    out = _materialized(
         "ex:zone a watr:Pump ;\n"
         "    watr:hasProcess watr:Process-Denitrification ;\n"
-        "    watr:hasTreatmentObjective watr:TreatmentObjective-NutrientRemoval .\n"
+        "    watr:hasTreatmentObjective watr:TreatmentObjective-NutrientRemoval .\n",
+        ontology_shapes_graph,
     )
-    assert not _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)
+    assert _objectives(out, EX.zone) == {
+        WATR["TreatmentObjective-NutrientRemoval"],
+        WATR["TreatmentObjective-NitrogenRemoval"],
+    }
 
 
-def test_context_dependent_treatment_objective_is_not_demanded(ontology_shapes_graph):
+def test_context_dependent_treatment_objective_is_not_inferred(ontology_shapes_graph):
     """Sedimentation serves clarification and thickening alike, so it declares no
-    watr:achievesTreatmentObjective and nothing may be inferred from it."""
-    body = (
+    watr:achievesTreatmentObjective and nothing may be inferred from it. The
+    objective of a settling unit comes from its class or from the modeler."""
+    out = _materialized(
         "ex:settler a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation .\n"
+        "    watr:hasProcess watr:Process-Sedimentation .\n",
+        ontology_shapes_graph,
     )
-    assert not _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)
+    assert _objectives(out, EX.settler) == set()
 
 
 @pytest.mark.parametrize(
@@ -576,16 +606,18 @@ def test_context_dependent_treatment_objective_is_not_demanded(ontology_shapes_g
 def test_membrane_method_does_not_imply_a_universal_treatment_objective(
     process, ontology_shapes_graph
 ):
-    """Pore-size/process terms are mechanisms, not complete treatment claims.
+    """Pore-size and process terms are mechanisms, not complete treatment claims.
 
-    A class such as ReverseOsmosisMembrane can still require desalination, but a
-    bare process assertion must not invent an objective that depends on the
-    unit's design or the plant's intended service.
+    A bare process assertion must not invent an objective that depends on the
+    unit's design or the plant's intended service. Reverse osmosis desalinates
+    seawater at one plant and removes PFAS from groundwater at another, and no
+    equipment class pins it either -- see watr:ReverseOsmosisMembrane.
     """
-    body = f"ex:unit a watr:Pump ; watr:hasProcess watr:{process} .\n"
-    assert not _findings(
-        body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape
+    out = _materialized(
+        f"ex:unit a watr:Pump ; watr:hasProcess watr:{process} .\n",
+        ontology_shapes_graph,
     )
+    assert _objectives(out, EX.unit) == set()
 
 
 def test_no_process_slot_uses_qualified_value_shapes_disjoint(water_graph):
