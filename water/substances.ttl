@@ -16,30 +16,6 @@
     rdfs:comment "An ontology for water substances used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
-watr:Constituent-Metals
-  a watr:Class ;
-  a watr:Constituent-Metals ;
-  a sh:NodeShape ;
-  rdfs:comment "Constituent-Metals" ;
-  rdfs:label "Constituent-Metals" ;
-  rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Salt
-  a watr:Class ;
-  a watr:Constituent-Salt ;
-  a sh:NodeShape ;
-  rdfs:comment "Constituent-Salt" ;
-  rdfs:label "Constituent-Salt" ;
-  rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Salt-NaCl
-  a watr:Class ;
-  a watr:Salt-NaCl ;
-  a sh:NodeShape ;
-  rdfs:comment "Salt-NaCl" ;
-  rdfs:label "Salt-NaCl" ;
-  rdfs:subClassOf watr:Constituent-Salt ;
-.
 watr:Water-Seawater
   a watr:Class ;
   a watr:Water-Seawater ;
@@ -349,28 +325,24 @@ watr:HeavyMetalRemovalAgent-SodiumSulfide
   rdfs:label "Sodium Sulfide" ;
   rdfs:subClassOf watr:HeavyMetalRemovalAgent ;
 .
-watr:Constituent-Organics
-    a watr:Class ; 
-    a watr:Constituent-Organics ;
-    a sh:NodeShape ;
-    rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Organics" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Inorganics
-    a watr:Class ; 
-    a watr:Constituent-Inorganics ;
-    a sh:NodeShape ;
-    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Inorganics" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
+# --- constituents -----------------------------------------------------------
+#
+# What a treatment medium carries, and what a constituent-removal objective
+# targets with watr:targetsConstituent. Every term here is a subclass of
+# s223:Medium-Constituent; the water itself is s223:Constituent-H2O, from 223.
+#
+# The hierarchy is what makes a query for a parent return the children: a unit
+# whose objective targets Constituent-Nitrate answers a question about
+# Constituent-Nitrogen. Group by what a permit or a datasheet names, not by
+# chemistry -- hardness is calcium and magnesium together because that is the
+# thing softening removes.
+
 watr:Constituent-Particles
     a watr:Class ;
     a watr:Constituent-Particles ;
     a sh:NodeShape ;
     rdfs:comment "Particulate matter present as a constituent of a medium." ;
-    rdfs:label "Constituent-Particles" ;
+    rdfs:label "Particles" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-Solids
@@ -378,7 +350,7 @@ watr:Constituent-Solids
     a watr:Constituent-Solids ;
     a sh:NodeShape ;
     rdfs:comment "Solid material present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Solids" ;
+    rdfs:label "Solids" ;
     rdfs:subClassOf watr:Constituent-Particles ;
 .
 watr:Constituent-SuspendedSolids
@@ -386,8 +358,77 @@ watr:Constituent-SuspendedSolids
     a watr:Constituent-SuspendedSolids ;
     a sh:NodeShape ;
     rdfs:comment "Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid." ;
-    rdfs:label "Constituent-SuspendedSolids" ;
+    rdfs:label "Suspended Solids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
+.
+
+# Dissolved solids are a separate branch from particles, not a child of them:
+# what is dissolved passes a filter that retains what is suspended, which is why
+# the two are removed by different processes.
+watr:Constituent-DissolvedSolids
+    a watr:Class ;
+    a watr:Constituent-DissolvedSolids ;
+    a sh:NodeShape ;
+    rdfs:comment "Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids." ;
+    rdfs:label "Dissolved Solids" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Salt
+    a watr:Class ;
+    a watr:Constituent-Salt ;
+    a sh:NodeShape ;
+    rdfs:comment "Dissolved inorganic salt present as a constituent of a treatment medium. The constituent desalination removes." ;
+    rdfs:label "Salt" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Salt-NaCl
+    a watr:Class ;
+    a watr:Salt-NaCl ;
+    a sh:NodeShape ;
+    rdfs:comment "Sodium chloride dissolved in a treatment medium, the dominant salt in seawater and in most brackish sources." ;
+    rdfs:label "Sodium Chloride" ;
+    rdfs:subClassOf watr:Constituent-Salt ;
+.
+watr:Constituent-Hardness
+    a watr:Class ;
+    a watr:Constituent-Hardness ;
+    a sh:NodeShape ;
+    rdfs:comment "Calcium and magnesium dissolved in a treatment medium, taken together as one constituent because that is what a hardness measurement reports and what softening removes." ;
+    rdfs:label "Hardness" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Silica
+    a watr:Class ;
+    a watr:Constituent-Silica ;
+    a sh:NodeShape ;
+    rdfs:comment "Silica present as a constituent of a treatment medium, dissolved or colloidal. A scalant on membranes and in evaporators." ;
+    rdfs:label "Silica" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Sulfate
+    a watr:Class ;
+    a watr:Constituent-Sulfate ;
+    a sh:NodeShape ;
+    rdfs:comment "Sulfate present as a dissolved constituent of a treatment medium." ;
+    rdfs:label "Sulfate" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Metals
+    a watr:Class ;
+    a watr:Constituent-Metals ;
+    a sh:NodeShape ;
+    rdfs:comment "Metal species present as constituents of a treatment medium, dissolved or complexed." ;
+    rdfs:label "Metals" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+
+watr:Constituent-Organics
+    a watr:Class ;
+    a watr:Constituent-Organics ;
+    a sh:NodeShape ;
+    rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:label "Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-OrganicCarbon
     a watr:Class ;
@@ -397,12 +438,123 @@ watr:Constituent-OrganicCarbon
     rdfs:label "Organic Carbon" ;
     rdfs:subClassOf watr:Constituent-Organics ;
 .
-watr:Constituent-InorganicCarbon
+watr:Constituent-VolatileOrganicCompounds
     a watr:Class ;
-    a watr:Constituent-InorganicCarbon ;
+    a watr:Constituent-VolatileOrganicCompounds ;
     a sh:NodeShape ;
-    rdfs:comment "Inorganic carbon species present as constituents of a treatment medium." ;
-    rdfs:label "Inorganic Carbon" ;
+    rdfs:comment "Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not." ;
+    rdfs:label "Volatile Organic Compounds" ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+.
+watr:Constituent-PFAS
+    a watr:Class ;
+    a watr:Constituent-PFAS ;
+    a sh:NodeShape ;
+    rdfs:comment "Per- and polyfluoroalkyl substances present as constituents of a treatment medium." ;
+    rdfs:label "PFAS" ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+.
+
+# Nitrogen is the parent of the individual species because a permit limit is
+# written against total nitrogen, and because nitrification moves nitrogen
+# between the children without removing any of it.
+watr:Constituent-Nitrogen
+    a watr:Class ;
+    a watr:Constituent-Nitrogen ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together." ;
+    rdfs:label "Nitrogen" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Ammonia
+    a watr:Class ;
+    a watr:Constituent-Ammonia ;
+    a sh:NodeShape ;
+    rdfs:comment "Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Ammonia" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-Nitrite
+    a watr:Class ;
+    a watr:Constituent-Nitrite ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Nitrite" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-Nitrate
+    a watr:Class ;
+    a watr:Constituent-Nitrate ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Nitrate" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-OrganicNitrogen
+    a watr:Class ;
+    a watr:Constituent-OrganicNitrogen ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia." ;
+    rdfs:label "Organic Nitrogen" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+
+watr:Constituent-Phosphorus
+    a watr:Class ;
+    a watr:Constituent-Phosphorus ;
+    a sh:NodeShape ;
+    rdfs:comment "Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against." ;
+    rdfs:label "Phosphorus" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Phosphate
+    a watr:Class ;
+    a watr:Constituent-Phosphate ;
+    a sh:NodeShape ;
+    rdfs:comment "Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on." ;
+    rdfs:label "Phosphate" ;
+    rdfs:subClassOf watr:Constituent-Phosphorus ;
+.
+
+watr:Constituent-Pathogens
+    a watr:Class ;
+    a watr:Constituent-Pathogens ;
+    a sh:NodeShape ;
+    rdfs:comment "Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets." ;
+    rdfs:label "Pathogens" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Bacteria
+    a watr:Class ;
+    a watr:Constituent-Bacteria ;
+    a sh:NodeShape ;
+    rdfs:comment "Bacteria present as constituents of a treatment medium." ;
+    rdfs:label "Bacteria" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+watr:Constituent-Viruses
+    a watr:Class ;
+    a watr:Constituent-Viruses ;
+    a sh:NodeShape ;
+    rdfs:comment "Viruses present as constituents of a treatment medium." ;
+    rdfs:label "Viruses" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+watr:Constituent-Protozoa
+    a watr:Class ;
+    a watr:Constituent-Protozoa ;
+    a sh:NodeShape ;
+    rdfs:comment "Protozoa present as constituents of a treatment medium, including the cysts and oocysts that resist chlorination." ;
+    rdfs:label "Protozoa" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+
+watr:Constituent-ChlorineResidual
+    a watr:Class ;
+    a watr:Constituent-ChlorineResidual ;
+    a sh:NodeShape ;
+    rdfs:comment "Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own." ;
+    rdfs:label "Chlorine Residual" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-DissolvedOxygen
@@ -413,28 +565,20 @@ watr:Constituent-DissolvedOxygen
     rdfs:label "Dissolved Oxygen" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Ammonia
+watr:Constituent-InorganicCarbon
     a watr:Class ;
-    a watr:Constituent-Ammonia ;
+    a watr:Constituent-InorganicCarbon ;
     a sh:NodeShape ;
-    rdfs:comment "Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Ammonia" ;
+    rdfs:comment "Inorganic carbon species present as constituents of a treatment medium." ;
+    rdfs:label "Inorganic Carbon" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Nitrite
+watr:Constituent-Inorganics
     a watr:Class ;
-    a watr:Constituent-Nitrite ;
+    a watr:Constituent-Inorganics ;
     a sh:NodeShape ;
-    rdfs:comment "Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Nitrite" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Nitrate
-    a watr:Class ;
-    a watr:Constituent-Nitrate ;
-    a sh:NodeShape ;
-    rdfs:comment "Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Nitrate" ;
+    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:label "Inorganics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-NitrogenOxides
@@ -449,18 +593,11 @@ watr:Constituent-Cyanide
     a watr:Class ;
     a watr:Constituent-Cyanide ;
     a sh:NodeShape ;
-    rdfs:comment "Cyanide: A highly toxic chemical compound that can be harmful to aquatic life" ;
-    rdfs:label "Constituent Cyanide" ;
+    rdfs:comment "Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life." ;
+    rdfs:label "Cyanide" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Bacteria
-    a watr:Class ;
-    a watr:Constituent-Bacteria ;
-    a sh:NodeShape ;
-    rdfs:comment "Bacteria: Microscopic single-celled organisms that can be found in water" ;
-    rdfs:label "Constituent Bacteria" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
+
 watr:Sludge-MixedLiquor
     a watr:Class ;
     a watr:Sludge-MixedLiquor ;

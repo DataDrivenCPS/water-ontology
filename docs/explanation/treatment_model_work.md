@@ -62,11 +62,15 @@ to catch a term that some example or template still points at.
 | Is `watr:TreatmentObjective-pHControl` a rename of the existing `-pHAdjustment`, or a new parent above it? | step 2.2 | Rename. The design document's objective tree has pH Control with Neutralization under it and no pHAdjustment, so a rename reproduces the tree exactly. |
 | Which of the remaining class-level design objectives survive the "every unit of the class" rule? | step 4.3 | Proposed dispositions are in the table there. They need a sign-off, not a code change. |
 
-## 1. Constituents
+## 1. Constituents — done
 
 *`water/substances.ttl`. Described in section 7, constituents.*
 
-Objectives point at constituents, so this goes first.
+Objectives point at constituents, so this goes first. The three terms that
+sat at the top of the file, away from the rest, moved down into one
+constituent section with a header comment, so the whole hierarchy reads in
+one place. Nothing was dropped: every term the file defined before it still
+defines.
 
 1.1. Add fourteen terms, each `a watr:Class, a watr:Constituent-X, a sh:NodeShape` with `rdfs:label`, `rdfs:comment`, and `rdfs:subClassOf`, following the block at the end of the file:
 `DissolvedSolids`, `Hardness` (calcium and magnesium), `Silica`, `Sulfate`,
