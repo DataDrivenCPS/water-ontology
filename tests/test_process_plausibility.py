@@ -37,7 +37,7 @@ PLAUSIBLE = [
      "digesters are mixed"),
     ("AnaerobicDigester", ["AnaerobicDigestion", "GasTransfer"],
      "digesters draw off biogas"),
-    ("ChlorinationUnit", ["ChlorineDosing", "Mixing"],
+    ("ChlorinationUnit", ["Chlorination", "Mixing"],
      "contact basins mix"),
     ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Sedimentation"],
      "SBRs aerate and settle in successive phases"),
@@ -71,11 +71,11 @@ PLAUSIBLE = [
 ]
 
 IMPLAUSIBLE = [
-    ("ChlorinationUnit", ["ChlorineDosing", "ReverseOsmosis"],
+    ("ChlorinationUnit", ["Chlorination", "ReverseOsmosis"],
      "a chlorination unit does not do membrane separation"),
     ("Screen", ["Screening", "AnaerobicDigestion"],
      "a screen does not digest"),
-    ("MicrofiltrationUnit", ["Microfiltration", "ChlorineDosing"],
+    ("MicrofiltrationUnit", ["Microfiltration", "Chlorination"],
      "a microfiltration unit does not dose chlorine"),
     ("RapidSandFilter", ["RapidSandFiltration", "Crystallization"],
      "a sand filter does not crystallize"),

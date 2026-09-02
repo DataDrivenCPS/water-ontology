@@ -362,7 +362,7 @@ The separation is needed because neither relation between them is a hierarchy. O
 and one treatment objective is reached by several processes:
 
 ```ttl
-:chlorinationUnit   watr:hasProcess Process-ChlorineDosing ;
+:chlorinationUnit   watr:hasProcess Process-Chlorination ;
                     watr:hasTreatmentObjective TreatmentObjective-Disinfection .
 
 :uvUnit             watr:hasProcess Process-UVIrradiation ;
@@ -382,7 +382,7 @@ Where a process achieves the same thing wherever it is performed, the process ty
 
 ```ttl
 watr:Process-Denitrification  watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
-watr:Process-ChlorineDosing     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
+watr:Process-Chlorination     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
 watr:Process-MLE              watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 ```
 

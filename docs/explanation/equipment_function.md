@@ -64,7 +64,7 @@ Several processes can achieve the same treatment objective:
 ```ttl
 :chlorineContactor a watr:ChlorinationUnit ;
     watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
-    watr:hasProcess watr:Process-ChlorineDosing .
+    watr:hasProcess watr:Process-Chlorination .
 
 :uvUnit a watr:UltravioletLightUnit ;
     watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
@@ -81,7 +81,7 @@ When a process has the same treatment objective wherever it is performed, the pr
 is related to that treatment objective with `watr:achievesTreatmentObjective`:
 
 ```ttl
-watr:Process-ChlorineDosing
+watr:Process-Chlorination
     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
 
 watr:Process-Denitrification

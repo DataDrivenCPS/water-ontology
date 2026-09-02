@@ -491,7 +491,7 @@ watr:ChlorinationUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-ChlorineDosing ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Chlorination ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of ChlorinationUnit must have a Chlorination process." ;
     ] .
@@ -1481,9 +1481,9 @@ watr:GranularActivatedCarbonAdsorber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-GranularActivatedCarbon ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-GACFiltration ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of GranulatedActivatedCarbonAdsorber must have a GranularActivatedCarbon process." ;
+        sh:message "Instances of GranularActivatedCarbonAdsorber must have a GACFiltration process." ;
     ] ;
     sh:property [
         sh:path watr:hasTreatmentObjective ;

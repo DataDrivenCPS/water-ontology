@@ -20,7 +20,7 @@
 # how an entity serves within a
 # particular system. See docs/explanation/equipment_function.md.
 watr:Process a watr:Class, sh:NodeShape ;
-    rdfs:label "Water Process" ;
+    rdfs:label "Water Treatment Process" ;
     skos:definition "A physical, chemical, or biological activity performed by a piece of equipment or by a system." ;
     sh:property [
         sh:path rdfs:label ;
@@ -159,10 +159,17 @@ watr:Process-Adsorption a watr:Class, watr:Process-Adsorption ;
     skos:definition "A process by which substances bind to a surface." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-GranularActivatedCarbon a watr:Class, watr:Process-GranularActivatedCarbon ;
-    rdfs:label "Granular Activated Carbon (GAC)" ;
-    skos:definition "A process that uses an activated carbon filter to adsorb impurities from water." ;
-    rdfs:subClassOf watr:Process-Adsorption, watr:Process-Filtration .
+# Was Process-GranularActivatedCarbon, which named the medium rather than the
+# activity. Two parents, because both are true of it and a query for either
+# should return it: water passes through a granular bed, which is media
+# filtration, and the bed's medium takes contaminants onto its surface, which is
+# adsorption. What it removes -- organics at one plant, PFAS or a chlorine
+# residual at another -- is not fixed by either, so it declares no objective.
+watr:Process-GACFiltration a watr:Class, watr:Process-GACFiltration ;
+    rdfs:label "GAC Filtration" ;
+    skos:altLabel "Granular Activated Carbon" ;
+    skos:definition "Filtration through a bed of granular activated carbon, which retains particles as any granular medium does and adsorbs dissolved constituents onto the carbon's surface." ;
+    rdfs:subClassOf watr:Process-Adsorption, watr:Process-MediaFiltration .
 
 watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
     rdfs:label "Membrane Process" ;
@@ -216,10 +223,28 @@ watr:Process-Composting a watr:Class, watr:Process-Composting ;
     watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization, watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
-# Process-LandApplication and Process-Landfill were removed here, and step 3 of
-# the implementation plan puts them back: spreading and tipping are activities,
-# and the result they produce is watr:TreatmentObjective-BiosolidsDisposal, the
-# same one the incineration routes declare.
+# Spreading biosolids on a field and tipping them into a cell are activities, and
+# the result each produces is the same one: the biosolids are disposed of. So
+# they are processes that declare watr:TreatmentObjective-BiosolidsDisposal,
+# which is also what the two incineration routes and composting declare. They
+# were briefly objectives of their own -- TreatmentObjective-LandApplication and
+# -Landfill -- which put the route into the objective vocabulary and left the
+# activity with no name at all.
+#
+# Physical processes rather than chemical or biological ones: what happens is
+# that the material is moved and placed. Whatever degrades in the soil or the
+# cell afterwards is not what the plant does.
+watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
+    rdfs:label "Land Application" ;
+    skos:definition "Spreading treated biosolids on agricultural or reclamation land, where they serve as a soil amendment." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
+
+watr:Process-Landfilling a watr:Class, watr:Process-Landfilling ;
+    rdfs:label "Landfilling" ;
+    skos:definition "Placing treated biosolids in a landfill, whether in a dedicated cell or with municipal solid waste." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-ChemicalProcess a watr:Class, watr:Process-ChemicalProcess ;
     rdfs:label "Chemical Process" ;
@@ -253,19 +278,33 @@ watr:Process-UVIrradiation a watr:Class, watr:Process-UVIrradiation ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
 
-watr:Process-ChlorineDosing a watr:Class, watr:Process-ChlorineDosing ;
-    rdfs:label "Chlorine Dosing" ;
-    skos:definition "Dosing of chlorine or chlorine compounds into water." ;
+# Was Process-ChlorineDosing. Every simulator library and Metcalf & Eddy call
+# this chlorination, and the word covers the whole of it: the process is the dose
+# plus the contact time in which the chlorine reacts, not the metering alone. A
+# unit that dosed chlorine and gave it nowhere to react would not disinfect.
+watr:Process-Chlorination a watr:Class, watr:Process-Chlorination ;
+    rdfs:label "Chlorination" ;
+    skos:definition "Dosing chlorine or a chlorine compound into water and holding it long enough to react. Always disinfects, whatever else the plant wants from the residual it leaves." ;
     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection ;
     rdfs:subClassOf watr:Process-Dosing .
 
 # Process-Dechlorination was removed here. It named an objective, the way
 # Process-UVDisinfection did before the split, and it is the clearest case of one
 # treatment objective reached by several activities: dosing sulfite reduces the residual
-# (Process-Reduction, a Process-Dosing), activated carbon adsorbs and
-# catalyses it away (Process-Adsorption), and ultraviolet light photolyses it
+# (below), activated carbon adsorbs and catalyses it away
+# (Process-GACFiltration), and ultraviolet light photolyses it
 # (Process-UVIrradiation). None of those is dechlorination; all of them
 # dechlorinate. The objective is watr:TreatmentObjective-ChlorineResidualRemoval.
+#
+# Sulfite dosing is the one of the three that exists only to do this, so it is
+# also the only one that declares the objective. Carbon and ultraviolet light
+# each serve other ends in other units, and there the equipment or the modeler
+# says which.
+watr:Process-SulfiteDosing a watr:Class, watr:Process-SulfiteDosing ;
+    rdfs:label "Sulfite Dosing" ;
+    skos:definition "Metered addition of sulfur dioxide, sodium sulfite, bisulfite or metabisulfite, which reduces free and combined chlorine to chloride." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ChlorineResidualRemoval ;
+    rdfs:subClassOf watr:Process-Dosing .
 
 watr:Process-ThermalTreatment a watr:Class, watr:Process-ThermalTreatment ;
     rdfs:label "Thermal Treatment" ;

@@ -208,7 +208,7 @@ def test_process_types_declare_the_outcome_they_achieve(water_graph):
     for process, outcome in [
         ("Process-Denitrification", "TreatmentObjective-NitrogenRemoval"),
         ("Process-EnhancedBiologicalPhosphorusRemoval", "TreatmentObjective-PhosphorusRemoval"),
-        ("Process-ChlorineDosing", "TreatmentObjective-Disinfection"),
+        ("Process-Chlorination", "TreatmentObjective-Disinfection"),
         ("Process-UVIrradiation", "TreatmentObjective-Disinfection"),
         ("Process-Digestion", "TreatmentObjective-Stabilization"),
         ("Process-MLE", "TreatmentObjective-NitrogenRemoval"),
@@ -526,7 +526,7 @@ def test_stated_process_implies_stated_treatment_objective(ontology_shapes_graph
     whether or not the model says so."""
     body = (
         "ex:doser a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-ChlorineDosing .\n"
+        "    watr:hasProcess watr:Process-Chlorination .\n"
     )
     msgs = _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)
     assert any("Disinfection" in m for m in msgs), msgs
@@ -537,7 +537,7 @@ def test_stating_the_treatment_objective_silences_the_completeness_warning(
 ):
     body = (
         "ex:doser2 a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-ChlorineDosing ;\n"
+        "    watr:hasProcess watr:Process-Chlorination ;\n"
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .\n"
     )
     assert not _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveCompletenessShape)

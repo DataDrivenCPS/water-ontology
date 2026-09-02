@@ -219,9 +219,19 @@ Confirm it does, in `tests/test_validation.py`, and confirm the warning in 2.3
 fires when `watr:targetsConstituent` is left off. Described in section 1a,
 treatment objective.
 
-## 3. Processes
+## 3. Processes — done
 
 *`water/processtypes.ttl`. Described in sections 4 and 7.*
+
+One departure from 3.4 below: `Process-GACFiltration` keeps adsorption as a
+parent but takes `Process-MediaFiltration` in place of `Process-Filtration`,
+which is where the design document's tree puts GAC filtration. Media
+filtration is a filtration, so nothing that matched before stops matching.
+The step 3.6 reconciliation found no other gap: the twenty processes that
+declare an objective are exactly the twenty the design names, and the tree
+otherwise differs from section 7 only by carrying extra parents the document
+does not contradict — combustion is both physical and chemical, flocculation
+is both chemical and mixing, and so on.
 
 3.1. **Rename `Process-ChlorineDosing` to `Process-Chlorination`**, label
 "Chlorination". Widen the definition: the process is dosing plus contact time,
