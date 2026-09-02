@@ -723,12 +723,13 @@ watr:Filter
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter, watr:UnitProcess ;
+    # A subclass may narrow this slot to a specific filtration process. One
+    # such process satisfies both this slot and the subclass's own.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
-        sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
+        sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Filter must have the Filtration process." ;
     ] .
 
@@ -738,12 +739,13 @@ watr:ReverseOsmosisMembrane
     rdfs:label "Reverse Osmosis Membrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter ;
+    # Process-ReverseOsmosis is a Process-Filtration, so one value satisfies
+    # both this slot and the one inherited from watr:Filter.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ];
-        sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
+        sh:qualifiedMaxCount 1 ;
         sh:message "Instances of ReverseOsmosisMembrane must have the ReverseOsmosis process." ;
     ] .
 

@@ -39,35 +39,70 @@ watr:Salt-NaCl
   rdfs:label "Salt-NaCl" ;
   rdfs:subClassOf watr:Constituent-Salt ;
 .
-watr:Water-Seawater 
+watr:Water-Seawater
   a watr:Class ;
   a watr:Water-Seawater ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Seawater" ;
+  rdfs:comment "Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Seawater" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
+    ] ;
 .
-watr:Water-Freshwater 
+watr:Water-Freshwater
   a watr:Class ;
   a watr:Water-Freshwater ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Freshwater" ;
+  rdfs:comment "Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Freshwater" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
 .
-watr:Water-Brackish 
+watr:Water-Brackish
   a watr:Class ;
   a watr:Water-Brackish ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Brackish" ;
+  rdfs:comment "Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Brackish" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
+    ] ;
 .
 watr:Water-Brine
   a watr:Class ;
   a watr:Water-Brine ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Brine" ;
+  rdfs:comment "Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Brine" ;
   rdfs:subClassOf s223:Fluid-Water;
   s223:composedOf [
@@ -75,12 +110,14 @@ watr:Water-Brine
       s223:ofConstituent watr:Salt-NaCl ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
     ] ;
 .
 
@@ -90,7 +127,10 @@ watr:Fluid-Sludge
   a sh:NodeShape ;
   rdfs:comment "A semi-solid slurry composed of water and solids." ;
   rdfs:label "Sludge" ;
-  rdfs:subClassOf s223:Mix-Fluid ;
+  # Sludge is an aqueous slurry: this lets equipment that accepts water-based
+  # fluids (for example, s223:Pump) retain the actual sludge medium on its
+  # connection points rather than substituting the less-specific Fluid-Water.
+  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;

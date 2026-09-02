@@ -92,6 +92,44 @@ You can see the connections (the `Pipe`s) and connection points in the image at 
 
 We use [`s223:mapsTo`](https://explore.open223.info/s223/mapsTo.html) to relate the connection points of internal equipment to the connection points of the containing equipment. This allows us to model the connections between the unit process and the equipment inside it, for example.
 
+### Media and Constituents
+
+A `ConnectionPoint` or `Connection` carries a *medium*, the substance flowing through it (e.g. water, a chemical, air). S223 decides whether two media are *compatible* (so a connection point and a connection can be joined, or two connection points on the same equipment can carry different streams) by comparing the *constituents* the media are `s223:composedOf`. Two pure media are compatible only if one is a subclass of the other; two mixture media are compatible when they share at least one constituent (either the same one, or one that is a subclass of the other).
+
+WaTr defines several aqueous media as subclasses of `s223:Fluid-Water`: `Water-Seawater`, `Water-Brackish`, `Water-Freshwater`, and `Water-Brine`. To make S223's compatibility rules recognize that these are all, fundamentally, water, each is declared `s223:composedOf` one or more constituents, sharing `s223:Constituent-H2O` with `s223:Fluid-Water` itself:
+
+```ttl
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+watr:Water-Seawater
+    rdfs:subClassOf s223:Fluid-Water ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent s223:Constituent-H2O ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] .
+```
+
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. This compatibility claim means only that the media share a compatible constituent; it does not say that their compositions are equivalent or check a material balance. `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content in this abstraction, while the saline media additionally declare `watr:Salt-NaCl`. The [`ro-mixture-test.ttl`](../../examples/ro-mixture-test.ttl) example shows the resulting seawater-feed, freshwater-permeate, brine-concentrate configuration validating.
+
+`watr:Fluid-Sludge` is likewise an aqueous medium: it is a `s223:Mix-Fluid` and a `s223:Fluid-Water`, so equipment that accepts water-based fluids (for example, `s223:Pump`) keeps the actual sludge medium on its connection points instead of substituting the less specific `Fluid-Water`.
+
+WaTr follows S223's self-enumerated medium pattern: a reusable medium designation is both a class and an instance of itself, and it is used directly as the value of `s223:hasMedium`. For a reusable salinity such as 15-percent brine, mint a more specific medium class, type it as itself, subclass it from `Water-Brine`, and assert its quantified composition directly. The [`brine-composition.ttl`](../../examples/brine-composition.ttl) example demonstrates this pattern.
+
+Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium does not acquire the `s223:composedOf` statements of `Water-Brine`; it must repeat every constituent needed to describe its own composition. The superclass organizes the medium vocabulary and participates in class compatibility, but it is not an RDF template that copies constituent properties to subclasses or ordinary instances.
+
 ## Processes
 
 Tr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
