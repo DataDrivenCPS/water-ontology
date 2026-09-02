@@ -10,37 +10,19 @@
 
 **Description:** A tank used for reaction or biological/chemical treatment processes
 
-**Superclass:** Tank
-
-## Reactor
-
-**Description:** A tank used for reaction or biological/chemical treatment processes
-
-**Superclass:** UnitProcess
+**Superclasses:** Tank, UnitProcess
 
 ## Separation Tank
 
 **Description:** A tank that has at least two outlets (e.g. overflow and underflow)
 
-**Superclass:** Tank
-
-## Separation Tank
-
-**Description:** A tank that has at least two outlets (e.g. overflow and underflow)
-
-**Superclass:** UnitProcess
+**Superclasses:** Tank, UnitProcess
 
 ## SequencingBatchReactor
 
 **Description:** A type of activated sludge process for wastewater treatment
 
-**Superclass:** Reactor
-
-## SequencingBatchReactor
-
-**Description:** A type of activated sludge process for wastewater treatment
-
-**Superclass:** SeparationTank
+**Superclasses:** Reactor, SeparationTank
 
 ## PlugFlowReactor
 
@@ -94,13 +76,7 @@
 
 **Description:** A container to promote decomposition of organic waste
 
-**Superclass:** Reactor
-
-## Digester
-
-**Description:** A container to promote decomposition of organic waste
-
-**Superclass:** UnitProcess
+**Superclasses:** Reactor, UnitProcess
 
 ## Anaerobic Digester
 
@@ -154,25 +130,13 @@
 
 **Description:** An equipment used for separation
 
-**Superclass:** Equipment
-
-## Screen
-
-**Description:** An equipment used for separation
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Grit Chamber
 
 **Description:** A chamber used to remove grit from wastewater
 
-**Superclass:** Equipment
-
-## Grit Chamber
-
-**Description:** A chamber used to remove grit from wastewater
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Reservoir
 
@@ -202,25 +166,13 @@
 
 **Description:** An equipment that produces both electricity and heat from the same energy source
 
-**Superclass:** Equipment
-
-## Cogenerator
-
-**Description:** An equipment that produces both electricity and heat from the same energy source
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Boiler
 
 **Description:** A device for heating water
 
-**Superclass:** Boiler
-
-## Boiler
-
-**Description:** A device for heating water
-
-**Superclass:** UnitProcess
+**Superclasses:** Boiler, UnitProcess
 
 ## Conditioner
 
@@ -250,25 +202,13 @@
 
 **Description:** A unit used to remove water from solid material
 
-**Superclass:** Equipment
-
-## Dewatering Unit
-
-**Description:** A unit used to remove water from solid material
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Thickener
 
 **Description:** A device used to increase the solids concentration of a slurry
 
-**Superclass:** Equipment
-
-## Thickener
-
-**Description:** A device used to increase the solids concentration of a slurry
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Dissolved Air Flotation Thickener
 
@@ -298,13 +238,7 @@
 
 **Description:** A thickener that combines gravity separation with a belt system
 
-**Superclass:** BeltThickener
-
-## Gravity Belt Thickener
-
-**Description:** A thickener that combines gravity separation with a belt system
-
-**Superclass:** GravityThickener
+**Superclasses:** BeltThickener, GravityThickener
 
 ## Rotary Drum Thickener
 
@@ -328,13 +262,7 @@
 
 **Description:** An equipment used to remove impurities from liquids or gases
 
-**Superclass:** Filter
-
-## Filter
-
-**Description:** An equipment used to remove impurities from liquids or gases
-
-**Superclass:** UnitProcess
+**Superclasses:** Filter, UnitProcess
 
 ## Reverse Osmosis Membrane
 
@@ -370,19 +298,7 @@
 
 **Description:** A filter system that combines a membrane process like microfiltration with a biological reactor
 
-**Superclass:** Filter
-
-## Membrane Bioreactor
-
-**Description:** A filter system that combines a membrane process like microfiltration with a biological reactor
-
-**Superclass:** Reactor
-
-## Membrane Bioreactor
-
-**Description:** A filter system that combines a membrane process like microfiltration with a biological reactor
-
-**Superclass:** SeparationTank
+**Superclasses:** Filter, Reactor, SeparationTank
 
 ## Microfiltration Unit
 
@@ -424,49 +340,25 @@
 
 **Description:** A membrane that selectively allows ions to pass through while blocking other substances
 
-**Superclass:** Equipment
-
-## Ion Exchange Membrane
-
-**Description:** A membrane that selectively allows ions to pass through while blocking other substances
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Electrodialysis
 
 **Description:** A unit that uses electricity to drive ion movement through a membrane
 
-**Superclass:** Equipment
-
-## Electrodialysis
-
-**Description:** A unit that uses electricity to drive ion movement through a membrane
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Electrolyzer
 
 **Description:** An equipment that uses electricity to split liquids into constituent elements
 
-**Superclass:** Equipment
-
-## Electrolyzer
-
-**Description:** An equipment that uses electricity to split liquids into constituent elements
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Crystallizer
 
 **Description:** An equipment used to produce solid crystals from a solution
 
-**Superclass:** Equipment
-
-## Crystallizer
-
-**Description:** An equipment used to produce solid crystals from a solution
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Compressor
 
@@ -478,25 +370,13 @@
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
-**Superclass:** HeatExchanger
-
-## Evaporator
-
-**Description:** A device used to turn the liquid form of a substance into its gaseous form
-
-**Superclass:** UnitProcess
+**Superclasses:** HeatExchanger, UnitProcess
 
 ## Condenser
 
 **Description:** A device used to condense a gaseous substance back into a liquid
 
-**Superclass:** HeatExchanger
-
-## Condenser
-
-**Description:** A device used to condense a gaseous substance back into a liquid
-
-**Superclass:** UnitProcess
+**Superclasses:** HeatExchanger, UnitProcess
 
 ## Flow Sensor
 
@@ -688,13 +568,7 @@
 
 **Description:** A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization.
 
-**Superclass:** Equipment
-
-## Electro-Dialytic Crystallizer (EDC)
-
-**Description:** A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization.
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Electrode
 
@@ -724,13 +598,7 @@
 
 **Description:** A system that uses a solvent to selectively extract water from highly saline brines.
 
-**Superclass:** Equipment
-
-## Solvent Extraction System
-
-**Description:** A system that uses a solvent to selectively extract water from highly saline brines.
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Dimethyl Ether (DME) Recovery System
 
@@ -754,61 +622,31 @@
 
 **Description:** A filter that uses biological processes to remove contaminants.
 
-**Superclass:** Reactor
-
-## Biological Aerated Filter (BAF)
-
-**Description:** A filter that uses biological processes to remove contaminants.
-
-**Superclass:** Filter
+**Superclasses:** Filter, Reactor
 
 ## Electrocoagulation Unit
 
 **Description:** A unit that uses electrocoagulation for contaminant removal.
 
-**Superclass:** Equipment
-
-## Electrocoagulation Unit
-
-**Description:** A unit that uses electrocoagulation for contaminant removal.
-
-**Superclass:** Reactor
+**Superclasses:** Equipment, Reactor
 
 ## Ozonation Unit
 
 **Description:** A unit that uses ozone for water treatment.
 
-**Superclass:** Equipment
-
-## Ozonation Unit
-
-**Description:** A unit that uses ozone for water treatment.
-
-**Superclass:** Reactor
+**Superclasses:** Equipment, Reactor
 
 ## Granular Activated Carbon (GAC) Adsorber
 
 **Description:** A unit that uses granulated activated carbon to adsorb impurities from water.
 
-**Superclass:** Equipment
-
-## Granular Activated Carbon (GAC) Adsorber
-
-**Description:** A unit that uses granulated activated carbon to adsorb impurities from water.
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Grinder
 
 **Description:** Machine that shreds solid waste into tiny particles
 
-**Superclass:** Equipment
-
-## Grinder
-
-**Description:** Machine that shreds solid waste into tiny particles
-
-**Superclass:** UnitProcess
+**Superclasses:** Equipment, UnitProcess
 
 ## Gate
 
@@ -821,4 +659,3 @@
 **Description:** Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins
 
 **Superclass:** Gate
-
