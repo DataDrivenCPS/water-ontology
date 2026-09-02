@@ -263,7 +263,8 @@ The model rests on two distinctions. Each one separates two of the attributes in
           watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
       ```
 
-  - Test: if you can describe the term without saying what it removes or what it is for, it is a process. If the term names what is removed or what state the stream ends up in, it is a treatment objective. Section 4 applies this test to every contested term.
+  - The rule behind the split: a process can put out more than one stream, and the treatment objective names what the plant relies on the unit producing. Sometimes that is a choice of stream: a settling tank puts out a clarified overflow and a thickened underflow, and clarification or thickening says which one the plant uses. Sometimes it is a change to the one stream: disinfection says the plant relies on the water leaving with its pathogens inactivated. Either way, the process is a fact about the unit, and the objective is a fact about what the plant does with the output.
+  - Test: if you can describe the term without saying what it removes or what it is for, it is a process. If the term names what is removed, what state the stream ends up in, or which output stream the plant relies on, it is a treatment objective. Section 4 applies this test to every contested term.
 - **Where the treatment objective comes from.** A treatment objective has two possible origins, and the model treats them the same way.
   - Design intent: the equipment was built for this result. The equipment class supplies it, and the unit inherits it.
 
@@ -340,9 +341,10 @@ The model rests on two distinctions. Each one separates two of the attributes in
   - Solids removal, clarification, disinfection, thickening, dewatering, nitrogen removal, chlorine residual removal pass.
 - **Move test.** Does it change when the plant moves or reassigns the unit without rebuilding it? Then it is a **role**.
   - Primary and secondary, the commissioned oxygen regime, return and recirculation on a connection, storage and equalization duty pass.
-- **Tie-break.** Some words pass the change test but practitioners use them as process names. Keep the word as the objective. Give the mechanism its own name.
-  - Clarification is the objective. Sedimentation is the process.
+- **Tie-break.** Some words pass the change test but practitioners use them as process names. Keep the word as the objective. Give the mechanism its own name. The rule from section 2 decides: the process is a fact about the unit, and the objective is what the plant relies on the unit producing.
+  - Clarification is the objective. Sedimentation is the process. Every settling tank settles; only some plants rely on the overflow.
   - Softening is the objective. Chemical precipitation and ion exchange are the processes.
+  - An activity whose output the plant does not rely on as a product, such as backwashing, is a process with no objective.
 - **Entailment rule.** Some processes always produce the same result. For those, the ontology declares `watr:achievesTreatmentObjective` on the process, and every unit that performs the process inherits the objective. The ontology declares it only when the name of the process already names the result.
   - Examples that declare one: denitrification, nitrification, chlorination, sulfite dosing, UV irradiation, digestion, composting, EBPR, incineration, land application, landfilling, and the named activated-sludge configurations. Each always produces the same result.
   - Examples that declare none: filtration, membrane processes, chemical precipitation, adsorption, and sedimentation. Each produces different results in different units, so the class or the modeler supplies the objective.
@@ -424,8 +426,8 @@ Placement of the contested terms. Each entry gives:
   - Vocabulary: process, auxiliary, `watr:Process-Backwashing`, `watr:Process-AirScouring`
   - Parent in the hierarchy: `watr:Process-Cleaning`
   - Objective every unit inherits: none.
-  - Why: names an action, but a maintenance action, not treatment. Classes list it under `watr:mayAlsoPerform` so it raises no warning.
-  - Basis: source for "process," decision for "auxiliary." ISO 6107 defines air scour as a process[^iso6107]. Treating cleaning as auxiliary rather than treatment is our call.
+  - Why: names an action, so it is a process. It is auxiliary because the plant does not rely on its output as a product: backwash water goes back to the head of the plant. Classes list it under `watr:mayAlsoPerform` so it raises no warning.
+  - Basis: source for "process," rule for "auxiliary." ISO 6107 defines air scour as a process[^iso6107]. "Auxiliary" follows the rule in section 2: no output stream the plant relies on, so no objective.
 - **A2O aerobic zone and nitrogen removal**
   - Vocabulary: nothing new. The zone carries `watr:TreatmentObjective-AmmoniaControl`, inherited from nitrification, and is a member of a system that carries `watr:TreatmentObjective-NitrogenRemoval`, inherited from A2O.
   - Why: the zone nitrifies, which removes no nitrogen, so it must not carry nitrogen removal itself. The train's nitrogen removal depends on it, and system membership already says so. A query follows `s223:hasMember` to find it; section 9 shows the query.
@@ -749,7 +751,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "When thinking about things like `Thickening` it's unclear whether `Thickening` would be the process or the outcome (or both?)." Fletch, [issue comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#issuecomment-5299295592).
 
-**Answer.** Thickening is an objective. It names the state of the product, and sedimentation, flotation, centrifugation, and filtration all reach it. Basis: WEF lists thickening as a clarifier function next to clarification[^wef], and the CWNS data dictionary describes biosolids facilities as "designed to thicken"[^cwns]. Section 4.
+**Answer.** Thickening is an objective, for the same reason clarification is. A thickener settles, floats, spins, or filters; that is the process, and it is a fact about the unit. Every one of those processes puts out a liquid stream and a dense stream. Thickening says the plant relies on the dense stream. A gravity thickener and a primary clarifier perform the same process; they differ in which output the plant uses, and that is what the objective records. Basis: WEF lists thickening as a clarifier function next to clarification[^wef], and the CWNS data dictionary describes biosolids facilities as "designed to thicken"[^cwns]. Section 4.
 
 ### Objective hierarchy
 
@@ -781,7 +783,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "Reverse osmosis is not strictly for desalination, so I wouldn't infer that." Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3814228114). "I believe that RO can be used for resource recovery as well." Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3814891926).
 
-**Answer.** Adopted. The RO membrane class no longer carries desalination. Desalination is plant intent, written by the modeler. The Treatability Database lists RO against many contaminants[^tdb]. Section 2, section 4, and the RO example in section 6.
+**Answer.** Adopted, and the resource recovery point is the reason. Reverse osmosis is a fact about the membrane: pressure pushes water through and leaves solutes behind. It always puts out a permeate and a concentrate. Desalination says the plant relies on the permeate as low-salt water. PFAS removal says the plant relies on the permeate as PFAS-free water. Resource recovery says the plant relies on the concentrate. The membrane cannot know which, so the class carries no objective and the modeler writes it. The Treatability Database bears this out by listing RO against many contaminants[^tdb]. Section 2, section 4, and the RO example in section 6.
 
 ### Whether objectives can be trusted
 
@@ -791,7 +793,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "I could see this being a major issue because water treatment folks will assume that the process guarantees an outcome." Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3813826498). "Is `achievesTreatmentObjective` different than `hasTreatmentObjective`?" Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3814467830).
 
-**Answer.** The guarantee is now real for processes whose name names the result, and absent for the rest. Section 4, entailment rule. The two predicates are explained in section 1a: `achievesTreatmentObjective` sits on the process in the ontology; `hasTreatmentObjective` sits on the unit, and inference copies the first onto the second.
+**Answer.** The unit guarantees the process. The process guarantees the objective only when it has one product used one way. Denitrification sends nitrogen off as gas, so every unit that denitrifies removes nitrogen, and the ontology says so. Sedimentation puts out two streams, so the guarantee stops at the process, and the plant says which stream it relies on. Section 4, entailment rule. The two predicates are explained in section 1a: `achievesTreatmentObjective` sits on the process in the ontology; `hasTreatmentObjective` sits on the unit, and inference copies the first onto the second.
 
 > "Maybe components of a process (e.g. anoxic zone of an A2O process system) could indicate that they 'contribute to' an objective like nitrogen removal, even if that zone doesn't completely achieve it itself." Daly, [issue comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#issuecomment-5332011106).
 
@@ -809,7 +811,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "Recirculation is a bit tricky. It seems more like a Role applied to a connection stream rather than a Process." Daly, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3806523244). "Backwashing and recirculation seem to fit in a common category of 'features' applied to a piece of equipment." Daly, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3833343423). "Is backwashing really a process? Or an outcome?" Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3813919264).
 
-**Answer.** Recirculation on equipment is a role on the connection point, using the s223 return and recirculating roles. The process term stays because compound processes such as A2O list it as an included step. Backwashing is an auxiliary process under cleaning, allowed through `mayAlsoPerform`. Basis: decision for recirculation; ISO 6107 defines air scour as a process[^iso6107], and treating it as auxiliary is our call. Section 4 and section 7.
+**Answer.** Recirculation on equipment is a role on the connection point, using the s223 return and recirculating roles. The process term stays because compound processes such as A2O list it as an included step. Backwashing is a process, because it is something the filter does, and it has no objective, because the plant does not rely on its output as a product. It sits under cleaning and is allowed through `mayAlsoPerform`. Basis: decision for recirculation; ISO 6107 defines air scour as a process[^iso6107], and "no objective" follows the rule in section 2. Section 4 and section 7.
 
 ### Things the reviewers liked
 
