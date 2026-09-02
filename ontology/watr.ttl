@@ -1,21 +1,27 @@
 @prefix all: <http://data.ashrae.org/standard223/model/all#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology>
+<https://watermetadata.org/ontology/watr>
   a owl:Ontology ;
+  rdfs:label "NAWI Water Ontology" ;
+  dcterms:title "NAWI Water Ontology" ;
+  dcterms:description "An ontology for describing water and wastewater treatment systems, built on ASHRAE Standard 223P." ;
+  dcterms:license <https://github.com/DataDrivenCPS/water-ontology/blob/main/LICENSE> ;
+  rdfs:seeAlso <https://watermetadata.org> ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
-  owl:imports <urn:nawi-water-ontology/equip> ;
-  owl:imports <urn:nawi-water-ontology/processtypes> ;
-  owl:imports <urn:nawi-water-ontology/substances> ;
-  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
+  owl:imports <https://watermetadata.org/ontology/modules/equipment> ;
+  owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
+  owl:imports <https://watermetadata.org/ontology/modules/substances> ;
+  owl:imports <https://watermetadata.org/ontology/modules/enumerationkinds> ;
   owl:imports sh: ;
 .
 
@@ -29,7 +35,13 @@ watr:Class
       sh:path rdfs:label ;
       rdfs:comment "A `Class` must be associated with at least one label using the relation `rdfs:label`." ;
       sh:minCount 1 ;
-      sh:severity sh:Warning ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:label." ;
+    ] ;
+  sh:property [
+      sh:path rdfs:comment ;
+      rdfs:comment "A `Class` must carry a human-readable definition using the relation `rdfs:comment`." ;
+      sh:minCount 1 ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:comment." ;
     ] ;
 .
 
@@ -37,7 +49,7 @@ watr:UnitProcess
     a rdfs:Class ;
     rdfs:label "Unit Process" ;
     rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
-    rdfs:subClassOf watr:Class, s223:Equipment ;
+    rdfs:subClassOf s223:Equipment ;
     sh:property [
       sh:path watr:hasProcess ;
       sh:minCount 1 ;

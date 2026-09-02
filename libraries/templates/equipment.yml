@@ -2,7 +2,7 @@ tank:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Tank ;
@@ -23,7 +23,7 @@ basin:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Basin ;
@@ -47,7 +47,7 @@ bladder:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Tank ;
@@ -66,7 +66,7 @@ valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Valve ;
@@ -85,7 +85,7 @@ filter:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Filter ;
@@ -103,7 +103,7 @@ membrane:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Membrane ;
@@ -122,7 +122,7 @@ membrane-module:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Equipment ;
@@ -146,7 +146,7 @@ pump:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Pump ;
@@ -164,7 +164,7 @@ check-valve:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:CheckValve ;
@@ -186,7 +186,7 @@ vfd:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:VariableFrequencyDrive ;
@@ -206,7 +206,7 @@ pump-with-vfd:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Pump ;
@@ -249,7 +249,7 @@ controller:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Controller ;
@@ -261,7 +261,7 @@ uf-unit:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:UltrafiltrationUnit ;
@@ -279,7 +279,7 @@ uv-reactor:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:UltravioletLightUnit ;
@@ -298,7 +298,7 @@ contact-chamber:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:DisinfectionUnit ;
@@ -317,7 +317,7 @@ sensor:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a s223:Sensor ;
@@ -331,7 +331,7 @@ concentration-sensor:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -350,7 +350,7 @@ flocculation-basin:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:FlocculationBasin ;
@@ -374,7 +374,7 @@ sedimentation-tank:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:SedimentationTank ;
@@ -394,7 +394,7 @@ filtration:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:Filter ;
@@ -413,7 +413,7 @@ disinfection-unit:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:DisinfectionUnit ;
@@ -433,7 +433,7 @@ chlorination-unit:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:ChlorinationUnit ;
@@ -453,7 +453,7 @@ rapid-sand-filter:
   body: >
     @prefix P: <urn:___param___#> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a watr:RapidSandFilter ;

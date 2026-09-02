@@ -4,14 +4,14 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/equip>
+<https://watermetadata.org/ontology/modules/equipment>
     a owl:Ontology ;
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    owl:imports <urn:nawi-water-ontology/processtypes> ;
+    owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
 .
 watr:Tank a sh:NodeShape ;
     a watr:Class ;
@@ -1121,7 +1121,7 @@ watr:TotalOrganicCompoundConcentrationSensor
     rdfs:subClassOf watr:ConcentrationSensor .
 
 watr:Valve 
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways." ;
     rdfs:label "Valve" ;
@@ -1129,7 +1129,7 @@ watr:Valve
 .
 
 watr:VariableFrequencyDrive
-    a s223:Class, sh:NodeShape ;
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity." ;
     rdfs:subClassOf s223:VariableFrequencyDrive ;
@@ -1137,7 +1137,7 @@ watr:VariableFrequencyDrive
 .
 
 watr:ThreeWayValve 
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A valve that features three ports (connections)" ;
     rdfs:label "Three Way Valve" ;
@@ -1145,7 +1145,7 @@ watr:ThreeWayValve
 .
 
 watr:CheckValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A valve that normally allows fluid (liquid or gas) to flow through it in only one direction" ;
     rdfs:label "Check Valve" ;
@@ -1153,7 +1153,7 @@ watr:CheckValve
 .
 
 watr:BallValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A valve which operates using a spherical ball with a hole (also known as a bore) through the middle." ;
     rdfs:label "Ball Valve" ;
@@ -1161,7 +1161,7 @@ watr:BallValve
 .
 
 watr:ButterflyValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids" ;
     rdfs:label "Butterfly Valve" ;
@@ -1169,7 +1169,7 @@ watr:ButterflyValve
 .
 
 watr:GlobeValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow" ;
     rdfs:label "Globe Valve" ;
@@ -1177,7 +1177,7 @@ watr:GlobeValve
 .
 
 watr:PlugValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:comment "A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve" ;
     rdfs:label "Plug Valve" ;
@@ -1185,7 +1185,7 @@ watr:PlugValve
 .
 
 watr:AirReleaseValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:label "Air Release Valve" ;
     rdfs:comment "Valve for vent trapped air pockets" ;
@@ -1193,7 +1193,7 @@ watr:AirReleaseValve
 .
 
 watr:Controller 
-    a s223:Class, sh:NodeShape ;
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s." ;
     rdfs:label "Controller" ;
@@ -1399,7 +1399,7 @@ watr:Grinder
 .
 
 watr:Gate 
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:label "Gate" ;
     rdfs:comment "Tool to control water flow and isolate sections" ;
@@ -1407,7 +1407,7 @@ watr:Gate
 .
 
 watr:SluiceGate
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ; 
     a watr:Class ;
     rdfs:label "Sluice Gate" ;
     rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;

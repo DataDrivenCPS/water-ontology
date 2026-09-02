@@ -6,12 +6,12 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
 <urn:example/brine-composition>
     a owl:Ontology ;
     rdfs:label "Brine Composition Example" ;
-    owl:imports <urn:nawi-water-ontology> ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
 .
 
 :Brine-15Percent

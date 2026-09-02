@@ -10,7 +10,7 @@ constituent-salt
 
            @prefix P: <urn:___param___#> .
            @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <urn:nawi-water-ontology#> .
+           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
            @prefix ns3: <http://qudt.org/schema/qudt/> .
            
            P:name a ns1:QuantifiableProperty ;
@@ -32,7 +32,7 @@ constituent-salt
             P:name a ns1:QuantifiableProperty ;
                 ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassFraction> ;
                 ns1:hasValue P:value ;
-                ns1:ofConstituent <urn:nawi-water-ontology#Constituent-NaCl> ;
+                ns1:ofConstituent <https://watermetadata.org/ontology/watr#Constituent-NaCl> ;
                 ns2:hasUnit ns2:PERCENT .
 
 
@@ -75,7 +75,7 @@ Graph Visualization
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>MassFraction</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/MassFraction' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/MassFraction</font></td></tr></table> >];
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>value</B></td></tr><tr><td href='urn:___param___#value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#value</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/schema/qudt/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/schema/qudt/PERCENT</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='urn:nawi-water-ontology#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Constituent-NaCl</font></td></tr></table> >];
+            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Constituent-NaCl</font></td></tr></table> >];
             }
             
 
@@ -95,6 +95,6 @@ Graph Visualization
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>value</B></td></tr><tr><td href='urn:___param___#value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#value</font></td></tr></table> >];
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableProperty</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/schema/qudt/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/schema/qudt/PERCENT</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='urn:nawi-water-ontology#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Constituent-NaCl</font></td></tr></table> >];
+            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Constituent-NaCl</font></td></tr></table> >];
             }
             
