@@ -42,6 +42,8 @@ jobs:
         run: uv python install
       - name: Install the project
         run: uv sync --all-extras --dev
+      - name: Generate reference documentation
+        run: make reference-docs
       - name: build docs
         run: |
           # need to build twice for now...
