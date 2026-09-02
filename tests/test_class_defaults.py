@@ -35,6 +35,57 @@ def test_process_and_outcome_are_both_materialized(ontology_shapes_graph):
     assert (EX.gt, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Thickening"]) in out
 
 
+def test_the_settling_split_is_carried_by_the_subclasses(ontology_shapes_graph):
+    """A settling tank puts out a clarified overflow and a thickened underflow in
+    every tank; which one the plant relies on is what the subclass says.
+
+    watr:SedimentationTank carries the process and no objective, so a unit typed
+    with it settles and claims nothing about its product. The two subclasses
+    carry one objective each, and both inherit the process from the parent.
+    """
+    out = _materialize(
+        "ex:clarifier a watr:Clarifier .\n"
+        "ex:thickener a watr:GravityThickener .\n"
+        "ex:settler a watr:SedimentationTank .\n",
+        ontology_shapes_graph,
+    )
+    for unit in (EX.clarifier, EX.thickener, EX.settler):
+        assert (unit, WATR.hasProcess, WATR["Process-Sedimentation"]) in out
+
+    assert (
+        EX.clarifier,
+        WATR.hasTreatmentObjective,
+        WATR["TreatmentObjective-Clarification"],
+    ) in out
+    assert (
+        EX.thickener,
+        WATR.hasTreatmentObjective,
+        WATR["TreatmentObjective-Thickening"],
+    ) in out
+    assert not list(out.objects(EX.settler, WATR.hasTreatmentObjective))
+
+
+def test_the_generic_settler_takes_the_objective_the_modeler_states(ontology_shapes_graph):
+    """The modeler who knows the plant uses the underflow says so on the instance,
+    and the class adds nothing that would contradict it."""
+    out = _materialize(
+        "ex:settler a watr:SedimentationTank ;\n"
+        "    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening .\n",
+        ontology_shapes_graph,
+    )
+    assert list(out.objects(EX.settler, WATR.hasTreatmentObjective)) == [
+        WATR["TreatmentObjective-Thickening"]
+    ]
+
+
+def test_a_membrane_claims_no_objective(ontology_shapes_graph):
+    """Reverse osmosis desalinates seawater at one plant and removes PFAS from
+    groundwater at another, so the class supplies the process and stops there."""
+    out = _materialize("ex:ro a watr:ReverseOsmosisMembrane .\n", ontology_shapes_graph)
+    assert (EX.ro, WATR.hasProcess, WATR["Process-ReverseOsmosis"]) in out
+    assert not list(out.objects(EX.ro, WATR.hasTreatmentObjective))
+
+
 def test_renamed_uv_unit_gets_both_axes(ontology_shapes_graph):
     out = _materialize("ex:uv a watr:UltravioletLightUnit .\n", ontology_shapes_graph)
     assert (EX.uv, WATR.hasProcess, WATR["Process-UVIrradiation"]) in out

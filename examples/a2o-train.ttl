@@ -122,11 +122,13 @@ the source figure gives no pump or valve counts.""" ;
 .
 
 :clarifier
-    a watr:SedimentationTank ;
+    a watr:Clarifier ;
     rdfs:label "Secondary Clarifier" ;
     s223:hasRole watr:Role-Secondary ;
-    # Process-Sedimentation and TreatmentObjective-Clarification are supplied by the
-    # SedimentationTank class defaults (omitted).
+    # Process-Sedimentation comes from SedimentationTank and
+    # TreatmentObjective-Clarification from Clarifier, by class default (omitted).
+    # A watr:SedimentationTank would settle without saying which of its two
+    # products the plant uses; this one is here for the overflow.
     s223:hasConnectionPoint :clarifierInlet, :clarifierEffluentOutlet,
                              :clarifierRasOutlet, :clarifierWasOutlet ;
 .

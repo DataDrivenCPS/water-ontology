@@ -509,26 +509,48 @@ watr:UltravioletLightUnit
         sh:message "Instances of UltravioletLightUnit must have a UVDisinfection process." ;
     ] .
 
+# No treatment objective, deliberately. A settling tank puts out both a clarified
+# overflow and a thickened underflow, in every tank, every time. Sedimentation is
+# a fact about the vessel; which of the two products the plant relies on is a
+# fact about the plant, and the class cannot know it. It used to require
+# Clarification, which made every gravity thickener that inherited from here into
+# a clarifier as well.
+#
+# The modeler picks the subclass that matches the product -- watr:Clarifier for
+# the overflow, watr:GravityThickener for the underflow -- or types the unit with
+# this class and states the objective on the instance.
 watr:SedimentationTank
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Sedimentation Tank" ;
-    rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
+    rdfs:comment "A tank in which suspended solids settle out of the water under gravity, separating into a clarified overflow and a thickened underflow" ;
     rdfs:subClassOf watr:SeparationTank ;
-    # Clarification is what the tank is for; sedimentation is what it does. The
-    # same process serves a gravity thickener, whose objective is thickening, and
-    # the role -- primary, secondary -- says which stage this one serves.
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Clarification ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of SedimentationTank must have the Clarification treatment objective." ;
-    ] ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SedimentationTank must have a Sedimentation process." ;
+    ] .
+
+# The other half of the split. Every clarifier is built for the clarified
+# overflow, whatever stage it serves and whatever it settles by, so the objective
+# is on the class and no instance has to repeat it. Its counterpart is
+# watr:Thickener, built for the underflow, which carries Thickening the same way.
+#
+# Primary and secondary are roles, not classes: the same vessel moved from one
+# stage to the other keeps its process and its objective and changes only where
+# it sits.
+watr:Clarifier
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Clarifier" ;
+    rdfs:comment "A sedimentation tank operated for its clarified overflow, which passes to the next stage of treatment" ;
+    rdfs:subClassOf watr:SedimentationTank ;
+    sh:property [
+        sh:path watr:hasTreatmentObjective ;
+        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Clarification ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of Clarifier must have the Clarification treatment objective." ;
     ] .
 
 watr:SepticTank
@@ -821,21 +843,16 @@ watr:ReverseOsmosisMembrane
     rdfs:label "Reverse Osmosis Membrane" ;
     rdfs:comment "A membrane used for reverse osmosis" ;
     rdfs:subClassOf watr:Filter ;
+    # No treatment objective. The same membrane desalinates seawater at one plant
+    # and removes PFAS from groundwater at another, and the datasheet does not
+    # say which: the Treatability Database lists reverse osmosis against many
+    # contaminants, not only salts. So the objective is plant intent and the
+    # modeler states it -- Desalination, OrganicsRemoval, or both.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of ReverseOsmosisMembrane must have a ReverseOsmosis process." ;
-    ] ;
-    # An RO membrane rejects dissolved salts wherever it is installed, so the
-    # objective is on the datasheet rather than in the position. A membrane
-    # serving potable reuse also removes trace organics; that is an additional
-    # treatment objective on the instance, not a replacement for this one.
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Desalination ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of ReverseOsmosisMembrane must have the Desalination treatment objective." ;
     ] .
 
 watr:RotatingBiologicalContactor 
@@ -955,17 +972,13 @@ watr:NanofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Nanofiltration Unit" ;
-    rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
-    rdfs:subClassOf watr:Filter ;
-    # The comment already committed the class to softening; this states it where
-    # the model can check it. The process is Process-Filtration, inherited from
-    # watr:Filter -- NF has no process term of its own.
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Softening ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of NanofiltrationUnit must have the Softening treatment objective." ;
-    ] .
+    rdfs:comment "A membrane filter with a pore size between ultrafiltration and reverse osmosis, which rejects divalent ions and larger organic molecules while passing most monovalent salts" ;
+    # No treatment objective, for the reason watr:ReverseOsmosisMembrane has
+    # none, one pore size up: nanofiltration softens at one plant, removes colour
+    # and organics at another and rejects sulfate at a third, and the membrane is
+    # the same. Used to require Softening. The process is Process-Filtration,
+    # inherited from watr:Filter -- NF has no process term of its own.
+    rdfs:subClassOf watr:Filter .
 
 watr:MediaFiltrationUnit
     a  sh:NodeShape ;
@@ -973,21 +986,16 @@ watr:MediaFiltrationUnit
     rdfs:label "MediaFiltration Unit" ;
     rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
     rdfs:subClassOf watr:Filter ;
+    # No treatment objective. A media bed polishes for turbidity in a tertiary
+    # duty and removes solids in bulk elsewhere in the same plant, so the duty is
+    # what the plant assigns rather than what the bed is. Used to require
+    # TurbidityRemoval, which RapidSandFilter and SlowSandFilter inherited: a
+    # roughing filter ahead of a biological stage would have had to claim it.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of MediaFiltrationUnit must have at least one MediaFiltration process." ;
-    ] ;
-    # TreatmentObjective-TurbidityRemoval is the objective of polishing filtration, and a
-    # media bed is built for it. Inherited by RapidSandFilter and
-    # SlowSandFilter. Deliberately not stated on watr:Filter above: a membrane
-    # bioreactor's filter separates biomass and an RO membrane desalinates.
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-TurbidityRemoval ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of MediaFiltrationUnit must have the TurbidityRemoval treatment objective." ;
     ] .
 
 watr:RapidSandFilter
@@ -1029,19 +1037,16 @@ watr:ElectrodialysisUnit
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A unit that uses electricity to drive ion movement through a membrane" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    # No treatment objective. Driving ions across a membrane with an electric
+    # field is a family of separations, not one duty: the ontology already
+    # carries Electro-Dialytic Crystallization as a route to zero liquid
+    # discharge, and the same stack recovers acids and concentrates brine. Used
+    # to require Desalination, which is only the most common of those.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of ElectrodialysisUnit must have a Electrodialysis process." ;
-    ] ;
-    # TreatmentObjective-Desalination covers the electrical route as well as the membrane
-    # and thermal ones -- see its definition.
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Desalination ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of ElectrodialysisUnit must have the Desalination treatment objective." ;
     ] .
 
 watr:Electrolyzer
@@ -1479,17 +1484,16 @@ watr:GranularActivatedCarbonAdsorber
     rdfs:label "Granular Activated Carbon (GAC) Adsorber" ;
     rdfs:comment "A unit that uses granulated activated carbon to adsorb impurities from water." ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
+    # No treatment objective. The carbon takes up whatever it has affinity for,
+    # and the plant chooses the vessel for what it wants gone: organics at one
+    # plant, PFAS at another, a chlorine residual ahead of a membrane at a third.
+    # Used to require OrganicsRemoval, which was one duty of several stated as
+    # though it were the definition.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-GACFiltration ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of GranularActivatedCarbonAdsorber must have a GACFiltration process." ;
-    ] ;
-    sh:property [
-        sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-OrganicsRemoval ] ;
-        sh:qualifiedMinCount 1 ;
-        sh:message "Instances of GranularActivatedCarbonAdsorber must have the OrganicsRemoval treatment objective." ;
     ] .
 
 watr:Grinder

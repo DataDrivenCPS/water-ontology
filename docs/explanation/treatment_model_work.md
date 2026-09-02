@@ -276,9 +276,20 @@ EBPR, digestion, activated sludge, AO, MLE, A2O, UCT, and both Bardenphos.
 Nothing else declares one — in particular filtration, the membrane processes,
 chemical precipitation, adsorption and sedimentation must not.
 
-## 4. Equipment classes
+## 4. Equipment classes — done
 
 *`water/equipment.ttl`. Described in sections 1a, 2, 4 and 6.*
+
+The 4.3 audit was signed off with all four borderline classes dropping their
+objective, electrodialysis included: an electrodialysis stack desalinates,
+recovers acids and concentrates brine, and the ontology already carries
+Electro-Dialytic Crystallization as one of those routes. Ten classes still
+carry a design objective, the nine keeps below plus the new `watr:Clarifier`.
+4.5 needed no edit: `watr:Clarifier` reaches `watr:SeparationTank`'s
+recirculation permission and `watr:Tank`'s cleaning permission by
+inheritance. The secondary clarifier in `examples/a2o-train.ttl` was retyped
+here rather than in step 6, because its comment claimed a class default that
+this step removed.
 
 4.1. **Remove the clarification default from `watr:SedimentationTank`** (the
 `sh:property` block on `watr:hasTreatmentObjective` at lines 521–526, and the
