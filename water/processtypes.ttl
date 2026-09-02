@@ -216,9 +216,10 @@ watr:Process-Composting a watr:Class, watr:Process-Composting ;
     watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization, watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
-# Process-LandApplication and Process-Landfill were removed here: they named
-# where biosolids end up rather than an activity performed on them, so they are
-# watr:TreatmentObjective-LandApplication and watr:TreatmentObjective-Landfill in treatment objectives.ttl.
+# Process-LandApplication and Process-Landfill were removed here, and step 3 of
+# the implementation plan puts them back: spreading and tipping are activities,
+# and the result they produce is watr:TreatmentObjective-BiosolidsDisposal, the
+# same one the incineration routes declare.
 
 watr:Process-ChemicalProcess a watr:Class, watr:Process-ChemicalProcess ;
     rdfs:label "Chemical Process" ;
@@ -264,7 +265,7 @@ watr:Process-ChlorineDosing a watr:Class, watr:Process-ChlorineDosing ;
 # (Process-Reduction, a Process-Dosing), activated carbon adsorbs and
 # catalyses it away (Process-Adsorption), and ultraviolet light photolyses it
 # (Process-UVIrradiation). None of those is dechlorination; all of them
-# dechlorinate. The objective is watr:TreatmentObjective-Dechlorination.
+# dechlorinate. The objective is watr:TreatmentObjective-ChlorineResidualRemoval.
 
 watr:Process-ThermalTreatment a watr:Class, watr:Process-ThermalTreatment ;
     rdfs:label "Thermal Treatment" ;

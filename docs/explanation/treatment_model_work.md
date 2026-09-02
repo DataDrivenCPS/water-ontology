@@ -107,9 +107,21 @@ already do. *Not in the design document.*
 from `substances.ttl`, so none of these terms currently reach the published
 reference. Decide there whether to add a generator entry for `substances.ttl`.
 
-## 2. Treatment objectives
+## 2. Treatment objectives — done
 
 *`water/outcomes.ttl`, `water/ontology.ttl`. Described in sections 1a, 7 and 4.*
+
+Two things came out differently than written here. `watr:ConstituentRemovalTargetShape`
+skips nodes typed `watr:Class`, so it checks plant models and not this
+vocabulary's own terms: every term self-types, which makes
+`watr:TreatmentObjective-ConstituentRemoval` a target of the shape's own
+`sh:targetClass`, and the abstract parent of the branch names no constituent
+by design. That the named objectives all resolve to a constituent is checked
+in `tests/test_constituent_targets.py` instead, which is the new home of the
+2.5 tests — `test_validation.py` validates the ontology against itself and had
+no room for model-level cases. The comments in `processtypes.ttl` that named
+the deleted disposal objectives were updated here rather than in step 3, so
+that no comment outlives the term it points at.
 
 2.1. **Add five parents.** `TreatmentObjective-ConstituentRemoval`,
 `-DissolvedSolidsRemoval`, `-VolumeReduction`, `-pHControl`,
