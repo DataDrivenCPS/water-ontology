@@ -1,9 +1,10 @@
-# Treatment model: what is stated, inherited, and implied
+# Treatment model: what the ontology defines, what units inherit, what the modeler writes
 
 **Status:** design proposal, written after the review of PR #39. This document
 describes the model we intend to implement. The branch does not implement it
-yet. Everything in sections 1 through 7 is the target design, including class
-names, defaults, and inference rules that do not exist on the branch today.
+yet. Sections 1 through 7 and the example in section 9 are the target design,
+including class names, defaults, and inference rules that do not exist on the
+branch today.
 [treatment_model_work.md](treatment_model_work.md) lists what has to change on
 the branch to match this document.
 
@@ -97,7 +98,7 @@ A unit is one piece of treatment equipment in the plant: a specific clarifier, b
 - `s223:hasRole` → a [Role](#role). Where this unit sits in the plant's treatment train, or what duty the plant assigned to it.
   - *Inherited:* nothing. An equipment class cannot know how a plant commissioned a particular unit. The same sedimentation tank class serves as a primary clarifier in one plant and a secondary clarifier in another.
   - *Added by the modeler:* always, whenever the unit has a stage, an operating regime, or a duty worth recording.
-- There is no attribute for "helps with an objective it does not achieve alone." The aerobic zone of an A2O train nitrifies, which removes no nitrogen, yet the train's nitrogen removal depends on it. The model already records that: the zone is a member of a system whose objective is nitrogen removal. A query that wants "everything involved in nitrogen removal" follows system membership. See section 10.
+- There is no attribute for "helps with an objective it does not achieve alone." The aerobic zone of an A2O train nitrifies, which removes no nitrogen, yet the train's nitrogen removal depends on it. The model already records that: the zone is a member of a system whose objective is nitrogen removal. A query that wants "everything involved in nitrogen removal" follows system membership. See section 9.
 
 ### System
 
@@ -323,12 +324,12 @@ The model rests on two distinctions. Each one separates two of the attributes in
 
 ## 3. The four annotations on a unit
 
-| question | predicate | axis | who supplies it | vocabulary |
+| question | predicate | belongs to | who supplies it | vocabulary |
 |---|---|---|---|---|
-| What is it? | `rdf:type` | equipment | the modeler | `watr:*` equipment classes |
-| What does it do? | `watr:hasProcess` | intrinsic, mechanism | the class; the modeler when the class leaves a choice | `watr:Process-*` |
-| What is it for? | `watr:hasTreatmentObjective` | intrinsic (design) or plant intent | the class; the process; the modeler for plant intent | `watr:TreatmentObjective-*` |
-| Where does it sit? | `s223:hasRole` | contextual | the modeler, always | `watr:Role-*`, `s223:Role-*` |
+| What is it? | `rdf:type` | the unit | the modeler, always | `watr:*` equipment classes |
+| What does it do? | `watr:hasProcess` | the unit | inherited from the class; the modeler when the class leaves a choice | `watr:Process-*` |
+| What is it for? | `watr:hasTreatmentObjective` | the unit (design intent) or the plant (plant intent) | inherited from the class and from the process; the modeler for plant intent | `watr:TreatmentObjective-*` |
+| Where does it sit? | `s223:hasRole` | the plant | the modeler, always | `watr:Role-*`, `s223:Role-*` |
 
 ## 4. Three tests for placing a term
 
@@ -342,15 +343,15 @@ The model rests on two distinctions. Each one separates two of the attributes in
   - Clarification is the objective. Sedimentation is the process.
   - Softening is the objective. Chemical precipitation and ion exchange are the processes.
 - **Entailment rule.** Some processes always produce the same result. For those, the ontology declares `watr:achievesTreatmentObjective` on the process, and every unit that performs the process inherits the objective. The ontology declares it only when the name of the process already names the result.
-  - Denitrification, nitrification, chlorination, UV irradiation, digestion, EBPR, incineration, and the named activated-sludge configurations each always produce one result, so each declares it.
-  - Filtration, membranes, precipitation, and sedimentation produce different results in different units, so they declare nothing. The class or the modeler supplies the objective.
+  - Examples that declare one: denitrification, nitrification, chlorination, sulfite dosing, UV irradiation, digestion, composting, EBPR, incineration, land application, landfilling, and the named activated-sludge configurations. Each always produces the same result.
+  - Examples that declare none: filtration, membrane processes, chemical precipitation, adsorption, and sedimentation. Each produces different results in different units, so the class or the modeler supplies the objective.
 
 Placement of the contested terms. Each entry gives:
 
 - *Vocabulary:* which of the three lists the term goes in.
 - *Parent in the hierarchy:* the term's `rdfs:subClassOf`. A specific term counts as its parent, so a query for the parent also returns units with the specific term.
 - *Objective every unit inherits:* for processes only. The `watr:achievesTreatmentObjective` the ontology declares on the process. Inference adds this objective to every unit that performs the process. "None" means the unit's objective comes from its class or from the modeler instead.
-- *Basis:* whether a source supports the placement, or whether it is a decision we made. Footnotes point to section 8. Where the basis is a decision, the reasoning given is the whole justification, and the team can overrule it.
+- *Basis:* whether a source supports the placement, or whether it is a decision we made. Footnotes point to section 10. Where the basis is a decision, the reasoning given is the whole justification, and the team can overrule it.
 
 - **Sedimentation**
   - Vocabulary: process, `watr:Process-Sedimentation`
@@ -426,7 +427,7 @@ Placement of the contested terms. Each entry gives:
   - Basis: source for "process," decision for "auxiliary." ISO 6107 defines air scour as a process[^iso6107]. Treating cleaning as auxiliary rather than treatment is our call.
 - **A2O aerobic zone and nitrogen removal**
   - Vocabulary: nothing new. The zone carries `watr:TreatmentObjective-AmmoniaControl`, inherited from nitrification, and is a member of a system that carries `watr:TreatmentObjective-NitrogenRemoval`, inherited from A2O.
-  - Why: the zone nitrifies, which removes no nitrogen, so it must not carry nitrogen removal itself. The train's nitrogen removal depends on it, and system membership already says so. A query follows `s223:hasMember` to find it; section 10 shows the query.
+  - Why: the zone nitrifies, which removes no nitrogen, so it must not carry nitrogen removal itself. The train's nitrogen removal depends on it, and system membership already says so. A query follows `s223:hasMember` to find it; section 9 shows the query.
   - Basis: decision. The membership query is our design; no source addresses partial contribution.
 
 ## 5. Where each triple comes from
@@ -436,22 +437,22 @@ Placement of the contested terms. Each entry gives:
   - `s223:hasRole`. Whenever the unit has a stage, regime, or duty.
   - `watr:hasTreatmentObjective` for plant intent. RO for desalination, a polishing filter for turbidity, a reuse barrier for organics.
   - `watr:hasProcess` when the class names only a family. `Reactor` and `MixingBasin` require nothing biological. The modeler says whether the basin denitrifies, nitrifies, or releases phosphorus.
-- **Class defaults write** (SHACL-AF rules in `water/class-defaults.ttl`)
+- **Inherited from the class** (SHACL-AF rules in `water/class-defaults.ttl`)
   - Every `hasProcess` and `hasTreatmentObjective` requirement on the class and its ancestors.
   - A `GravityThickener` gets `Process-Sedimentation` from `GravityThickener` and `TreatmentObjective-Thickening` from `Thickener`.
   - Never a role.
-- **Process entailment writes**
+- **Inherited from the process** (a second SHACL-AF rule)
   - The `achievesTreatmentObjective` of every process the instance has.
   - A basin with `Process-Denitrification` gets `TreatmentObjective-NitrogenRemoval`.
   - This makes objective queries reliable. The modeler does not repeat what the vocabulary already says.
-- **Validation checks**
+- **Checked by validation**
   - Violation: a `hasProcess` value that is not a `watr:Process`. A `hasTreatmentObjective` value that is not a `watr:TreatmentObjective`. An objective with no process.
   - Warning: a process outside the class's required and `mayAlsoPerform` families.
   - Warning: a system claims a compound process and its members do not cover the included steps.
 
 ## 6. Worked examples
 
-Each example shows what the modeler writes, what inference adds, and what the modeler still needs to add.
+Each example shows what the modeler writes, then what inference adds, then which of the written triples the class could not have supplied.
 
 - **Gravity thickener**
   ```ttl
@@ -525,8 +526,8 @@ Indentation is the hierarchy: each indented item is a subclass (`rdfs:subClassOf
         - Centrifugation
       - Filtration
         - Media Filtration (also solid-liquid)
-          - Rapid Sand
-          - Slow Sand
+          - Rapid Sand Filtration
+          - Slow Sand Filtration
           - GAC Filtration (also adsorption)
         - Membrane Process
           - Microfiltration
@@ -717,29 +718,7 @@ The role list is flat. Every WaTr role is a direct subclass of `s223:Role`, exce
   - `s223:Role-Recirculating`: carries an internal recycle, such as mixed liquor from the aerobic zone back to the anoxic zone.
 - **Deprecated.** `watr:Role-Backwash` is kept only so old models still validate. Write `watr:hasProcess watr:Process-Backwashing` on the unit instead.
 
-## 8. References
-
-Footnotes in sections 2, 4, and 9 point here. Each entry says what the source is and what this document takes from it. The intrinsic-versus-contextual distinction in section 2 follows the function-versus-role split in BFO[^bfo], the function-versus-realization split in OntoCAPE[^ontocape], and the function-versus-location aspects in IEC 81346[^iec]; section 2 states it without citations so it reads on its own.
-
-[^wef]: Water Environment Federation, *Liquid Stream Fundamentals: Sedimentation*, fact sheet WSEC-2017-FS-022, Municipal Resource Recovery Design Committee, 2017. <https://www.wef.org/globalassets/assets-wef/direct-download-library/public/03---resources/wsec-2017-fs-022-liquid-stream-fundamentals--clarification-sedimentation_final.pdf>. Defines sedimentation as "the physical process where gravity forces account for the separation of solid particles." Lists four functions a clarifier is designed to serve: flocculation, clarification ("separation of solid and liquid fractions in the influent stream to produce a clarified effluent"), thickening ("production of thickened sludge streams"), and storage. Says "the extent of each function/role performed by a clarifier is dependent on the type of unit process (primary, secondary, tertiary, etc.)."
-
-[^me]: Metcalf & Eddy, *Wastewater Engineering: Treatment and Reuse*, 4th ed., McGraw-Hill, 2003, chapter 1. <https://sswm.info/sites/default/files/reference_attachments/TCHOBANOGLOUS%20et%20al.%202003%20Wastewater%20Engineering.pdf>. Defines unit operations as methods "in which the application of physical forces predominate" and unit processes as methods "in which the removal of contaminants is brought about by chemical or biological reactions." Table 1-5, "Unit operations and processes used to remove constituents found in wastewater," is organized as constituent rows (suspended solids, biodegradable organics, nitrogen, phosphorus, pathogens, colloidal and dissolved solids, volatile organic compounds, odors) against the operations and processes that remove each.
-
-[^cwns]: US EPA, *Clean Watersheds Needs Survey 2008 Data Dictionary*. <https://www.epa.gov/sites/default/files/2016-01/documents/cwns_-2008-data_dictionary2.pdf>. Defines a unit process as "the name of the treatment technology," grouped by treatment type (preliminary, primary, secondary, advanced, disinfection, solids handling). Defines advanced treatment by permit requirement: "Nitrogen Removal; Phosphorous Removal; Ammonia Removal; Metal Removal; Synthetic Organic Removal." Describes a biosolids handling facility as "designed to thicken, stabilize, dewater, or store biosolids."
-
-[^tdb]: US EPA, *Drinking Water Treatability Database*. <https://www.epa.gov/water-research/drinking-water-treatability-database-tdb>. A matrix of 35 treatment processes against more than 160 contaminants, with removal data at each intersection. Reverse osmosis appears against many contaminants, not only salts.
-
-[^iso6107]: ISO 6107:2021, *Water quality — Vocabulary*. <https://www.iso.org/standard/67643.html>. Defines aerobic condition as a condition "in which dissolved oxygen is present," anaerobic condition as one in which it is absent, and anoxic as a state in which dissolved oxygen is low enough that microorganisms use oxidized forms of nitrogen, sulfur, or carbon. Defines air scour as a process of forcing air upward through a filter.
-
-[^bfo]: A. D. Spear, W. Ceusters, B. Smith, "Functions in Basic Formal Ontology," *Applied Ontology* 11 (2016). <http://ontology.buffalo.edu/smith/articles/Functions-in-BFO.pdf>. A function "exists in virtue of its bearer's physical make-up," which the bearer has "through intentional design ... in order to realize processes of a certain sort." A role exists because the bearer "is in some special physical, social, or institutional set of circumstances in which this bearer does not have to be." Repurposing an artifact gives it a new role, not a new function.
-
-[^ontocape]: J. Morbach, A. Wiesner, W. Marquardt, "OntoCAPE: A (re)usable ontology for computer-aided process engineering," *Computers & Chemical Engineering* 33 (2009); and A. Wiesner et al., *Chemical Process Systems*, technical report LPT-2008-29, RWTH Aachen, 2008. <https://www.avt.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaatptsi>. "The class process step represents the desired function. The class plant item reflects its physical realization." Unit operations are classified by phenomenon: combination, enthalpy change, separation, fragmentation.
-
-[^iec]: IEC 81346-1:2022, *Industrial systems, installations and equipment and industrial products — Structuring principles and reference designations — Part 1: Basic rules*. <https://www.iso.org/standard/82229.html>. Three aspects of an object: function ("what an object is intended to do or what it actually does"), product ("by which means"), and location.
-
-[^sims]: Unit libraries of the common simulators: GPS-X <https://www.hydromantis.com/GPSX-unit-processes.html>, WaterTAP <https://watertap.readthedocs.io/en/stable/apidoc/watertap.unit_models.html>, QSDsan <https://qsdsan.readthedocs.io/en/latest/api/sanunits/clarifier.html>, Sumo <https://wiki.dynamita.com/en/process_units>. Used only for what practitioners call things: every library says "chlorination," and every library has separate clarifier and thickener units.
-
-## 9. How the review comments are addressed
+## 8. How the review comments are addressed
 
 Each entry quotes a comment from the review of PR #39, links to it, and says what this design does about it. Comments the design does not address are listed at the end.
 
@@ -747,7 +726,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "Overall my conclusion is that these definitions are very blurry and there will be a bit of inconsistency no matter what we decide, so it's really about what is easiest from the end user's perspective." Fletch, review summary.
 
-**Answer.** Agreed that no standard draws the process-versus-objective line. The closest is Metcalf & Eddy's table of constituents against unit operations and processes[^me], which is the model this design follows. Section 2 states the two distinctions in plain terms, and section 4 gives three tests so a modeler can place a term without guessing. Section 1 makes the modeler's job explicit: type, role, and plant intent. Everything else is inherited.
+**Answer.** Agreed that no standard draws the process-versus-objective line. The closest is Metcalf & Eddy's table of constituents against unit operations and processes[^me], which is the model this design follows. Section 2 states the two distinctions in plain terms, and section 4 gives three tests so a modeler can place a term without guessing. Section 1 makes the modeler's job explicit: type, role, plant intent, and a process only where the class leaves a choice. Everything else is inherited.
 
 > "I think the treatment objectives generally make sense to distinguish, with the caveat that they will make an already-complicated ontology more complicated for non-data-savvy users to navigate. ... Maybe a UI could default the process from the equipment class and only offer a choice of objective when the process/equipment doesn't already specify it." Daly, [issue comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#issuecomment-5332011106).
 
@@ -755,7 +734,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "To me clarification and sedimentation are synonyms, so this emphasizes the blurriness between process/outcome that's making me reconsider if this overhaul makes sense." Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3813728427).
 
-**Answer.** section 4 separates them with the mechanism test. Sedimentation is what happens: solids settle under gravity. Clarification is the result: the overflow leaves clarified. The WEF sedimentation fact sheet makes the same split, listing clarification and thickening as two functions of a clarifier, with sedimentation as the process[^wef].
+**Answer.** Section 4 separates them with the mechanism test. Sedimentation is what happens: solids settle under gravity. Clarification is the result: the overflow leaves clarified. The WEF sedimentation fact sheet makes the same split, listing clarification and thickening as two functions of a clarifier, with sedimentation as the process[^wef].
 
 ### Clarification
 
@@ -815,7 +794,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "Maybe components of a process (e.g. anoxic zone of an A2O process system) could indicate that they 'contribute to' an objective like nitrogen removal, even if that zone doesn't completely achieve it itself." Daly, [issue comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#issuecomment-5332011106).
 
-**Answer.** Handled without a new relation. The zone is a member of a system whose objective is nitrogen removal, and that membership is already in the model. A query for "everything involved in nitrogen removal" unions units that carry the objective with members of systems that carry it. Section 10 shows the query and its results. A dedicated relation was considered and dropped, because there was no rule for when a modeler should write it.
+**Answer.** Handled without a new relation. The zone is a member of a system whose objective is nitrogen removal, and that membership is already in the model. A query for "everything involved in nitrogen removal" unions units that carry the objective with members of systems that carry it. Section 9 shows the query and its results. A dedicated relation was considered and dropped, because there was no rule for when a modeler should write it.
 
 ### Roles
 
@@ -848,7 +827,7 @@ These are outside the process, objective, and role model. The mechanical ones ar
 - Media compatibility when a reaction changes the constituents ([comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3814151705)).
 - Mete's validation warning on BAF and GAC units in the DPR model ([issue comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#issuecomment-5074790336)) needs a re-run against the current branch.
 
-## 10. A whole train: what the modeler writes and what inference adds
+## 9. A whole train: what the modeler writes and what inference adds
 
 This answers the concern that the model asks too much of the modeler. The plant below is a small municipal train: screen, primary clarifier, A2O biological train, secondary clarifier, chlorine contact tank, and a gravity thickener and digester on the sludge side. Units are joined with `s223:connectedTo`, which is directed: `A s223:connectedTo B` means flow leaves A and enters B. The edges that run backward, from the aerobic zone to the anoxic zone and from the secondary clarifier to the anaerobic zone, are the internal recycle and the return sludge. Connection points are left out to keep the example short; in a model that has them, 223 infers `connectedTo` from the connection points and the modeler does not write it.
 
@@ -908,7 +887,7 @@ This answers the concern that the model asks too much of the modeler. The plant 
     watr:hasProcess watr:Process-A2O .
 ```
 
-That is nine units and one system. The modeler wrote the type of every unit, a role on seven of them, a process on three, the system's members and process, and the connections.
+That is nine units and one system. The modeler wrote the type of every unit, a role on six of them, a process on three, the system's members and process, and the connections.
 
 ### What inference adds
 
@@ -1108,3 +1087,25 @@ SELECT DISTINCT ?objective WHERE {
 | `watr:TreatmentObjective-Stabilization` |
 
 Nine objectives across the plant. The modeler wrote zero `watr:hasTreatmentObjective` triples.
+
+## 10. References
+
+Footnotes in sections 2, 4, and 8 point here. Each entry says what the source is and what this document takes from it. The intrinsic-versus-contextual distinction in section 2 follows the function-versus-role split in BFO[^bfo], the function-versus-realization split in OntoCAPE[^ontocape], and the function-versus-location aspects in IEC 81346[^iec]; section 2 states it without citations so it reads on its own.
+
+[^wef]: Water Environment Federation, *Liquid Stream Fundamentals: Sedimentation*, fact sheet WSEC-2017-FS-022, Municipal Resource Recovery Design Committee, 2017. <https://www.wef.org/globalassets/assets-wef/direct-download-library/public/03---resources/wsec-2017-fs-022-liquid-stream-fundamentals--clarification-sedimentation_final.pdf>. Defines sedimentation as "the physical process where gravity forces account for the separation of solid particles." Lists four functions a clarifier is designed to serve: flocculation, clarification ("separation of solid and liquid fractions in the influent stream to produce a clarified effluent"), thickening ("production of thickened sludge streams"), and storage. Says "the extent of each function/role performed by a clarifier is dependent on the type of unit process (primary, secondary, tertiary, etc.)."
+
+[^me]: Metcalf & Eddy, *Wastewater Engineering: Treatment and Reuse*, 4th ed., McGraw-Hill, 2003, chapter 1. <https://sswm.info/sites/default/files/reference_attachments/TCHOBANOGLOUS%20et%20al.%202003%20Wastewater%20Engineering.pdf>. Defines unit operations as methods "in which the application of physical forces predominate" and unit processes as methods "in which the removal of contaminants is brought about by chemical or biological reactions." Table 1-5, "Unit operations and processes used to remove constituents found in wastewater," is organized as constituent rows (suspended solids, biodegradable organics, nitrogen, phosphorus, pathogens, colloidal and dissolved solids, volatile organic compounds, odors) against the operations and processes that remove each.
+
+[^cwns]: US EPA, *Clean Watersheds Needs Survey 2008 Data Dictionary*. <https://www.epa.gov/sites/default/files/2016-01/documents/cwns_-2008-data_dictionary2.pdf>. Defines a unit process as "the name of the treatment technology," grouped by treatment type (preliminary, primary, secondary, advanced, disinfection, solids handling). Defines advanced treatment by permit requirement: "Nitrogen Removal; Phosphorous Removal; Ammonia Removal; Metal Removal; Synthetic Organic Removal." Describes a biosolids handling facility as "designed to thicken, stabilize, dewater, or store biosolids."
+
+[^tdb]: US EPA, *Drinking Water Treatability Database*. <https://www.epa.gov/water-research/drinking-water-treatability-database-tdb>. A matrix of 35 treatment processes against more than 160 contaminants, with removal data at each intersection. Reverse osmosis appears against many contaminants, not only salts.
+
+[^iso6107]: ISO 6107:2021, *Water quality — Vocabulary*. <https://www.iso.org/standard/67643.html>. Defines aerobic condition as a condition "in which dissolved oxygen is present," anaerobic condition as one in which it is absent, and anoxic as a state in which dissolved oxygen is low enough that microorganisms use oxidized forms of nitrogen, sulfur, or carbon. Defines air scour as a process of forcing air upward through a filter.
+
+[^bfo]: A. D. Spear, W. Ceusters, B. Smith, "Functions in Basic Formal Ontology," *Applied Ontology* 11 (2016). <http://ontology.buffalo.edu/smith/articles/Functions-in-BFO.pdf>. A function "exists in virtue of its bearer's physical make-up," which the bearer has "through intentional design ... in order to realize processes of a certain sort." A role exists because the bearer "is in some special physical, social, or institutional set of circumstances in which this bearer does not have to be." Repurposing an artifact gives it a new role, not a new function.
+
+[^ontocape]: J. Morbach, A. Wiesner, W. Marquardt, "OntoCAPE: A (re)usable ontology for computer-aided process engineering," *Computers & Chemical Engineering* 33 (2009); and A. Wiesner et al., *Chemical Process Systems*, technical report LPT-2008-29, RWTH Aachen, 2008. <https://www.avt.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaatptsi>. "The class process step represents the desired function. The class plant item reflects its physical realization." Unit operations are classified by phenomenon: combination, enthalpy change, separation, fragmentation.
+
+[^iec]: IEC 81346-1:2022, *Industrial systems, installations and equipment and industrial products — Structuring principles and reference designations — Part 1: Basic rules*. <https://www.iso.org/standard/82229.html>. Three aspects of an object: function ("what an object is intended to do or what it actually does"), product ("by which means"), and location.
+
+[^sims]: Unit libraries of the common simulators: GPS-X <https://www.hydromantis.com/GPSX-unit-processes.html>, WaterTAP <https://watertap.readthedocs.io/en/stable/apidoc/watertap.unit_models.html>, QSDsan <https://qsdsan.readthedocs.io/en/latest/api/sanunits/clarifier.html>, Sumo <https://wiki.dynamita.com/en/process_units>. Used only for what practitioners call things: every library says "chlorination," and every library has separate clarifier and thickener units.
