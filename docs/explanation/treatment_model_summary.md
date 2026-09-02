@@ -303,7 +303,7 @@ The model rests on two distinctions. Each one separates two of the attributes in
 
 - **Rule for when a class carries a design objective.** An equipment class carries a design objective only when every unit of that class is built for the same result. When units of a class serve different results in different plants, the class carries no objective, and the modeler states it.
   - Passes the rule: `watr:Thickener` carries `watr:TreatmentObjective-Thickening`, because every thickener concentrates sludge, so every thickener instance inherits it. `watr:DisinfectionUnit` carries `watr:TreatmentObjective-Disinfection`, because every disinfection unit inactivates pathogens, so every disinfection unit instance inherits it.
-  - Generic settling vessel: `watr:SedimentationTank` carries `watr:Process-Sedimentation` and no objective. Its instances inherit the process and nothing else. A settling tank always produces both a clarified overflow and a thickened underflow, and which one is the product depends on the plant.
+  - Generic settling vessel: `watr:SedimentationTank` carries `watr:Process-Sedimentation` and no objective. Its instances inherit the process and nothing else. A settling tank always produces both a clarified overflow and a thickened underflow. The process is a fact about the tank. Which stream the plant relies on downstream is the objective, and that is a fact about the plant.
     - `watr:Clarifier`, a subclass, is built for the clarified overflow and carries `watr:TreatmentObjective-Clarification`. Every clarifier instance inherits it.
     - `watr:GravityThickener` is built for the thickened underflow and carries `watr:TreatmentObjective-Thickening`. Every gravity thickener instance inherits it.
     - The modeler picks the class that matches the product the plant uses, or uses the generic class and writes the objective.
@@ -318,7 +318,8 @@ The model rests on two distinctions. Each one separates two of the attributes in
       # modeler only knows it settles
       :unitC a watr:SedimentationTank ;
 
-          # modeler; the generic class names no objective
+          # modeler; this would need to be asserted on the sedimentation tank instance,
+          # as the generic class carries no objective
           watr:hasTreatmentObjective watr:TreatmentObjective-Thickening .
       ```
 
@@ -362,7 +363,7 @@ Placement of the contested terms. Each entry gives:
 - **Clarification**
   - Vocabulary: objective, `watr:TreatmentObjective-Clarification`
   - Parent in the hierarchy: `watr:TreatmentObjective-SolidsRemoval`
-  - Why: names a result. The overflow leaves clarified. WEF lists it as a clarifier function next to thickening.
+  - Why: names a result. Sedimentation produces a clarified overflow and a thickened underflow in every tank; clarification says the plant relies on the overflow. WEF lists it as a clarifier function next to thickening.
   - Basis: source, with a caveat. WEF names clarification as one of four functions a clarifier serves, alongside thickening, with sedimentation as the process[^wef]. Metcalf & Eddy also uses "high-rate clarification" as the name of a unit operation[^me], so the word is used both ways in the literature. We follow WEF because it is the only source that separates the two.
 - **Thickening, dewatering, drying**
   - Vocabulary: objective, `watr:TreatmentObjective-Thickening`, `-Dewatering`, `-Drying`
@@ -734,7 +735,7 @@ Each entry quotes a comment from the review of PR #39, links to it, and says wha
 
 > "To me clarification and sedimentation are synonyms, so this emphasizes the blurriness between process/outcome that's making me reconsider if this overhaul makes sense." Fletch, [comment](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3813728427).
 
-**Answer.** Section 4 separates them with the mechanism test. Sedimentation is what happens: solids settle under gravity. Clarification is the result: the overflow leaves clarified. The WEF sedimentation fact sheet makes the same split, listing clarification and thickening as two functions of a clarifier, with sedimentation as the process[^wef].
+**Answer.** They are not synonyms, and the difference is the whole model in one example. Sedimentation is what the tank does: solids settle under gravity. It is true of every settling tank, so it is the process, and the class supplies it. Sedimentation always produces two streams, a clarified overflow and a thickened underflow. Which of those the plant relies on downstream is what the tank is *for*, and that is the treatment objective. If the overflow goes on to treatment, the objective is clarification. If the underflow goes on to digestion, the objective is thickening. If the plant relies on both, the tank carries both. The process is a fact about the tank; the objective is a fact about how the plant uses what comes out of it. The WEF sedimentation fact sheet makes the same split, listing clarification and thickening as two functions of a clarifier, with sedimentation as the process[^wef].
 
 ### Clarification
 
