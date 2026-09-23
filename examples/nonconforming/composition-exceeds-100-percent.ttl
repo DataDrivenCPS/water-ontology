@@ -1,0 +1,41 @@
+@prefix : <urn:example/composition-exceeds-100-percent#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/composition-exceeds-100-percent>
+    a owl:Ontology ;
+    rdfs:label "Nonconforming Composition Exceeding 100 Percent" ;
+    rdfs:comment "A brine whose declared salt and water mass fractions add up to 130%, which no physical mixture can satisfy." ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+.
+
+:Brine-Impossible
+  a watr:Class ;
+  a :Brine-Impossible ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-Impossible" ;
+  rdfs:label "Brine-Impossible" ;
+  rdfs:subClassOf watr:Water-Brine ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue 45 ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt Concentration" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue 85 ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water Concentration" ;
+    ] ;
+.
