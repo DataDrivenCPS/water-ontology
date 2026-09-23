@@ -92,6 +92,50 @@ You can see the connections (the `Pipe`s) and connection points in the image at 
 
 We use [`s223:mapsTo`](https://explore.open223.info/s223/mapsTo.html) to relate the connection points of internal equipment to the connection points of the containing equipment. This allows us to model the connections between the unit process and the equipment inside it, for example.
 
+### Media and Constituents
+
+A `ConnectionPoint` or `Connection` carries a *medium*, the substance flowing through it (e.g. water, a chemical, air). S223 decides whether two media are *compatible* (so a connection point and a connection can be joined, or two connection points on the same equipment can carry different streams) by comparing the *constituents* the media are `s223:composedOf`. Two pure media are compatible only if one is a subclass of the other; two mixture media are compatible when they share at least one constituent (either the same one, or one that is a subclass of the other).
+
+WaTr defines several aqueous media as subclasses of `s223:Fluid-Water`: `Water-Seawater`, `Water-Brackish`, `Water-Freshwater`, and `Water-Brine`. To make S223's compatibility rules recognize that these are all, fundamentally, water, each is declared `s223:composedOf` one or more constituents, sharing `s223:Constituent-H2O` with `s223:Fluid-Water` itself:
+
+```ttl
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+watr:Water-Seawater
+    rdfs:subClassOf s223:Fluid-Water ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent s223:Constituent-H2O ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] ;
+    s223:composedOf [
+        a s223:QuantifiableProperty ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT ;
+    ] .
+```
+
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. This compatibility claim means only that the media share a compatible constituent; it does not say that their compositions are equivalent or check a material balance. `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content in this abstraction, while the saline media additionally declare `watr:Salt-NaCl`. The [`ro-mixture-test.ttl`](../../examples/ro-mixture-test.ttl) example shows the resulting seawater-feed, freshwater-permeate, brine-concentrate configuration validating.
+
+`watr:Fluid-Sludge` is likewise an aqueous medium: it is a `s223:Mix-Fluid` and a `s223:Fluid-Water`, so equipment that accepts water-based fluids (for example, `s223:Pump`) keeps the actual sludge medium on its connection points instead of substituting the less specific `Fluid-Water`.
+
+WaTr follows S223's self-enumerated medium pattern: a reusable medium designation is both a class and an instance of itself, and it is used directly as the value of `s223:hasMedium`. For a reusable salinity such as 15-percent brine, mint a more specific medium class, type it as itself, subclass it from `Water-Brine`, and assert its quantified composition directly. The [`brine-composition.ttl`](../../examples/brine-composition.ttl) example demonstrates this pattern.
+
+Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium does not acquire the `s223:composedOf` statements of `Water-Brine`; it must repeat every constituent needed to describe its own composition. The superclass organizes the medium vocabulary and participates in class compatibility, but it is not an RDF template that copies constituent properties to subclasses or ordinary instances.
+
+Where a composition *is* quantified, `watr:CompositionPercentageShape` checks that it stays physically possible: for any node with `s223:composedOf` fractions given in `unit:PERCENT`, the declared percentages may not add up to more than 100%. When a constituent is given as a range with `s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the lowest declared percentage for that constituent counts, since the upper bounds of a set of ranges need not be simultaneously satisfiable — `Brine-5to10Percent` (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. The shape does not require the percentages to add up *to* 100: a partially specified composition that names only some of its constituents remains valid. The [`composition-exceeds-100-percent.ttl`](../../examples/nonconforming/composition-exceeds-100-percent.ttl) example shows a composition the rule rejects.
+
+The other direction is handled by `watr:CompositionComplementRule`, a SHACL-AF rule that fills in a percentage you did not state. If a medium's fractions are given in percent and exactly one of them carries no `s223:hasValue`, that fraction is inferred to be the remainder of the others — declare 12% salt and leave the water fraction empty, and the rule supplies 88%. It generalizes beyond two constituents: 20% salt and 10% solids leaves 70% for water. The fraction being completed can be an inline blank node or a named one; name it when something else in the model needs to refer to the inferred value. The [`brine-inferred-complement.ttl`](../../examples/brine-inferred-complement.ttl) example shows both forms.
+
+The rule deliberately stays silent in four cases, because none of them determines a single value: more than one fraction is unquantified, no fraction is quantified at all (so a medium that names `Constituent-H2O` alone is not claimed to be 100% water), a quantified fraction is a `s223:Aspect-LowLimit` or `s223:Aspect-HighLimit` range, or the remainder would be negative — that last case is the over-100% error, which `watr:CompositionPercentageShape` reports rather than papering over.
+
 ## Processes
 
 Tr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
