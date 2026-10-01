@@ -23,4 +23,4 @@ repository-code: "https://github.com/DataDrivenCPS/water-ontology"
 url: "https://datadrivencps.github.io/water-ontology/"
 license: BSD-3-Clause
 keywords: [ontology, water treatment, ASHRAE 223P, semantic web, RDF]
-# doi: 10.5281/zenodo.XXXXXXX   # add the concept DOI after the first release
+doi: 10.5281/zenodo.23087793
