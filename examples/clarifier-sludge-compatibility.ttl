@@ -1,0 +1,65 @@
+@prefix : <urn:example/clarifier-sludge-compatibility#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/clarifier-sludge-compatibility> a owl:Ontology ;
+    rdfs:label "Clarifier and Membrane Thickener Sludge Compatibility Test" ;
+    rdfs:comment "A sedimentation tank takes water in and sends clarified water and sludge out; a pipe carries the sludge to a membrane thickener (a watr:Filter) that sends filtrate water and thickened sludge out. watr:Fluid-Sludge is a s223:Mix-Fluid, not a s223:Fluid-Water, but it shares s223:Constituent-H2O with the water media. S223 compares the media on a Filter's connection points and on a pipe's connection points by their shared constituents, so sludge next to water validates in both flow directions." ;
+    owl:imports
+        <https://watermetadata.org/ontology/watr>,
+        <http://data.ashrae.org/standard223/1.0/model/all> .
+
+# Water in, water and sludge out.
+:clarifier a watr:SedimentationTank ;
+    rdfs:label "Primary clarifier" ;
+    watr:hasProcess watr:Process-Sedimentation ;
+    s223:hasConnectionPoint :clarifier-inlet, :clarifier-effluent, :clarifier-underflow .
+
+:clarifier-inlet a s223:InletConnectionPoint ;
+    rdfs:label "Raw water inlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :clarifier .
+
+:clarifier-effluent a s223:OutletConnectionPoint ;
+    rdfs:label "Clarified effluent" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :clarifier .
+
+:clarifier-underflow a s223:OutletConnectionPoint ;
+    rdfs:label "Sludge underflow" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :clarifier ;
+    s223:connectsThrough :sludge-pipe .
+
+# A sludge pipe joining the clarifier underflow to the thickener feed.
+:sludge-pipe a s223:Pipe ;
+    rdfs:label "Sludge pipe" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:connectsFrom :clarifier ;
+    s223:connectsTo :thickener ;
+    s223:connectsAt :clarifier-underflow, :thickener-feed .
+
+# Sludge in, sludge and water out. A watr:Filter inherits the S223 Filter
+# rule that every pair of its connection points must carry compatible media.
+:thickener a watr:Filter ;
+    rdfs:label "Membrane thickener" ;
+    watr:hasProcess watr:Process-Filtration ;
+    s223:hasConnectionPoint :thickener-feed, :thickener-thickened, :thickener-filtrate .
+
+:thickener-feed a s223:InletConnectionPoint ;
+    rdfs:label "Sludge feed" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener ;
+    s223:connectsThrough :sludge-pipe .
+
+:thickener-thickened a s223:OutletConnectionPoint ;
+    rdfs:label "Thickened sludge" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .
+
+:thickener-filtrate a s223:OutletConnectionPoint ;
+    rdfs:label "Filtrate return" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :thickener .

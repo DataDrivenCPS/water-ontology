@@ -127,9 +127,8 @@ watr:SeparationTank a sh:NodeShape ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Separation ];
-        sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
+        sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SeparationTank must have the Separation process." ;
     ] ;
 .
@@ -442,9 +441,8 @@ watr:SedimentationTank
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
-        sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
-		sh:qualifiedMaxCount 1 ;
+        sh:qualifiedMaxCount 1 ;
         sh:message "Instances of SedimentationTank must have the Sedimentation process." ;
     ] .
 
