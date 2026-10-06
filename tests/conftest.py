@@ -8,18 +8,18 @@ from rdflib.namespace import OWL
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 LOCAL_DPR_EXAMPLE = EXAMPLES_DIR / "union-dpr-model.ttl"
-WATER_DIR = ROOT / "water"
+WATER_DIR = ROOT / "ontology"
 S223_DIR = ROOT / "s223"
 
 CLASS_DEFAULTS_FILE = WATER_DIR / "class-defaults.ttl"
-CLASS_DEFAULTS_URI = URIRef("urn:nawi-water-ontology/class-defaults")
+CLASS_DEFAULTS_URI = URIRef("https://watermetadata.org/ontology/modules/class-defaults")
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -103,7 +103,7 @@ def water_graph_without_class_defaults() -> Graph:
     Built the way the ontology itself would be if it did not ship the rule: the
     file is left unparsed and the owl:imports triple naming it is dropped, so the
     closure resolved from this graph never reaches it. Contrast
-    ``water_graph``, which imports it -- see ``water/ontology.ttl``.
+    ``water_graph``, which imports it -- see ``ontology/watr.ttl``.
     """
     g = Graph()
     for path in sorted(WATER_DIR.glob("*.ttl")):

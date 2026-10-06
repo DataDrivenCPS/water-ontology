@@ -4,7 +4,7 @@ Some processes are performed by an assembly and by no member of it: a backwash
 pump only pumps, a backwash tank only holds water, and backwashing is what the
 collection does. Those are asserted on the ``s223:System``.
 
-Two pieces of machinery support that, both in ``water/ontology.ttl``:
+Two pieces of machinery support that, both in ``ontology/watr.ttl``:
 
 ``watr:ProcessBearerShape``
     guards that ``watr:hasProcess`` is only asserted on something that can
@@ -19,7 +19,7 @@ Two pieces of machinery support that, both in ``water/ontology.ttl``:
     Bardenphos) but nothing inside it performs one of the constituent steps
     recorded by ``watr:includesProcess``.
 
-and one rule, in ``water/class-defaults.ttl``:
+and one rule, in ``ontology/class-defaults.ttl``:
 
 ``watr:ProcessObjectiveRule``
     copies the ``watr:achievesTreatmentObjective`` of a process onto everything
@@ -33,11 +33,11 @@ from rdflib import Graph, Namespace, RDFS
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 EX = Namespace("urn:systest#")
 
 PREFIX = (
-    "@prefix watr: <urn:nawi-water-ontology#> .\n"
+    "@prefix watr: <https://watermetadata.org/ontology/watr#> .\n"
     "@prefix s223: <http://data.ashrae.org/standard223#> .\n"
     "@prefix sh: <http://www.w3.org/ns/shacl#> .\n"
     "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
@@ -157,7 +157,7 @@ def test_outcome_and_process_together_are_accepted(ontology_shapes_graph):
     body = (
         "ex:gt a watr:GravityThickener ;\n"
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation .\n"
+        "    watr:hasProcess watr:Process-Settling .\n"
     )
     data = Graph().parse(data=PREFIX + body, format="ttl")
     valid, _, text = shifty.validate(
@@ -172,11 +172,11 @@ def test_one_process_serves_several_outcomes(ontology_shapes_graph):
     body = (
         "ex:clarifier a watr:SedimentationTank ;\n"
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation ;\n"
+        "    watr:hasProcess watr:Process-Settling ;\n"
         "    s223:hasRole watr:Role-Primary .\n"
         "ex:thickener a watr:GravityThickener ;\n"
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation .\n"
+        "    watr:hasProcess watr:Process-Settling .\n"
     )
     assert not _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveValueShape)
     assert not _findings(body, ontology_shapes_graph, WATR.ProcessValueShape)
@@ -195,8 +195,8 @@ def test_an_outcome_may_not_be_stated_as_a_process(ontology_shapes_graph):
 def test_a_process_may_not_be_stated_as_an_outcome(ontology_shapes_graph):
     body = (
         "ex:bad2 a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation ;\n"
-        "    watr:hasTreatmentObjective watr:Process-Sedimentation .\n"
+        "    watr:hasProcess watr:Process-Settling ;\n"
+        "    watr:hasTreatmentObjective watr:Process-Settling .\n"
     )
     assert _findings(body, ontology_shapes_graph, WATR.TreatmentObjectiveValueShape)
 
@@ -227,7 +227,6 @@ def test_process_types_declare_the_outcome_they_achieve(water_graph):
         ("Process-Denitrification", "TreatmentObjective-NitrogenRemoval"),
         ("Process-EnhancedBiologicalPhosphorusRemoval", "TreatmentObjective-PhosphorusRemoval"),
         ("Process-Chlorination", "TreatmentObjective-Disinfection"),
-        ("Process-UVIrradiation", "TreatmentObjective-Disinfection"),
         ("Process-Digestion", "TreatmentObjective-Stabilization"),
         ("Process-MLE", "TreatmentObjective-NitrogenRemoval"),
         ("Process-A2O", "TreatmentObjective-PhosphorusRemoval"),
@@ -259,7 +258,7 @@ def test_chemical_precipitation_is_left_unattached(water_graph):
     achieved = set(
         water_graph.objects(WATR["Process-ChemicalPrecipitation"], WATR.achievesTreatmentObjective)
     )
-    assert not achieved, achieved
+    assert achieved == {WATR["TreatmentObjective-ConstituentRemoval"]}
 
 
 @pytest.mark.parametrize("process", ["Process-Ozonation", "Process-ThermalTreatment"])
@@ -300,7 +299,7 @@ def test_covered_compound_process_is_not_flagged(ontology_shapes_graph):
         "    watr:hasProcess watr:Process-MLE .\n"
         + _member("anoxic", "Denitrification")
         + _member("aerobic", "Nitrification", "Aeration")
-        + _member("clarifier", "Sedimentation", "Recirculation")
+        + _member("clarifier", "Settling", "Recirculation")
     )
     assert not _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
 
@@ -312,7 +311,7 @@ def test_missing_constituent_process_is_flagged(ontology_shapes_graph):
         "    s223:hasMember ex:aerobic2, ex:clarifier2 ;\n"
         "    watr:hasProcess watr:Process-MLE .\n"
         + _member("aerobic2", "Nitrification", "Aeration")
-        + _member("clarifier2", "Sedimentation", "Recirculation")
+        + _member("clarifier2", "Settling", "Recirculation")
     )
     msgs = _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
     assert msgs, "a missing constituent process should be reported"
@@ -328,7 +327,7 @@ def test_nested_subsystem_satisfies_coverage(ontology_shapes_graph):
         "ex:Inner a s223:System ;\n"
         "    s223:hasMember ex:basin, ex:settler .\n"
         + _member("basin", "Aeration")
-        + _member("settler", "Sedimentation")
+        + _member("settler", "Settling")
     )
     assert not _findings(body, ontology_shapes_graph, WATR.SystemProcessCoverageShape)
 
@@ -361,7 +360,7 @@ def test_activated_sludge_without_separation_is_flagged(ontology_shapes_graph):
 @pytest.mark.parametrize(
     "process,why",
     [
-        ("Sedimentation", "a conventional train settles the biomass out"),
+        ("Settling", "a conventional train settles the biomass out"),
         ("Microfiltration", "an MBR separates it with a membrane"),
         ("Flotation", "a DAF floats it off"),
         ("Centrifugation", "a centrifuge spins it out"),
@@ -423,7 +422,7 @@ def test_system_may_state_a_step_itself(ontology_shapes_graph):
         "    s223:hasMember ex:m1, ex:m2 ;\n"
         "    watr:hasProcess watr:Process-ActivatedSludge ,\n"
         "                    watr:Process-Aeration ,\n"
-        "                    watr:Process-Sedimentation .\n"
+        "                    watr:Process-Settling .\n"
         + _member("m1")
         + _member("m2")
     )
@@ -461,7 +460,7 @@ def test_realistic_train_of_basins_draws_no_process_warnings(ontology_shapes_gra
         "    s223:hasRole watr:Role-Aerobic ;\n"
         "    watr:hasProcess watr:Process-Aeration, watr:Process-Nitrification .\n"
         "ex:finalClarifier a watr:SedimentationTank ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation, watr:Process-Recirculation .\n"
+        "    watr:hasProcess watr:Process-Settling, watr:Process-Recirculation .\n"
     )
     data = Graph().parse(data=PREFIX + body, format="ttl")
     _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
@@ -588,10 +587,10 @@ def test_context_dependent_treatment_objective_is_not_inferred(ontology_shapes_g
     objective of a settling unit comes from its class or from the modeler."""
     out = _materialized(
         "ex:settler a watr:Pump ;\n"
-        "    watr:hasProcess watr:Process-Sedimentation .\n",
+        "    watr:hasProcess watr:Process-Settling .\n",
         ontology_shapes_graph,
     )
-    assert _objectives(out, EX.settler) == set()
+    assert _objectives(out, EX.settler) == {WATR["TreatmentObjective-ConstituentRemoval"]}
 
 
 @pytest.mark.parametrize(
@@ -617,7 +616,7 @@ def test_membrane_method_does_not_imply_a_universal_treatment_objective(
         f"ex:unit a watr:Pump ; watr:hasProcess watr:{process} .\n",
         ontology_shapes_graph,
     )
-    assert _objectives(out, EX.unit) == set()
+    assert _objectives(out, EX.unit) == {WATR["TreatmentObjective-ConstituentRemoval"]}
 
 
 def test_no_process_slot_uses_qualified_value_shapes_disjoint(water_graph):

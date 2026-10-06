@@ -156,7 +156,7 @@ The following Turtle fragment shows a temperature sensor property with data qual
 
 ```turtle
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 

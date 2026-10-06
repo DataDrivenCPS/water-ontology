@@ -2,13 +2,13 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
 <urn:example:ro-mixture-test> a owl:Ontology ;
     rdfs:label "RO Constituent Compatibility Test" ;
     rdfs:comment "Demonstrates that, after modeling seawater/freshwater/brine as constituent-bearing mixtures sharing s223:Constituent-H2O, a ReverseOsmosisMembrane can accept a seawater feed and emit freshwater permeate and brine concentrate without S223 flagging the distinct media as incompatible." ;
     owl:imports
-        <urn:nawi-water-ontology>,
+        <https://watermetadata.org/ontology/watr>,
         <http://data.ashrae.org/standard223/1.0/model/all> .
 
 :ro a watr:ReverseOsmosisMembrane ;

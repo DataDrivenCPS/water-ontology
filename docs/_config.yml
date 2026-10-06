@@ -37,7 +37,6 @@ html:
 sphinx:
   extra_extensions:
     - sphinx.ext.graphviz
-    - sphinx_autodoc_bmotif
     - sphinx_toolbox.collapse
     - sphinx_toolbox.code
     - sphinx_tabs.tabs

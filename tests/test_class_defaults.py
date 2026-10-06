@@ -1,13 +1,13 @@
 """Materializing an instance's process and objective, from its class and its process.
 
-``water/class-defaults.ttl`` holds a SHACL-AF rule: typing something as a
+``ontology/class-defaults.ttl`` holds a SHACL-AF rule: typing something as a
 ``watr:GravityThickener`` already says it thickens by settling, so the rule
 writes those triples onto the instance rather than making every model repeat
 them.
 
 The file is part of the ontology's import closure, and ``shifty.validate`` runs
 SHACL-AF rules as part of validation, so the rule fires wherever the ontology is
-used. The last two tests pin what that costs and what it buys.
+used. The last two tests pin that class requirements are supplied during inference and remain enforceable when inference is disabled.
 """
 
 import pytest
@@ -16,11 +16,11 @@ from rdflib import Graph, Namespace
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 EX = Namespace("urn:defaults#")
 
 PREFIX = (
-    "@prefix watr: <urn:nawi-water-ontology#> .\n"
+    "@prefix watr: <https://watermetadata.org/ontology/watr#> .\n"
     "@prefix s223: <http://data.ashrae.org/standard223#> .\n"
     "@prefix ex: <urn:defaults#> .\n"
 )
@@ -35,7 +35,7 @@ def test_process_and_outcome_are_both_materialized(ontology_shapes_graph):
     """The outcome comes from watr:Thickener and the process from the subclass,
     so a bare instance picks up one from each level of the hierarchy."""
     out = _materialize("ex:gt a watr:GravityThickener .\n", ontology_shapes_graph)
-    assert (EX.gt, WATR.hasProcess, WATR["Process-Sedimentation"]) in out
+    assert (EX.gt, WATR.hasProcess, WATR["Process-Settling"]) in out
     assert (EX.gt, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Thickening"]) in out
 
 
@@ -54,7 +54,7 @@ def test_the_settling_split_is_carried_by_the_subclasses(ontology_shapes_graph):
         ontology_shapes_graph,
     )
     for unit in (EX.clarifier, EX.thickener, EX.settler):
-        assert (unit, WATR.hasProcess, WATR["Process-Sedimentation"]) in out
+        assert (unit, WATR.hasProcess, WATR["Process-Settling"]) in out
 
     assert (
         EX.clarifier,
@@ -66,7 +66,9 @@ def test_the_settling_split_is_carried_by_the_subclasses(ontology_shapes_graph):
         WATR.hasTreatmentObjective,
         WATR["TreatmentObjective-Thickening"],
     ) in out
-    assert not list(out.objects(EX.settler, WATR.hasTreatmentObjective))
+    assert set(out.objects(EX.settler, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-ConstituentRemoval"]
+    }
 
 
 def test_the_generic_settler_takes_the_objective_the_modeler_states(ontology_shapes_graph):
@@ -77,17 +79,20 @@ def test_the_generic_settler_takes_the_objective_the_modeler_states(ontology_sha
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening .\n",
         ontology_shapes_graph,
     )
-    assert list(out.objects(EX.settler, WATR.hasTreatmentObjective)) == [
-        WATR["TreatmentObjective-Thickening"]
-    ]
+    assert set(out.objects(EX.settler, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-Thickening"],
+        WATR["TreatmentObjective-ConstituentRemoval"],
+    }
 
 
-def test_a_membrane_claims_no_objective(ontology_shapes_graph):
+def test_a_membrane_implies_only_broad_constituent_removal(ontology_shapes_graph):
     """Reverse osmosis desalinates seawater at one plant and removes PFAS from
     groundwater at another, so the class supplies the process and stops there."""
     out = _materialize("ex:ro a watr:ReverseOsmosisMembrane .\n", ontology_shapes_graph)
     assert (EX.ro, WATR.hasProcess, WATR["Process-ReverseOsmosis"]) in out
-    assert not list(out.objects(EX.ro, WATR.hasTreatmentObjective))
+    assert set(out.objects(EX.ro, WATR.hasTreatmentObjective)) == {
+        WATR["TreatmentObjective-ConstituentRemoval"]
+    }
 
 
 def test_renamed_uv_unit_gets_both_axes(ontology_shapes_graph):
@@ -189,7 +194,7 @@ def test_a_bare_typed_instance_is_now_complete(ontology_shapes_graph):
     """The point of shipping the rule in the closure.
 
     Nothing but the type, and the model validates: the requirement is met by
-    derivation, because an instance of a class that requires Process-Sedimentation
+    derivation, because an instance of a class that requires Process-Settling
     sediments whether or not the model troubles to say so.
     """
     data = Graph().parse(
@@ -234,5 +239,5 @@ def test_the_distinction_is_recoverable_without_the_rule(
         str(report.value(r, SH.resultMessage))
         for r in report.subjects(SH.resultSeverity, None)
     ]
-    assert any("Sedimentation process" in m for m in messages), messages
+    assert any("Settling process" in m for m in messages), messages
     assert any("Thickening treatment objective" in m for m in messages), messages

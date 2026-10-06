@@ -4,17 +4,22 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix equip: <urn:nawi-water-ontology/equip#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/substances>
+<https://watermetadata.org/ontology/modules/substances>
     a owl:Ontology ;
     rdfs:label "NAWI Water Substances Ontology" ;
     rdfs:comment "An ontology for water substances used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+    # Prefix declarations for the SPARQL-based constraints defined in this module.
+    sh:declare [ sh:prefix "s223" ; sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "qudt" ; sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "watr" ; sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "quantitykind" ; sh:namespace "http://qudt.org/vocab/quantitykind/"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "unit" ; sh:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ] ;
 .
 watr:Water-Seawater
   a watr:Class ;
@@ -107,7 +112,7 @@ watr:Fluid-Sludge
   # Sludge is an aqueous slurry: this lets equipment that accepts water-based
   # fluids (for example, s223:Pump) retain the actual sludge medium on its
   # connection points rather than substituting the less-specific Fluid-Water.
-  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
+  rdfs:subClassOf s223:Fluid-Water ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
@@ -620,3 +625,179 @@ watr:Sludge-MixedLiquor
         rdfs:label "Water Fraction"
     ] ;
 .
+
+watr:CompositionPercentageShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Percentage Shape" ;
+    rdfs:comment "A medium's constituent mass or volume fractions expressed in percent cannot add up to more than 100%. Where a constituent is given as a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), the greatest declared lower bound for that constituent is the one that counts, since only the lower bounds must all be simultaneously satisfiable." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "The constituent percentages of {$this} add up to {?total}%, which exceeds 100%." ;
+        sh:severity sh:Violation ;
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:select """
+            SELECT $this ?total
+            WHERE {
+                {
+                    SELECT $this ?kind (SUM(?lowest) AS ?total)
+                    WHERE {
+                        {
+                            SELECT $this ?kind ?constituent (MAX(?value) AS ?lowest)
+                            WHERE {
+                                $this s223:composedOf ?fraction .
+                                ?fraction s223:ofConstituent ?constituent ;
+                                          qudt:hasUnit unit:PERCENT ;
+                                          qudt:hasQuantityKind ?kind ;
+                                          s223:hasValue ?value .
+                                FILTER (?kind IN (quantitykind:MassFraction, quantitykind:VolumeFraction))
+                                FILTER NOT EXISTS { ?fraction s223:hasAspect s223:Aspect-HighLimit }
+                            }
+                            GROUP BY $this ?kind ?constituent
+                        }
+                    }
+                    GROUP BY $this ?kind
+                }
+                FILTER (?total > 100)
+            }
+        """ ;
+    ] ;
+.
+
+
+
+watr:CompositionComplementRule
+    a sh:NodeShape ;
+    rdfs:label "Composition Complement Rule" ;
+    rdfs:comment "Completes an explicitly complete, common-basis percent composition (watr:hasCompleteComposition true) that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "Infer the remaining constituent's percentage" ;
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:construct """
+            CONSTRUCT {
+                ?unquantified s223:hasValue ?complement .
+            }
+            WHERE {
+                $this watr:hasCompleteComposition true ;
+                      s223:composedOf ?unquantified .
+                ?unquantified s223:ofConstituent ?constituent ;
+                              qudt:hasUnit unit:PERCENT ;
+                              qudt:hasQuantityKind ?kind .
+                FILTER (?kind IN (quantitykind:MassFraction, quantitykind:VolumeFraction))
+                # Every declared fraction must use the same basis and unit.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?otherFraction .
+                    FILTER NOT EXISTS {
+                        ?otherFraction qudt:hasUnit unit:PERCENT ;
+                                       qudt:hasQuantityKind ?kind .
+                    }
+                }
+                FILTER NOT EXISTS { ?unquantified s223:hasValue ?existingValue }
+                FILTER NOT EXISTS { ?unquantified s223:hasAspect ?anyAspect }
+
+                # The remainder can only be attributed to a single constituent,
+                # so bail out if another fraction is unquantified too.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?sibling .
+                    ?sibling s223:ofConstituent ?siblingConstituent ;
+                             qudt:hasUnit unit:PERCENT .
+                    FILTER NOT EXISTS { ?sibling s223:hasValue ?siblingValue }
+                    FILTER (?sibling != ?unquantified)
+                }
+
+                # Duplicated constituent declarations must not be summed twice.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?first, ?second .
+                    ?first s223:ofConstituent ?duplicate .
+                    ?second s223:ofConstituent ?duplicate .
+                    FILTER (?first != ?second)
+                }
+
+                # A composition stated as ranges has no single complement.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?ranged .
+                    ?ranged qudt:hasUnit unit:PERCENT ;
+                            s223:hasValue ?rangedValue ;
+                            s223:hasAspect ?limit .
+                    FILTER (?limit IN (s223:Aspect-LowLimit, s223:Aspect-HighLimit))
+                }
+
+                # No rows when nothing is quantified, so a composition that names
+                # its constituents without values is left alone.
+                {
+                    SELECT $this ?kind (SUM(?value) AS ?total)
+                    WHERE {
+                        $this s223:composedOf ?quantified .
+                        ?quantified s223:ofConstituent ?quantifiedConstituent ;
+                                    qudt:hasUnit unit:PERCENT ;
+                                    qudt:hasQuantityKind ?kind ;
+                                    s223:hasValue ?value .
+                    }
+                    GROUP BY $this ?kind
+                }
+                BIND (100 - ?total AS ?complement)
+                FILTER (?complement >= 0)
+            }
+        """ ;
+    ] ;
+.
+
+watr:Constituent-Arsenic
+    a watr:Class, watr:Constituent-Arsenic, sh:NodeShape ;
+    rdfs:label "Arsenic" ;
+    rdfs:comment "Arsenic species in water, including dissolved arsenite and arsenate." ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids .
+
+watr:Constituent-Lead
+    a watr:Class, watr:Constituent-Lead, sh:NodeShape ;
+    rdfs:label "Lead" ;
+    rdfs:comment "Lead species in water." ;
+    rdfs:subClassOf watr:Constituent-Metals .
+
+watr:hasCompleteComposition
+    a rdf:Property ;
+    rdfs:label "has complete composition" ;
+    rdfs:comment "When true, the declared constituent fractions exhaust this medium's composition. Enables complement inference when all fractions share a mass or volume basis and percent units; omitted constituents must not be inferred as part of another constituent." ;
+    rdfs:range xsd:boolean .
+
+watr:CompositionFractionBoundsShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Fraction Bounds" ;
+    rdfs:comment "Each declared constituent percentage must lie between zero and 100, inclusive." ;
+    sh:targetObjectsOf s223:composedOf ;
+    sh:sparql [
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:message "A constituent percentage must lie between 0 and 100." ;
+        sh:select """
+            SELECT $this ?value WHERE {
+                $this qudt:hasUnit unit:PERCENT ; s223:hasValue ?value .
+                FILTER (?value < 0 || ?value > 100)
+            }
+        """ ;
+    ] .
+
+watr:CompositionIntervalShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Interval Consistency" ;
+    rdfs:comment "Exact values and lower/upper bounds on each constituent and fraction basis must have a common feasible value." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:sparql [
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:message "A constituent has conflicting exact values or lower and upper bounds." ;
+        sh:select """
+            SELECT $this ?constituent ?kind WHERE {
+                $this s223:composedOf ?lowerFraction, ?upperFraction .
+                ?lowerFraction s223:ofConstituent ?constituent ;
+                    qudt:hasQuantityKind ?kind ; qudt:hasUnit unit:PERCENT ;
+                    s223:hasValue ?lower .
+                ?upperFraction s223:ofConstituent ?constituent ;
+                    qudt:hasQuantityKind ?kind ; qudt:hasUnit unit:PERCENT ;
+                    s223:hasValue ?upper .
+                FILTER NOT EXISTS { ?lowerFraction s223:hasAspect s223:Aspect-HighLimit }
+                FILTER NOT EXISTS { ?upperFraction s223:hasAspect s223:Aspect-LowLimit }
+                FILTER (?lower > ?upper)
+            }
+        """ ;
+    ] .

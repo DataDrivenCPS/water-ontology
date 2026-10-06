@@ -1,0 +1,70 @@
+@prefix : <urn:example/brine-inferred-complement#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/brine-inferred-complement>
+    a owl:Ontology ;
+    rdfs:label "Inferred Composition Complement Example" ;
+    rdfs:comment "Two 12% brines that state only their salt fraction. The water fraction carries no value, so watr:CompositionComplementRule infers 88%. The rule completes a blank-node fraction and a named one alike; name the fraction when something else in the model needs to refer to the inferred value." ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+.
+
+:Brine-12Percent
+  a watr:Class ;
+  a :Brine-12Percent ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-12Percent" ;
+  rdfs:label "Brine-12Percent" ;
+  rdfs:subClassOf watr:Water-Brine ;
+  watr:hasCompleteComposition true ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:hasValue 12 ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt Concentration" ;
+    ] ;
+  # No s223:hasValue: the complement rule supplies 88.
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water Concentration" ;
+    ] ;
+.
+
+:Brine-12Percent-Named
+  a watr:Class ;
+  a :Brine-12Percent-Named ;
+  a sh:NodeShape ;
+  rdfs:comment "Brine-12Percent-Named" ;
+  rdfs:label "Brine-12Percent-Named" ;
+  rdfs:subClassOf watr:Water-Brine ;
+  watr:hasCompleteComposition true ;
+  s223:composedOf :SaltFraction, :WaterFraction ;
+.
+
+:SaltFraction
+  a s223:QuantifiableProperty ;
+  rdfs:label "Salt Concentration" ;
+  s223:hasValue 12 ;
+  s223:ofConstituent watr:Salt-NaCl ;
+  qudt:hasQuantityKind quantitykind:MassFraction ;
+  qudt:hasUnit unit:PERCENT ;
+.
+
+:WaterFraction
+  a s223:QuantifiableProperty ;
+  rdfs:label "Water Concentration" ;
+  s223:ofConstituent s223:Constituent-H2O ;
+  qudt:hasQuantityKind quantitykind:MassFraction ;
+  qudt:hasUnit unit:PERCENT ;
+.

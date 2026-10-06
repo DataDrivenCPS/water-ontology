@@ -12,7 +12,7 @@ Model the collection as an `s223:System`, relate its components with
 ```ttl
 @prefix : <urn:example/> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
 :backwashSystem a s223:System ;
     s223:hasMember :backwashPump, :backwashTank, :backwashValve ;
@@ -54,7 +54,7 @@ members state the activities they perform:
 
 :finalClarifier a watr:SedimentationTank ;
     s223:hasRole watr:Role-Secondary ;
-    watr:hasProcess watr:Process-Sedimentation,
+    watr:hasProcess watr:Process-Settling,
                     watr:Process-Recirculation ;
     watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
 ```
@@ -97,7 +97,7 @@ inspecting a model:
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX s223: <http://data.ashrae.org/standard223#>
-PREFIX watr: <urn:nawi-water-ontology#>
+PREFIX watr: <https://watermetadata.org/ontology/watr#>
 
 SELECT ?system ?missingStep WHERE {
   ?system watr:hasProcess ?compound .

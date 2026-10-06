@@ -10,7 +10,7 @@ pump-with-vfd
 
            @prefix P: <urn:___param___#> .
            @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <urn:nawi-water-ontology#> .
+           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
            
            P:name a ns2:Pump ;
                ns1:contains P:pump-name,
@@ -46,7 +46,7 @@ pump-with-vfd
             @prefix ns1: <http://data.ashrae.org/standard223#> .
             @prefix ns2: <http://qudt.org/schema/qudt/> .
 
-            P:name a <urn:nawi-water-ontology#Pump> ;
+            P:name a <https://watermetadata.org/ontology/watr#Pump> ;
                 ns1:contains P:pump-name,
                     P:vfd-name ;
                 ns1:hasConnectionPoint P:elec-in,
@@ -92,7 +92,7 @@ pump-with-vfd
                 ns1:mapsTo P:elec-in,
                     P:vfd-name-in-mapsto .
 
-            P:vfd-name a <urn:nawi-water-ontology#VariableFrequencyDrive> ;
+            P:vfd-name a <https://watermetadata.org/ontology/watr#VariableFrequencyDrive> ;
                 ns1:connectsTo P:pump-name ;
                 ns1:hasConnectionPoint P:vfd-in,
                     P:vfd-out ;
@@ -118,7 +118,7 @@ pump-with-vfd
                 ns1:hasMedium P:out-medium ;
                 ns1:mapsTo P:out-mapsto .
 
-            P:pump-name a <urn:nawi-water-ontology#Pump> ;
+            P:pump-name a <https://watermetadata.org/ontology/watr#Pump> ;
                 ns1:cnx P:pump-elec-in ;
                 ns1:hasConnectionPoint P:pump-elec-in,
                     P:pump-in,
@@ -196,7 +196,7 @@ Graph Visualization
             node13 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
             node7 -> node14 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
             node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Pump</B></td></tr><tr><td href='urn:nawi-water-ontology#Pump' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Pump</font></td></tr></table> >];
+            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Pump</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Pump' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Pump</font></td></tr></table> >];
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>elec-in</B></td></tr><tr><td href='urn:___param___#elec-in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#elec-in</font></td></tr></table> >];
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
@@ -290,7 +290,7 @@ Graph Visualization
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>vfd-name</B></td></tr><tr><td href='urn:___param___#vfd-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#vfd-name</font></td></tr></table> >];
             node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>vfd-in</B></td></tr><tr><td href='urn:___param___#vfd-in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#vfd-in</font></td></tr></table> >];
-            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>VariableFrequencyDrive</B></td></tr><tr><td href='urn:nawi-water-ontology#VariableFrequencyDrive' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#VariableFrequencyDrive</font></td></tr></table> >];
+            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>VariableFrequencyDrive</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#VariableFrequencyDrive' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#VariableFrequencyDrive</font></td></tr></table> >];
             node7 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-name</B></td></tr><tr><td href='urn:___param___#pump-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-name</font></td></tr></table> >];
             node8 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-in</B></td></tr><tr><td href='urn:___param___#pump-in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-in</font></td></tr></table> >];
             node9 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>OutletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#OutletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#OutletConnectionPoint</font></td></tr></table> >];
@@ -299,7 +299,7 @@ Graph Visualization
             node12 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-out</B></td></tr><tr><td href='urn:___param___#pump-out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-out</font></td></tr></table> >];
             node13 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-name-out-mapsto</B></td></tr><tr><td href='urn:___param___#pump-name-out-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-name-out-mapsto</font></td></tr></table> >];
             node14 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>vfd-name-out-mapsto</B></td></tr><tr><td href='urn:___param___#vfd-name-out-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#vfd-name-out-mapsto</font></td></tr></table> >];
-            node15 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Pump</B></td></tr><tr><td href='urn:nawi-water-ontology#Pump' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Pump</font></td></tr></table> >];
+            node15 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Pump</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Pump' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Pump</font></td></tr></table> >];
             node16 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-name-in-mapsto</B></td></tr><tr><td href='urn:___param___#pump-name-in-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-name-in-mapsto</font></td></tr></table> >];
             node17 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>pump-name-in-medium</B></td></tr><tr><td href='urn:___param___#pump-name-in-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#pump-name-in-medium</font></td></tr></table> >];
             node18 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>elec-in</B></td></tr><tr><td href='urn:___param___#elec-in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#elec-in</font></td></tr></table> >];

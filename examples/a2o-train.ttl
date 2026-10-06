@@ -1,11 +1,11 @@
-@prefix : <urn:nawi-water-ontology/examples/a2o-train#> .
+@prefix : <https://watermetadata.org/ontology/modules/examples/a2o-train#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/examples/a2o-train>
+<https://watermetadata.org/ontology/modules/examples/a2o-train>
     a owl:Ontology ;
     rdfs:label "Three-Stage Pho-redox (A2/O) Biological Nutrient Removal Train" ;
     rdfs:comment """Model of the three-stage anaerobic-anoxic-oxic (A2/O) wastewater treatment
@@ -38,7 +38,7 @@ The pumps and valves are modeling scaffolding for the recycle assemblies, as
 the source figure gives no pump or valve counts.""" ;
     dcterms:source <https://www.epa.gov/sites/default/files/2019-08/documents/nutrient_control_design_manual.pdf> ;
     rdfs:seeAlso <https://www.epa.gov/sustainable-water-infrastructure/nutrient-control-design-manual> ;
-    owl:imports <urn:nawi-water-ontology> ,
+    owl:imports <https://watermetadata.org/ontology/watr> ,
                 <http://data.ashrae.org/standard223/1.0/model/all> ;
 .
 
@@ -125,7 +125,7 @@ the source figure gives no pump or valve counts.""" ;
     a watr:Clarifier ;
     rdfs:label "Secondary Clarifier" ;
     s223:hasRole watr:Role-Secondary ;
-    # Process-Sedimentation comes from SedimentationTank and
+    # Process-Settling comes from SedimentationTank and
     # TreatmentObjective-Clarification from Clarifier, by class default (omitted).
     # A watr:SedimentationTank would settle without saying which of its two
     # products the plant uses; this one is here for the overflow.

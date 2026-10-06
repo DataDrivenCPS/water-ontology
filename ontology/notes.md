@@ -327,7 +327,7 @@ axes.
   DewateringUnit -> watr:hasTreatmentObjective TreatmentObjective-Dewatering
   TreatmentObjective-Drying is a subclass of TreatmentObjective-Dewatering.
 
-  GravityThickener               -> watr:hasProcess Process-Sedimentation
+  GravityThickener               -> watr:hasProcess Process-Settling
   BeltThickener, RotaryDrumThickener, GravityBeltThickener, BeltFilterPress
                                  -> watr:hasProcess Process-Filtration
   CentrifugalThickener, CentrifugalDewateringUnit
@@ -338,10 +338,10 @@ Any class may require a treatment objective, a process, or both. These families 
 treatment objective on the parent and the process on the subclass because there the objective
 is common and the mechanism varies; that is an organizing choice, not a rule.
 watr:SedimentationTank states both itself -- TreatmentObjective-Clarification and
-Process-Sedimentation -- as does watr:Digester, with TreatmentObjective-Stabilization and
+Process-Settling -- as does watr:Digester, with TreatmentObjective-Stabilization and
 Process-Digestion.
 
-Materializing class defaults (water/class-defaults.ttl)
+Materializing class defaults (ontology/class-defaults.ttl)
 ------------------------------------------------------
 Typing something as a watr:GravityThickener already says it thickens by settling.
 A SHACL-AF rule writes that onto the instance, reading the values from the
@@ -349,14 +349,14 @@ sh:qualifiedValueShape constraints the classes already carry, so nothing has to
 be kept in step:
 
   ex:gt a watr:GravityThickener .
-    ->  watr:hasProcess watr:Process-Sedimentation   (from GravityThickener)
+    ->  watr:hasProcess watr:Process-Settling   (from GravityThickener)
         watr:hasTreatmentObjective watr:TreatmentObjective-Thickening      (from Thickener)
 
 Default semantics, not additive: a class requiring Process-Filtration adds
 nothing to an instance already declaring Process-Microfiltration.
 
-The file is INSIDE the import closure: water/ontology.ttl imports
-<urn:nawi-water-ontology/class-defaults>, so the rule ships with the ontology and
+The file is INSIDE the import closure: ontology/watr.ttl imports
+<https://watermetadata.org/ontology/modules/class-defaults>, so the rule ships with the ontology and
 fires wherever it is used. That is deliberate. shifty.validate runs SHACL-AF
 rules as part of validation (infer=True by default), so the rule fires before the
 constraints are checked and satisfies them itself: a bare

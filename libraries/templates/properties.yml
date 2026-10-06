@@ -178,7 +178,7 @@ toc-ppm:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
@@ -193,7 +193,7 @@ cl2-mgL:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
@@ -207,7 +207,7 @@ concentration:
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;

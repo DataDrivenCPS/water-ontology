@@ -11,6 +11,8 @@ parts:
   - file: explanation/definitions.md
   - file: explanation/processes.md
   - file: explanation/equipment_function.md
+  - file: explanation/treatment_model_summary.md
+  - file: explanation/treatment_review.md
   - file: explanation/system_processes.md
   - file: explanation/flow_graph_sensor.md
   - file: explanation/data_quality.md
@@ -27,7 +29,7 @@ parts:
   chapters:
   - file: reference/equipment_documentation.md
   - file: reference/processes_documentation.md
-  - file: reference/outcomes_documentation.md
-  - file: reference/process_outcome_map.md
+  - file: reference/objectives_documentation.md
+  - file: reference/process_objective_map.md
   - file: reference/substances_documentation.md
   - file: libraries/index.rst

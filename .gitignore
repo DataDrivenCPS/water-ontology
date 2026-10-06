@@ -4,8 +4,8 @@
 # cache of ontologies
 .ontoenv
 
-# built ontology
-water.ttl
+# compiled ontology documents (unversioned "latest" and versioned snapshots)
+build/
 
 # ignore uv.lock
 uv.lock

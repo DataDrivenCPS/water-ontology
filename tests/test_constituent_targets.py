@@ -9,7 +9,7 @@ The point of the target is that it makes the constituent-removal branch
 extensible. A plant treating something this ontology does not carry writes its
 own objective, types it ``watr:TreatmentObjective-ConstituentRemoval`` and points
 it at a constituent; the objective is then in the hierarchy and answerable
-without any change to the vocabulary. Two shapes in ``water/ontology.ttl`` keep
+without any change to the vocabulary. Two shapes in ``ontology/watr.ttl`` keep
 that usable:
 
 ``watr:ConstituentTargetValueShape``
@@ -29,11 +29,11 @@ from rdflib.namespace import RDFS
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 S223 = Namespace("http://data.ashrae.org/standard223#")
 
 PREFIX = (
-    "@prefix watr: <urn:nawi-water-ontology#> .\n"
+    "@prefix watr: <https://watermetadata.org/ontology/watr#> .\n"
     "@prefix s223: <http://data.ashrae.org/standard223#> .\n"
     "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
     "@prefix ex: <urn:constituents#> .\n"

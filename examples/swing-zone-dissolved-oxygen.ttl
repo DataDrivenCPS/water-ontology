@@ -1,15 +1,15 @@
-@prefix : <urn:nawi-water-ontology/examples/swing-zone-dissolved-oxygen#> .
+@prefix : <https://watermetadata.org/ontology/modules/examples/swing-zone-dissolved-oxygen#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/examples/swing-zone-dissolved-oxygen>
+<https://watermetadata.org/ontology/modules/examples/swing-zone-dissolved-oxygen>
     a owl:Ontology ;
-    owl:imports <urn:nawi-water-ontology> ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
     rdfs:label "Swing Zone Dissolved Oxygen Example" ;
     rdfs:comment "Separates the regime a zone is commissioned to run in, which is a role, from the dissolved oxygen present in it at a point in time, which is a reading. The two are asserted with different constructs and neither substitutes for the other." ;
 .

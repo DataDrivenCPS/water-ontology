@@ -10,7 +10,7 @@ membrane-module
 
            @prefix P: <urn:___param___#> .
            @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <urn:nawi-water-ontology#> .
+           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
            
            P:membrane-in ns1:mapsTo P:in .
            
@@ -31,7 +31,7 @@ membrane-module
             @prefix P: <urn:___param___#> .
             @prefix ns1: <http://data.ashrae.org/standard223#> .
 
-            P:name a <urn:nawi-water-ontology#Equipment> ;
+            P:name a <https://watermetadata.org/ontology/watr#Equipment> ;
                 ns1:contains P:membrane ;
                 ns1:hasConnectionPoint P:in,
                     P:out ;
@@ -40,7 +40,7 @@ membrane-module
             P:in-mapsto a ns1:InletConnectionPoint ;
                 ns1:hasMedium P:in-medium .
 
-            P:membrane a <urn:nawi-water-ontology#Membrane> ;
+            P:membrane a <https://watermetadata.org/ontology/watr#Membrane> ;
                 ns1:hasConnectionPoint P:membrane-in,
                     P:membrane-out ;
                 ns1:hasRole P:membrane-role .
@@ -118,7 +118,7 @@ Graph Visualization
             node0 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
             node0 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:contains</font> >];
             node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Equipment</B></td></tr><tr><td href='urn:nawi-water-ontology#Equipment' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Equipment</font></td></tr></table> >];
+            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Equipment</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Equipment' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Equipment</font></td></tr></table> >];
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>membrane-out</B></td></tr><tr><td href='urn:___param___#membrane-out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#membrane-out</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
@@ -182,8 +182,8 @@ Graph Visualization
             node14 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>membrane-out-medium</B></td></tr><tr><td href='urn:___param___#membrane-out-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#membrane-out-medium</font></td></tr></table> >];
             node15 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>membrane-role</B></td></tr><tr><td href='urn:___param___#membrane-role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#membrane-role</font></td></tr></table> >];
             node16 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>membrane-in-medium</B></td></tr><tr><td href='urn:___param___#membrane-in-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#membrane-in-medium</font></td></tr></table> >];
-            node17 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Equipment</B></td></tr><tr><td href='urn:nawi-water-ontology#Equipment' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Equipment</font></td></tr></table> >];
+            node17 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Equipment</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Equipment' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Equipment</font></td></tr></table> >];
             node18 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
-            node19 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Membrane</B></td></tr><tr><td href='urn:nawi-water-ontology#Membrane' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Membrane</font></td></tr></table> >];
+            node19 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Membrane</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Membrane' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Membrane</font></td></tr></table> >];
             }
             

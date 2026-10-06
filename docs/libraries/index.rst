@@ -1,5 +1,9 @@
 
-.. autotemplatedoc:: libraries/templates docs/libraries/
+Template libraries
+==================
+
+The template reference pages describe the reusable equipment, media, and
+property templates shipped in ``libraries/templates``.
 
 .. toctree::
    :maxdepth: 2

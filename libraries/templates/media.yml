@@ -5,7 +5,7 @@ brine:
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     
     P:name
       a s223:Class ;
@@ -29,7 +29,7 @@ constituent-salt:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;
@@ -43,7 +43,7 @@ constituent-water:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
-    @prefix watr: <urn:nawi-water-ontology#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;

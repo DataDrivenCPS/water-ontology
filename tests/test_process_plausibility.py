@@ -17,9 +17,9 @@ from rdflib import Graph, Namespace
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-WATR = Namespace("urn:nawi-water-ontology#")
+WATR = Namespace("https://watermetadata.org/ontology/watr#")
 
-PREFIX = "@prefix watr: <urn:nawi-water-ontology#> .\n@prefix ex: <urn:plausibility#> .\n"
+PREFIX = "@prefix watr: <https://watermetadata.org/ontology/watr#> .\n@prefix ex: <urn:plausibility#> .\n"
 
 # (equipment class, processes, expect_warning, why)
 PLAUSIBLE = [
@@ -39,12 +39,12 @@ PLAUSIBLE = [
      "digesters draw off biogas"),
     ("ChlorinationUnit", ["Chlorination", "Mixing"],
      "contact basins mix"),
-    ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Sedimentation"],
+    ("SequencingBatchReactor", ["ActivatedSludge", "Aeration", "Settling"],
      "SBRs aerate and settle in successive phases"),
     # Solids handling. The objective lives on watr:hasTreatmentObjective and is not this
     # module's subject; what is checked here is that the process each unit
     # thickens or dewaters by is not itself flagged as implausible.
-    ("GravityThickener", ["Sedimentation"],
+    ("GravityThickener", ["Settling"],
      "a gravity thickener thickens by settling"),
     ("BeltThickener", ["Filtration"],
      "a belt thickener thickens by filtering"),
@@ -79,7 +79,7 @@ IMPLAUSIBLE = [
      "a microfiltration unit does not dose chlorine"),
     ("RapidSandFilter", ["RapidSandFiltration", "Crystallization"],
      "a sand filter does not crystallize"),
-    ("GravityThickener", ["Sedimentation", "AnaerobicDigestion"],
+    ("GravityThickener", ["Settling", "AnaerobicDigestion"],
      "a thickener does not digest"),
     ("AirStripper", ["Stripping", "Nitrification"],
      "a stripper holds no biomass; the aerobic zone it is confused with is AerationBasin"),

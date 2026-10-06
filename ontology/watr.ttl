@@ -1,23 +1,29 @@
 @prefix all: <http://data.ashrae.org/standard223/model/all#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology>
+<https://watermetadata.org/ontology/watr>
   a owl:Ontology ;
+  rdfs:label "NAWI Water Ontology" ;
+  dcterms:title "NAWI Water Ontology" ;
+  dcterms:description "An ontology for describing water and wastewater treatment systems, built on ASHRAE Standard 223P." ;
+  dcterms:license <https://github.com/DataDrivenCPS/water-ontology/blob/main/LICENSE> ;
+  rdfs:seeAlso <https://watermetadata.org> ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
   owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
-  owl:imports <urn:nawi-water-ontology/equip> ;
-  owl:imports <urn:nawi-water-ontology/processtypes> ;
-  owl:imports <urn:nawi-water-ontology/outcomes> ;
-  owl:imports <urn:nawi-water-ontology/class-defaults> ;
-  owl:imports <urn:nawi-water-ontology/substances> ;
-  owl:imports <urn:nawi-water-ontology/enumerationkinds> ;
+  owl:imports <https://watermetadata.org/ontology/modules/equipment> ;
+  owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
+  owl:imports <https://watermetadata.org/ontology/modules/objectives> ;
+  owl:imports <https://watermetadata.org/ontology/modules/class-defaults> ;
+  owl:imports <https://watermetadata.org/ontology/modules/substances> ;
+  owl:imports <https://watermetadata.org/ontology/modules/enumerationkinds> ;
   owl:imports sh: ;
 .
 
@@ -31,7 +37,13 @@ watr:Class
       sh:path rdfs:label ;
       rdfs:comment "A `Class` must be associated with at least one label using the relation `rdfs:label`." ;
       sh:minCount 1 ;
-      sh:severity sh:Warning ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:label." ;
+    ] ;
+  sh:property [
+      sh:path rdfs:comment ;
+      rdfs:comment "A `Class` must carry a human-readable definition using the relation `rdfs:comment`." ;
+      sh:minCount 1 ;
+      sh:message "Every term defined by the watr ontology must have an rdfs:comment." ;
     ] ;
 .
 
@@ -132,8 +144,8 @@ watr:mayAlsoPerform
     rdfs:range watr:Class ;
 .
 
-<urn:nawi-water-ontology>
-    sh:declare [ sh:prefix "watr" ; sh:namespace "urn:nawi-water-ontology#"^^xsd:anyURI ] ;
+<https://watermetadata.org/ontology/watr>
+    sh:declare [ sh:prefix "watr" ; sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "sh" ; sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "rdf" ; sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] ;
@@ -169,7 +181,7 @@ watr:includesProcess
 # processes: a primary clarifier, a secondary clarifier and a gravity thickener
 # all settle, and chlorination, ozonation and ultraviolet irradiation all
 # disinfect. Neither relation fits in a single hierarchy, so treatment objectives are a
-# separate vocabulary in water/outcomes.ttl and no term belongs to both.
+# separate vocabulary in ontology/objectives.ttl and no term belongs to both.
 #
 # Treatment objective and process are both intrinsic -- on the datasheet. What is positional
 # belongs to s223:hasRole: a primary and a secondary clarifier share their
@@ -218,7 +230,7 @@ watr:targetsConstituent
 .
 
 # The consumer of watr:achievesTreatmentObjective is watr:ProcessObjectiveRule in
-# water/class-defaults.ttl, which copies the objective onto everything that
+# ontology/class-defaults.ttl, which copies the objective onto everything that
 # performs the process. A shape here used to warn instead, when a model
 # performed such a process and did not state the objective; deriving it is
 # better than complaining about it, since the vocabulary already knows the
@@ -312,7 +324,7 @@ watr:ConstituentRemovalTargetShape
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:prefixes <urn:nawi-water-ontology> ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
         sh:message "{$this} is a constituent-removal objective but names no constituent. Add watr:targetsConstituent, or type it as an objective whose parent names one." ;
         sh:select """
             SELECT $this
@@ -355,7 +367,7 @@ watr:SystemProcessCoverageShape
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:prefixes <urn:nawi-water-ontology> ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
         sh:message "{$this} claims a process that includes {?missing}, but neither it nor any member performs that process." ;
         # hasMember* rather than hasMember+: the zero-length match makes the
         # system itself a candidate performer, since a train may state a step
@@ -391,7 +403,7 @@ watr:ProcessPlausibilityShape
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:prefixes <urn:nawi-water-ontology> ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
         sh:message "{$this} declares {?value}, which its equipment class neither requires nor lists via watr:mayAlsoPerform. If this is legitimate, add a watr:mayAlsoPerform statement to the appropriate equipment class." ;
         # watr:Process is excluded throughout: watr:UnitProcess requires it of
         # every value, so counting it as "allowed" would permit every process
@@ -448,7 +460,7 @@ watr:UnitProcess
     a rdfs:Class ;
     rdfs:label "Unit Process" ;
     rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
-    rdfs:subClassOf watr:Class, s223:Equipment ;
+    rdfs:subClassOf s223:Equipment ;
     sh:property [
       sh:path watr:hasProcess ;
       sh:minCount 1 ;

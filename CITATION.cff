@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+title: "NAWI Water Ontology"
+type: software
+authors:
+  - family-names: "Fierro"
+    given-names: "Gabe"
+    orcid: "https://orcid.org/0000-0002-2081-4525"
+    affiliation: "Colorado School of Mines"
+  - family-names: "Chapin"
+    given-names: "Fletcher"
+    orcid: "https://orcid.org/0000-0002-2165-7963"
+    affiliation: "Stanford University"
+  - family-names: "Paul"
+    given-names: "Lazlo"
+    orcid: "https://orcid.org/0000-0002-8819-5863"
+    affiliation: "Lawrence Berkeley National Laboratory"
+  - family-names: "Saka"
+    given-names: "Umut Mete"
+    orcid: "https://orcid.org/0009-0001-0250-7054"
+    affiliation: "Colorado School of Mines"
+repository-code: "https://github.com/DataDrivenCPS/water-ontology"
+url: "https://datadrivencps.github.io/water-ontology/"
+license: BSD-3-Clause
+keywords: [ontology, water treatment, ASHRAE 223P, semantic web, RDF]
+doi: 10.5281/zenodo.23087793

@@ -4,60 +4,34 @@
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-<urn:nawi-water-ontology/equip>
+<https://watermetadata.org/ontology/modules/equipment>
     a owl:Ontology ;
     rdfs:label "NAWI Water Equipment Ontology" ;
     rdfs:comment "An ontology for water equipment used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    owl:imports <urn:nawi-water-ontology/processtypes> ;
+    owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
 .
 # Despite the name, watr:Tank asserts nothing about geometry or containment. Its
-# constraints are entirely about connection points: one fluid inlet and one fluid
-# outlet, plus rules for the optional drain and overflow. Anything fluid flows
-# through therefore qualifies, including in-line devices -- watr:StaticMixer and
-# watr:PlugFlowReactor are both Tanks by way of watr:Reactor. Read it as "a
-# flow-through vessel", not as a shape. See water/notes.md.
+# connection-point requirements permit a storage tank with one bidirectional
+# fluid port. Reactors retain separate inlet/outlet requirements below.
 watr:Tank a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Tank" ;
-    rdfs:comment "A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify." ;
+    rdfs:comment "A vessel with at least one fluid connection point. A storage tank may use a single bidirectional port; flow-through subclasses require the appropriate inlet and outlet points." ;
     rdfs:subClassOf s223:Equipment ;
     # Any tank may be drained or purged for maintenance. Inherited by every tank
     # subclass; see watr:mayAlsoPerform in ontology.ttl.
     watr:mayAlsoPerform watr:Process-Cleaning ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A tank has an inlet fluid connection point" ;
         sh:qualifiedMinCount 1 ;
         sh:qualifiedValueShape [
-            sh:class s223:InletConnectionPoint ;
-            sh:property [
-                sh:path s223:hasMedium ;
-                sh:class s223:Mix-Fluid ;
-            ] ;
+            sh:class s223:ConnectionPoint ;
+            sh:property [ sh:path s223:hasMedium ; sh:class s223:Mix-Fluid ; sh:minCount 1 ] ;
         ] ;
-    ] ;
-    sh:property [
-        sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A tank has an outlet fluid connection point" ;
-        sh:qualifiedMinCount 1 ;
-        sh:qualifiedValueShape [
-            sh:class s223:OutletConnectionPoint ;
-            sh:property [
-                sh:path s223:hasMedium ;
-                sh:class s223:Mix-Fluid ;
-            ] ;
-            sh:not [
-                # this is NOT a drain connection point! Tanks with a drain connection point must have a separate outlet connection point for the drain.
-                sh:property [
-                    sh:path s223:hasRole ;
-                    sh:hasValue watr:Role-Drain ;
-                    sh:minCount 1 ;
-                ] ;
-            ] ;
-        ] ;
+        sh:message "A Tank must have at least one fluid connection point; a bidirectional port is sufficient." ;
     ] ;
     # A drain is optional, but every drain must be a fluid outlet. The constraint
     # permits zero counterexamples: drain-role points that are not fluid outlets.
@@ -126,6 +100,38 @@ watr:Reactor a sh:NodeShape ;
     # property of the vessel.
     watr:mayAlsoPerform watr:Process-Nitrification, watr:Process-Denitrification,
                         watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A reactor has an inlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:class s223:Mix-Fluid ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        rdfs:comment "A reactor has an outlet fluid connection point" ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:class s223:Mix-Fluid ;
+            ] ;
+            sh:not [
+                # this is NOT a drain connection point! Tanks with a drain connection point must have a separate outlet connection point for the drain.
+                sh:property [
+                    sh:path s223:hasRole ;
+                    sh:hasValue watr:Role-Drain ;
+                    sh:minCount 1 ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
     # Recirculation and return connection points are optional, but every such
     # point must be a fluid outlet. The constraint permits zero counterexamples.
     sh:property [
@@ -195,9 +201,9 @@ watr:SequencingBatchReactor
     # biological process, not itself a subclass of Process-Separation.
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of SequencingBatchReactor must have a Sedimentation process." ;
+        sh:message "Instances of SequencingBatchReactor must have a Settling process." ;
     ] ;
     sh:property [
         sh:path watr:hasTreatmentObjective ;
@@ -243,7 +249,7 @@ watr:SequencingBatchReactor
                     sh:class s223:Mix-Fluid ;
                 ] ;
             ] ;
-            
+
         ] ]
         # OR 1 bidirectional (water)
         [ sh:property [
@@ -396,7 +402,7 @@ watr:MembraneAeratedBiofilmReaactor
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of MembraneAeratedBiofilmReactor must have a Aeration process." ;
     ] .
-    
+
 watr:CoagulationBasin
     a  sh:NodeShape ;
     a watr:Class ;
@@ -527,9 +533,9 @@ watr:SedimentationTank
     rdfs:subClassOf watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of SedimentationTank must have a Sedimentation process." ;
+        sh:message "Instances of SedimentationTank must have a Settling process." ;
     ] .
 
 # The other half of the split. Every clarifier is built for the clarified
@@ -594,14 +600,14 @@ watr:GritChamber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of GritChamber must have a Sedimentation process." ;
+        sh:message "Instances of GritChamber must have a Settling process." ;
     ] ;
     # Sedimentation serves clarification in a clarifier and thickening in a
     # gravity thickener; in a grit chamber it takes grit out. Same process,
     # third objective -- which is why the treatment objective is stated here and not on
-    # Process-Sedimentation.
+    # Process-Settling.
     sh:property [
         sh:path watr:hasTreatmentObjective ;
         sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SolidsRemoval ] ;
@@ -757,9 +763,9 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of GravityThickener must have a Sedimentation process." ;
+        sh:message "Instances of GravityThickener must have a Settling process." ;
     ] .
 
 watr:BeltThickener
@@ -830,6 +836,8 @@ watr:Filter
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter, watr:UnitProcess ;
+    # A subclass may narrow this slot to a specific filtration process. One
+    # such process satisfies both this slot and the subclass's own.
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;
@@ -855,7 +863,7 @@ watr:ReverseOsmosisMembrane
         sh:message "Instances of ReverseOsmosisMembrane must have a ReverseOsmosis process." ;
     ] .
 
-watr:RotatingBiologicalContactor 
+watr:RotatingBiologicalContactor
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Rotating Biological Contactor (RBC)" ;
@@ -871,7 +879,7 @@ watr:RotatingBiologicalContactor
         sh:message "Instances of RotatingBiologicalContactor must have a Biofiltration process." ;
     ] .
 
-watr:MovingBedBioreactor 
+watr:MovingBedBioreactor
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Moving Bed Bioreactor (MBBR)" ;
@@ -941,7 +949,7 @@ watr:MembraneBioreactor
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of MembraneBioreactor must have a Biofiltration process." ;
     ] .
-    
+
 watr:MicrofiltrationUnit
     a  sh:NodeShape ;
     a watr:Class ;
@@ -1017,7 +1025,7 @@ watr:CartridgeFiltrationUnit
     rdfs:label "Cartridge Filtration Unit" ;
     rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
     rdfs:subClassOf watr:Filter .
-    
+
 watr:IonExchangeMembrane
     a  sh:NodeShape ;
     a watr:Class ;
@@ -1228,32 +1236,32 @@ watr:TotalOrganicCompoundConcentrationSensor
     rdfs:comment "A sensor used to measure the total organic compound concentration" ;
     rdfs:subClassOf watr:ConcentrationSensor .
 
-watr:Valve 
-    a s223:Class, sh:NodeShape; 
+watr:Valve
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways." ;
     rdfs:label "Valve" ;
-    rdfs:subClassOf s223:Valve 
+    rdfs:subClassOf s223:Valve
 .
 
 watr:VariableFrequencyDrive
-    a s223:Class, sh:NodeShape ;
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity." ;
     rdfs:subClassOf s223:VariableFrequencyDrive ;
-    rdfs:label "Variable Frequency Drive" 
+    rdfs:label "Variable Frequency Drive"
 .
 
-watr:ThreeWayValve 
-    a s223:Class, sh:NodeShape; 
+watr:ThreeWayValve
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A valve that features three ports (connections)" ;
     rdfs:label "Three Way Valve" ;
-    rdfs:subClassOf s223:Valve 
+    rdfs:subClassOf s223:Valve
 .
 
 watr:CheckValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A valve that normally allows fluid (liquid or gas) to flow through it in only one direction" ;
     rdfs:label "Check Valve" ;
@@ -1261,7 +1269,7 @@ watr:CheckValve
 .
 
 watr:BallValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A valve which operates using a spherical ball with a hole (also known as a bore) through the middle." ;
     rdfs:label "Ball Valve" ;
@@ -1269,7 +1277,7 @@ watr:BallValve
 .
 
 watr:ButterflyValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids" ;
     rdfs:label "Butterfly Valve" ;
@@ -1277,7 +1285,7 @@ watr:ButterflyValve
 .
 
 watr:GlobeValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow" ;
     rdfs:label "Globe Valve" ;
@@ -1285,7 +1293,7 @@ watr:GlobeValve
 .
 
 watr:PlugValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve" ;
     rdfs:label "Plug Valve" ;
@@ -1293,21 +1301,21 @@ watr:PlugValve
 .
 
 watr:AirReleaseValve
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Air Release Valve" ;
     rdfs:comment "Valve for vent trapped air pockets" ;
     rdfs:subClassOf s223:Valve
 .
 
-watr:Controller 
-    a s223:Class, sh:NodeShape ;
+watr:Controller
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:comment "A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s." ;
     rdfs:label "Controller" ;
     rdfs:subClassOf s223:Controller .
 
-watr:ManualMeasurementPort 
+watr:ManualMeasurementPort
     a watr:Class, sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Manual Measurement Port" ;
@@ -1498,7 +1506,7 @@ watr:GranularActivatedCarbonAdsorber
 
 watr:Grinder
     a  sh:NodeShape ;
-    a watr:Class ; 
+    a watr:Class ;
     rdfs:label "Grinder" ;
     rdfs:comment "Machine that shreds solid waste into tiny particles" ;
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
@@ -1508,21 +1516,21 @@ watr:Grinder
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
         sh:message "Instances of Grinder must have the Comminution process." ;
-    ] 
+    ]
 .
 
-watr:Gate 
-    a s223:Class, sh:NodeShape; 
+watr:Gate
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Gate" ;
     rdfs:comment "Tool to control water flow and isolate sections" ;
-    rdfs:subClassOf s223:Valve 
+    rdfs:subClassOf s223:Valve
 .
 
 watr:SluiceGate
-    a s223:Class, sh:NodeShape; 
+    a sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Sluice Gate" ;
     rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;
-    rdfs:subClassOf watr:Gate 
+    rdfs:subClassOf watr:Gate
 .

@@ -2,12 +2,12 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 
 <urn:example/reactor-with-required-cps>
     a owl:Ontology ;
     rdfs:label "Reactor Example With Required Connection Points" ;
-    owl:imports <urn:nawi-water-ontology> ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
 .
 
 :reactor

@@ -10,7 +10,7 @@ tank
 
            @prefix P: <urn:___param___#> .
            @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <urn:nawi-water-ontology#> .
+           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
            
            P:name a ns2:Tank ;
                ns1:cnx P:bi-cp,
@@ -30,7 +30,7 @@ tank
             @prefix P: <urn:___param___#> .
             @prefix ns1: <http://data.ashrae.org/standard223#> .
 
-            P:name a <urn:nawi-water-ontology#Tank> ;
+            P:name a <https://watermetadata.org/ontology/watr#Tank> ;
                 ns1:cnx P:bi-cp,
                     P:in,
                     P:out ;
@@ -105,7 +105,7 @@ Graph Visualization
             node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
             node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:cnx</font> >];
             node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='urn:nawi-water-ontology#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Tank</font></td></tr></table> >];
+            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Tank</font></td></tr></table> >];
             node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp</B></td></tr><tr><td href='urn:___param___#bi-cp' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp</font></td></tr></table> >];
             node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
             node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
@@ -155,7 +155,7 @@ Graph Visualization
             node10 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp-medium</B></td></tr><tr><td href='urn:___param___#bi-cp-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp-medium</font></td></tr></table> >];
             node11 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>bi-cp</B></td></tr><tr><td href='urn:___param___#bi-cp' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#bi-cp</font></td></tr></table> >];
             node12 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
-            node13 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='urn:nawi-water-ontology#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:nawi-water-ontology#Tank</font></td></tr></table> >];
+            node13 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Tank</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Tank' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Tank</font></td></tr></table> >];
             node14 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>BidirectionalConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#BidirectionalConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#BidirectionalConnectionPoint</font></td></tr></table> >];
             }
             
