@@ -24,11 +24,23 @@
 
 **Superclass:** DataProcessing-Aggregate
 
+## Mean
+
+**Description:** The associated property represents the arithmetic mean over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
+
 ## Median
 
 **Description:** Middle value of sorted data points
 
 **Superclass:** DataProcessing-Aggregate
+
+## Median
+
+**Description:** The associated property represents the median value over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
 
 ## Maximum
 
@@ -36,11 +48,23 @@
 
 **Superclass:** DataProcessing-Aggregate
 
+## Maximum
+
+**Description:** The associated property represents the maximum value over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
+
 ## Minimum
 
 **Description:** Minimum value from data points
 
 **Superclass:** DataProcessing-Aggregate
+
+## Minimum
+
+**Description:** The associated property represents the minimum value over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
 
 ## Sum
 
@@ -48,11 +72,23 @@
 
 **Superclass:** DataProcessing-Aggregate
 
+## Sum
+
+**Description:** The associated property represents the sum over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
+
 ## Count
 
 **Description:** Count of data points
 
 **Superclass:** DataProcessing-Aggregate
+
+## Count
+
+**Description:** The associated property represents a count over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
 
 ## Standard Deviation
 
@@ -60,11 +96,23 @@
 
 **Superclass:** DataProcessing-Aggregate
 
+## Standard Deviation
+
+**Description:** The associated property represents the standard deviation over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
+
 ## Variance
 
 **Description:** Variance of data points
 
 **Superclass:** DataProcessing-Aggregate
+
+## Variance
+
+**Description:** The associated property represents the variance over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
 
 ## Range
 
@@ -72,11 +120,23 @@
 
 **Superclass:** DataProcessing-Aggregate
 
+## Range
+
+**Description:** The associated property represents the difference between maximum and minimum over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
+
 ## Mode
 
 **Description:** Most frequently occurring value in data points
 
 **Superclass:** DataProcessing-Aggregate
+
+## Mode
+
+**Description:** The associated property represents the most frequently occurring value over an aggregation scope.
+
+**Superclass:** EnumerationKind-Aggregation
 
 ## Aggregation
 
@@ -90,69 +150,9 @@
 
 **Superclass:** EnumerationKind-Aggregation
 
-## Maximum
-
-**Description:** The associated property represents the maximum value over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Minimum
-
-**Description:** The associated property represents the minimum value over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Mean
-
-**Description:** The associated property represents the arithmetic mean over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Median
-
-**Description:** The associated property represents the median value over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
 ## Percentile
 
 **Description:** The associated property represents the percentile value over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Sum
-
-**Description:** The associated property represents the sum over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Count
-
-**Description:** The associated property represents a count over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Range
-
-**Description:** The associated property represents the difference between maximum and minimum over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Mode
-
-**Description:** The associated property represents the most frequently occurring value over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Variance
-
-**Description:** The associated property represents the variance over an aggregation scope.
-
-**Superclass:** EnumerationKind-Aggregation
-
-## Standard Deviation
-
-**Description:** The associated property represents the standard deviation over an aggregation scope.
 
 **Superclass:** EnumerationKind-Aggregation
 
@@ -360,3 +360,158 @@
 
 **Superclass:** DataProcessing-AccuracyMetrics
 
+## Role-Backwash
+
+**Description:** A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids.
+
+**Superclass:** EnumerationKind-Role
+
+## Role-Drain
+
+**Description:** A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance.
+
+**Superclass:** Role-Discharge
+
+## Role-NutrientRemoval
+
+**Description:** A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus.
+
+**Superclass:** EnumerationKind-Role
+
+## Role-NitrogenRemoval
+
+**Description:** A role for a process whose purpose is the removal of nitrogen species from water.
+
+**Superclass:** Role-NutrientRemoval
+
+## Role-PhosphorusRemoval
+
+**Description:** A role for a process whose purpose is the removal of phosphorus from water.
+
+**Superclass:** Role-NutrientRemoval
+
+## MakeUp
+
+**Description:** A role for a stream that adds water or chemical to replace losses and maintain volume or concentration.
+
+**Superclass:** EnumerationKind-Role
+
+## Feed
+
+**Description:** A role for a stream or vessel that supplies influent to a process.
+
+**Superclass:** EnumerationKind-Role
+
+## Permeate
+
+**Description:** A role for the stream that has passed through a membrane, as opposed to the retained concentrate.
+
+**Superclass:** EnumerationKind-Role
+
+## Storage
+
+**Description:** A role for a vessel that holds water or material for later use.
+
+**Superclass:** EnumerationKind-Role
+
+## Aerobic
+
+**Description:** A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism.
+
+**Superclass:** EnumerationKind-Role
+
+## Anaerobic
+
+**Description:** A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism.
+
+**Superclass:** EnumerationKind-Role
+
+## Anoxic
+
+**Description:** A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification.
+
+**Superclass:** EnumerationKind-Role
+
+## Stabilization
+
+**Description:** A role for a process that reduces the biodegradability, odor, or pathogen content of solids.
+
+**Superclass:** EnumerationKind-Role
+
+## Equalization
+
+**Description:** A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input.
+
+**Superclass:** EnumerationKind-Role
+
+## Detention
+
+**Description:** A role for a vessel that holds water for a defined period so that a treatment process can take place.
+
+**Superclass:** EnumerationKind-Role
+
+## Retention
+
+**Description:** A role for a vessel that holds water or solids for storage or continued settling.
+
+**Superclass:** EnumerationKind-Role
+
+## Containment
+
+**Description:** A role for a vessel or structure that holds material to prevent its release to the environment.
+
+**Superclass:** EnumerationKind-Role
+
+## Pretreatment
+
+**Description:** A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them.
+
+**Superclass:** EnumerationKind-Role
+
+## Primary
+
+**Description:** A role for the first major treatment stage, typically removing settleable and floatable solids.
+
+**Superclass:** EnumerationKind-Role
+
+## Secondary
+
+**Description:** A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics.
+
+**Superclass:** EnumerationKind-Role
+
+## Extended
+
+**Description:** A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration.
+
+**Superclass:** EnumerationKind-Role
+
+## Stepfeed
+
+**Description:** A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor.
+
+**Superclass:** EnumerationKind-Role
+
+## Tertiary
+
+**Description:** A role for treatment applied after secondary treatment to further improve effluent quality.
+
+**Superclass:** EnumerationKind-Role
+
+## Solids handling (e.g., biosolids disposal)
+
+**Description:** A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream.
+
+**Superclass:** EnumerationKind-Role
+
+## Posttreatment
+
+**Description:** A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse.
+
+**Superclass:** EnumerationKind-Role
+
+## Runtime
+
+**Description:** An enumeration kind describing the accumulated operating time of a piece of equipment.
+
+**Superclass:** EnumerationKind

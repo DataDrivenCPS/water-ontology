@@ -1,4 +1,4 @@
-.PHONY: install-jupyter-venv local-docs llms-txt clean build-ontology initialize-environment test
+.PHONY: install-jupyter-venv local-docs llms-txt clean build-ontology initialize-environment reference-docs test
 
 DOC_SOURCES := $(shell find docs -path 'docs/_build' -prune -o \( -name '*.md' -o -name '*.rst' -o -name '*.ipynb' \) -print)
 
@@ -43,7 +43,15 @@ install-jupyter-venv:
 	uv add ipykernel
 	uv run ipython kernel install --user --name=nawi-water-ontology
 
-local-docs: | $(ONTOENV_DIR)
+# --- reference documentation ----------------------------------------------
+
+# The reference pages list what each ontology module defines, so they are
+# regenerated from ontology/ rather than edited. Cheap enough to always run,
+# which keeps a newly added term from going unpublished.
+reference-docs:
+	uv run python scripts/generate_reference_docs.py
+
+local-docs: reference-docs | $(ONTOENV_DIR)
 	uv run jupyter-book build docs
 	uv run jupyter-book build docs
 	uv run python scripts/build_llms_txt.py

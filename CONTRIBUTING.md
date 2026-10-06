@@ -240,6 +240,10 @@ Add an example under `examples/` demonstrating any substantive new term. If the
 change makes a previously valid pattern invalid, add a case to
 `examples/nonconforming/`.
 
+The reference pages under `docs/reference/` are generated from the modules. Run
+`make reference-docs` and commit the result, so the published documentation
+lists the term.
+
 ## Deprecating terms
 
 Terms are retired, never deleted or renamed:
