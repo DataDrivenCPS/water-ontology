@@ -100,7 +100,7 @@
 
 ## Chemical Precipitation
 
-**Description:** Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here.
+**Description:** Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. This process implies general constituent removal. Which constituent it targets depends on the reagent, so the modeler states the specific removal objective on the equipment.
 
 **Superclasses:** `watr:Process-ChemicalProcess`
 

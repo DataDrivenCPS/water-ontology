@@ -42,6 +42,9 @@ Some earlier suggestions remain intentionally outside this PR: numerical permit
 limits and dedicated resource-recovery subtypes require their own design. The
 existing generic objective permits a modeler to state resource-recovery intent.
 
+Potential chemical-conversion modeling and recirculation inference from topology
+are tracked in [Pending Ontology Features](pending_features.md).
+
 ## Perspective from treatment references
 
 Flowing media (water, brine, aqueous sludge) and filter media (carbon, sand,

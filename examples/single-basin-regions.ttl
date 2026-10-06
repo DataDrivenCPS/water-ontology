@@ -1,0 +1,139 @@
+@prefix : <https://watermetadata.org/ontology/modules/examples/single-basin-regions#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<https://watermetadata.org/ontology/modules/examples/single-basin-regions>
+    a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "One Basin with Functional Equipment Regions" ;
+    rdfs:comment "One basin contains functional equipment regions that carry processes and commissioned roles. Sensors observe each region. A separate optional spatial layer describes physical locations and S223 control groupings." .
+
+# One vessel with an upstream mixed region and a downstream aerated region.
+# These regions are conceptual volumes in an undivided basin, not separate tanks.
+# The vessel has a secondary-treatment role. The region roles below identify
+# where each commissioned regime applies; readings describe current conditions.
+:basin a watr:Reactor ;
+    rdfs:label "Biological treatment basin" ;
+    s223:hasRole watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Aeration, watr:Process-Mixing,
+        watr:Process-Nitrification, watr:Process-Denitrification ;
+    s223:hasConnectionPoint :inlet, :outlet ;
+    s223:contains :upstreamRegion, :downstreamRegion ;
+    s223:hasPhysicalLocation :basinVolume .
+
+:inlet a s223:InletConnectionPoint ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :basin .
+:outlet a s223:OutletConnectionPoint ;
+    s223:hasMedium watr:Sludge-MixedLiquor ;
+    s223:isConnectionPointOf :basin .
+
+# Regions are functional parts of the vessel, not independent basins. Each
+# has one parent and an explicit process; neither needs separate physical ports.
+:upstreamRegion a watr:EquipmentRegion ;
+    rdfs:label "Upstream anoxic equipment region" ;
+    s223:hasRole watr:Role-Anoxic ;
+    watr:hasProcess watr:Process-Denitrification ;
+    s223:contains :mixer, :upstreamSensor ;
+    s223:hasPhysicalLocation :upstreamVolume ;
+    s223:hasProperty :upstreamDO .
+:downstreamRegion a watr:EquipmentRegion ;
+    rdfs:label "Downstream aerobic equipment region" ;
+    s223:hasRole watr:Role-Aerobic ;
+    watr:hasProcess watr:Process-Nitrification ;
+    s223:contains :aerationAssembly, :downstreamSensor ;
+    s223:hasPhysicalLocation :downstreamVolume ;
+    s223:hasProperty :downstreamDO .
+
+# The parent vessel's process annotations are explicit. Containment does not
+# automatically propagate a child's processes or objectives to its parent.
+
+# Actual hardware is contained Equipment. Generic Equipment avoids claiming
+# that the mixer is a complete reactor or that a diffuser is a separate tank.
+:mixer a s223:Equipment ;
+    rdfs:label "Upstream submersible mixer" ;
+    watr:hasProcess watr:Process-Mixing ;
+    s223:hasPhysicalLocation :upstreamVolume .
+:aerationAssembly a s223:Equipment ;
+    rdfs:label "Downstream aeration assembly" ;
+    watr:hasProcess watr:Process-Aeration ;
+    s223:hasPhysicalLocation :downstreamVolume .
+
+# Optional spatial context: contains links PhysicalSpace to PhysicalSpace;
+# encloses links PhysicalSpace to DomainSpace. Equipment does not contain spaces.
+# The equipment regions above remain distinct from these service spaces.
+:basinVolume a s223:PhysicalSpace ;
+    rdfs:label "Volume occupied by the basin" ;
+    s223:contains :upstreamVolume, :downstreamVolume .
+:upstreamVolume a s223:PhysicalSpace ;
+    rdfs:label "Upstream region volume" ;
+    s223:encloses :upstreamServiceSpace .
+:downstreamVolume a s223:PhysicalSpace ;
+    rdfs:label "Downstream region volume" ;
+    s223:encloses :downstreamServiceSpace .
+
+# Example-local extension: WaTr currently defines no water-treatment Domain.
+# This value is illustrative, not a published WaTr term. The domain is shared
+# by both regions; aerobic/anoxic are operating regimes, not separate domains.
+:Domain-WaterTreatment a s223:Class, sh:NodeShape, :Domain-WaterTreatment ;
+    rdfs:subClassOf s223:EnumerationKind-Domain ;
+    rdfs:label "Water treatment (example-local domain)" ;
+    rdfs:comment "Example-local service domain for the water-treatment regions in this model." .
+
+:upstreamServiceSpace a s223:DomainSpace ;
+    rdfs:label "Upstream mixed region" ;
+    s223:hasDomain :Domain-WaterTreatment .
+:downstreamServiceSpace a s223:DomainSpace ;
+    rdfs:label "Downstream aerated region" ;
+    s223:hasDomain :Domain-WaterTreatment .
+
+# Optional S223 control groupings: a Zone groups DomainSpaces. It is not itself
+# a compartment, Equipment, or a water treatment Stage.
+:upstreamControlZone a s223:Zone ;
+    rdfs:label "Upstream control zone" ;
+    s223:hasDomain :Domain-WaterTreatment ;
+    s223:hasDomainSpace :upstreamServiceSpace .
+:downstreamControlZone a s223:Zone ;
+    rdfs:label "Downstream control zone" ;
+    s223:hasDomain :Domain-WaterTreatment ;
+    s223:hasDomainSpace :downstreamServiceSpace .
+
+# EquipmentRegion is Equipment and therefore Connectable: sensors can observe
+# it directly. No artificial ports or pipe between the regions are asserted.
+:upstreamSensor a watr:OxygenMeter ;
+    rdfs:label "Upstream dissolved oxygen probe" ;
+    s223:hasPhysicalLocation :upstreamVolume ;
+    s223:hasObservationLocation :upstreamRegion ;
+    s223:observes :upstreamDO .
+:downstreamSensor a watr:OxygenMeter ;
+    rdfs:label "Downstream dissolved oxygen probe" ;
+    s223:hasPhysicalLocation :downstreamVolume ;
+    s223:hasObservationLocation :downstreamRegion ;
+    s223:observes :downstreamDO .
+
+:upstreamDO a s223:QuantifiableObservableProperty ;
+    rdfs:label "Upstream dissolved oxygen concentration" ;
+    s223:ofMedium watr:Sludge-MixedLiquor ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L ;
+    s223:hasValue 0.1 .
+:downstreamDO a s223:QuantifiableObservableProperty ;
+    rdfs:label "Downstream dissolved oxygen concentration" ;
+    s223:ofMedium watr:Sludge-MixedLiquor ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L ;
+    s223:hasValue 2.0 .
+
+# These are illustrative readings, not thresholds or inferred regime labels.
+# Low oxygen alone does not establish anoxic rather than anaerobic conditions.
+# Process-to-objective inference applies to the regions: denitrification implies
+# NitrogenRemoval, while nitrification implies AmmoniaControl. Their roles remain
+# explicit and do not follow from the dissolved-oxygen readings.

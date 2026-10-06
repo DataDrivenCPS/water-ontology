@@ -129,9 +129,11 @@ A storage tank can have a single bidirectional fluid port. Reactors retain inlet
 and outlet requirements; separation tanks retain their multiple outlets.
 
 Aerobic, anoxic, and anaerobic roles remain explicit operating contexts, following
-Fletcher's later acceptance of that choice. A basin can contain several modeled
-zones; `hasObservationLocation` places a sensor at the relevant zone or connection
-point. Recirculation has connection-point roles as well as an activity term used
+Fletcher's later acceptance of that choice. A basin can contain functional
+`EquipmentRegion` instances, each with one equipment parent and at least one
+process. Sensors observe the relevant equipment region or connection point using
+`hasObservationLocation`. See [functional regions](equipment_function.md#functional-regions-within-equipment)
+for containment constraints and the worked example. Recirculation has connection-point roles as well as an activity term used
 in compound process definitions.
 
 An unchanged repurposed vessel gets its current operating context and a suitable

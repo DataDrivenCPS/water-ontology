@@ -20,7 +20,7 @@ WaTr describes treatment equipment along three axes. `watr:hasTreatmentObjective
 what the equipment is intended to accomplish, `watr:hasProcess` states the
 activity it performs, and `s223:hasRole` states where it is commissioned to
 serve in a particular treatment system. For example, a primary clarifier has
-clarification as its treatment objective, sedimentation as its process, and primary as its
+clarification as its treatment objective, settling as its process, and primary as its
 role. Equipment classes can supply fixed process and treatment objective values during
 inference, while installation-specific roles are stated on equipment instances.
 See [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md) for the
@@ -32,7 +32,11 @@ This standard can be used to describe the topology of the equipment and connecti
 
 ## Composition
 
-Composition is about what entities make up what other entities. For example, a piece of mechanical equipment like a reactor may in fact be made up of other pieces of mechanical equipment, such as a mixer and a heating element. Additionally, a treatment stage may be made up of several different processes that receive a similar treatment service, or a treatment train may be made up of different stages, reactors, or separators. Several different modeling constructs use the idea of composition. These modeling constructs include Equipment, which may contain other equipment (e.g. a reactor containing a mixer); Stages, which may have Processes that receive a similar treatment service; StageGroups, which group together similarly controlled Stages; Systems that represent a collection of interrelated Equipment; or PhysicalSpaces, which may contain other PhysicalSpaces as a treatment plant contains multiple reactors. PhysicalSpaces may also enclose ProcessSpaces, indicating that the ProcessSpace is completely within the PhysicalSpace. For example, a treatment plant (a PhysicalSpace) may enclose several different areas served by independently controlled processes (ProcessSpaces).
+Composition describes how entities form larger assemblies or functional groups. Equipment can contain other equipment: a reactor may contain a mixer and a heating element. An `s223:System` groups equipment for a functional purpose using `s223:hasMember`, and systems can contain other systems. For example, a biological treatment train can group its reactors and clarifier into a system.
+
+Treatment stages such as primary, secondary, and tertiary are represented by roles on equipment using `s223:hasRole`. If an explicit grouping of equipment serving a stage is useful, model it as an `s223:System`. WaTr has no dedicated `Stage` or `StageGroup` classes.
+
+Physical spaces describe location and containment separately from functional grouping. A plant building can contain rooms, and PhysicalSpaces can enclose DomainSpaces representing the spaces served by a particular domain. Equipment can be associated with its physical location using `s223:hasPhysicalLocation`. See [Definitions and Concepts](definitions.md) for the distinctions between equipment, systems, spaces, and treatment stages.
 
 ## Telemetry 
 

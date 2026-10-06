@@ -522,6 +522,7 @@ watr:Role-Backwash
     a watr:Role-Backwash ;
     a sh:NodeShape ;
     owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Backwashing ;
     rdfs:label "Role-Backwash" ;
     rdfs:comment "Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;

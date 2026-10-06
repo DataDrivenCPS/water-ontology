@@ -13,6 +13,7 @@ parts:
   - file: explanation/equipment_function.md
   - file: explanation/treatment_model_summary.md
   - file: explanation/treatment_review.md
+  - file: explanation/pending_features.md
   - file: explanation/system_processes.md
   - file: explanation/flow_graph_sensor.md
   - file: explanation/data_quality.md

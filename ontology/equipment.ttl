@@ -13,6 +13,55 @@
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
     owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
 .
+# Functional portions of equipment can carry their own processes and roles
+# without inheriting a tank's port requirements. A containment chain must be
+# acyclic and anchored in equipment that is not itself an EquipmentRegion.
+watr:EquipmentRegion a watr:Class, sh:NodeShape ;
+    rdfs:label "Equipment Region" ;
+    rdfs:comment "An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent and at least one process. Nested regions must ultimately belong to equipment that is not itself a region. Roles and connection points are optional." ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [
+        sh:path [ sh:inversePath s223:contains ] ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class s223:Equipment ;
+        sh:message "An EquipmentRegion must have exactly one direct parent Equipment through s223:contains." ;
+    ] ;
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:minCount 1 ;
+        sh:class watr:Process ;
+        sh:message "An EquipmentRegion must identify at least one treatment process." ;
+    ] ;
+    sh:sparql [
+        sh:message "An EquipmentRegion's containment ancestry must not contain a cycle." ;
+        sh:select """
+            PREFIX s223: <http://data.ashrae.org/standard223#>
+            SELECT $this WHERE {
+                $this (^s223:contains)* ?ancestor .
+                ?ancestor s223:contains+ ?ancestor .
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        sh:message "An EquipmentRegion must ultimately be contained by Equipment that is not an EquipmentRegion." ;
+        sh:select """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX s223: <http://data.ashrae.org/standard223#>
+            PREFIX watr: <https://watermetadata.org/ontology/watr#>
+            SELECT $this WHERE {
+                FILTER NOT EXISTS {
+                    $this (^s223:contains)+ ?root .
+                    ?root rdf:type/rdfs:subClassOf* s223:Equipment .
+                    FILTER NOT EXISTS {
+                        ?root rdf:type/rdfs:subClassOf* watr:EquipmentRegion .
+                    }
+                }
+            }
+        """ ;
+    ] .
+
 # Despite the name, watr:Tank asserts nothing about geometry or containment. Its
 # connection-point requirements permit a storage tank with one bidirectional
 # fluid port. Reactors retain separate inlet/outlet requirements below.

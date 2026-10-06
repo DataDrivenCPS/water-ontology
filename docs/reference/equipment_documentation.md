@@ -258,6 +258,12 @@
 
 **Superclasses:** `s223:Equipment`
 
+## Equipment Region
+
+**Description:** An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent and at least one process. Nested regions must ultimately belong to equipment that is not itself a region. Roles and connection points are optional.
+
+**Superclasses:** `s223:Equipment`
+
 ## Evaporator
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form

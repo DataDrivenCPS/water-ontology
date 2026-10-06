@@ -109,12 +109,11 @@ watr:TreatmentObjective-Softening a watr:Class, watr:TreatmentObjective-Softenin
     watr:targetsConstituent watr:Constituent-Hardness ;
     rdfs:subClassOf watr:TreatmentObjective-DissolvedSolidsRemoval .
 
-# What a precipitation step is for depends on the reagent and the target, so
-# watr:Process-ChemicalPrecipitation declares no watr:achievesTreatmentObjective of its own
-# and the equipment states which of these it serves. Lime softening, phosphorus
-# precipitation and acid mine drainage treatment are the same activity aimed at
-# different constituents; the three below and watr:TreatmentObjective-Softening
-# and watr:TreatmentObjective-PhosphorusRemoval are the targets it is aimed at.
+# Chemical precipitation implies the general ConstituentRemoval objective.
+# Its specific target depends on the reagent, so the modeler states the targeted
+# objective on the equipment. Lime softening, phosphorus precipitation and acid
+# mine drainage treatment use the same activity for different constituents;
+# the objectives below, Softening and PhosphorusRemoval name those targets.
 
 watr:TreatmentObjective-MetalsRemoval a watr:Class, watr:TreatmentObjective-MetalsRemoval ;
     rdfs:label "Metals Removal" ;

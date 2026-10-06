@@ -338,7 +338,7 @@ watr:Process-Ozonation a watr:Class, watr:Process-Ozonation ;
 
 watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitation ;
     rdfs:label "Chemical Precipitation" ;
-    rdfs:comment "Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here." ;
+    rdfs:comment "Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. This process implies general constituent removal. Which constituent it targets depends on the reagent, so the modeler states the specific removal objective on the equipment." ;
     watr:achievesTreatmentObjective watr:TreatmentObjective-ConstituentRemoval ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 

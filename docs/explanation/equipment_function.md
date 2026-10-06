@@ -230,10 +230,11 @@ class. Historical conversions are represented by timestamped models. Keeping a
 specialized equipment type retains its intrinsic defaults, so use a suitable
 generic type if those requirements no longer describe the equipment.
 
-A basin may contain several modeled zones. Locate a sensor with
-`s223:hasObservationLocation` at the specific zone or connection point whose
-property it observes; aerobic, anoxic, and anaerobic roles describe that zone's
-operating context and remain explicit.
+A basin may contain several `watr:EquipmentRegion` instances. Locate a sensor
+with `s223:hasObservationLocation` at the specific region or connection point
+whose property it observes; aerobic, anoxic, and anaerobic roles describe that
+region's operating context and remain explicit. See the functional-region
+modeling pattern below.
 
 Turtle `#` comments explain the source and are not RDF triples. `rdfs:comment`
 and `skos:definition` are queryable RDF properties; the reference generator
@@ -243,3 +244,30 @@ SHACL severities distinguish `sh:Violation` (invalid data), `sh:Warning`
 (incomplete or implausible data), and `sh:Info` (advisory findings). The examples
 and tests inspect those severities explicitly; applications may choose how to
 present warnings. See [data quality](data_quality.md).
+
+## Functional regions within equipment
+
+Use `watr:EquipmentRegion` for an identifiable functional portion of equipment
+that performs a treatment activity, even if it has no physical partition. For
+example, one basin can contain an anoxic region and an aerobic region. Each is
+equipment in the WaTr model, with its own processes and optional operating roles.
+
+Every region must have exactly one direct parent through `s223:contains`, and
+the parent must be equipment. A region must declare at least one `watr:hasProcess`.
+Regions can contain nested regions or component equipment, but containment
+ancestry must be acyclic and must ultimately reach equipment that is not itself
+an `EquipmentRegion`. Roles and connection points are optional; a conceptual
+boundary does not require a physical port.
+
+Sensors can use `s223:hasObservationLocation` to observe a region directly.
+Process-to-objective inference applies to each region. Containment does not
+propagate a child's processes or objectives to its parent, and operating roles
+are stated explicitly rather than inferred from readings.
+
+Equipment regions are distinct from spatial representations: `PhysicalSpace`
+describes physical location, `DomainSpace` describes a service space, and an S223
+`Zone` groups DomainSpaces for control or functional purposes. An actual
+sub-basin can use an existing basin or reactor class when its constraints fit.
+
+See [the single-basin regions example](../../examples/single-basin-regions.ttl)
+for equipment regions, component hardware, sensors, and an optional spatial layer.
