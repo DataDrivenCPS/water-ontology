@@ -14,6 +14,10 @@
     rdfs:label "NAWI Water Substances Ontology" ;
     rdfs:comment "An ontology for water substances used in the NAWI project" ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+    # Prefix declarations for the SPARQL-based constraints defined in this module.
+    sh:declare [ sh:prefix "s223" ; sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "qudt" ; sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "unit" ; sh:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ] ;
 .
 watr:Constituent-Metals
   a watr:Class ;
@@ -39,35 +43,70 @@ watr:Salt-NaCl
   rdfs:label "Salt-NaCl" ;
   rdfs:subClassOf watr:Constituent-Salt ;
 .
-watr:Water-Seawater 
+watr:Water-Seawater
   a watr:Class ;
   a watr:Water-Seawater ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Seawater" ;
+  rdfs:comment "Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Seawater" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
+    ] ;
 .
-watr:Water-Freshwater 
+watr:Water-Freshwater
   a watr:Class ;
   a watr:Water-Freshwater ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Freshwater" ;
+  rdfs:comment "Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Freshwater" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
 .
-watr:Water-Brackish 
+watr:Water-Brackish
   a watr:Class ;
   a watr:Water-Brackish ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Brackish" ;
+  rdfs:comment "Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Brackish" ;
   rdfs:subClassOf s223:Fluid-Water;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
+    ] ;
 .
 watr:Water-Brine
   a watr:Class ;
   a watr:Water-Brine ;
   a sh:NodeShape ;
-  rdfs:comment "Water-Brine" ;
+  rdfs:comment "Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
   rdfs:label "Water-Brine" ;
   rdfs:subClassOf s223:Fluid-Water;
   s223:composedOf [
@@ -75,12 +114,14 @@ watr:Water-Brine
       s223:ofConstituent watr:Salt-NaCl ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Salt fraction" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
     ] ;
 .
 
@@ -90,7 +131,10 @@ watr:Fluid-Sludge
   a sh:NodeShape ;
   rdfs:comment "A semi-solid slurry composed of water and solids." ;
   rdfs:label "Sludge" ;
-  rdfs:subClassOf s223:Mix-Fluid ;
+  # Sludge is an aqueous slurry: this lets equipment that accepts water-based
+  # fluids (for example, s223:Pump) retain the actual sludge medium on its
+  # connection points rather than substituting the less-specific Fluid-Water.
+  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
@@ -440,5 +484,100 @@ watr:Sludge-MixedLiquor
         qudt:hasQuantityKind quantitykind:MassFraction ;
         qudt:hasUnit unit:PERCENT ;
         rdfs:label "Water Fraction"
+    ] ;
+.
+
+watr:CompositionPercentageShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Percentage Shape" ;
+    rdfs:comment "A medium's constituent mass or volume fractions expressed in percent cannot add up to more than 100%. Where a constituent is given as a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), the lowest declared percentage for that constituent is the one that counts, since only the lower bounds must all be simultaneously satisfiable." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "The constituent percentages of {$this} add up to {?total}%, which exceeds 100%." ;
+        sh:severity sh:Violation ;
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:select """
+            SELECT $this ?total
+            WHERE {
+                {
+                    SELECT $this (SUM(?lowest) AS ?total)
+                    WHERE {
+                        {
+                            SELECT $this ?constituent (MIN(?value) AS ?lowest)
+                            WHERE {
+                                $this s223:composedOf ?fraction .
+                                ?fraction s223:ofConstituent ?constituent ;
+                                          qudt:hasUnit unit:PERCENT ;
+                                          s223:hasValue ?value .
+                            }
+                            GROUP BY $this ?constituent
+                        }
+                    }
+                    GROUP BY $this
+                }
+                FILTER (?total > 100)
+            }
+        """ ;
+    ] ;
+.
+
+
+
+watr:CompositionComplementRule
+    a sh:NodeShape ;
+    rdfs:label "Composition Complement Rule" ;
+    rdfs:comment "Completes a percent composition that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "Infer the remaining constituent's percentage" ;
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:construct """
+            CONSTRUCT {
+                ?unquantified s223:hasValue ?complement .
+            }
+            WHERE {
+                $this s223:composedOf ?unquantified .
+                ?unquantified s223:ofConstituent ?constituent ;
+                              qudt:hasUnit unit:PERCENT .
+                FILTER NOT EXISTS { ?unquantified s223:hasValue ?existingValue }
+                FILTER NOT EXISTS { ?unquantified s223:hasAspect ?anyAspect }
+
+                # The remainder can only be attributed to a single constituent,
+                # so bail out if another fraction is unquantified too.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?sibling .
+                    ?sibling s223:ofConstituent ?siblingConstituent ;
+                             qudt:hasUnit unit:PERCENT .
+                    FILTER NOT EXISTS { ?sibling s223:hasValue ?siblingValue }
+                    FILTER (?sibling != ?unquantified)
+                }
+
+                # A composition stated as ranges has no single complement.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?ranged .
+                    ?ranged qudt:hasUnit unit:PERCENT ;
+                            s223:hasValue ?rangedValue ;
+                            s223:hasAspect ?limit .
+                    FILTER (?limit IN (s223:Aspect-LowLimit, s223:Aspect-HighLimit))
+                }
+
+                # No rows when nothing is quantified, so a composition that names
+                # its constituents without values is left alone.
+                {
+                    SELECT $this (SUM(?value) AS ?total)
+                    WHERE {
+                        $this s223:composedOf ?quantified .
+                        ?quantified s223:ofConstituent ?quantifiedConstituent ;
+                                    qudt:hasUnit unit:PERCENT ;
+                                    s223:hasValue ?value .
+                    }
+                    GROUP BY $this
+                }
+                BIND (100 - ?total AS ?complement)
+                FILTER (?complement >= 0)
+            }
+        """ ;
     ] ;
 .
