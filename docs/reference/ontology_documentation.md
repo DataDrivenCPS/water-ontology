@@ -428,7 +428,7 @@
 
 **URI:** https://watermetadata.org/ontology/watr#Evaporator
 
-**Superclass URI :** http://data.ashrae.org/standard223#HeatExchanger
+**Superclass URI :** http://data.ashrae.org/standard223#HydronicHeatExchanger
 
 ## Condenser
 
@@ -436,7 +436,7 @@
 
 **URI:** https://watermetadata.org/ontology/watr#Condenser
 
-**Superclass URI :** http://data.ashrae.org/standard223#HeatExchanger
+**Superclass URI :** http://data.ashrae.org/standard223#HydronicHeatExchanger
 
 ## FlowSensor
 

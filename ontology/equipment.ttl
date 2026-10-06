@@ -78,7 +78,7 @@ watr:Tank a sh:NodeShape ;
             ] ;
             sh:property [
                 sh:path s223:hasRole ;
-                sh:hasValue s223:Role-Overflow ;
+                sh:hasValue watr:Role-Overflow ;
             ] ;
         ] ;
     ] ;
@@ -543,11 +543,11 @@ watr:Boiler
     rdfs:subClassOf s223:Boiler, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:qualifiedValueShape [ sh:class watr:Process-Incineration ];
+        sh:qualifiedValueShape [ sh:class watr:Process-Combustion ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
 		sh:qualifiedMaxCount 1 ;
-        sh:message "Instances of Boiler must have the Incineration process." ;
+        sh:message "Instances of Boiler must have the Combustion process." ;
     ] .
 
 watr:Conditioner
@@ -975,7 +975,7 @@ watr:Evaporator
     a watr:Class ;
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
-    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf s223:HydronicHeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ];
@@ -990,7 +990,7 @@ watr:Condenser
     a watr:Class ;
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
-    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf s223:HydronicHeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Condensation ];
