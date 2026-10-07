@@ -251,11 +251,15 @@ example, one basin can contain an anoxic region and an aerobic region. Each is
 equipment in the WaTr model, with its own processes and optional operating roles.
 
 Every region must have exactly one direct parent through `s223:contains`, and
-the parent must be equipment. A region must declare at least one `watr:hasProcess`.
+the parent must be equipment. A region must declare at least one `watr:hasProcess`
+and at least one `s223:hasConnectionPoint`.
 Regions can contain nested regions or component equipment, but containment
 ancestry must be acyclic and must ultimately reach equipment that is not itself
-an `EquipmentRegion`. Roles and connection points are optional; a conceptual
-boundary does not require a physical port.
+an `EquipmentRegion`. Roles are optional. Connection points identify flow
+boundaries and use the existing S223 direction and medium constraints; they
+need not be physical fittings. Use connections between region ports to describe
+flow order, and `s223:mapsTo` to map the outermost region ports to their parent
+equipment's ports.
 
 Sensors can use `s223:hasObservationLocation` to observe a region directly.
 Process-to-objective inference applies to each region. Containment does not
@@ -268,4 +272,5 @@ describes physical location, `DomainSpace` describes a service space, and an S22
 sub-basin can use an existing basin or reactor class when its constraints fit.
 
 See [the single-basin regions example](../../examples/single-basin-regions.ttl)
-for equipment regions, component hardware, sensors, and an optional spatial layer.
+for a basin containing two functional regions, their component hardware, and
+their internal flow connection, and sensors observing the regions directly.

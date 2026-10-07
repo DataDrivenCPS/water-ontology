@@ -260,7 +260,7 @@
 
 ## Equipment Region
 
-**Description:** An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent and at least one process. Nested regions must ultimately belong to equipment that is not itself a region. Roles and connection points are optional.
+**Description:** An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent, at least one process, and at least one connection point. Nested regions must ultimately belong to equipment that is not itself a region. Roles are optional.
 
 **Superclasses:** `s223:Equipment`
 

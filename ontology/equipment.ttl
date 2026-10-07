@@ -18,7 +18,7 @@
 # acyclic and anchored in equipment that is not itself an EquipmentRegion.
 watr:EquipmentRegion a watr:Class, sh:NodeShape ;
     rdfs:label "Equipment Region" ;
-    rdfs:comment "An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent and at least one process. Nested regions must ultimately belong to equipment that is not itself a region. Roles and connection points are optional." ;
+    rdfs:comment "An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent, at least one process, and at least one connection point. Nested regions must ultimately belong to equipment that is not itself a region. Roles are optional." ;
     rdfs:subClassOf s223:Equipment ;
     sh:property [
         sh:path [ sh:inversePath s223:contains ] ;
@@ -32,6 +32,12 @@ watr:EquipmentRegion a watr:Class, sh:NodeShape ;
         sh:minCount 1 ;
         sh:class watr:Process ;
         sh:message "An EquipmentRegion must identify at least one treatment process." ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        sh:minCount 1 ;
+        sh:class s223:ConnectionPoint ;
+        sh:message "An EquipmentRegion must have at least one connection point." ;
     ] ;
     sh:sparql [
         sh:message "An EquipmentRegion's containment ancestry must not contain a cycle." ;
