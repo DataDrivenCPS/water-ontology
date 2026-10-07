@@ -117,33 +117,6 @@ watr:DefinedClassShape
     ] ;
 .
 
-# Plausibility of *additional* processes.
-#
-# watr:hasProcess constraints say "performs at least this process", so they
-# permit any number of further processes -- deliberately, because real equipment
-# does more than its defining process (a filter backwashes, a digester mixes).
-# The cost is that nothing objects to an implausible one, e.g. a ChlorinationUnit
-# declaring reverse osmosis.
-#
-# watr:mayAlsoPerform closes that gap without narrowing the ontology. An
-# equipment class lists the process families it may perform *in addition* to the
-# one it requires, and the shape below warns about values that fall outside the
-# union of (what the class or any ancestor requires) and (what they may also
-# perform). Declaring it on the abstract families -- Tank, Reactor, Filter,
-# Digester, SeparationTank -- covers their subclasses by inheritance; a subclass
-# only needs its own statement when it genuinely does something its family does
-# not. See docs/explanation/processes.md.
-#
-# This is deliberately sh:Warning, not sh:Violation: implausible is not
-# impossible, and a real plant may do something the ontology did not anticipate.
-watr:mayAlsoPerform
-    a rdf:Property ;
-    rdfs:label "may also perform" ;
-    rdfs:comment "Relates an equipment class to a process it may perform in addition to the process it requires. Used for plausibility warnings, not validity." ;
-    rdfs:domain watr:Class ;
-    rdfs:range watr:Class ;
-.
-
 <https://watermetadata.org/ontology/watr>
     sh:declare [ sh:prefix "watr" ; sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "sh" ; sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ] ;
@@ -164,9 +137,7 @@ watr:mayAlsoPerform
 # arrangement of nitrification, denitrification and recycle across several.
 #
 # Not to be confused with a subclass relation: a compound process *comprises*
-# its parts, it is not a kind of them. Nor with plausibility -- watr:mayAlsoPerform
-# grants permission to one piece of equipment, whereas this says what a train is
-# made of.
+# its parts, it is not a kind of them.
 watr:includesProcess
     a rdf:Property ;
     rdfs:label "includes process" ;
@@ -363,7 +334,7 @@ watr:SystemProcessCoverageShape
     rdfs:label "System process coverage" ;
     rdfs:comment "Warns when a system claims a compound process but nothing in it performs one of the constituent processes." ;
     sh:targetClass s223:System ;
-    # As with ProcessPlausibilityShape, sh:severity must sit on the NodeShape.
+    # sh:severity must sit on the NodeShape.
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -386,70 +357,6 @@ watr:SystemProcessCoverageShape
                     $this s223:hasMember* ?performer .
                     ?performer watr:hasProcess ?actual .
                     ?actual rdfs:subClassOf* ?missing .
-                }
-            }
-        """ ;
-    ] ;
-.
-
-watr:ProcessPlausibilityShape
-    a sh:NodeShape ;
-    rdfs:label "Process plausibility" ;
-    rdfs:comment "Warns when equipment declares a process that its family neither requires nor permits via watr:mayAlsoPerform." ;
-    sh:targetSubjectsOf watr:hasProcess ;
-    # Warning, not Violation -- see the note on watr:mayAlsoPerform above. Note
-    # sh:severity has to sit on the NodeShape; on the SPARQLConstraint it is
-    # ignored and the result comes back as a Violation.
-    sh:severity sh:Warning ;
-    sh:sparql [
-        a sh:SPARQLConstraint ;
-        sh:prefixes <https://watermetadata.org/ontology/watr> ;
-        sh:message "{$this} declares {?value}, which its equipment class neither requires nor lists via watr:mayAlsoPerform. If this is legitimate, add a watr:mayAlsoPerform statement to the appropriate equipment class." ;
-        # watr:Process is excluded throughout: watr:UnitProcess requires it of
-        # every value, so counting it as "allowed" would permit every process
-        # and make this check vacuous.
-        sh:select """
-            SELECT $this ?value
-            WHERE {
-                $this watr:hasProcess ?value .
-
-                # Only judge equipment whose family says something about processes.
-                FILTER EXISTS {
-                    $this rdf:type/rdfs:subClassOf* ?known .
-                    {
-                        ?known sh:property ?kps .
-                        ?kps sh:path watr:hasProcess .
-                        {
-                            ?kps sh:qualifiedValueShape/sh:class ?k .
-                        } UNION {
-                            ?kps sh:class ?k .
-                        } UNION {
-                            ?kps sh:qualifiedValueShape/sh:in/rdf:rest*/rdf:first ?k .
-                        }
-                    } UNION {
-                        ?known watr:mayAlsoPerform ?k .
-                    }
-                    FILTER ( ?k != watr:Process )
-                }
-
-                # Flag values outside the union of required and permitted.
-                FILTER NOT EXISTS {
-                    $this rdf:type/rdfs:subClassOf* ?anc .
-                    {
-                        ?anc sh:property ?ps .
-                        ?ps sh:path watr:hasProcess .
-                        {
-                            ?ps sh:qualifiedValueShape/sh:class ?allowed .
-                        } UNION {
-                            ?ps sh:class ?allowed .
-                        } UNION {
-                            ?ps sh:qualifiedValueShape/sh:in/rdf:rest*/rdf:first ?allowed .
-                        }
-                    } UNION {
-                        ?anc watr:mayAlsoPerform ?allowed .
-                    }
-                    FILTER ( ?allowed != watr:Process )
-                    ?value rdfs:subClassOf* ?allowed .
                 }
             }
         """ ;

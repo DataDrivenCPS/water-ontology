@@ -16,11 +16,11 @@ Fletcher's September 21–22 review is addressed as follows:
 | Thermal hydrolysis also thermal treatment | Both hydrolysis and thermal-treatment parents are declared. |
 | Add arsenic and lead | Constituents and targeted removal objectives added. Arsenic is under dissolved solids; lead is under metals. |
 | Backwashing has an objective | Cleaning and its descendants imply `EquipmentCleaning`, distinct from product-water constituent removal. |
-| Additional processes beyond defaults | Allowed explicitly; plausibility warnings describe unlisted combinations. |
+| Additional processes beyond defaults | Allowed explicitly while preserving required processes and process-value validation. Plausibility checks are deferred. |
 | Clarifier versus SedimentationTank | Clarifier is a specialization with the clarification design objective, not an alias. |
 | Clarifier underflow wording | Both overflow and sludge underflow are produced; sludge may go to additional thickening. |
 | Chlorine-removal and reuse wording | Prose uses chlorine removal and water reuse treatment unit. |
-| Meaning of auxiliary | Common additional activity listed through `mayAlsoPerform`, not a separate class or absence of an objective. |
+| Additional cleaning activities | Stated directly through `hasProcess` and imply `EquipmentCleaning`; no separate activity category or permission list. |
 | Anoxic/aerobic/anaerobic classification | Retained as explicit roles, as accepted in Fletcher's later comment. |
 | Repurposed equipment | Current type and operating context in timestamped models; no conversion-history vocabulary. |
 

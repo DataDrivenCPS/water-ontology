@@ -51,3 +51,24 @@ Questions to resolve:
 - How should inferred information interact with explicit modeler annotations?
 
 Origin: [Daly's recirculation question on PR #39](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3806523244).
+
+## Equipment/process plausibility checks
+
+**Status:** Deferred; removed from PR #39 during review preparation.
+
+Optionally flag unusual combinations of equipment types and declared processes.
+WaTr currently permits modelers to state additional processes while validating
+their types and preserving equipment-class requirements. No permission list or
+plausibility-warning shape is used. Cleaning processes still imply the
+equipment-cleaning objective when explicitly declared.
+
+Questions to resolve:
+
+- Is there enough practical benefit to justify maintaining expected combinations?
+- How should multifunction equipment, retrofits, and equipment regions be handled?
+- Should checks be an optional application profile rather than core ontology rules?
+- How can incomplete permission lists avoid warnings on legitimate plant models?
+
+The earlier `mayAlsoPerform` property and `ProcessPlausibilityShape` are removed
+from the release preparation. Revisit their design only if a concrete modeling
+or application need emerges.

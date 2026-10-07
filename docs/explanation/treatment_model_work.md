@@ -25,5 +25,6 @@ Do not commit compiled build artifacts, HTML output, or OntoEnv caches.
 
 The build checks cover composition constraints, explicit complement-inference
 premises, class defaults, process objective inference, system coverage,
-plausibility, contaminant targets, port structure, and compiler prefix metadata.
+equipment-region containment, contaminant targets, port structure, and compiler
+prefix metadata.
 The documentation queries should parse as SPARQL with the listed prefixes.

@@ -70,9 +70,6 @@ watr:Tank a sh:NodeShape ;
     rdfs:label "Tank" ;
     rdfs:comment "A vessel with at least one fluid connection point. A storage tank may use a single bidirectional port; flow-through subclasses require the appropriate inlet and outlet points." ;
     rdfs:subClassOf s223:Equipment ;
-    # Any tank may be drained or purged for maintenance. Inherited by every tank
-    # subclass; see watr:mayAlsoPerform in ontology.ttl.
-    watr:mayAlsoPerform watr:Process-Cleaning ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         sh:qualifiedMinCount 1 ;
@@ -138,17 +135,6 @@ watr:Reactor a sh:NodeShape ;
     # inlet and an outlet, which holds for tubular reactors and in-line mixers as
     # much as for basins.
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
-    # Reactors routinely mix, aerate and recirculate alongside whatever reaction
-    # defines them. Digesters and disinfection units inherit this.
-    watr:mayAlsoPerform watr:Process-Mixing, watr:Process-Aeration, watr:Process-Recirculation ;
-    # The biological conversions that a zone in a nutrient-removal train carries
-    # out. A train states the compound process on the system, and
-    # watr:includesProcess expands it into these steps, which the coverage check
-    # then looks for on the members. They are permitted rather than required
-    # because which zone nitrifies or denitrifies is an operating regime, not a
-    # property of the vessel.
-    watr:mayAlsoPerform watr:Process-Nitrification, watr:Process-Denitrification,
-                        watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A reactor has an inlet fluid connection point" ;
@@ -211,8 +197,6 @@ watr:SeparationTank a sh:NodeShape ;
     rdfs:label "Separation Tank" ;
     rdfs:comment "A tank that has at least two outlets (e.g. overflow and underflow)" ;
     rdfs:subClassOf watr:Tank, watr:UnitProcess;
-    # Separated solids are commonly returned to the head of the unit.
-    watr:mayAlsoPerform watr:Process-Recirculation ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
         rdfs:comment "A separation tank has at least two outlet connection points" ;
@@ -405,10 +389,6 @@ watr:AirStripper
     # satisfies the two-fluid-outlet requirement. Process-Stripping is a
     # Process-Separation, so one value satisfies both process slots.
     rdfs:subClassOf watr:SeparationTank ;
-    # Contacting water with air oxygenates it as a side effect -- which is why a
-    # stripper is often sited ahead of iron and manganese removal. Incidental,
-    # not the objective, so it is permitted rather than required.
-    watr:mayAlsoPerform watr:Process-Aeration ;
     # No treatment objective is required. Stripping serves ammonia control at one plant and
     # organics removal at another; which one is a property of the installation,
     # so it belongs on the instance.
@@ -481,8 +461,6 @@ watr:FlocculationBasin
 watr:Digester
     a  sh:NodeShape ;
     a watr:Class ;
-    # Digesters draw off and handle biogas; mixing comes from watr:Reactor.
-    watr:mayAlsoPerform watr:Process-GasTransfer ;
     rdfs:label "Digester" ;
     rdfs:comment "A container to promote decomposition of organic waste" ;
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
@@ -879,9 +857,6 @@ watr:CentrifugalDewateringUnit
 watr:Filter
     a  sh:NodeShape ;
     a watr:Class ;
-    # Backwashing, air scouring and purging are routine filter operations rather
-    # than treatment steps, so they are permitted on every filter subclass.
-    watr:mayAlsoPerform watr:Process-Cleaning ;
     rdfs:label "Filter" ;
     rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
     rdfs:subClassOf s223:Filter, watr:UnitProcess ;

@@ -149,7 +149,7 @@ gas transfer into the water, a redox role); in a stripper it is the carrier that
 sweeps ammonia and volatile organics out (Process-Stripping, a separation, no
 biology). AerationBasin once carried the stripper's description alongside the
 basin's constraints. A stripper does oxygenate incidentally, which is why
-Process-Aeration stays permitted on it via watr:mayAlsoPerform.
+a modeler can explicitly state Process-Aeration on it as an additional activity.
 
 Processes performed by a collection, not by a machine
 ----------------------------------------------------
@@ -413,42 +413,11 @@ Optional drain, overflow, recirculation, and return points are constrained by
 permitting zero nonconforming points. A matching point, when present, must be a
 fluid outlet.
 
-Plausibility of additional processes (watr:mayAlsoPerform)
-----------------------------------------------------------
-watr:mayAlsoPerform lists processes that an equipment class can plausibly perform
-in addition to its requirements. watr:ProcessPlausibilityShape warns about values
-outside the union of processes required or permitted by the class and its
-ancestors.
-
-Declared on the abstract families only; subclasses inherit:
-
-  Tank            -> Process-Cleaning
-  Reactor         -> Process-Mixing, Process-Aeration, Process-Recirculation
-                     Process-Nitrification, Process-Denitrification,
-                     Process-EnhancedBiologicalPhosphorusRemoval
-  SeparationTank  -> Process-Recirculation
-  Filter          -> Process-Cleaning
-  Digester        -> Process-GasTransfer   (mixing comes from Reactor)
-
-Digester and DisinfectionUnit are both Reactor subclasses, so digester mixing and
-contact-basin mixing need no statement of their own. Add one to a specific class
-only when it does something its family does not.
-
-The three biological conversions on Reactor are what makes the permission table
-agree with the coverage check. A nutrient-removal train states its compound
-process on the system, watr:includesProcess expands it into those conversions,
-and SystemProcessCoverageShape looks for them on the members. They are permitted
-rather than required because which zone nitrifies or denitrifies is an operating
-regime, not a property of the vessel: the same basin serves as an anoxic or an
-aerobic zone depending on how it is run.
-
-ProcessPlausibilityShape is a warning-level SHACL-SPARQL constraint. It combines
-requirements and permissions across all equipment ancestors. Systems are not
-subject to this equipment-family plausibility table.
-
-watr:MovingBedBioreactor and watr:RotatingBiologicalContactor are both Reactors
-and Filters. They inherit filtration requirements from Filter and the additional
-mixing, aeration, and recirculation permissions from Reactor.
+Additional processes
+--------------------
+Modelers may state additional watr:hasProcess values beyond class requirements.
+Every value must be a process and required processes must still be present.
+Equipment/process plausibility checks are deferred; no permission table is used.
 
 What watr:Tank means
 --------------------

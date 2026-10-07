@@ -213,29 +213,14 @@ This is why the constraints are `sh:qualifiedValueShape` with `sh:qualifiedMinCo
 
 `watr:UnitProcess` is the one class that uses a bare `sh:class`: it requires every value to be a `watr:Process`.
 
-### Plausible additional processes
+### Additional processes
 
-`watr:mayAlsoPerform` records processes that an equipment class may perform in addition to its required processes. `watr:ProcessPlausibilityShape` warns about any `watr:hasProcess` value outside the union of
-
-- what the equipment's class, or any ancestor, **requires**, and
-- what those classes list via **`watr:mayAlsoPerform`**.
-
-Permissions declared on an equipment family apply to its subclasses:
-
-| family | may also perform |
-|---|---|---|
-| `Tank` | Cleaning |
-| `Reactor` | Mixing, Aeration, Recirculation |
-| `SeparationTank` | Recirculation |
-| `Filter` | Cleaning |
-| `Digester` | GasTransfer |
-
-```ttl
-watr:Filter
-    watr:mayAlsoPerform watr:Process-Cleaning .
-```
-
-Plausibility findings have severity `sh:Warning`. A warning does not make the graph invalid at violation-level validation. The property grants permission; it does not assert that an equipment instance performs the process.
+Modelers can explicitly state additional `watr:hasProcess` values beyond the
+processes required by an equipment class. Each value must be a `watr:Process`,
+and the required processes must still be present. WaTr does not currently
+maintain equipment/process permission lists or issue plausibility warnings for
+additional processes. Possible future checks are tracked in
+[Pending Ontology Features](pending_features.md).
 
 ### Process vs. Role
 
@@ -350,7 +335,7 @@ Coverage findings have severity `sh:Warning`, allowing partial system models. A 
 |---|---|---|---|
 | **required** | an equipment class requires the process | equipment class | `sh:qualifiedValueShape` + `sh:qualifiedMinCount 1` |
 | **constituent** | a compound process includes the step | process class | `watr:includesProcess` |
-| **plausible** | an equipment family permits an additional process | equipment class | `watr:mayAlsoPerform` |
+| **explicit** | the modeler states an additional activity | equipment or system instance | `watr:hasProcess` |
 
 ### Treatment Objective and process
 

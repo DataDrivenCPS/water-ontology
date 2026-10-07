@@ -430,19 +430,9 @@ def test_system_may_state_a_step_itself(ontology_shapes_graph):
 
 
 def test_realistic_train_of_basins_draws_no_process_warnings(ontology_shapes_graph):
-    """An A2O train built from the vessels a plant actually uses.
+    """A realistic A2O train covers all its compound-process steps.
 
-    The other coverage cases above use watr:Pump members so that the only
-    findings are the ones under test. That isolation hid a collision between the
-    two warning-level shapes: watr:SystemProcessCoverageShape expects the members
-    of a nutrient-removal train to declare nitrification, denitrification and
-    EBPR, while watr:ProcessPlausibilityShape flagged exactly those declarations
-    because no equipment family permitted them. Both are warnings, so nothing
-    failed -- every correctly modelled train just emitted a spurious warning per
-    zone. Reactor now permits the three conversions.
-
-    Only the two process shapes are inspected. Real basins carry s223 connection
-    point requirements that are not what this test is about.
+    Basin port requirements are outside the scope of this coverage check.
     """
     body = (
         "ex:A2O a s223:System ;\n"
@@ -465,7 +455,7 @@ def test_realistic_train_of_basins_draws_no_process_warnings(ontology_shapes_gra
     data = Graph().parse(data=PREFIX + body, format="ttl")
     _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
 
-    for shape in (WATR.SystemProcessCoverageShape, WATR.ProcessPlausibilityShape):
+    for shape in (WATR.SystemProcessCoverageShape,):
         msgs = [
             str(report.value(r, SH.resultMessage))
             for r in report.subjects(SH.sourceShape, shape)

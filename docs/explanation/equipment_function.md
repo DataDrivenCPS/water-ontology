@@ -174,8 +174,8 @@ filtration. Its class supplies broad constituent removal; the modeler states des
 
 An equipment instance may perform additional activities. A filter may be
 cleaned or backwashed, and a reactor may mix, aerate, or recirculate water.
-Equipment families list plausible additional activities with
-`watr:mayAlsoPerform`.
+The modeler states these activities explicitly with `watr:hasProcess`; no
+equipment/process permission list is required.
 
 ```ttl
 :membrane a watr:ReverseOsmosisMembrane ;
@@ -184,9 +184,9 @@ Equipment families list plausible additional activities with
     watr:hasTreatmentObjective watr:TreatmentObjective-Desalination .
 ```
 
-An additional process outside the required or permitted process families
-produces a validation warning. The warning identifies an unusual combination
-without declaring that combination impossible.
+WaTr accepts explicitly declared additional processes while checking their
+types and preserving class requirements. It does not currently judge whether
+an equipment/process combination is plausible.
 
 ## Validation rules
 
@@ -198,8 +198,6 @@ WaTr applies the following checks to these statements:
 - Only equipment and systems may carry `watr:hasProcess` or
   `watr:hasTreatmentObjective`.
 - Inference supplies intrinsic process objectives before validation.
-- An equipment process outside the processes required or permitted by its class
-  produces a plausibility warning.
 
 Warnings are intended for practitioner review. They do not make a graph invalid
 when validation is configured to fail only on `sh:Violation` results.
@@ -218,9 +216,9 @@ plant states the target-specific objective when the class cannot determine it.
 RO therefore does not automatically imply desalination. Cleaning processes,
 including backwashing, imply equipment cleaning rather than product-water removal.
 
-A modeler can state additional processes beyond defaults. `mayAlsoPerform` lists
-common additions; unlisted combinations trigger plausibility warnings rather
-than invalidating the model. A tank may have a single bidirectional fluid port.
+A modeler can state additional processes beyond defaults. Their values must be
+processes, and the class requirements still apply. No equipment/process
+plausibility check is performed. A tank may have a single bidirectional fluid port.
 Reactors keep inlet and outlet requirements. `Clarifier` specializes
 `SedimentationTank` by adding the clarification objective.
 
@@ -241,7 +239,7 @@ and `skos:definition` are queryable RDF properties; the reference generator
 accepts either. Published terms use `rdfs:comment` consistently.
 
 SHACL severities distinguish `sh:Violation` (invalid data), `sh:Warning`
-(incomplete or implausible data), and `sh:Info` (advisory findings). The examples
+(incomplete data), and `sh:Info` (advisory findings). The examples
 and tests inspect those severities explicitly; applications may choose how to
 present warnings. See [data quality](data_quality.md).
 

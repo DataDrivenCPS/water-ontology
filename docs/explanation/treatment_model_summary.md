@@ -21,8 +21,8 @@ Roles remain explicit.
 
 The modeler states plant intent and any additional processes beyond defaults.
 A more specific process satisfies a general class requirement: reverse osmosis
-satisfies filtration, and one value can satisfy both slots. An unusual additional
-process may raise a plausibility warning; it is not automatically invalid.
+satisfies filtration, and one value can satisfy both slots. Additional processes
+are permitted without an equipment/process plausibility check.
 
 `achievesTreatmentObjective` relates a process type to an intrinsic intended
 objective. `hasTreatmentObjective` relates equipment or a system to its objective.
@@ -121,9 +121,8 @@ intent. Sulfite dosing implies chlorine residual removal.
 
 Backwashing, air scouring, and purging are cleaning processes and inherit
 `TreatmentObjective-EquipmentCleaning`. Restoring operation is an objective,
-even when the output is not a product stream. “Auxiliary” describes a common
-additional activity listed through `mayAlsoPerform`; it is not a separate
-ontology class or an absence of purpose.
+even when the output is not a product stream. Modelers state cleaning activities
+directly through `watr:hasProcess`, alongside the equipment's other processes.
 
 A storage tank can have a single bidirectional fluid port. Reactors retain inlet
 and outlet requirements; separation tanks retain their multiple outlets.
@@ -187,8 +186,7 @@ one missing value, and no ranges or duplicated constituent declarations.
 ## Validation, reference generation, and migration
 
 Violations identify invalid values or unmet structural requirements. Warnings
-identify incomplete or implausible models, including unlisted extra processes or
-missing system steps. Information-level findings are advisory. See
+identify incomplete models, including missing system steps. Information-level findings are advisory. See
 [data quality](data_quality.md).
 
 Turtle `#` comments are source comments; `rdfs:comment` and `skos:definition` are
