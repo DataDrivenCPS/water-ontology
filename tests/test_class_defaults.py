@@ -206,7 +206,8 @@ def test_class_defaults_complete_function_with_explicit_ports(ontology_shapes_gr
 def test_the_distinction_is_recoverable_without_the_rule(
     shapes_graph_without_class_defaults,
 ):
-    """The cost, and the way back.
+    """Without class-default inference, required processes and objectives
+    must be stated explicitly.
 
     With the rule in the closure the ontology can no longer distinguish a model
     that *states* what a piece of equipment does from one that only types it.

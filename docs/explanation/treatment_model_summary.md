@@ -24,11 +24,19 @@ A more specific process satisfies a general class requirement: reverse osmosis
 satisfies filtration, and one value can satisfy both slots. Additional processes
 are permitted without an equipment/process plausibility check.
 
-`achievesTreatmentObjective` relates a process type to an intrinsic intended
-objective. `hasTreatmentObjective` relates equipment or a system to its objective.
-Inference uses the former to add the latter. It never derives a mechanism from
-an objective. Neither relation certifies measured treatment efficiency or permit
-compliance.
+When modeling a plant, use `watr:hasTreatmentObjective` on equipment or systems
+to state their intended objectives, and `watr:hasProcess` to state their processes.
+
+`watr:achievesTreatmentObjective` is primarily used in the ontology's process
+definitions to associate a process type with an intrinsic intended objective.
+Plant models normally use these definitions through inference, which adds
+`hasTreatmentObjective` to equipment or systems performing the process. Use
+`achievesTreatmentObjective` when defining a new process type with an objective
+that applies wherever that process is performed; do not use it to state the
+objective of an individual piece of equipment or system.
+
+Inference never derives a mechanism from an objective. Neither relation
+certifies measured treatment efficiency or permit compliance.
 
 ## Settling, clarification, and thickening
 
@@ -196,9 +204,20 @@ one missing value, and no ranges or duplicated constituent declarations.
 
 ## Validation, reference generation, and migration
 
-Violations identify invalid values or unmet structural requirements. Warnings
-identify incomplete models, including missing system steps. Information-level findings are advisory. See
-[data quality](data_quality.md).
+SHACL validation findings have three severity levels. In this repository,
+we use them as follows:
+
+| Severity | Meaning | Example |
+| --- | --- | --- |
+| `sh:Violation` | A required constraint is not satisfied. Correct the model to meet that requirement. | A clarifier is missing its required sludge outlet, or a composition percentage is outside zero to 100. |
+| `sh:Warning` | A description is incomplete and needs review. Supply the missing information or check whether the declared treatment description is appropriate. | A system declares a compound process but neither it nor its members perform one of the required steps. |
+| `sh:Info` | An advisory finding that may help improve the model. Review it in context; it does not necessarily require a correction. | A connection point has no associated connection, which may be intentional at a model boundary. |
+
+Severity classifies a finding; the validation caller decides which levels cause
+validation to fail. This repository requires conforming examples to have no
+warnings or violations. Information-level findings are allowed. Nonconforming
+examples must produce at least one violation. These checks are implemented in
+`tests/test_examples.py` and `tests/test_nonconforming_examples.py`.
 
 Turtle `#` comments are source comments; `rdfs:comment` and `skos:definition` are
 queryable RDF properties. Published terms use `rdfs:comment`; the reference

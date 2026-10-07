@@ -98,9 +98,15 @@ secondary clarifier can have the same type, process, and treatment objective.
 
 ## Inspect treatment objectives associated with processes
 
-Some process types declare a treatment objective that follows wherever the process is
-performed. This query finds those associations for processes present in the
-model:
+`watr:achievesTreatmentObjective` is primarily an ontology-definition property:
+it associates a process type with an objective that applies wherever that process
+is performed. Plant modelers normally state objectives with
+`watr:hasTreatmentObjective` on equipment or systems. Use
+`achievesTreatmentObjective` when extending the ontology with such a process-type
+association, rather than when assigning an objective to individual equipment.
+
+The following query inspects those process-type definitions for processes present
+in the model:
 
 ```sparql
 SELECT DISTINCT ?unit ?process ?objective WHERE {
