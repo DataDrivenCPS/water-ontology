@@ -40,8 +40,7 @@ def test_process_and_outcome_are_both_materialized(ontology_shapes_graph):
 
 
 def test_the_settling_split_is_carried_by_the_subclasses(ontology_shapes_graph):
-    """A settling tank puts out a clarified overflow and a thickened underflow in
-    every tank; which one the plant relies on is what the subclass says.
+    """Clarifiers and gravity thickeners assign different product objectives.
 
     watr:SedimentationTank carries the process and no objective, so a unit typed
     with it settles and claims nothing about its product. The two subclasses
@@ -180,7 +179,8 @@ def test_a_stated_specific_value_is_not_overridden(ontology_shapes_graph):
 
 def test_materialized_instances_validate(ontology_shapes_graph):
     """What the rule produces must be a model the ontology accepts."""
-    out = _materialize("ex:gt2 a watr:GravityThickener .\n", ontology_shapes_graph)
+    data = Graph().parse("examples/gravity-thickener-outlets.ttl")
+    out = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
     valid, _, text = shifty.validate(
         out, shacl_graph=ontology_shapes_graph, minimum_severity="violation"
     )
@@ -190,16 +190,13 @@ def test_materialized_instances_validate(ontology_shapes_graph):
 # --- what including the rule in the closure changes --------------------------
 
 
-def test_a_bare_typed_instance_is_now_complete(ontology_shapes_graph):
+def test_class_defaults_complete_function_with_explicit_ports(ontology_shapes_graph):
     """The point of shipping the rule in the closure.
 
-    Nothing but the type, and the model validates: the requirement is met by
-    derivation, because an instance of a class that requires Process-Settling
-    sediments whether or not the model troubles to say so.
+    The type supplies the process and objective during validation. Physical
+    connection points must still be explicitly supplied by the model.
     """
-    data = Graph().parse(
-        data=PREFIX + "ex:bare a watr:GravityThickener .\n", format="ttl"
-    )
+    data = Graph().parse("examples/gravity-thickener-outlets.ttl")
     valid, _, text = shifty.validate(
         data, shacl_graph=ontology_shapes_graph, minimum_severity="violation"
     )

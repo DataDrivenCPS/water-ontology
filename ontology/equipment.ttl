@@ -548,27 +548,55 @@ watr:UltravioletLightUnit
         sh:message "Instances of UltravioletLightUnit must have a UVDisinfection process." ;
     ] .
 
-# No treatment objective, deliberately. A settling tank puts out both a clarified
-# overflow and a thickened underflow, in every tank, every time. Sedimentation is
-# a fact about the vessel; which of the two products the plant relies on is a
-# fact about the plant, and the class cannot know it. It used to require
-# Clarification, which made every gravity thickener that inherited from here into
-# a clarifier as well.
-#
-# The modeler picks the subclass that matches the product -- watr:Clarifier for
-# the overflow, watr:GravityThickener for the underflow -- or types the unit with
-# this class and states the objective on the instance.
+# Settling is the process; the intended product determines the objective.
+# Clarifiers and gravity thickeners require separate liquid and sludge outlets.
+# Do not impose that port arrangement on all sedimentation tanks: septic tanks
+# also settle solids, but retain them for periodic pump-out.
 watr:SedimentationTank
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Sedimentation Tank" ;
-    rdfs:comment "A tank in which suspended solids settle out of the water under gravity, separating into a clarified overflow and a thickened underflow" ;
+    rdfs:comment "A tank in which suspended solids separate from water by settling under gravity" ;
     rdfs:subClassOf watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SedimentationTank must have a Settling process." ;
+    ] .
+
+# Shared outlet requirements for conventional clarifiers and gravity thickeners.
+# Sludge is a subclass of water, so exclude sludge from the liquid outlet slot.
+# This also prevents a single port from satisfying both slots. No concentration
+# threshold or simultaneous flow is asserted; multiple sludge outlets are allowed.
+watr:LiquidSludgeOutletShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:minCount 1 ;
+                sh:class s223:Fluid-Water ;
+                sh:not [ sh:class watr:Fluid-Sludge ] ;
+            ] ;
+        ] ;
+        sh:message "A clarifier or gravity thickener must have a liquid outlet carrying water not classified as sludge." ;
+    ] ;
+    sh:property [
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:property [
+                sh:path s223:hasMedium ;
+                sh:minCount 1 ;
+                sh:class watr:Fluid-Sludge ;
+            ] ;
+        ] ;
+        sh:message "A clarifier or gravity thickener must have a separate sludge outlet." ;
     ] .
 
 # The other half of the split. Every clarifier is built for the clarified
@@ -579,12 +607,14 @@ watr:SedimentationTank
 # Primary and secondary are roles, not classes: the same vessel moved from one
 # stage to the other keeps its process and its objective and changes only where
 # it sits.
+
 watr:Clarifier
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Clarifier" ;
     rdfs:comment "A sedimentation tank operated for its clarified overflow, which passes to the next stage of treatment" ;
     rdfs:subClassOf watr:SedimentationTank ;
+    sh:node watr:LiquidSludgeOutletShape ;
     sh:property [
         sh:path watr:hasTreatmentObjective ;
         sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Clarification ] ;
@@ -794,6 +824,7 @@ watr:GravityThickener
     rdfs:label "Gravity Thickener" ;
     rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
     rdfs:subClassOf watr:Thickener ;
+    sh:node watr:LiquidSludgeOutletShape ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;

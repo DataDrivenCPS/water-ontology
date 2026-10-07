@@ -18,7 +18,7 @@ Fletcher's September 21–22 review is addressed as follows:
 | Backwashing has an objective | Cleaning and its descendants imply `EquipmentCleaning`, distinct from product-water constituent removal. |
 | Additional processes beyond defaults | Allowed explicitly while preserving required processes and process-value validation. Plausibility checks are deferred. |
 | Clarifier versus SedimentationTank | Clarifier is a specialization with the clarification design objective, not an alias. |
-| Clarifier underflow wording | Both overflow and sludge underflow are produced; sludge may go to additional thickening. |
+| Clarifier overflow and sludge | Wording describes both streams and possible further thickening. Clarifier and GravityThickener require distinct water (excluding sludge) and sludge outlets; conforming and nonconforming examples demonstrate validation. |
 | Chlorine-removal and reuse wording | Prose uses chlorine removal and water reuse treatment unit. |
 | Additional cleaning activities | Stated directly through `hasProcess` and imply `EquipmentCleaning`; no separate activity category or permission list. |
 | Anoxic/aerobic/anaerobic classification | Retained as explicit roles, as accepted in Fletcher's later comment. |

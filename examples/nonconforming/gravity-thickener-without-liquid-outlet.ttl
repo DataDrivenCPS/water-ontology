@@ -1,0 +1,29 @@
+@prefix : <urn:example/gravity-thickener-without-liquid-outlet#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/gravity-thickener-without-liquid-outlet>
+    a owl:Ontology ;
+    rdfs:label "Nonconforming gravity thickener with two sludge outlets" ;
+    owl:imports <https://watermetadata.org/ontology/watr> .
+
+# Invalid: both outlets carry sludge. Although sludge subclasses water,
+# neither qualifies as the required separated-liquid outlet.
+:thickener a watr:GravityThickener ;
+    s223:hasConnectionPoint :feed, :supernatant, :sludge .
+
+:feed a s223:InletConnectionPoint ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .
+
+:supernatant a s223:OutletConnectionPoint ;
+    rdfs:label "Separated liquid outlet" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .
+
+:sludge a s223:OutletConnectionPoint ;
+    rdfs:label "Settled sludge withdrawal" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .

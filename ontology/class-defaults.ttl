@@ -47,7 +47,10 @@
 # The consequence is worth understanding: a class's process and treatment objective
 # requirements can no longer fail for an instance that merely declares its type.
 #
-#     ex:gt a watr:GravityThickener .        # complete, by derivation
+#     ex:gt a watr:GravityThickener .        # function supplied by derivation
+#
+# Physical topology is not supplied by this rule: the liquid and sludge outlets
+# required by GravityThickener must still be modeled explicitly.
 #
 # That is intended. If watr:GravityThickener requires Process-Settling, then
 # an instance of it sediments whether or not the model troubles to say so, and

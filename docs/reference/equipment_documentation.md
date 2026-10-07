@@ -530,7 +530,7 @@
 
 ## Sedimentation Tank
 
-**Description:** A tank in which suspended solids settle out of the water under gravity, separating into a clarified overflow and a thickened underflow
+**Description:** A tank in which suspended solids separate from water by settling under gravity
 
 **Superclasses:** `watr:SeparationTank`
 

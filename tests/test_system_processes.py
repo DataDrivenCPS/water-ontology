@@ -157,7 +157,12 @@ def test_outcome_and_process_together_are_accepted(ontology_shapes_graph):
     body = (
         "ex:gt a watr:GravityThickener ;\n"
         "    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening ;\n"
-        "    watr:hasProcess watr:Process-Settling .\n"
+        "    watr:hasProcess watr:Process-Settling ;\n"
+        "    s223:hasConnectionPoint ex:liquid, ex:sludge .\n"
+        "ex:liquid a s223:OutletConnectionPoint ;\n"
+        "    s223:hasMedium s223:Fluid-Water ; s223:isConnectionPointOf ex:gt .\n"
+        "ex:sludge a s223:OutletConnectionPoint ;\n"
+        "    s223:hasMedium watr:Fluid-Sludge ; s223:isConnectionPointOf ex:gt .\n"
     )
     data = Graph().parse(data=PREFIX + body, format="ttl")
     valid, _, text = shifty.validate(

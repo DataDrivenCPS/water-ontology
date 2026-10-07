@@ -43,6 +43,17 @@ A clarifier produces overflow and sludge underflow; the sludge may be sent to a
 separate thickening process. Production of both streams does not mean the plant
 relies on both as finished products.
 
+Both `Clarifier` and `GravityThickener` require a water-medium outlet not
+classified as sludge and a distinct sludge-medium outlet. Sludge is a water
+subclass, so the liquid outlet explicitly excludes sludge media. Multiple sludge
+outlets and intermittent withdrawal are permitted; no solids concentration or
+clarification efficiency is inferred. Connection-point roles remain optional.
+These requirements are not imposed on every `SedimentationTank`, which also
+includes septic tanks that retain solids for periodic pump-out.
+
+See the [conforming gravity thickener](../../examples/gravity-thickener-outlets.ttl)
+and [nonconforming thickener with two sludge outlets](../../examples/nonconforming/gravity-thickener-without-liquid-outlet.ttl).
+
 ```ttl
 @prefix : <urn:example/treatment-function#> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
