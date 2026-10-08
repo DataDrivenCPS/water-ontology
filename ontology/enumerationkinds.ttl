@@ -17,10 +17,9 @@
 .
 watr:EnumerationKind-DataProcessing 
     a watr:Class ;
-    # Is this an intentional modeling pattern? 
-    a s223:EnumerationKind-DataQuality ;
+    a watr:EnumerationKind-DataProcessing ;
     a sh:NodeShape ;
-    rdfs:label "DataQuality" ;
+    rdfs:label "DataProcessing" ;
     rdfs:comment "This EnumerationKind describes methods of data processing, aggregation, or imputation" ;
     rdfs:subClassOf s223:EnumerationKind ;
 .
@@ -30,7 +29,7 @@ watr:DataProcessing-Filter
     a sh:NodeShape ;
     rdfs:label "Filter" ;
     rdfs:comment "Parent class for filtering methods to remove outliers or unwanted data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:DataProcessing-Aggregate
     a watr:Class ;
@@ -38,7 +37,7 @@ watr:DataProcessing-Aggregate
     a sh:NodeShape ;
     rdfs:label "Aggregate" ;
     rdfs:comment "Parent class for aggregation functions that combine multiple data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Aggregate-Mean
     a watr:Class ;
@@ -134,7 +133,6 @@ watr:Aggregation-Total
     a watr:Class ;
     a watr:Aggregation-Total ;
     a sh:NodeShape ;
-    owl:equivalentClass s223:Aspect-Total ;
     rdfs:label "Total" ;
     rdfs:comment "The associated property represents the total amount of the characterized quantity or substance." ;
     rdfs:subClassOf watr:EnumerationKind-Aggregation ;
@@ -244,7 +242,7 @@ watr:DataProcessing-Interpolation
     a sh:NodeShape ;
     rdfs:label "Interpolation" ;
     rdfs:comment "Parent class for interpolation methods to estimate values between known data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Interpolation-Linear
     a watr:Class ;
@@ -300,7 +298,7 @@ watr:DataProcessing-Normalization
     a sh:NodeShape ;
     rdfs:label "Normalization" ;
     rdfs:comment "Parent class for normalization methods to scale data to a standard range" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Normalization-MinMax
     a watr:Class ;
@@ -332,7 +330,7 @@ watr:DataProcessing-Synchronization
     a sh:NodeShape ;
     rdfs:label "Synchronization" ;
     rdfs:comment "Parent class for synchronization methods to align data from multiple sources to common time intervals" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Synchronization-Resampling
     a watr:Class ;
@@ -372,7 +370,7 @@ watr:DataProcessing-ErrorMetrics
     a sh:NodeShape ;
     rdfs:label "Error Metrics" ;
     rdfs:comment "Parent class for error and uncertainty measurements" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Error-AbsoluteError
     a watr:Class ;
@@ -436,7 +434,7 @@ watr:DataProcessing-PrecisionMetrics
     a sh:NodeShape ;
     rdfs:label "Precision Metrics" ;
     rdfs:comment "Metrics for precision and repeatability measurements" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Precision-RepeatabilityStdDev
     a watr:Class ;
@@ -476,7 +474,7 @@ watr:DataProcessing-AccuracyMetrics
     a sh:NodeShape ;
     rdfs:label "Accuracy Metrics" ;
     rdfs:comment "Combined accuracy measures (precision and trueness)" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Accuracy-TotalUncertainty
     a watr:Class ;
@@ -531,6 +529,16 @@ watr:Role-Drain
     rdfs:subClassOf s223:Role-Discharge ;
 .
 
+watr:Role-Overflow
+    a s223:EnumerationKind-Role ;
+    a watr:Class ;
+    a watr:Role-Overflow ;
+    a sh:NodeShape ;
+    rdfs:label "Role-Overflow" ;
+    rdfs:comment "A role for a connection or stream that discharges liquid exceeding the capacity of equipment, such as a tank overflow outlet." ;
+    rdfs:subClassOf s223:Role-Discharge ;
+.
+
 watr:Role-NutrientRemoval
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -548,7 +556,7 @@ watr:Role-NitrogenRemoval
     a sh:NodeShape ;
     rdfs:label "Role-NitrogenRemoval" ;
     rdfs:comment "A role for a process whose purpose is the removal of nitrogen species from water." ;
-    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    rdfs:subClassOf watr:Role-NutrientRemoval ;
 .
 
 watr:Role-PhosphorusRemoval
@@ -556,7 +564,7 @@ watr:Role-PhosphorusRemoval
     a watr:Class ;
     a watr:Role-PhosphorusRemoval ; 
     a sh:NodeShape ;
-    rdfs:subClassOf s223:Role-NutrientRemoval ;
+    rdfs:subClassOf watr:Role-NutrientRemoval ;
     rdfs:label "Role-PhosphorusRemoval" ;
     rdfs:comment "A role for a process whose purpose is the removal of phosphorus from water." ;
 .
@@ -564,7 +572,7 @@ watr:Role-PhosphorusRemoval
 watr:Role-MakeUp 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-Makeup ;
+    a watr:Role-MakeUp ;
     a sh:NodeShape ;
     rdfs:label "MakeUp" ;
     rdfs:comment "A role for a stream that adds water or chemical to replace losses and maintain volume or concentration." ;
@@ -574,7 +582,7 @@ watr:Role-MakeUp
 watr:Role-Feed 
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a s223:Role-Feed ;
+    a watr:Role-Feed ;
     a sh:NodeShape ;
     rdfs:label "Feed" ;
     rdfs:comment "A role for a stream or vessel that supplies influent to a process." ;
@@ -764,7 +772,7 @@ watr:Role-Posttreatment
 watr:EnumerationKind-Runtime
     a s223:EnumerationKind ;
     a watr:Class ;
-    a s223:EnumerationKind-Runtime ;
+    a watr:EnumerationKind-Runtime ;
     a sh:NodeShape ;
     rdfs:label "Runtime" ;
     rdfs:comment "An enumeration kind describing the accumulated operating time of a piece of equipment." ;

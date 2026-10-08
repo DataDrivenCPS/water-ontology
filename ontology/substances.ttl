@@ -129,23 +129,29 @@ watr:Fluid-Sludge
   a watr:Class ;
   a watr:Fluid-Sludge ;
   a sh:NodeShape ;
-  rdfs:comment "A semi-solid slurry composed of water and solids." ;
+  rdfs:comment "A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener." ;
   rdfs:label "Sludge" ;
-  # Sludge is an aqueous slurry: this lets equipment that accepts water-based
-  # fluids (for example, s223:Pump) retain the actual sludge medium on its
-  # connection points rather than substituting the less-specific Fluid-Water.
-  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
+  rdfs:subClassOf s223:Mix-Fluid ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Water fraction" ;
     ] ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
-      s223:ofConstituent watr:Constituent-Solids ;
+      s223:ofConstituent watr:Constituent-OrganicSolids ;
       qudt:hasQuantityKind quantitykind:MassFraction ;
       qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Organic solids fraction" ;
+    ] ;
+  s223:composedOf [
+      a s223:QuantifiableProperty ;
+      s223:ofConstituent watr:Constituent-InorganicSolids ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
+      rdfs:label "Inorganic solids fraction" ;
     ] ;
 .
 
@@ -390,6 +396,22 @@ watr:Constituent-SuspendedSolids
     a sh:NodeShape ;
     rdfs:comment "Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid." ;
     rdfs:label "Constituent-SuspendedSolids" ;
+    rdfs:subClassOf watr:Constituent-Solids ;
+.
+watr:Constituent-OrganicSolids
+    a watr:Class ;
+    a watr:Constituent-OrganicSolids ;
+    a sh:NodeShape ;
+    rdfs:comment "The organic (volatile) fraction of the solids in a treatment medium, such as biomass and other biodegradable matter." ;
+    rdfs:label "Constituent-OrganicSolids" ;
+    rdfs:subClassOf watr:Constituent-Solids ;
+.
+watr:Constituent-InorganicSolids
+    a watr:Class ;
+    a watr:Constituent-InorganicSolids ;
+    a sh:NodeShape ;
+    rdfs:comment "The inorganic (fixed) fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates." ;
+    rdfs:label "Constituent-InorganicSolids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
 .
 watr:Constituent-OrganicCarbon

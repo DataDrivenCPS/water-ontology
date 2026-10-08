@@ -478,7 +478,7 @@
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
-**Superclass:** HeatExchanger
+**Superclass:** HydronicHeatExchanger
 
 ## Evaporator
 
@@ -490,7 +490,7 @@
 
 **Description:** A device used to condense a gaseous substance back into a liquid
 
-**Superclass:** HeatExchanger
+**Superclass:** HydronicHeatExchanger
 
 ## Condenser
 
