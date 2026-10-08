@@ -22,6 +22,7 @@
   rdfs:comment "Brine-12Percent" ;
   rdfs:label "Brine-12Percent" ;
   rdfs:subClassOf watr:Water-Brine ;
+  watr:hasCompleteComposition true ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:hasValue 12 ;
@@ -47,6 +48,7 @@
   rdfs:comment "Brine-12Percent-Named" ;
   rdfs:label "Brine-12Percent-Named" ;
   rdfs:subClassOf watr:Water-Brine ;
+  watr:hasCompleteComposition true ;
   s223:composedOf :SaltFraction, :WaterFraction ;
 .
 

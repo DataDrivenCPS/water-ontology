@@ -1,0 +1,35 @@
+@prefix : <urn:example/solids-removal-objectives#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/solids-removal-objectives> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "Distinct suspended and dissolved solids objectives" .
+
+# Screens require suspended-solids removal as their design objective.
+:screen a watr:Screen ;
+    rdfs:label "Screen for suspended and settleable solids" ;
+    watr:hasProcess watr:Process-Screening ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-SuspendedSolidsRemoval .
+
+# Reverse osmosis supplies a mechanism; the plant states desalination intent.
+:membrane a watr:ReverseOsmosisMembrane ;
+    rdfs:label "Membrane for dissolved salt removal" ;
+    watr:hasProcess watr:Process-ReverseOsmosis ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Desalination ;
+    s223:hasConnectionPoint :feed, :permeate, :concentrate .
+
+:feed a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :membrane .
+
+:permeate a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasRole watr:Role-Permeate ;
+    s223:isConnectionPointOf :membrane .
+
+:concentrate a s223:OutletConnectionPoint ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :membrane .

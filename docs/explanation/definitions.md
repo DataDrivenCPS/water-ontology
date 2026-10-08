@@ -4,7 +4,7 @@ The ontology is inspired by two ontologies developed to represent metadata used 
 
 ## Graph Data Concepts
 
- - **Entity:** An entity is an abstraction of the actual "things" in a water treatment train. For example, mechanical equipment such as pumps, tanks, reactors, spatial elements like treatment zones, the area of these zones served by certain mechanical equipment, or the stages these areas may be grouped into based on how the equipment is controlled.
+ - **Entity:** An entity is an abstraction of the actual "things" in a water treatment train. Examples include pumps, tanks, reactors, physical spaces, and systems that group equipment for a treatment function.
 
  - **Class:** A named category with intensional meaning (a definition) used for grouping entities.
 Classes are organized into a hierarchy, and entities are an instance of a given class. Classes are defined using SHACL shapes ensuring that they are instantiated correctly.
@@ -33,20 +33,24 @@ The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can
 
  - **Connectable:** This is the top level entity that defines the classes that may be connected via ConnectionPoints and Connections. There are three major sub-classes of connectable
 
-    - **DomainSpace:** A portion or entirety of a PhysicalSpace associated with a Domain. Often a DomainSpace is served by a particular piece of equipment, like a single pump, and thus they can be connected to equipment. Multiple DomainSpaces controlled similarly can be grouped together, forming a Stage.
+    - **DomainSpace:** A space associated with a service domain and enclosed by a PhysicalSpace. A DomainSpace can connect to equipment through ConnectionPoints and Connections. It represents the space served, rather than a treatment stage.
 
     - **Equipment:** A modeling construct used to represent a mechanical device designed to accomplish a specific task (e.g. pump, fan, heat exchanger, luminaire, temperature sensor, flow meter). Equipment may contain and connect to other equipment, allowing detailed modeling of mechanical systems. Certain pieces of equipment (i.e. Sensors, Actuators, Controllers) may have unique relationships to properties to define how they act on the properties of other entities.
 
     - **Junction:** A Junction is a modeling construct used to represent important branching points within a Connection.
 
- - **PhysicalSpace:** An architectural concept representing a tank, reactor, or any physical space in a water treatment train. These PhysicalSpaces (e.g. a tank) can contain other PhysicalSpaces (e.g. a reactor).
+ - **PhysicalSpace:** A physical area or volume, such as a plant building or room. PhysicalSpaces can contain other PhysicalSpaces and enclose DomainSpaces. Tanks and reactors are modeled as Equipment; their physical locations can be represented separately.
 
- - **System:** A task-oriented collection of interacting or interrelated Equipment defined by the modeler.
+ - **System:** A logical grouping of Equipment for a functional purpose, such as a biological treatment train. Use `s223:hasMember` to identify its members. Systems can also contain other Systems.
 
- - **Stage:** A collection of DomainSpaces grouped together based on water treatment services or controls. _TODO_: Adjust this to fit most recent definitions 
-
- - **Properties:** Properties often represent the actuation and measurement points within a water treatment train. They may be associated with real-time data. They also may define the attributes of other entities (e.g. Equipment, DomainSpaces, Stages). They can be further contextualized using enumerations.
+ - **Properties:** Properties often represent the actuation and measurement points within a water treatment train. They may be associated with real-time data. They also may define the attributes of other entities (e.g. Equipment, DomainSpaces, Systems). They can be further contextualized using enumerations.
 
  - **Enumerations:** The standard uses enumerations to convey groups of useful values for describing attributes of Properties, Equipment, and other things in the model. For example, the enumeration `Role-Cooling` describes that the equipment in question provides cooling.
 
  - **FunctionBlock:** Is used to model transfer and/or transformation of information (e.g. control algorithms). It has relations to input properties and output properties, that represent input and output data. The actual algorithms that perform the transformations are not modeled in WaTr.
+
+## Treatment Stages
+
+A treatment stage is a position or phase within a treatment train, such as primary, secondary, or tertiary treatment. WaTr represents equipment's treatment stage using `s223:hasRole` with `watr:Role-Primary`, `watr:Role-Secondary`, or `watr:Role-Tertiary`. For example, a secondary clarifier is a `watr:Clarifier` with `watr:Role-Secondary`.
+
+To group the equipment serving a stage explicitly, use an `s223:System` with `s223:hasMember`. Physical location and containment are modeled separately through spaces. WaTr defines no dedicated `Stage` or `StageGroup` classes. See [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md) for examples.

@@ -221,10 +221,9 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of GravityThickener must have the Sedimentation process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of GravityThickener must have a Settling process." ;
     ] .
 ```
 

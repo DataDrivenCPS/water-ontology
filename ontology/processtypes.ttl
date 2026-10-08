@@ -1,3 +1,5 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -13,9 +15,13 @@
     rdfs:label "NAWI Water Process Types Ontology" ;
     rdfs:comment "An ontology for types of unit process" .
 
+# A process is an activity performed by equipment or by a system. A treatment
+# objective is the intended change that activity achieves, and a role describes
+# how an entity serves within a
+# particular system. See docs/explanation/equipment_function.md.
 watr:Process a watr:Class, sh:NodeShape ;
-    rdfs:label "Water Process" ;
-    rdfs:comment "A process applied to water treatment." ;
+    rdfs:label "Water Treatment Process" ;
+    rdfs:comment "A physical, chemical, or biological activity performed by a piece of equipment or by a system." ;
     sh:property [
         sh:path rdfs:label ;
         sh:datatype xsd:string ;
@@ -40,7 +46,17 @@ watr:Process-PhysicalProcess a watr:Class, watr:Process-PhysicalProcess ;
 watr:Process-Separation a watr:Class, watr:Process-Separation ;
     rdfs:label "Separation" ;
     rdfs:comment "The most generic process for separation of any two constituents." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ConstituentRemoval ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
+
+# Separation is too broad to be a step of a compound process: screening debris
+# and stripping ammonia are separations, but neither is the step a train means
+# when it says its biomass is separated from the treated water. That step is this
+# one, and watr:Process-ActivatedSludge names it rather than the family above.
+watr:Process-SolidLiquidSeparation a watr:Class, watr:Process-SolidLiquidSeparation ;
+    rdfs:label "Solid-Liquid Separation" ;
+    rdfs:comment "Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents." ;
+    rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-Elutriation a watr:Class, watr:Process-Elutriation ;
     rdfs:label "Elutriation" ;
@@ -52,25 +68,32 @@ watr:Process-Screening a watr:Class, watr:Process-Screening ;
     rdfs:comment "A unit process that removes large solids from water, such as leaves, branches, and other debris." ;
     rdfs:subClassOf watr:Process-Separation .
 
-watr:Process-Sedimentation a watr:Class, watr:Process-Sedimentation ;
-    rdfs:label "Sedimentation" ;
+watr:Process-Settling a watr:Class, watr:Process-Settling ;
+    rdfs:label "Settling" ;
+    skos:altLabel "Sedimentation" ;
     rdfs:comment "A unit process that allows solids to settle out of water by gravity." ;
-    rdfs:subClassOf watr:Process-Separation .
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation .
+
+
 
 watr:Process-Stripping a watr:Class, watr:Process-Stripping ;
     rdfs:label "Stripping" ;
     rdfs:comment "Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds." ;
     rdfs:subClassOf watr:Process-Separation .
 
+# Filtration is a Separation but not, as a family, a solid-liquid one: reverse
+# osmosis and membrane distillation are filtration and retain dissolved species,
+# not suspended solids. The filtration processes that do part solids from liquid
+# say so themselves, below.
 watr:Process-Filtration a watr:Class, watr:Process-Filtration ;
     rdfs:label "Filtration" ;
-    rdfs:comment "A unit process that removes smaller particles from water by passing it through a filter." ;
+    rdfs:comment "A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass." ;
     rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-MediaFiltration a watr:Class, watr:Process-MediaFiltration ;
     rdfs:label "Media Filtration" ;
     rdfs:comment "A filtration process that uses a bed of media (as opposed to a membrane-based process)." ;
-    rdfs:subClassOf watr:Process-Filtration .
+    rdfs:subClassOf watr:Process-Filtration, watr:Process-SolidLiquidSeparation .
 
 watr:Process-SlowSandFiltration a watr:Class, watr:Process-SlowSandFiltration ;
     rdfs:label "Slow Sand Filtration" ;
@@ -85,7 +108,7 @@ watr:Process-RapidSandFiltration a watr:Class, watr:Process-RapidSandFiltration 
 watr:Process-Flotation a watr:Class, watr:Process-Flotation ;
     rdfs:label "Flotation" ;
     rdfs:comment "A unit process that uses buoyancy to separate solids from water, often using air bubbles." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation .
 
 watr:Process-GasTransfer a watr:Class, watr:Process-GasTransfer ;
     rdfs:label "Gas Transfer" ;
@@ -107,25 +130,11 @@ watr:Process-Recirculation a watr:Class, watr:Process-Recirculation ;
     rdfs:comment "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-Thickening a watr:Class, watr:Process-Thickening ;
-    rdfs:label "Thickening" ;
-    rdfs:comment "A process to increase the solids content of a sludge or slurry." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
-
-watr:Process-Dewatering a watr:Class, watr:Process-Dewatering ;
-    rdfs:label "Dewatering" ;
-    rdfs:comment "A process to remove or separate water from another material, typically solids." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
-
-watr:Process-Drying a watr:Class, watr:Process-Drying ;
-    rdfs:label "Drying" ;
-    rdfs:comment "Drying of biosolids to reduce moisture content." ;
-    rdfs:subClassOf watr:Process-Dewatering, watr:Process-Evaporation .
 
 watr:Process-Centrifugation a watr:Class, watr:Process-Centrifugation ;
     rdfs:label "Centrifugation" ;
     rdfs:comment "A process that uses centrifugal force to separate substances of different densities." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation .
 
 watr:Process-Solidification a watr:Class, watr:Process-Solidification ;
     rdfs:label "Solidification" ;
@@ -150,12 +159,20 @@ watr:Process-Condensation a watr:Class, watr:Process-Condensation ;
 watr:Process-Adsorption a watr:Class, watr:Process-Adsorption ;
     rdfs:label "Adsorption" ;
     rdfs:comment "A process by which substances bind to a surface." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ConstituentRemoval ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-GranularActivatedCarbon a watr:Class, watr:Process-GranularActivatedCarbon ;
-    rdfs:label "Granular Activated Carbon (GAC)" ;
-    rdfs:comment "A process that uses an activated carbon filter to adsorb impurities from water." ;
-    rdfs:subClassOf watr:Process-Adsorption, watr:Process-Filtration .
+# Was Process-GranularActivatedCarbon, which named the medium rather than the
+# activity. Two parents, because both are true of it and a query for either
+# should return it: water passes through a granular bed, which is media
+# filtration, and the bed's medium takes contaminants onto its surface, which is
+# adsorption. What it removes -- organics at one plant, PFAS or a chlorine
+# residual at another -- is not fixed by either, so it declares only a broad constituent-removal objective.
+watr:Process-GACFiltration a watr:Class, watr:Process-GACFiltration ;
+    rdfs:label "GAC Filtration" ;
+    skos:altLabel "Granular Activated Carbon" ;
+    rdfs:comment "Filtration through a bed of granular activated carbon, which retains particles as any granular medium does and adsorbs dissolved constituents onto the carbon's surface." ;
+    rdfs:subClassOf watr:Process-Adsorption, watr:Process-MediaFiltration .
 
 watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
     rdfs:label "Membrane Process" ;
@@ -164,33 +181,33 @@ watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
 
 watr:Process-ReverseOsmosis a watr:Class, watr:Process-ReverseOsmosis ;
     rdfs:label "Reverse Osmosis (RO)" ;
-    rdfs:comment "A core membrane separation process for desalination and advanced purification." ;
+    rdfs:comment "Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained." ;
     rdfs:subClassOf watr:Process-MembraneProcess .
 
 watr:Process-ClosedCircuitReverseOsmosis a watr:Class, watr:Process-ClosedCircuitReverseOsmosis ;
     rdfs:label "Closed Circuit Reverse Osmosis (CCRO)" ;
-    rdfs:comment "A specific RO configuration explored for optimization, capable of adapting to unmeasured changes like feed salinity." ;
+    rdfs:comment "Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage." ;
     rdfs:subClassOf watr:Process-ReverseOsmosis .
 
 watr:Process-OsmoticallyAssistedReverseOsmosis a watr:Class, watr:Process-OsmoticallyAssistedReverseOsmosis ;
     rdfs:label "Osmotically Assisted Reverse Osmosis (OARO)" ;
-    rdfs:comment "A process with validated Computational Fluid Dynamics (CFD) models for cost optimization." ;
+    rdfs:comment "Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow." ;
     rdfs:subClassOf watr:Process-ReverseOsmosis .
 
 watr:Process-FeedReversalReverseOsmosis a watr:Class, watr:Process-FeedReversalReverseOsmosis ;
     rdfs:label "Feed Reversal Reverse Osmosis (FRRO)" ;
-    rdfs:comment "A dynamic and cyclic design to mitigate scaling and balance salt/foulant load, enabling high recovery." ;
+    rdfs:comment "Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved." ;
     rdfs:subClassOf watr:Process-ReverseOsmosis .
 
 watr:Process-MembraneDistillation a watr:Class, watr:Process-MembraneDistillation ;
     rdfs:label "Membrane Distillation (MD)" ;
-    rdfs:comment "A thermal membrane process, often subject to CFD modeling for optimization of heat and mass transfer." ;
+    rdfs:comment "Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back." ;
     rdfs:subClassOf watr:Process-MembraneProcess .
 
 watr:Process-Electrodialysis a watr:Class, watr:Process-Electrodialysis ;
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
+    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-Separation .
 
 watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDialyticCrystallization ;
     rdfs:label "Electro-Dialytic Crystallization (EDC)" ;
@@ -202,40 +219,50 @@ watr:Process-Comminution a watr:Class, watr:Process-Comminution ;
     rdfs:comment "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-BiosolidsDisposal a watr:Class, watr:Process-BiosolidsDisposal ;
-    rdfs:label "BiosolidsDisposal" ;
-    rdfs:comment "Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.)." ;
-    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-Composting a watr:Class, watr:Process-Composting ;
     rdfs:label "Composting" ;
     rdfs:comment "Biological degradation of organic materials under controlled aerobic conditions." ;
-    rdfs:subClassOf watr:Process-BiosolidsDisposal .
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization, watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:subClassOf watr:Process-BiologicalProcess .
 
+# Spreading biosolids on a field and tipping them into a cell are activities, and
+# the result each produces is the same one: the biosolids are disposed of. So
+# they are processes that declare watr:TreatmentObjective-BiosolidsDisposal,
+# which is also what the two incineration routes and composting declare. They
+# were briefly objectives of their own -- TreatmentObjective-LandApplication and
+# -Landfill -- which put the route into the objective vocabulary and left the
+# activity with no name at all.
+#
+# Physical processes rather than chemical or biological ones: what happens is
+# that the material is moved and placed. Whatever degrades in the soil or the
+# cell afterwards is not what the plant does.
 watr:Process-LandApplication a watr:Class, watr:Process-LandApplication ;
     rdfs:label "Land Application" ;
-    rdfs:comment "Beneficial reuse of biosolids by spreading on agricultural land." ;
-    rdfs:subClassOf watr:Process-BiosolidsDisposal .
+    rdfs:comment "Spreading treated biosolids on agricultural or reclamation land, where they serve as a soil amendment." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-Landfill a watr:Class, watr:Process-Landfill ;
-    rdfs:label "Biosolids Landfill" ;
-    rdfs:comment "Disposal of biosolids in a landfill." ;
-    rdfs:subClassOf watr:Process-BiosolidsDisposal .
+watr:Process-Landfilling a watr:Class, watr:Process-Landfilling ;
+    rdfs:label "Landfilling" ;
+    rdfs:comment "Placing treated biosolids in a landfill, whether in a dedicated cell or with municipal solid waste." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
 watr:Process-ChemicalProcess a watr:Class, watr:Process-ChemicalProcess ;
     rdfs:label "Chemical Process" ;
-    rdfs:comment "A unit process that involves the addition of chemicals to water to achieve a desired effect." ;
+    rdfs:comment "A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect." ;
     rdfs:subClassOf watr:Process .
 
-watr:Process-ChemicalAddition a watr:Class, watr:Process-ChemicalAddition ;
-    rdfs:label "Chemical Addition" ;
-    rdfs:comment "Addition of chemicals, such as coagulant, polymer, disinfectant, etc." ;
+watr:Process-Dosing a watr:Class, watr:Process-Dosing ;
+    rdfs:label "Dosing" ;
+    rdfs:comment "Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite." ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 
 watr:Process-Coagulation a watr:Class, watr:Process-Coagulation ;
     rdfs:label "Coagulation" ;
     rdfs:comment "A unit process that adds chemicals to water to cause small particles to clump together." ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
+    rdfs:subClassOf watr:Process-Dosing .
 
 watr:Process-Electrocoagulation a watr:Class, watr:Process-Electrocoagulation ;
     rdfs:label "Electrocoagulation (EC)" ;
@@ -247,40 +274,46 @@ watr:Process-Flocculation a watr:Class, watr:Process-Flocculation ;
     rdfs:comment "A unit process that gently mixes water to allow coagulated particles to form larger clumps." ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-Mixing .
 
-watr:Process-UVDisinfection a watr:Class, watr:Process-UVDisinfection ;
-    rdfs:label "UV Disinfection" ;
-    rdfs:comment "A disinfection process that uses ultraviolet light to inactivate microorganisms." ;
-    rdfs:subClassOf watr:Process-Disinfection .
+watr:Process-UVIrradiation a watr:Class, watr:Process-UVIrradiation ;
+    rdfs:label "Ultraviolet Irradiation" ;
+    rdfs:comment "Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-Disinfection a watr:Class, watr:Process-Disinfection ;
-    rdfs:label "Disinfection" ;
-    rdfs:comment "A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess .
 
+# Was Process-ChlorineDosing. Every simulator library and Metcalf & Eddy call
+# this chlorination, and the word covers the whole of it: the process is the dose
+# plus the contact time in which the chlorine reacts, not the metering alone. A
+# unit that dosed chlorine and gave it nowhere to react would not disinfect.
 watr:Process-Chlorination a watr:Class, watr:Process-Chlorination ;
     rdfs:label "Chlorination" ;
-    rdfs:comment "A disinfection process that uses chlorine or chlorine compounds." ;
-    rdfs:subClassOf watr:Process-Disinfection .
+    rdfs:comment "Dosing chlorine or a chlorine compound into water with contact time designed for disinfection. The intended objective is disinfection; actual performance depends on dose, contact time and water quality." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection ;
+    rdfs:subClassOf watr:Process-Dosing .
 
-watr:Process-Dechlorination a watr:Class, watr:Process-Dechlorination ;
-    rdfs:label "Dechlorination" ;
-    rdfs:comment "A post-disinfection process that removes excess chlorine compounds." ;
-    rdfs:subClassOf watr:Process-Disinfection .
+# Process-Dechlorination was removed here. It named an objective, the way
+# Process-UVDisinfection did before the split, and it is the clearest case of one
+# treatment objective reached by several activities: dosing sulfite reduces the residual
+# (below), activated carbon adsorbs and catalyses it away
+# (Process-GACFiltration), and ultraviolet light photolyses it
+# (Process-UVIrradiation). None of those is dechlorination; all of them
+# dechlorinate. The objective is watr:TreatmentObjective-ChlorineResidualRemoval.
+#
+# Sulfite dosing is the one of the three that exists only to do this, so it is
+# also the only one that declares the objective. Carbon and ultraviolet light
+# each serve other ends in other units, and there the equipment or the modeler
+# says which.
+watr:Process-SulfiteDosing a watr:Class, watr:Process-SulfiteDosing ;
+    rdfs:label "Sulfite Dosing" ;
+    rdfs:comment "Metered addition of sulfur dioxide, sodium sulfite, bisulfite or metabisulfite, which reduces free and combined chlorine to chloride." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ChlorineResidualRemoval ;
+    rdfs:subClassOf watr:Process-Dosing .
 
-watr:Process-ThermalDisinfection a watr:Class, watr:Process-ThermalDisinfection ;
-    rdfs:label "Thermal Disinfection" ;
-    rdfs:comment "Heat-based pathogen inactivation such as pasteurization." ;
-    rdfs:subClassOf watr:Process-Disinfection .
+watr:Process-ThermalTreatment a watr:Class, watr:Process-ThermalTreatment ;
+    rdfs:label "Thermal Treatment" ;
+    rdfs:comment "Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result." ;
+    rdfs:subClassOf watr:Process-PhysicalProcess .
 
-watr:Process-pHAdjustment a watr:Class, watr:Process-pHAdjustment ;
-    rdfs:label "pH Adjustment" ;
-    rdfs:comment "A unit process that adjusts the pH of water to a desired level using chemicals." ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
 
-watr:Process-Neutralization a watr:Class, watr:Process-Neutralization ;
-    rdfs:label "Neutralization" ;
-    rdfs:comment "pH adjustment to neutral, typically with a base, used in processes like high-density sludge treatment." ;
-    rdfs:subClassOf watr:Process-pHAdjustment .
 
 watr:Process-Oxidation a watr:Class, watr:Process-Oxidation ;
     rdfs:label "Oxidation" ;
@@ -294,22 +327,19 @@ watr:Process-AdvancedOxidation a watr:Class, watr:Process-AdvancedOxidation ;
 
 watr:Process-Electrooxidation a watr:Class, watr:Process-Electrooxidation ;
     rdfs:label "Electrooxidation (EO)" ;
-    rdfs:comment "An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses." ;
+    rdfs:comment "Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent." ;
     rdfs:subClassOf watr:Process-Oxidation, watr:Process-PhysicalProcess .
 
 watr:Process-Ozonation a watr:Class, watr:Process-Ozonation ;
     rdfs:label "Ozonation" ;
-    rdfs:comment "A water treatment process that uses ozone as an oxidant." ;
+    rdfs:comment "A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control." ;
     rdfs:subClassOf watr:Process-Oxidation .
 
-watr:Process-Softening a watr:Class, watr:Process-Softening ;
-    rdfs:label "Softening" ;
-    rdfs:comment "Chemical precipitation of calcium/magnesium" ;
-    rdfs:subClassOf watr:Process-ChemicalAddition .
 
 watr:Process-ChemicalPrecipitation a watr:Class, watr:Process-ChemicalPrecipitation ;
     rdfs:label "Chemical Precipitation" ;
-    rdfs:comment "Removal of nutrients or metals using coagulants" ;
+    rdfs:comment "Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. This process implies general constituent removal. Which constituent it targets depends on the reagent, so the modeler states the specific removal objective on the equipment." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ConstituentRemoval ;
     rdfs:subClassOf watr:Process-ChemicalProcess .
 
 watr:Process-Reduction a watr:Class, watr:Process-Reduction ;
@@ -320,16 +350,18 @@ watr:Process-Reduction a watr:Class, watr:Process-Reduction ;
 watr:Process-SolventExtraction a watr:Class, watr:Process-SolventExtraction ;
     rdfs:label "Solvent-Based Extraction" ;
     rdfs:comment "A non-membrane, non-thermal method using a solvent to selectively extract water from highly saline brines." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess .
+    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-Separation .
 
 watr:Process-HighDensitySludge a watr:Class, watr:Process-HighDensitySludge ;
     rdfs:label "High-Density Sludge (HDS) Process" ;
-    rdfs:comment "A method for treating acid mine drainage involving neutralization." ;
+    rdfs:comment "Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Neutralization ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 watr:Process-IonExchange a watr:Class, watr:Process-IonExchange ;
     rdfs:label "Ion Exchange" ;
     rdfs:comment "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-ConstituentRemoval ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
 watr:Process-Electrolysis a watr:Class, watr:Process-Electrolysis ;
@@ -342,14 +374,19 @@ watr:Process-Combustion a watr:Class, watr:Process-Combustion ;
     rdfs:comment "A process that combusts biosolids or biogas." ;
     rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-PhysicalProcess .
 
+# Incinerating biosolids disposes of them, which is why these two declare the
+# treatment objective and their parent does not: Process-Combustion also covers burning
+# biogas for energy, which disposes of nothing.
 watr:Process-FluidizedBedIncineration a watr:Class, watr:Process-FluidizedBedIncineration ;
     rdfs:label "Fluidized Bed Incineration" ;
     rdfs:comment "A process that combusts a constantly moving bed of biosolids." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-MultipleHearthIncineration a watr:Class, watr:Process-MultipleHearthIncineration ;
     rdfs:label "Multiple Hearth Incineration (MHI)" ;
     rdfs:comment "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal ;
     rdfs:subClassOf watr:Process-Combustion .
 
 watr:Process-Cogeneration a watr:Class, watr:Process-Cogeneration ;
@@ -362,59 +399,103 @@ watr:Process-BiologicalProcess a watr:Class, watr:Process-BiologicalProcess ;
     rdfs:comment "A unit process that utilizes biological activity for water treatment." ;
     rdfs:subClassOf watr:Process .
 
+
+
+
 watr:Process-Nitrification a watr:Class, watr:Process-Nitrification ;
     rdfs:label "Nitrification" ;
     rdfs:comment "Process by which ammonia is oxidized to nitrite and subsequently nitrate." ;
+    # Not TreatmentObjective-NitrogenRemoval; see the note on watr:TreatmentObjective-AmmoniaControl.
+    watr:achievesTreatmentObjective watr:TreatmentObjective-AmmoniaControl ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-Denitrification a watr:Class, watr:Process-Denitrification ;
     rdfs:label "Denitrification" ;
     rdfs:comment "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    rdfs:subClassOf watr:Process-BiologicalProcess .
+
+watr:Process-EnhancedBiologicalPhosphorusRemoval a watr:Class, watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    rdfs:label "Enhanced Biological Phosphorus Removal (EBPR)" ;
+    rdfs:comment "Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-FiveStageBardenpho a watr:Class, watr:Process-FiveStageBardenpho ;
     rdfs:label "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     rdfs:comment "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:includesProcess watr:Process-Recirculation ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
     rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
     rdfs:comment "A four-stage biological nutrient removal process with two anoxic and two aerobic zones." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-Recirculation ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
+
+# The treatment-train process types below name *arrangements*, not things a
+# single machine does -- which is why no equipment class requires any of them.
+# They are asserted on an s223:System, and watr:includesProcess records the steps
+# the train is made of so that watr:SystemProcessCoverageShape can check the
+# members actually cover them. See docs/explanation/processes.md.
+#
+# A compound process uses watr:includesProcess for its constituent steps and
+# rdfs:subClassOf for its process family. A Bardenpho is a kind of activated
+# sludge process that includes nitrification and denitrification; it is not a
+# kind of either constituent step.
 
 watr:Process-ActivatedSludge a watr:Class, watr:Process-ActivatedSludge ;
     rdfs:label "Activated Sludge" ;
-    rdfs:comment "Aerobic suspended-growth biological treatment" ;
-    rdfs:subClassOf watr:Process-Separation ;
+    rdfs:comment "Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water." ;
+    watr:includesProcess watr:Process-Aeration ;
+    # Require solid-liquid separation, not sedimentation specifically and not the
+    # whole separation family. A conventional train satisfies this with
+    # Process-Settling, a membrane bioreactor with Process-Microfiltration or
+    # Process-Ultrafiltration, and a DAF or centrifuge with their own processes.
+    # Naming Process-Separation here instead would also accept a bar screen or an
+    # air stripper, which separate something else entirely. Recirculation is
+    # configuration-specific and is declared by the process types that require it.
+    watr:includesProcess watr:Process-SolidLiquidSeparation ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-OrganicsRemoval ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 
 watr:Process-AO a watr:Class, watr:Process-AO ;
     rdfs:label "Anoxic-Aerobic" ;
     rdfs:comment "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-MLE a watr:Class, watr:Process-MLE ;
     rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
-    rdfs:comment "Modification of AO a with internal recycle." ;
+    rdfs:comment "Modification of AO with an internal recycle returning nitrate to the anoxic zone." ;
+    watr:includesProcess watr:Process-Recirculation ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     rdfs:subClassOf watr:Process-AO .
 
 watr:Process-A2O a watr:Class, watr:Process-A2O ;
     rdfs:label "Anaerobic-Anoxic-Oxic (A2O)" ;
     rdfs:comment "Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal." ;
-    rdfs:subClassOf watr:Process-ActivatedSludge ;
-    rdfs:subClassOf watr:Process-Nitrification ;
-    rdfs:subClassOf watr:Process-Denitrification .
+    watr:includesProcess watr:Process-Nitrification ;
+    watr:includesProcess watr:Process-Denitrification ;
+    watr:includesProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:includesProcess watr:Process-Recirculation ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
+    rdfs:subClassOf watr:Process-ActivatedSludge .
 
 watr:Process-UCT a watr:Class, watr:Process-UCT ;
     rdfs:label "University of Cape Town (UCT)" ;
     rdfs:comment "Variant of A2O with modified recycle streams for phosphorus removal." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval, watr:TreatmentObjective-PhosphorusRemoval ;
     rdfs:subClassOf watr:Process-A2O .
 
 watr:Process-Biofiltration a watr:Class, watr:Process-Biofiltration ;
@@ -432,15 +513,20 @@ watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-Biologicall
     rdfs:comment "A biologically activated filtration column." ;
     rdfs:subClassOf watr:Process-Biofiltration .
 
+# Membrane processes, and solid-liquid separations: at these pore sizes what is
+# retained is suspended -- solids, colloids, biomass -- which is what lets an MBR
+# satisfy the separation step of Process-ActivatedSludge. Their coarser siblings
+# under Process-MembraneProcess, reverse osmosis and membrane distillation,
+# retain dissolved species instead and are deliberately not solid-liquid.
 watr:Process-Microfiltration a watr:Class, watr:Process-Microfiltration ;
     rdfs:label "Microfiltration" ;
-    rdfs:comment "0.1 to 1 micron-scale filtration" ;
-    rdfs:subClassOf watr:Process-Filtration .
+    rdfs:comment "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
     rdfs:label "Ultrafiltration" ;
-    rdfs:comment "0.01 to 0.1 micron-scale filtration" ;
-    rdfs:subClassOf watr:Process-Filtration .
+    rdfs:comment "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
     rdfs:label "Backwashing" ;
@@ -457,9 +543,17 @@ watr:Process-Purging a watr:Class, watr:Process-Purging ;
     rdfs:comment "A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle." ;
     rdfs:subClassOf watr:Process-Cleaning .
 
+# Stabilization names a treatment objective -- reduced volatile solids, pathogens and odor
+# -- that is reached by more than one means. Unlike thickening, the means are
+# genuine kinds of stabilization rather than siblings of it, so digestion and
+# composting are modeled as subclasses and an instance needs only the specific
+# one. It sits directly under watr:Process because it is achieved both
+# biologically (digestion) and chemically (lime addition).
+
 watr:Process-Digestion a watr:Class, watr:Process-Digestion ;
     rdfs:label "Digestion" ;
     rdfs:comment "A biological process that breaks down organic matter over a long duration in a tank." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization ;
     rdfs:subClassOf watr:Process-BiologicalProcess .
 
 watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;
@@ -470,10 +564,11 @@ watr:Process-Hydrolysis a watr:Class, watr:Process-Hydrolysis ;
 watr:Process-ThermalHydrolysis a watr:Class, watr:Process-ThermalHydrolysis ;
     rdfs:label "Thermal Hydrolysis" ;
     rdfs:comment "A process that breaks down complex organic matter into soluble compounds using heat and pressure." ;
-    rdfs:subClassOf watr:Process-Hydrolysis .
+    rdfs:subClassOf watr:Process-Hydrolysis, watr:Process-ThermalTreatment .
 
 watr:Process-Cleaning a watr:Class, watr:Process-Cleaning ;
     rdfs:label "Cleaning" ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-EquipmentCleaning ;
     rdfs:comment "A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment." ;
     rdfs:subClassOf watr:Process-PhysicalProcess .
 
@@ -486,3 +581,119 @@ watr:Process-AerobicDigestion a watr:Class, watr:Process-AerobicDigestion ;
     rdfs:label "Aerobic Digestion" ;
     rdfs:comment "A biological process that breaks down organic matter in the presence of oxygen." ;
     rdfs:subClassOf watr:Process-Digestion .
+
+watr:Process-Sedimentation
+    a watr:Class, watr:Process-Sedimentation ;
+    rdfs:label "Sedimentation (deprecated)" ;
+    rdfs:comment "Deprecated process designation; use Process-Settling." ;
+    rdfs:subClassOf watr:Process-Settling ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Settling .
+
+watr:Process-GranularActivatedCarbon
+    a watr:Class, watr:Process-GranularActivatedCarbon ;
+    rdfs:label "GranularActivatedCarbon (deprecated)" ;
+    rdfs:comment "Deprecated process designation; use Process-GACFiltration." ;
+    rdfs:subClassOf watr:Process-GACFiltration ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-GACFiltration .
+
+watr:Process-ChemicalAddition
+    a watr:Class, watr:Process-ChemicalAddition ;
+    rdfs:label "ChemicalAddition (deprecated)" ;
+    rdfs:comment "Deprecated process designation; use Process-Dosing." ;
+    rdfs:subClassOf watr:Process-Dosing ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Dosing .
+
+watr:Process-UVDisinfection
+    a watr:Class, watr:Process-UVDisinfection ;
+    rdfs:label "UVDisinfection (deprecated)" ;
+    rdfs:comment "Deprecated process designation; use Process-UVIrradiation." ;
+    rdfs:subClassOf watr:Process-UVIrradiation ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-UVIrradiation .
+
+watr:Process-BiosolidsDisposal
+    a watr:Class ;
+    rdfs:label "BiosolidsDisposal (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-BiosolidsDisposal. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-BiosolidsDisposal .
+
+watr:Process-Dechlorination
+    a watr:Class ;
+    rdfs:label "Dechlorination (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-ChlorineResidualRemoval. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-ChlorineResidualRemoval .
+
+watr:Process-Dewatering
+    a watr:Class ;
+    rdfs:label "Dewatering (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Dewatering. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Dewatering .
+
+watr:Process-Disinfection
+    a watr:Class ;
+    rdfs:label "Disinfection (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Disinfection. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Disinfection .
+
+watr:Process-Drying
+    a watr:Class ;
+    rdfs:label "Drying (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Drying. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Drying .
+
+watr:Process-Landfill
+    a watr:Class ;
+    rdfs:label "Landfill (deprecated)" ;
+    rdfs:comment "Deprecated designation; use Process-Landfilling. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Landfilling .
+
+watr:Process-Neutralization
+    a watr:Class ;
+    rdfs:label "Neutralization (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Neutralization. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Neutralization .
+
+watr:Process-Softening
+    a watr:Class ;
+    rdfs:label "Softening (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Softening. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Softening .
+
+watr:Process-ThermalDisinfection
+    a watr:Class ;
+    rdfs:label "ThermalDisinfection (deprecated)" ;
+    rdfs:comment "Deprecated designation; use Process-ThermalTreatment. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-ThermalTreatment .
+
+watr:Process-Thickening
+    a watr:Class ;
+    rdfs:label "Thickening (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-Thickening. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Thickening .
+
+watr:Process-pHAdjustment
+    a watr:Class ;
+    rdfs:label "pHAdjustment (deprecated)" ;
+    rdfs:comment "Deprecated designation; use TreatmentObjective-pHControl. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-pHControl .
+
+watr:Process-ChlorineDosing
+    a watr:Class ;
+    rdfs:label "ChlorineDosing (deprecated)" ;
+    rdfs:comment "Deprecated designation; use Process-Chlorination. The replacement distinguishes treatment mechanism from objective." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Chlorination .

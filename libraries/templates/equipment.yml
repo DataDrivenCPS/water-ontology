@@ -379,7 +379,7 @@ sedimentation-tank:
 
     P:name a watr:SedimentationTank ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Sedimentation ;
+      watr:hasProcess watr:Process-Settling ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .

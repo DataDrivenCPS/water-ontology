@@ -17,31 +17,9 @@
     # Prefix declarations for the SPARQL-based constraints defined in this module.
     sh:declare [ sh:prefix "s223" ; sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "qudt" ; sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "watr" ; sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "quantitykind" ; sh:namespace "http://qudt.org/vocab/quantitykind/"^^xsd:anyURI ] ;
     sh:declare [ sh:prefix "unit" ; sh:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ] ;
-.
-watr:Constituent-Metals
-  a watr:Class ;
-  a watr:Constituent-Metals ;
-  a sh:NodeShape ;
-  rdfs:comment "Constituent-Metals" ;
-  rdfs:label "Constituent-Metals" ;
-  rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Salt
-  a watr:Class ;
-  a watr:Constituent-Salt ;
-  a sh:NodeShape ;
-  rdfs:comment "Constituent-Salt" ;
-  rdfs:label "Constituent-Salt" ;
-  rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Salt-NaCl
-  a watr:Class ;
-  a watr:Salt-NaCl ;
-  a sh:NodeShape ;
-  rdfs:comment "Salt-NaCl" ;
-  rdfs:label "Salt-NaCl" ;
-  rdfs:subClassOf watr:Constituent-Salt ;
 .
 watr:Water-Seawater
   a watr:Class ;
@@ -134,7 +112,7 @@ watr:Fluid-Sludge
   # Sludge is an aqueous slurry: this lets equipment that accepts water-based
   # fluids (for example, s223:Pump) retain the actual sludge medium on its
   # connection points rather than substituting the less-specific Fluid-Water.
-  rdfs:subClassOf s223:Mix-Fluid, s223:Fluid-Water ;
+  rdfs:subClassOf s223:Fluid-Water ;
   s223:composedOf [
       a s223:QuantifiableProperty ;
       s223:ofConstituent s223:Constituent-H2O ;
@@ -352,28 +330,24 @@ watr:HeavyMetalRemovalAgent-SodiumSulfide
   rdfs:label "Sodium Sulfide" ;
   rdfs:subClassOf watr:HeavyMetalRemovalAgent ;
 .
-watr:Constituent-Organics
-    a watr:Class ; 
-    a watr:Constituent-Organics ;
-    a sh:NodeShape ;
-    rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Organics" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Inorganics
-    a watr:Class ; 
-    a watr:Constituent-Inorganics ;
-    a sh:NodeShape ;
-    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Inorganics" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
+# --- constituents -----------------------------------------------------------
+#
+# What a treatment medium carries, and what a constituent-removal objective
+# targets with watr:targetsConstituent. Every term here is a subclass of
+# s223:Medium-Constituent; the water itself is s223:Constituent-H2O, from 223.
+#
+# The hierarchy is what makes a query for a parent return the children: a unit
+# whose objective targets Constituent-Nitrate answers a question about
+# Constituent-Nitrogen. Group by what a permit or a datasheet names, not by
+# chemistry -- hardness is calcium and magnesium together because that is the
+# thing softening removes.
+
 watr:Constituent-Particles
     a watr:Class ;
     a watr:Constituent-Particles ;
     a sh:NodeShape ;
     rdfs:comment "Particulate matter present as a constituent of a medium." ;
-    rdfs:label "Constituent-Particles" ;
+    rdfs:label "Particles" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-Solids
@@ -381,7 +355,7 @@ watr:Constituent-Solids
     a watr:Constituent-Solids ;
     a sh:NodeShape ;
     rdfs:comment "Solid material present as a constituent of a treatment medium." ;
-    rdfs:label "Constituent-Solids" ;
+    rdfs:label "Solids" ;
     rdfs:subClassOf watr:Constituent-Particles ;
 .
 watr:Constituent-SuspendedSolids
@@ -389,8 +363,77 @@ watr:Constituent-SuspendedSolids
     a watr:Constituent-SuspendedSolids ;
     a sh:NodeShape ;
     rdfs:comment "Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid." ;
-    rdfs:label "Constituent-SuspendedSolids" ;
+    rdfs:label "Suspended Solids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
+.
+
+# Dissolved solids are a separate branch from particles, not a child of them:
+# what is dissolved passes a filter that retains what is suspended, which is why
+# the two are removed by different processes.
+watr:Constituent-DissolvedSolids
+    a watr:Class ;
+    a watr:Constituent-DissolvedSolids ;
+    a sh:NodeShape ;
+    rdfs:comment "Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids." ;
+    rdfs:label "Dissolved Solids" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Salt
+    a watr:Class ;
+    a watr:Constituent-Salt ;
+    a sh:NodeShape ;
+    rdfs:comment "Dissolved inorganic salt present as a constituent of a treatment medium. The constituent desalination removes." ;
+    rdfs:label "Salt" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Salt-NaCl
+    a watr:Class ;
+    a watr:Salt-NaCl ;
+    a sh:NodeShape ;
+    rdfs:comment "Sodium chloride dissolved in a treatment medium, the dominant salt in seawater and in most brackish sources." ;
+    rdfs:label "Sodium Chloride" ;
+    rdfs:subClassOf watr:Constituent-Salt ;
+.
+watr:Constituent-Hardness
+    a watr:Class ;
+    a watr:Constituent-Hardness ;
+    a sh:NodeShape ;
+    rdfs:comment "Calcium and magnesium dissolved in a treatment medium, taken together as one constituent because that is what a hardness measurement reports and what softening removes." ;
+    rdfs:label "Hardness" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Silica
+    a watr:Class ;
+    a watr:Constituent-Silica ;
+    a sh:NodeShape ;
+    rdfs:comment "Silica present as a constituent of a treatment medium, dissolved or colloidal. A scalant on membranes and in evaporators." ;
+    rdfs:label "Silica" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Sulfate
+    a watr:Class ;
+    a watr:Constituent-Sulfate ;
+    a sh:NodeShape ;
+    rdfs:comment "Sulfate present as a dissolved constituent of a treatment medium." ;
+    rdfs:label "Sulfate" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+watr:Constituent-Metals
+    a watr:Class ;
+    a watr:Constituent-Metals ;
+    a sh:NodeShape ;
+    rdfs:comment "Metal species present as constituents of a treatment medium, dissolved or complexed." ;
+    rdfs:label "Metals" ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids ;
+.
+
+watr:Constituent-Organics
+    a watr:Class ;
+    a watr:Constituent-Organics ;
+    a sh:NodeShape ;
+    rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:label "Organics" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-OrganicCarbon
     a watr:Class ;
@@ -400,12 +443,123 @@ watr:Constituent-OrganicCarbon
     rdfs:label "Organic Carbon" ;
     rdfs:subClassOf watr:Constituent-Organics ;
 .
-watr:Constituent-InorganicCarbon
+watr:Constituent-VolatileOrganicCompounds
     a watr:Class ;
-    a watr:Constituent-InorganicCarbon ;
+    a watr:Constituent-VolatileOrganicCompounds ;
     a sh:NodeShape ;
-    rdfs:comment "Inorganic carbon species present as constituents of a treatment medium." ;
-    rdfs:label "Inorganic Carbon" ;
+    rdfs:comment "Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not." ;
+    rdfs:label "Volatile Organic Compounds" ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+.
+watr:Constituent-PFAS
+    a watr:Class ;
+    a watr:Constituent-PFAS ;
+    a sh:NodeShape ;
+    rdfs:comment "Per- and polyfluoroalkyl substances present as constituents of a treatment medium." ;
+    rdfs:label "PFAS" ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+.
+
+# Nitrogen is the parent of the individual species because a permit limit is
+# written against total nitrogen, and because nitrification moves nitrogen
+# between the children without removing any of it.
+watr:Constituent-Nitrogen
+    a watr:Class ;
+    a watr:Constituent-Nitrogen ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together." ;
+    rdfs:label "Nitrogen" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Ammonia
+    a watr:Class ;
+    a watr:Constituent-Ammonia ;
+    a sh:NodeShape ;
+    rdfs:comment "Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Ammonia" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-Nitrite
+    a watr:Class ;
+    a watr:Constituent-Nitrite ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Nitrite" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-Nitrate
+    a watr:Class ;
+    a watr:Constituent-Nitrate ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:label "Nitrate" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+watr:Constituent-OrganicNitrogen
+    a watr:Class ;
+    a watr:Constituent-OrganicNitrogen ;
+    a sh:NodeShape ;
+    rdfs:comment "Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia." ;
+    rdfs:label "Organic Nitrogen" ;
+    rdfs:subClassOf watr:Constituent-Nitrogen ;
+.
+
+watr:Constituent-Phosphorus
+    a watr:Class ;
+    a watr:Constituent-Phosphorus ;
+    a sh:NodeShape ;
+    rdfs:comment "Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against." ;
+    rdfs:label "Phosphorus" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Phosphate
+    a watr:Class ;
+    a watr:Constituent-Phosphate ;
+    a sh:NodeShape ;
+    rdfs:comment "Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on." ;
+    rdfs:label "Phosphate" ;
+    rdfs:subClassOf watr:Constituent-Phosphorus ;
+.
+
+watr:Constituent-Pathogens
+    a watr:Class ;
+    a watr:Constituent-Pathogens ;
+    a sh:NodeShape ;
+    rdfs:comment "Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets." ;
+    rdfs:label "Pathogens" ;
+    rdfs:subClassOf s223:Medium-Constituent ;
+.
+watr:Constituent-Bacteria
+    a watr:Class ;
+    a watr:Constituent-Bacteria ;
+    a sh:NodeShape ;
+    rdfs:comment "Bacteria present as constituents of a treatment medium." ;
+    rdfs:label "Bacteria" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+watr:Constituent-Viruses
+    a watr:Class ;
+    a watr:Constituent-Viruses ;
+    a sh:NodeShape ;
+    rdfs:comment "Viruses present as constituents of a treatment medium." ;
+    rdfs:label "Viruses" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+watr:Constituent-Protozoa
+    a watr:Class ;
+    a watr:Constituent-Protozoa ;
+    a sh:NodeShape ;
+    rdfs:comment "Protozoa present as constituents of a treatment medium, including the cysts and oocysts that resist chlorination." ;
+    rdfs:label "Protozoa" ;
+    rdfs:subClassOf watr:Constituent-Pathogens ;
+.
+
+watr:Constituent-ChlorineResidual
+    a watr:Class ;
+    a watr:Constituent-ChlorineResidual ;
+    a sh:NodeShape ;
+    rdfs:comment "Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own." ;
+    rdfs:label "Chlorine Residual" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-DissolvedOxygen
@@ -416,28 +570,20 @@ watr:Constituent-DissolvedOxygen
     rdfs:label "Dissolved Oxygen" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Ammonia
+watr:Constituent-InorganicCarbon
     a watr:Class ;
-    a watr:Constituent-Ammonia ;
+    a watr:Constituent-InorganicCarbon ;
     a sh:NodeShape ;
-    rdfs:comment "Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Ammonia" ;
+    rdfs:comment "Inorganic carbon species present as constituents of a treatment medium." ;
+    rdfs:label "Inorganic Carbon" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Nitrite
+watr:Constituent-Inorganics
     a watr:Class ;
-    a watr:Constituent-Nitrite ;
+    a watr:Constituent-Inorganics ;
     a sh:NodeShape ;
-    rdfs:comment "Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Nitrite" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
-watr:Constituent-Nitrate
-    a watr:Class ;
-    a watr:Constituent-Nitrate ;
-    a sh:NodeShape ;
-    rdfs:comment "Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium." ;
-    rdfs:label "Nitrate" ;
+    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:label "Inorganics" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
 watr:Constituent-NitrogenOxides
@@ -452,18 +598,11 @@ watr:Constituent-Cyanide
     a watr:Class ;
     a watr:Constituent-Cyanide ;
     a sh:NodeShape ;
-    rdfs:comment "Cyanide: A highly toxic chemical compound that can be harmful to aquatic life" ;
-    rdfs:label "Constituent Cyanide" ;
+    rdfs:comment "Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life." ;
+    rdfs:label "Cyanide" ;
     rdfs:subClassOf s223:Medium-Constituent ;
 .
-watr:Constituent-Bacteria
-    a watr:Class ;
-    a watr:Constituent-Bacteria ;
-    a sh:NodeShape ;
-    rdfs:comment "Bacteria: Microscopic single-celled organisms that can be found in water" ;
-    rdfs:label "Constituent Bacteria" ;
-    rdfs:subClassOf s223:Medium-Constituent ;
-.
+
 watr:Sludge-MixedLiquor
     a watr:Class ;
     a watr:Sludge-MixedLiquor ;
@@ -490,7 +629,7 @@ watr:Sludge-MixedLiquor
 watr:CompositionPercentageShape
     a sh:NodeShape ;
     rdfs:label "Composition Percentage Shape" ;
-    rdfs:comment "A medium's constituent mass or volume fractions expressed in percent cannot add up to more than 100%. Where a constituent is given as a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), the lowest declared percentage for that constituent is the one that counts, since only the lower bounds must all be simultaneously satisfiable." ;
+    rdfs:comment "A medium's constituent mass or volume fractions expressed in percent cannot add up to more than 100%. Where a constituent is given as a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), the greatest declared lower bound for that constituent is the one that counts, since only the lower bounds must all be simultaneously satisfiable." ;
     sh:targetSubjectsOf s223:composedOf ;
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -501,20 +640,23 @@ watr:CompositionPercentageShape
             SELECT $this ?total
             WHERE {
                 {
-                    SELECT $this (SUM(?lowest) AS ?total)
+                    SELECT $this ?kind (SUM(?lowest) AS ?total)
                     WHERE {
                         {
-                            SELECT $this ?constituent (MIN(?value) AS ?lowest)
+                            SELECT $this ?kind ?constituent (MAX(?value) AS ?lowest)
                             WHERE {
                                 $this s223:composedOf ?fraction .
                                 ?fraction s223:ofConstituent ?constituent ;
                                           qudt:hasUnit unit:PERCENT ;
+                                          qudt:hasQuantityKind ?kind ;
                                           s223:hasValue ?value .
+                                FILTER (?kind IN (quantitykind:MassFraction, quantitykind:VolumeFraction))
+                                FILTER NOT EXISTS { ?fraction s223:hasAspect s223:Aspect-HighLimit }
                             }
-                            GROUP BY $this ?constituent
+                            GROUP BY $this ?kind ?constituent
                         }
                     }
-                    GROUP BY $this
+                    GROUP BY $this ?kind
                 }
                 FILTER (?total > 100)
             }
@@ -527,7 +669,7 @@ watr:CompositionPercentageShape
 watr:CompositionComplementRule
     a sh:NodeShape ;
     rdfs:label "Composition Complement Rule" ;
-    rdfs:comment "Completes a percent composition that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case." ;
+    rdfs:comment "Completes an explicitly complete, common-basis percent composition (watr:hasCompleteComposition true) that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case." ;
     sh:targetSubjectsOf s223:composedOf ;
     sh:rule [
         a sh:SPARQLRule ;
@@ -538,9 +680,20 @@ watr:CompositionComplementRule
                 ?unquantified s223:hasValue ?complement .
             }
             WHERE {
-                $this s223:composedOf ?unquantified .
+                $this watr:hasCompleteComposition true ;
+                      s223:composedOf ?unquantified .
                 ?unquantified s223:ofConstituent ?constituent ;
-                              qudt:hasUnit unit:PERCENT .
+                              qudt:hasUnit unit:PERCENT ;
+                              qudt:hasQuantityKind ?kind .
+                FILTER (?kind IN (quantitykind:MassFraction, quantitykind:VolumeFraction))
+                # Every declared fraction must use the same basis and unit.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?otherFraction .
+                    FILTER NOT EXISTS {
+                        ?otherFraction qudt:hasUnit unit:PERCENT ;
+                                       qudt:hasQuantityKind ?kind .
+                    }
+                }
                 FILTER NOT EXISTS { ?unquantified s223:hasValue ?existingValue }
                 FILTER NOT EXISTS { ?unquantified s223:hasAspect ?anyAspect }
 
@@ -552,6 +705,14 @@ watr:CompositionComplementRule
                              qudt:hasUnit unit:PERCENT .
                     FILTER NOT EXISTS { ?sibling s223:hasValue ?siblingValue }
                     FILTER (?sibling != ?unquantified)
+                }
+
+                # Duplicated constituent declarations must not be summed twice.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?first, ?second .
+                    ?first s223:ofConstituent ?duplicate .
+                    ?second s223:ofConstituent ?duplicate .
+                    FILTER (?first != ?second)
                 }
 
                 # A composition stated as ranges has no single complement.
@@ -566,14 +727,15 @@ watr:CompositionComplementRule
                 # No rows when nothing is quantified, so a composition that names
                 # its constituents without values is left alone.
                 {
-                    SELECT $this (SUM(?value) AS ?total)
+                    SELECT $this ?kind (SUM(?value) AS ?total)
                     WHERE {
                         $this s223:composedOf ?quantified .
                         ?quantified s223:ofConstituent ?quantifiedConstituent ;
                                     qudt:hasUnit unit:PERCENT ;
+                                    qudt:hasQuantityKind ?kind ;
                                     s223:hasValue ?value .
                     }
-                    GROUP BY $this
+                    GROUP BY $this ?kind
                 }
                 BIND (100 - ?total AS ?complement)
                 FILTER (?complement >= 0)
@@ -581,3 +743,61 @@ watr:CompositionComplementRule
         """ ;
     ] ;
 .
+
+watr:Constituent-Arsenic
+    a watr:Class, watr:Constituent-Arsenic, sh:NodeShape ;
+    rdfs:label "Arsenic" ;
+    rdfs:comment "Arsenic species in water, including dissolved arsenite and arsenate." ;
+    rdfs:subClassOf watr:Constituent-DissolvedSolids .
+
+watr:Constituent-Lead
+    a watr:Class, watr:Constituent-Lead, sh:NodeShape ;
+    rdfs:label "Lead" ;
+    rdfs:comment "Lead species in water." ;
+    rdfs:subClassOf watr:Constituent-Metals .
+
+watr:hasCompleteComposition
+    a rdf:Property ;
+    rdfs:label "has complete composition" ;
+    rdfs:comment "When true, the declared constituent fractions exhaust this medium's composition. Enables complement inference when all fractions share a mass or volume basis and percent units; omitted constituents must not be inferred as part of another constituent." ;
+    rdfs:range xsd:boolean .
+
+watr:CompositionFractionBoundsShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Fraction Bounds" ;
+    rdfs:comment "Each declared constituent percentage must lie between zero and 100, inclusive." ;
+    sh:targetObjectsOf s223:composedOf ;
+    sh:sparql [
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:message "A constituent percentage must lie between 0 and 100." ;
+        sh:select """
+            SELECT $this ?value WHERE {
+                $this qudt:hasUnit unit:PERCENT ; s223:hasValue ?value .
+                FILTER (?value < 0 || ?value > 100)
+            }
+        """ ;
+    ] .
+
+watr:CompositionIntervalShape
+    a sh:NodeShape ;
+    rdfs:label "Composition Interval Consistency" ;
+    rdfs:comment "Exact values and lower/upper bounds on each constituent and fraction basis must have a common feasible value." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:sparql [
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:message "A constituent has conflicting exact values or lower and upper bounds." ;
+        sh:select """
+            SELECT $this ?constituent ?kind WHERE {
+                $this s223:composedOf ?lowerFraction, ?upperFraction .
+                ?lowerFraction s223:ofConstituent ?constituent ;
+                    qudt:hasQuantityKind ?kind ; qudt:hasUnit unit:PERCENT ;
+                    s223:hasValue ?lower .
+                ?upperFraction s223:ofConstituent ?constituent ;
+                    qudt:hasQuantityKind ?kind ; qudt:hasUnit unit:PERCENT ;
+                    s223:hasValue ?upper .
+                FILTER NOT EXISTS { ?lowerFraction s223:hasAspect s223:Aspect-HighLimit }
+                FILTER NOT EXISTS { ?upperFraction s223:hasAspect s223:Aspect-LowLimit }
+                FILTER (?lower > ?upper)
+            }
+        """ ;
+    ] .

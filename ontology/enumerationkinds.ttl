@@ -1,3 +1,4 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -511,13 +512,19 @@ watr:Accuracy-RSquared
     rdfs:subClassOf watr:DataProcessing-AccuracyMetrics ;
 .
 
+# Roles describe how an entity can serve within a system. WaTr defines treatment
+# stage, zone capability, operational-purpose, and connection-point roles. The
+# process performed by equipment or a system is modeled with watr:hasProcess.
+# See docs/explanation/processes.md.
 watr:Role-Backwash
-    a s223:EnumerationKind ;
+    a s223:EnumerationKind-Role ;
     a watr:Class ;
     a watr:Role-Backwash ;
     a sh:NodeShape ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:Process-Backwashing ;
     rdfs:label "Role-Backwash" ;
-    rdfs:comment "A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids." ;
+    rdfs:comment "Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -527,57 +534,38 @@ watr:Role-Drain
     a watr:Role-Drain ;
     a sh:NodeShape ;
     rdfs:label "Role-Drain" ;
-    rdfs:comment "A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance." ;
+    rdfs:comment "A connection point that empties a vessel below its working level, for maintenance or solids removal." ;
     rdfs:subClassOf s223:Role-Discharge ;
 .
 
-watr:Role-NutrientRemoval
+# An overflow is a discharge connection point.
+watr:Role-Overflow
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-NutrientRemoval ; 
+    a watr:Role-Overflow ;
     a sh:NodeShape ;
-    rdfs:label "Role-NutrientRemoval" ;
-    rdfs:comment "A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus." ;
-    rdfs:subClassOf s223:EnumerationKind-Role ;
+    rdfs:label "Role-Overflow" ;
+    rdfs:comment "A connection point that discharges liquid above a tank's working level." ;
+    rdfs:subClassOf s223:Role-Discharge ;
 .
 
-watr:Role-NitrogenRemoval
+watr:Role-MakeUp
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a watr:Role-NitrogenRemoval ; 
-    a sh:NodeShape ;
-    rdfs:label "Role-NitrogenRemoval" ;
-    rdfs:comment "A role for a process whose purpose is the removal of nitrogen species from water." ;
-    rdfs:subClassOf s223:Role-NutrientRemoval ;
-.
-
-watr:Role-PhosphorusRemoval
-    a s223:EnumerationKind-Role ;
-    a watr:Class ;
-    a watr:Role-PhosphorusRemoval ; 
-    a sh:NodeShape ;
-    rdfs:subClassOf s223:Role-NutrientRemoval ;
-    rdfs:label "Role-PhosphorusRemoval" ;
-    rdfs:comment "A role for a process whose purpose is the removal of phosphorus from water." ;
-.
-
-watr:Role-MakeUp 
-    a s223:EnumerationKind-Role ;
-    a watr:Class ;
-    a watr:Role-Makeup ;
+    a watr:Role-MakeUp ;
     a sh:NodeShape ;
     rdfs:label "MakeUp" ;
-    rdfs:comment "A role for a stream that adds water or chemical to replace losses and maintain volume or concentration." ;
+    rdfs:comment "A connection point that admits water to replace what a process consumes or loses." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-watr:Role-Feed 
+watr:Role-Feed
     a s223:EnumerationKind-Role ;
     a watr:Class ;
-    a s223:Role-Feed ;
+    a watr:Role-Feed ;
     a sh:NodeShape ;
     rdfs:label "Feed" ;
-    rdfs:comment "A role for a stream or vessel that supplies influent to a process." ;
+    rdfs:comment "A connection point that admits the stream a process acts on." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -587,7 +575,7 @@ watr:Role-Permeate
     a watr:Role-Permeate ;
     a sh:NodeShape ;
     rdfs:label "Permeate" ;
-    rdfs:comment "A role for the stream that has passed through a membrane, as opposed to the retained concentrate." ;
+    rdfs:comment "A connection point carrying the stream that has passed through a membrane." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
 
@@ -597,7 +585,7 @@ watr:Role-Storage
     a watr:Role-Storage ;
     a sh:NodeShape ;
     rdfs:label "Storage" ;
-    rdfs:comment "A role for a vessel that holds water or material for later use." ;
+    rdfs:comment "The equipment holds water or sludge for later use rather than acting on it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 . 
 
@@ -607,7 +595,7 @@ watr:Role-Aerobic
     a watr:Role-Aerobic ;
     a sh:NodeShape ;
     rdfs:label "Aerobic" ;
-    rdfs:comment "A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism." ;
+    rdfs:comment "The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -617,7 +605,7 @@ watr:Role-Anaerobic
     a watr:Role-Anaerobic ;
     a sh:NodeShape ;
     rdfs:label "Anaerobic" ;
-    rdfs:comment "A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism." ;
+    rdfs:comment "The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -627,27 +615,17 @@ watr:Role-Anoxic
     a watr:Role-Anoxic ;
     a sh:NodeShape ;
     rdfs:label "Anoxic" ;
-    rdfs:comment "A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification." ;
+    rdfs:comment "The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-watr:Role-Stabilization 
-    a s223:EnumerationKind-Role ;
-    a watr:Class ;
-    a watr:Role-Stabilization ;
-    a sh:NodeShape ;
-    rdfs:label "Stabilization" ;
-    rdfs:comment "A role for a process that reduces the biodegradability, odor, or pathogen content of solids." ;
-    rdfs:subClassOf s223:EnumerationKind-Role ;
-.
-
-watr:Role-Equalization 
+watr:Role-Equalization
     a s223:EnumerationKind-Role ;
     a watr:Class ;
     a watr:Role-Equalization ;
     a sh:NodeShape ;
     rdfs:label "Equalization" ;
-    rdfs:comment "A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input." ;
+    rdfs:comment "The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -657,7 +635,7 @@ watr:Role-Detention
     a watr:Role-Detention ;
     a sh:NodeShape ;
     rdfs:label "Detention" ;
-    rdfs:comment "A role for a vessel that holds water for a defined period so that a treatment process can take place." ;
+    rdfs:comment "The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -667,7 +645,7 @@ watr:Role-Retention
     a watr:Role-Retention ;
     a sh:NodeShape ;
     rdfs:label "Retention" ;
-    rdfs:comment "A role for a vessel that holds water or solids for storage or continued settling." ;
+    rdfs:comment "The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -677,7 +655,7 @@ watr:Role-Containment
     a watr:Role-Containment ;
     a sh:NodeShape ;
     rdfs:label "Containment" ;
-    rdfs:comment "A role for a vessel or structure that holds material to prevent its release to the environment." ;
+    rdfs:comment "The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -687,17 +665,22 @@ watr:Role-Pretreatment
     a watr:Role-Pretreatment ;
     a sh:NodeShape ;
     rdfs:label "Pretreatment" ;
-    rdfs:comment "A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them." ;
+    rdfs:comment "The equipment sits ahead of the main treatment train and conditions the influent for it." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-watr:Role-Primary 
+# Treatment stage, in the wastewater sense of Metcalf & Eddy: preliminary,
+# primary, secondary, tertiary. These mirror S223 role names into the watr
+# namespace but DO NOT carry the S223 meaning: s223:Role-Primary and
+# s223:Role-Secondary denote primary and secondary *loops*. Always use the watr:
+# terms for treatment stages. See docs/explanation/processes.md.
+watr:Role-Primary
     a s223:EnumerationKind-Role ;
     a watr:Class ;
     a watr:Role-Primary ;
     a sh:NodeShape ;
     rdfs:label "Primary" ;
-    rdfs:comment "A role for the first major treatment stage, typically removing settleable and floatable solids." ;
+    rdfs:comment "Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -707,7 +690,7 @@ watr:Role-Secondary
     a watr:Role-Secondary ;
     a sh:NodeShape ;
     rdfs:label "Secondary" ;
-    rdfs:comment "A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics." ;
+    rdfs:comment "Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -717,7 +700,7 @@ watr:Role-Extended
     a watr:Role-Extended ;
     a sh:NodeShape ;
     rdfs:label "Extended" ;
-    rdfs:comment "A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration." ;
+    rdfs:comment "The equipment is operated at an extended solids retention time." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -727,7 +710,7 @@ watr:Role-Stepfeed
     a watr:Role-Stepfeed ;
     a sh:NodeShape ;
     rdfs:label "Stepfeed" ;
-    rdfs:comment "A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor." ;
+    rdfs:comment "The equipment is fed at multiple points along its length rather than only at its head." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -737,19 +720,15 @@ watr:Role-Tertiary
     a watr:Role-Tertiary ;
     a sh:NodeShape ;
     rdfs:label "Tertiary" ;
-    rdfs:comment "A role for treatment applied after secondary treatment to further improve effluent quality." ;
+    rdfs:comment "Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
-watr:Role-SolidsHandling
-    a s223:EnumerationKind-Role ;
-    a watr:Class ;
-    a watr:Role-SolidsHandling ;
-    a sh:NodeShape ;
-    rdfs:label "Solids handling (e.g., biosolids disposal)" ;
-    rdfs:comment "A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream." ;
-    rdfs:subClassOf s223:EnumerationKind-Role ;
-.
+
+# Thickening, dewatering and stabilization are identifiable from the equipment
+# alone, so they are watr:Process types (see ontology/processtypes.ttl), not roles.
+# A solids train is an s223:System whose members carry those processes; it needs
+# no role of its own.
 
 watr:Role-Posttreatment
     a s223:EnumerationKind-Role ;
@@ -757,7 +736,7 @@ watr:Role-Posttreatment
     a watr:Role-Posttreatment ;
     a sh:NodeShape ;
     rdfs:label "Posttreatment" ;
-    rdfs:comment "A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse." ;
+    rdfs:comment "The equipment sits after the main treatment train and conditions the effluent for discharge or reuse." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
 
@@ -770,3 +749,38 @@ watr:EnumerationKind-Runtime
     rdfs:comment "An enumeration kind describing the accumulated operating time of a piece of equipment." ;
     rdfs:subClassOf s223:EnumerationKind ;
 .
+
+watr:Role-NitrogenRemoval
+    a watr:Class ;
+    rdfs:label "NitrogenRemoval (deprecated role)" ;
+    rdfs:comment "Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NitrogenRemoval." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-NitrogenRemoval .
+
+watr:Role-NutrientRemoval
+    a watr:Class ;
+    rdfs:label "NutrientRemoval (deprecated role)" ;
+    rdfs:comment "Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NutrientRemoval." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-NutrientRemoval .
+
+watr:Role-PhosphorusRemoval
+    a watr:Class ;
+    rdfs:label "PhosphorusRemoval (deprecated role)" ;
+    rdfs:comment "Deprecated objective designation formerly modeled as a role; use TreatmentObjective-PhosphorusRemoval." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-PhosphorusRemoval .
+
+watr:Role-SolidsHandling
+    a watr:Class ;
+    rdfs:label "SolidsHandling (deprecated role)" ;
+    rdfs:comment "Deprecated objective designation formerly modeled as a role; use TreatmentObjective-VolumeReduction." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-VolumeReduction .
+
+watr:Role-Stabilization
+    a watr:Class ;
+    rdfs:label "Stabilization (deprecated role)" ;
+    rdfs:comment "Deprecated objective designation formerly modeled as a role; use TreatmentObjective-Stabilization." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-Stabilization .

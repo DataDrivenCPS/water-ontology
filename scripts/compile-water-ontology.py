@@ -34,7 +34,7 @@ from pathlib import Path
 import ontoenv
 import rdflib
 from rdflib import OWL, RDF, RDFS, Literal, URIRef
-from rdflib.namespace import DCTERMS, XSD
+from rdflib.namespace import DCTERMS, XSD, SH
 
 # Bump this when cutting a release. Two-part, per QUDT: patch-level changes
 # ship as an updated "latest" without minting a new versioned document.
@@ -133,6 +133,10 @@ def strip_module_metadata(graph: rdflib.Graph, merged: list[URIRef]) -> None:
     for triple in list(graph.triples((None, OWL.imports, None))):
         graph.remove(triple)
     for module in set(merged) - {LATEST_IRI}:
+        for declaration in list(graph.objects(module, SH.declare)):
+            graph.add((LATEST_IRI, SH.declare, declaration))
+        for shape in list(graph.subjects(SH.prefixes, module)):
+            graph.set((shape, SH.prefixes, LATEST_IRI))
         for triple in list(graph.triples((module, None, None))):
             graph.remove(triple)
         for triple in list(graph.triples((None, None, module))):
@@ -144,6 +148,8 @@ def add_ontology_header(
 ) -> None:
     """Declare `iri` as the ontology, carrying over the root's own metadata."""
     if iri != LATEST_IRI:
+        for shape in list(graph.subjects(SH.prefixes, LATEST_IRI)):
+            graph.set((shape, SH.prefixes, iri))
         for _s, p, o in graph.triples((LATEST_IRI, None, None)):
             graph.add((iri, p, o))
         for triple in list(graph.triples((LATEST_IRI, None, None))):

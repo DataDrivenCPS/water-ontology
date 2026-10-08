@@ -1,0 +1,14 @@
+@prefix : <urn:example/contaminant-removal#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/contaminant-removal> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "Target-specific contaminant removal objectives" .
+
+:unit a s223:Equipment ; rdfs:label "Contaminant removal unit" ;
+    watr:hasProcess watr:Process-Adsorption, watr:Process-IonExchange ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-ArsenicRemoval,
+                               watr:TreatmentObjective-LeadRemoval .

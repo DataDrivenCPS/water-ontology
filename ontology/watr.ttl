@@ -20,6 +20,8 @@
   owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
   owl:imports <https://watermetadata.org/ontology/modules/equipment> ;
   owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
+  owl:imports <https://watermetadata.org/ontology/modules/objectives> ;
+  owl:imports <https://watermetadata.org/ontology/modules/class-defaults> ;
   owl:imports <https://watermetadata.org/ontology/modules/substances> ;
   owl:imports <https://watermetadata.org/ontology/modules/enumerationkinds> ;
   owl:imports sh: ;
@@ -42,6 +44,322 @@ watr:Class
       rdfs:comment "A `Class` must carry a human-readable definition using the relation `rdfs:comment`." ;
       sh:minCount 1 ;
       sh:message "Every term defined by the watr ontology must have an rdfs:comment." ;
+    ] ;
+.
+
+# A watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint that names a
+# class which was never defined -- typically the leftover of a rename -- silently
+# makes the equipment impossible to validate, because no value can ever carry the
+# missing type and the shape itself still parses. This guards against that: every
+# class such a constraint names must be defined somewhere in the import closure,
+# which we test for by requiring it to have at least one rdf:type.
+watr:ProcessAndRoleConstraintsReferenceDefinedClasses
+    a sh:NodeShape ;
+    rdfs:label "Process and role constraints reference defined classes" ;
+    rdfs:comment "Every class named by a watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint must be defined." ;
+    sh:targetSubjectsOf sh:path ;
+    sh:or (
+        # Not a process/outcome/role property shape, so there is nothing to check.
+        [
+            sh:not [
+                sh:property [
+                    sh:path sh:path ;
+                    sh:in ( watr:hasProcess watr:hasTreatmentObjective s223:hasRole ) ;
+                    sh:minCount 1 ;
+                ] ;
+            ] ;
+        ]
+        [
+            sh:property [
+                sh:path sh:class ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path ( sh:qualifiedValueShape sh:class ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path sh:hasValue ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            # Cover list-valued constraints as well as sh:class/sh:hasValue.
+            # Both the direct form and the qualified form occur in SHACL.
+            sh:property [
+                sh:path (
+                    sh:in
+                    [ sh:zeroOrMorePath rdf:rest ]
+                    rdf:first
+                ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+            sh:property [
+                sh:path (
+                    sh:qualifiedValueShape
+                    sh:in
+                    [ sh:zeroOrMorePath rdf:rest ]
+                    rdf:first
+                ) ;
+                sh:node watr:DefinedClassShape ;
+            ] ;
+        ]
+    ) ;
+    sh:message "A watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
+.
+
+watr:DefinedClassShape
+    a sh:NodeShape ;
+    rdfs:label "Defined class" ;
+    rdfs:comment "A class that exists: it carries at least one rdf:type." ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:minCount 1 ;
+        sh:message "This class is referenced by a shape but is never defined." ;
+    ] ;
+.
+
+<https://watermetadata.org/ontology/watr>
+    sh:declare [ sh:prefix "watr" ; sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "sh" ; sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "rdf" ; sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] ;
+    sh:declare [ sh:prefix "s223" ; sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ] ;
+.
+
+# Some processes are performed by a *collection* of equipment and by no single
+# member of it. A backwash pump only pumps and a backwash tank only holds water;
+# backwashing is what the assembly does. Such a process is asserted on the
+# s223:System, which is why watr:hasProcess is not restricted to Equipment.
+#
+# watr:includesProcess records what a compound process decomposes into, stated
+# once on the process type rather than repeated in every model. It is what gives
+# the treatment-train process types (Process-MLE, Process-A2O, the Bardenphos)
+# content beyond a label: an MLE is not a thing a machine does, it is an
+# arrangement of nitrification, denitrification and recycle across several.
+#
+# Not to be confused with a subclass relation: a compound process *comprises*
+# its parts, it is not a kind of them.
+watr:includesProcess
+    a rdf:Property ;
+    rdfs:label "includes process" ;
+    rdfs:comment "Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity." ;
+    rdfs:domain watr:Class ;
+    rdfs:range watr:Class ;
+.
+
+# What a piece of equipment is *for*, as distinct from what it does.
+#
+# One process serves several treatment objectives and one treatment objective is reached by several
+# processes: a primary clarifier, a secondary clarifier and a gravity thickener
+# all settle, and chlorination, ozonation and ultraviolet irradiation all
+# disinfect. Neither relation fits in a single hierarchy, so treatment objectives are a
+# separate vocabulary in ontology/objectives.ttl and no term belongs to both.
+#
+# Treatment objective and process are both intrinsic -- on the datasheet. What is positional
+# belongs to s223:hasRole: a primary and a secondary clarifier share their
+# treatment objective and their process, and differ in their role.
+#
+# See docs/explanation/processes.md.
+watr:hasTreatmentObjective
+    a rdf:Property ;
+    rdfs:label "has treatment objective" ;
+    rdfs:comment "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess." ;
+.
+
+# The class-level counterpart: what a process type achieves wherever it is used.
+# Stated on the process rather than repeated on every piece of equipment that
+# performs it. Left off deliberately where what a process achieves depends on the
+# equipment -- Process-ChemicalPrecipitation serves phosphorus removal in one
+# machine and metals removal in another.
+watr:achievesTreatmentObjective
+    a rdf:Property ;
+    rdfs:label "achieves treatment objective" ;
+    rdfs:comment "Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process." ;
+    rdfs:domain watr:Class ;
+    rdfs:range watr:Class ;
+.
+
+# What a constituent-removal objective is aimed at. Nitrogen removal removes
+# nitrogen; softening removes hardness. Stated once on the objective rather than
+# repeated on every unit that serves it, and inherited down the objective
+# hierarchy: clarification and turbidity removal target suspended solids because
+# their parent, suspended solids removal, does.
+#
+# The objective hierarchy answers "which units remove nitrogen"; this answers
+# "which constituent does this objective name", and so lets a plant model be
+# queried by the thing in the water rather than by the term the vocabulary
+# happens to use for removing it. It is also the extension point: a plant with a
+# constituent this ontology does not carry writes a local objective typed
+# watr:TreatmentObjective-ConstituentRemoval and points it at the constituent.
+#
+# No rdfs:domain, deliberately. watr:achievesTreatmentObjective is declared on a
+# class and only ever on a class, but this is written both on the ontology's own
+# objective terms and on a modeler's local objective, which is an instance.
+watr:targetsConstituent
+    a rdf:Property ;
+    rdfs:label "targets constituent" ;
+    rdfs:comment "Relates a treatment objective to the constituent it removes, converts or controls. Inherited down the objective hierarchy: a child objective without one targets what its parent targets." ;
+.
+
+# The consumer of watr:achievesTreatmentObjective is watr:ProcessObjectiveRule in
+# ontology/class-defaults.ttl, which copies the objective onto everything that
+# performs the process. A shape here used to warn instead, when a model
+# performed such a process and did not state the objective; deriving it is
+# better than complaining about it, since the vocabulary already knows the
+# answer and the modeler would only have been copying it out.
+#
+# The entailment runs in this direction only. The converse, deriving a process
+# from a stated objective, would be wrong: most objectives are not derivable
+# from the mechanism, which is the whole reason they are a separate axis.
+# Sedimentation serves clarification and thickening alike, so
+# watr:achievesTreatmentObjective says nothing about it and a clarifier's
+# objective can only be stated or inherited from its class, never worked out
+# from what it does.
+
+# watr:hasProcess and watr:hasTreatmentObjective are only meaningful on something that can
+# perform a process. Expressed as a shape rather than rdfs:domain deliberately:
+# an OWL domain would *infer* s223:Equipment onto whatever bears the property
+# instead of rejecting it, which is the opposite of a guard.
+watr:ProcessBearerShape
+    a sh:NodeShape ;
+    rdfs:label "Process bearers are equipment or systems" ;
+    rdfs:comment "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on an s223:Equipment or an s223:System." ;
+    sh:targetSubjectsOf watr:hasProcess ;
+    sh:targetSubjectsOf watr:hasTreatmentObjective ;
+    sh:or (
+        [ sh:class s223:Equipment ]
+        [ sh:class s223:System ]
+    ) ;
+    sh:message "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on s223:Equipment or s223:System. A process is performed by a machine or by a collection of them." ;
+.
+
+# The bearer guard above constrains the subject. These companion guards constrain
+# the objects, including for s223:System, which does not inherit UnitProcess's
+# all-values sh:class constraint. They are also what keeps the two vocabularies
+# from being used interchangeably: a treatment objective asserted with watr:hasProcess is
+# rejected here, and a process asserted with watr:hasTreatmentObjective likewise.
+watr:ProcessValueShape
+    a sh:NodeShape ;
+    rdfs:label "Process values are water processes" ;
+    rdfs:comment "Every object of watr:hasProcess must be a watr:Process." ;
+    sh:targetObjectsOf watr:hasProcess ;
+    sh:class watr:Process ;
+    sh:message "Every value of watr:hasProcess must be a watr:Process. An objective belongs on watr:hasTreatmentObjective." ;
+.
+
+watr:TreatmentObjectiveValueShape
+    a sh:NodeShape ;
+    rdfs:label "Treatment objective values are treatment objectives" ;
+    rdfs:comment "Every object of watr:hasTreatmentObjective must be a watr:TreatmentObjective." ;
+    sh:targetObjectsOf watr:hasTreatmentObjective ;
+    sh:class watr:TreatmentObjective ;
+    sh:message "Every value of watr:hasTreatmentObjective must be a watr:TreatmentObjective. An activity belongs on watr:hasProcess." ;
+.
+
+# The same guard for the third vocabulary: what an objective targets is a
+# constituent of a medium, not another objective and not a process.
+watr:ConstituentTargetValueShape
+    a sh:NodeShape ;
+    rdfs:label "Constituent target values are constituents" ;
+    rdfs:comment "Every object of watr:targetsConstituent must be an s223:Medium-Constituent." ;
+    sh:targetObjectsOf watr:targetsConstituent ;
+    sh:class s223:Medium-Constituent ;
+    sh:message "Every value of watr:targetsConstituent must be an s223:Medium-Constituent, such as watr:Constituent-Nitrogen." ;
+.
+
+# A constituent-removal objective that does not say what it removes has not said
+# much. This is the check that keeps a modeler's local objective usable: typing
+# something watr:TreatmentObjective-ConstituentRemoval puts it in the hierarchy,
+# but only the target makes it answerable.
+#
+# Warning, not violation. An objective naming a constituent the vocabulary does
+# not carry yet is incomplete rather than wrong, and the fix -- adding the
+# constituent -- is ours, not the modeler's.
+#
+# The path walks up before it gives up, so an objective inherits its parent's
+# target: rdf:type? steps from a modeler's instance onto its class and is a no-op
+# on the vocabulary's own terms, and rdfs:subClassOf* then climbs the hierarchy.
+#
+# The check is about plant models, so it skips anything typed watr:Class -- which
+# is to say, this vocabulary's own terms. Without that it would report
+# watr:TreatmentObjective-ConstituentRemoval itself on every run: the term is the
+# abstract parent of the branch and names no constituent by design, and it is a
+# target of its own sh:targetClass because every term here self-types. That the
+# named objectives all resolve to a constituent is checked instead by
+# tests/test_constituent_targets.py, where a vocabulary gap is a build failure
+# rather than a warning in somebody's model.
+watr:ConstituentRemovalTargetShape
+    a sh:NodeShape ;
+    rdfs:label "A constituent-removal objective names its constituent" ;
+    rdfs:comment "Warns when a watr:TreatmentObjective-ConstituentRemoval neither states watr:targetsConstituent nor inherits one." ;
+    sh:targetClass watr:TreatmentObjective-ConstituentRemoval ;
+    sh:severity sh:Warning ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
+        sh:message "{$this} is a constituent-removal objective but names no constituent. Add watr:targetsConstituent, or type it as an objective whose parent names one." ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                FILTER NOT EXISTS { $this rdf:type watr:Class }
+                FILTER NOT EXISTS {
+                    $this rdf:type?/rdfs:subClassOf*/watr:targetsConstituent ?constituent .
+                }
+            }
+        """ ;
+    ] ;
+.
+
+# A treatment objective is reached by doing something. Equipment that states only what it is
+# for, without saying how, has said nothing checkable.
+watr:TreatmentObjectiveRequiresProcessShape
+    a sh:NodeShape ;
+    rdfs:label "A treatment objective is reached by a process" ;
+    rdfs:comment "Equipment declaring watr:hasTreatmentObjective must also declare the watr:hasProcess by which it reaches it." ;
+    sh:targetSubjectsOf watr:hasTreatmentObjective ;
+    # Named rather than a blank node so that sh:sourceShape on the result
+    # identifies it: for a sh:property constraint the source is the property
+    # shape, not the node shape that carries it.
+    sh:property watr:TreatmentObjectiveRequiresProcessProperty ;
+.
+
+watr:TreatmentObjectiveRequiresProcessProperty
+    a sh:PropertyShape ;
+    sh:path watr:hasProcess ;
+    sh:minCount 1 ;
+    sh:message "watr:hasTreatmentObjective says what the equipment is for, so the process it does to get there must be stated with watr:hasProcess as well." ;
+.
+
+watr:SystemProcessCoverageShape
+    a sh:NodeShape ;
+    rdfs:label "System process coverage" ;
+    rdfs:comment "Warns when a system claims a compound process but nothing in it performs one of the constituent processes." ;
+    sh:targetClass s223:System ;
+    # sh:severity must sit on the NodeShape.
+    sh:severity sh:Warning ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
+        sh:message "{$this} claims a process that includes {?missing}, but neither it nor any member performs that process." ;
+        # hasMember* rather than hasMember+: the zero-length match makes the
+        # system itself a candidate performer, since a train may state a step
+        # directly instead of through a member. Nested subsystems are covered by
+        # the transitive part.
+        #
+        # Compound processes include their steps; they are not subclasses of
+        # those steps. This keeps the claimed compound process from satisfying
+        # its own coverage requirement.
+        sh:select """
+            SELECT $this ?missing
+            WHERE {
+                $this watr:hasProcess ?claimed .
+                ?claimed rdfs:subClassOf*/watr:includesProcess ?missing .
+                FILTER NOT EXISTS {
+                    $this s223:hasMember* ?performer .
+                    ?performer watr:hasProcess ?actual .
+                    ?actual rdfs:subClassOf* ?missing .
+                }
+            }
+        """ ;
     ] ;
 .
 
@@ -142,7 +460,7 @@ s223:Sensor
 watr:hasProcess
   a rdf:Property ;
   rdfs:label "has process" ;
-  rdfs:comment "This property is used to associate a water treatment process with a piece of equipment." ;
+  rdfs:comment "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape." ;
 .
 
 watr:hasAggregation
