@@ -1,3 +1,4 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -48,7 +49,7 @@ watr:TreatmentObjective a watr:Class, sh:NodeShape ;
 # and the branch below groups them under one parent so that a query can ask the
 # general question. Each one names its target with watr:targetsConstituent, and
 # a child without one targets what its parent targets: clarification and
-# turbidity removal target suspended solids because solids removal does.
+# turbidity removal target suspended solids because suspended solids removal does.
 #
 # The target is what makes the branch extensible. A plant treating a
 # constituent this ontology does not carry writes its own objective --
@@ -65,29 +66,38 @@ watr:TreatmentObjective-ConstituentRemoval a watr:Class, watr:TreatmentObjective
 
 # --- solids -----------------------------------------------------------------
 
-watr:TreatmentObjective-SolidsRemoval a watr:Class, watr:TreatmentObjective-SolidsRemoval ;
-    rdfs:label "Solids Removal" ;
-    rdfs:comment "Net removal of suspended or settleable solids from the treated stream." ;
+watr:TreatmentObjective-SuspendedSolidsRemoval a watr:Class, watr:TreatmentObjective-SuspendedSolidsRemoval ;
+    rdfs:label "Suspended Solids Removal" ;
+    rdfs:comment "Removal of suspended solids, including settleable solids, from the treated stream." ;
     watr:targetsConstituent watr:Constituent-SuspendedSolids ;
     rdfs:subClassOf watr:TreatmentObjective-ConstituentRemoval .
 
-# A settling tank always puts out a clarified overflow and a thickened
-# underflow. Clarification says the plant relies on the overflow, which is why
-# it is an objective and sedimentation is a process. Thickening, its
-# counterpart, is under volume reduction: the same tank, the other product.
+# Preserve the published URI and its suspended-solids meaning. It is not a
+# broader parent for dissolved solids; existing models remain valid through
+# the replacement class, while new models use the explicit name.
+watr:TreatmentObjective-SolidsRemoval a watr:Class, watr:TreatmentObjective-SolidsRemoval ;
+    rdfs:label "Solids Removal (deprecated)" ;
+    rdfs:comment "Deprecated. Use TreatmentObjective-SuspendedSolidsRemoval for removal of suspended or settleable solids. This legacy term does not include dissolved solids removal." ;
+    owl:deprecated true ;
+    dcterms:isReplacedBy watr:TreatmentObjective-SuspendedSolidsRemoval ;
+    watr:targetsConstituent watr:Constituent-SuspendedSolids ;
+    rdfs:subClassOf watr:TreatmentObjective-SuspendedSolidsRemoval .
+
+# Clarification identifies the intended clarified-liquid product. Settling is
+# the mechanism; thickening identifies the concentrated-solids product.
 watr:TreatmentObjective-Clarification a watr:Class, watr:TreatmentObjective-Clarification ;
     rdfs:label "Clarification" ;
     rdfs:comment "Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by." ;
-    rdfs:subClassOf watr:TreatmentObjective-SolidsRemoval .
+    rdfs:subClassOf watr:TreatmentObjective-SuspendedSolidsRemoval .
 
 watr:TreatmentObjective-TurbidityRemoval a watr:Class, watr:TreatmentObjective-TurbidityRemoval ;
     rdfs:label "Turbidity Removal" ;
     rdfs:comment "Reduction of the turbidity of the treated stream, the objective of polishing filtration." ;
-    rdfs:subClassOf watr:TreatmentObjective-SolidsRemoval .
+    rdfs:subClassOf watr:TreatmentObjective-SuspendedSolidsRemoval .
 
 # --- dissolved solids -------------------------------------------------------
 #
-# A separate branch from solids removal, because what is dissolved passes the
+# A separate branch from suspended solids removal, because what is dissolved passes the
 # filter that retains what is suspended: the two are reached by different
 # processes and written into different permit lines.
 

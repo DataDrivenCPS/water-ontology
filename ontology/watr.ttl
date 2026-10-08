@@ -182,7 +182,7 @@ watr:achievesTreatmentObjective
 # nitrogen; softening removes hardness. Stated once on the objective rather than
 # repeated on every unit that serves it, and inherited down the objective
 # hierarchy: clarification and turbidity removal target suspended solids because
-# their parent, solids removal, does.
+# their parent, suspended solids removal, does.
 #
 # The objective hierarchy answers "which units remove nitrogen"; this answers
 # "which constituent does this objective name", and so lets a plant model be

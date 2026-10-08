@@ -32,7 +32,7 @@
 
 **Description:** Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by.
 
-**Superclasses:** `watr:TreatmentObjective-SolidsRemoval`
+**Superclasses:** `watr:TreatmentObjective-SuspendedSolidsRemoval`
 
 ## Constituent Removal
 
@@ -136,11 +136,11 @@
 
 **Superclasses:** `watr:TreatmentObjective-DissolvedSolidsRemoval`
 
-## Solids Removal
+## Solids Removal (deprecated)
 
-**Description:** Net removal of suspended or settleable solids from the treated stream.
+**Description:** Deprecated. Use TreatmentObjective-SuspendedSolidsRemoval for removal of suspended or settleable solids. This legacy term does not include dissolved solids removal.
 
-**Superclasses:** `watr:TreatmentObjective-ConstituentRemoval`
+**Superclasses:** `watr:TreatmentObjective-SuspendedSolidsRemoval`
 
 ## Stabilization
 
@@ -154,6 +154,12 @@
 
 **Superclasses:** `watr:TreatmentObjective-DissolvedSolidsRemoval`
 
+## Suspended Solids Removal
+
+**Description:** Removal of suspended solids, including settleable solids, from the treated stream.
+
+**Superclasses:** `watr:TreatmentObjective-ConstituentRemoval`
+
 ## Thickening
 
 **Description:** Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.
@@ -164,7 +170,7 @@
 
 **Description:** Reduction of the turbidity of the treated stream, the objective of polishing filtration.
 
-**Superclasses:** `watr:TreatmentObjective-SolidsRemoval`
+**Superclasses:** `watr:TreatmentObjective-SuspendedSolidsRemoval`
 
 ## Volume Reduction
 

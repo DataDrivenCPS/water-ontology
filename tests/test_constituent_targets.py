@@ -3,7 +3,7 @@
 ``watr:targetsConstituent`` names the constituent a treatment objective removes,
 converts or controls. It is stated on the objective rather than on the units
 that serve it, and it is inherited: clarification names no constituent of its
-own because its parent, solids removal, names suspended solids.
+own because its parent, suspended solids removal, names suspended solids.
 
 The point of the target is that it makes the constituent-removal branch
 extensible. A plant treating something this ontology does not carry writes its
@@ -24,8 +24,8 @@ that usable:
 """
 
 import shifty
-from rdflib import Graph, Namespace
-from rdflib.namespace import RDFS
+from rdflib import Graph, Literal, Namespace
+from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
@@ -68,7 +68,7 @@ def test_named_objectives_carry_a_target(ontology_shapes_graph):
 
 
 def test_clarification_inherits_the_solids_target(ontology_shapes_graph):
-    """Clarification states no target of its own; it removes what solids removal
+    """Clarification states no target of its own; it removes what suspended solids removal
     removes, and the hierarchy is what says so."""
     assert not list(
         ontology_shapes_graph.objects(
@@ -76,7 +76,7 @@ def test_clarification_inherits_the_solids_target(ontology_shapes_graph):
         )
     )
     assert (
-        WATR["TreatmentObjective-SolidsRemoval"],
+        WATR["TreatmentObjective-SuspendedSolidsRemoval"],
         WATR.targetsConstituent,
         WATR["Constituent-SuspendedSolids"],
     ) in ontology_shapes_graph
@@ -157,3 +157,60 @@ def test_target_must_be_a_constituent(ontology_shapes_graph):
         "    watr:targetsConstituent watr:Process-IonExchange .\n"
     )
     assert _findings(body, ontology_shapes_graph, WATR.ConstituentTargetValueShape)
+
+
+def test_suspended_and_dissolved_objectives_have_distinct_targets(ontology_shapes_graph):
+    data = Graph().parse("examples/solids-removal-objectives.ttl")
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    example = Namespace("urn:example/solids-removal-objectives#")
+    assert (example.screen, WATR.hasTreatmentObjective,
+            WATR["TreatmentObjective-SuspendedSolidsRemoval"]) in inferred
+    assert WATR["TreatmentObjective-DissolvedSolidsRemoval"] not in set(
+        inferred.objects(example.screen, WATR.hasTreatmentObjective)
+    )
+    assert WATR["TreatmentObjective-SuspendedSolidsRemoval"] not in set(
+        inferred.objects(example.membrane, WATR.hasTreatmentObjective)
+    )
+    for objective, target in [
+        ("SuspendedSolidsRemoval", "SuspendedSolids"),
+        ("DissolvedSolidsRemoval", "DissolvedSolids"),
+    ]:
+        term = WATR[f"TreatmentObjective-{objective}"]
+        assert (term, RDFS.subClassOf,
+                WATR["TreatmentObjective-ConstituentRemoval"]) in ontology_shapes_graph
+        assert (term, WATR.targetsConstituent,
+                WATR[f"Constituent-{target}"]) in ontology_shapes_graph
+    for objective in ("Clarification", "TurbidityRemoval"):
+        assert (WATR[f"TreatmentObjective-{objective}"], RDFS.subClassOf,
+                WATR["TreatmentObjective-SuspendedSolidsRemoval"]) in ontology_shapes_graph
+
+
+def test_legacy_solids_objective_remains_compatible(ontology_shapes_graph):
+    old = WATR["TreatmentObjective-SolidsRemoval"]
+    new = WATR["TreatmentObjective-SuspendedSolidsRemoval"]
+    assert (old, OWL.deprecated, Literal(True)) in ontology_shapes_graph
+    assert (old, DCTERMS.isReplacedBy, new) in ontology_shapes_graph
+    data = Graph().parse("examples/solids-removal-objectives.ttl")
+    example = Namespace("urn:example/solids-removal-objectives#")
+    # A legacy objective instance still satisfies the screen's new requirement.
+    data.set((example.screen, WATR.hasTreatmentObjective, example.legacyObjective))
+    data.add((example.legacyObjective, RDF.type, old))
+    data.add((example.legacyObjective, RDFS.label, Literal("Legacy solids objective")))
+    data.add((example.legacyObjective, RDFS.comment,
+              Literal("Removal of suspended and settleable solids.")))
+    _, report, report_text = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+    example_nodes = set(data.all_nodes())
+    assert not any(report.value(result, SH.focusNode) in example_nodes
+                   for severity in (SH.Violation, SH.Warning)
+                   for result in report.subjects(SH.resultSeverity, severity)), report_text
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    # Query the model with the vocabulary: validation recognizes subclassing,
+    # but the inference result need not materialize every inherited rdf:type.
+    query_graph = inferred + ontology_shapes_graph
+    assert new in set(query_graph.objects(
+        example.legacyObjective, RDF.type / (RDFS.subClassOf * "*")
+    ))
+    inherited_targets = set(query_graph.objects(
+        example.legacyObjective, RDF.type / (RDFS.subClassOf * "*") / WATR.targetsConstituent
+    ))
+    assert inherited_targets == {WATR["Constituent-SuspendedSolids"]}

@@ -146,8 +146,9 @@ axes are separate.
       - **Nitrogen Removal** — `watr:TreatmentObjective-NitrogenRemoval` — reached by 7 processes
       - **Phosphorus Removal** — `watr:TreatmentObjective-PhosphorusRemoval` — reached by 4 processes
     - **Organics Removal** — `watr:TreatmentObjective-OrganicsRemoval` — reached by 1 process
-    - **Solids Removal** — `watr:TreatmentObjective-SolidsRemoval`
+    - **Suspended Solids Removal** — `watr:TreatmentObjective-SuspendedSolidsRemoval`
       - **Clarification** — `watr:TreatmentObjective-Clarification`
+      - **Solids Removal (deprecated)** — `watr:TreatmentObjective-SolidsRemoval`
       - **Turbidity Removal** — `watr:TreatmentObjective-TurbidityRemoval`
   - **Disinfection** — `watr:TreatmentObjective-Disinfection` — reached by 1 process
   - **Equipment Cleaning** — `watr:TreatmentObjective-EquipmentCleaning` — reached by 1 process
@@ -262,8 +263,9 @@ These specific objectives are supplied by equipment design or plant intent. Proc
 - **Resource Recovery** — Recovery of a usable product -- water, energy or nutrients -- from a stream that would otherwise be discharged. A placeholder: the specific recovery objectives are not yet modeled.
 - **Silica Removal** — Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling.
 - **Softening** — Reduction of hardness by removing calcium and magnesium from the treated stream.
-- **Solids Removal** — Net removal of suspended or settleable solids from the treated stream.
+- **Solids Removal (deprecated)** — Deprecated. Use TreatmentObjective-SuspendedSolidsRemoval for removal of suspended or settleable solids. This legacy term does not include dissolved solids removal.
 - **Sulfate Removal** — Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite.
+- **Suspended Solids Removal** — Removal of suspended solids, including settleable solids, from the treated stream.
 - **Thickening** — Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.
 - **Turbidity Removal** — Reduction of the turbidity of the treated stream, the objective of polishing filtration.
 - **Volume Reduction** — Reduction of the volume of a sludge or slurry by removing water from it. The parent of thickening, dewatering and drying, which differ in the state of the product.

@@ -38,6 +38,21 @@ objective of an individual piece of equipment or system.
 Inference never derives a mechanism from an objective. Neither relation
 certifies measured treatment efficiency or permit compliance.
 
+## Solids-removal terminology
+
+`TreatmentObjective-SuspendedSolidsRemoval` explicitly covers removal of
+suspended solids, including settleable solids. Clarification and turbidity
+removal are children of this objective. `TreatmentObjective-DissolvedSolidsRemoval`
+is a separate child of `TreatmentObjective-ConstituentRemoval`, with desalination,
+softening, and other dissolved-constituent objectives beneath it.
+
+The published `TreatmentObjective-SolidsRemoval` URI remains deprecated with
+`dcterms:isReplacedBy TreatmentObjective-SuspendedSolidsRemoval`. It retains its
+original suspended-solids meaning and subclasses the replacement so existing
+models remain compatible. Use the explicit replacement in new models.
+
+See the [suspended and dissolved solids example](../../examples/solids-removal-objectives.ttl).
+
 ## Settling, clarification, and thickening
 
 `Process-Settling` names separation under gravity. `Process-Sedimentation` remains

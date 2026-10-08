@@ -650,9 +650,9 @@ watr:Screen
     ] ;
     sh:property [
         sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SolidsRemoval ] ;
+        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SuspendedSolidsRemoval ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of Screen must have the SolidsRemoval treatment objective." ;
+        sh:message "Instances of Screen must have the SuspendedSolidsRemoval treatment objective." ;
     ] .
 
 watr:GritChamber
@@ -673,9 +673,9 @@ watr:GritChamber
     # Process-Settling.
     sh:property [
         sh:path watr:hasTreatmentObjective ;
-        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SolidsRemoval ] ;
+        sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SuspendedSolidsRemoval ] ;
         sh:qualifiedMinCount 1 ;
-        sh:message "Instances of GritChamber must have the SolidsRemoval treatment objective." ;
+        sh:message "Instances of GritChamber must have the SuspendedSolidsRemoval treatment objective." ;
     ] .
 
 watr:Reservoir

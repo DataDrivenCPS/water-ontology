@@ -17,6 +17,7 @@ Fletcher's September 21–22 review is addressed as follows:
 | Add arsenic and lead | Constituents and targeted removal objectives added. Arsenic is under dissolved solids; lead is under metals. |
 | Backwashing has an objective | Cleaning and its descendants imply `EquipmentCleaning`, distinct from product-water constituent removal. |
 | Additional processes beyond defaults | Allowed explicitly while preserving required processes and process-value validation. Plausibility checks are deferred. |
+| Solids-removal objective naming | SuspendedSolidsRemoval and DissolvedSolidsRemoval are explicit sibling branches; the ambiguous published SolidsRemoval URI is deprecated with a replacement link. |
 | Clarifier versus SedimentationTank | Clarifier is a specialization with the clarification design objective, not an alias. |
 | Clarifier overflow and sludge | Wording describes both streams and possible further thickening. Clarifier and GravityThickener require distinct water (excluding sludge) and sludge outlets; conforming and nonconforming examples demonstrate validation. |
 | Chlorine-removal and reuse wording | Prose uses chlorine removal and water reuse treatment unit. |
