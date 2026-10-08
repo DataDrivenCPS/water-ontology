@@ -1,4 +1,4 @@
-# NAWI Water Ontology
+# Water Treatment (WaTr) Ontology
 
 ## URIs and Versioning
 
