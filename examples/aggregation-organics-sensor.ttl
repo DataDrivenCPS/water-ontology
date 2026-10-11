@@ -14,8 +14,10 @@
     rdfs:comment "Example of a sensor observing an organics concentration property with a water-specific aggregation marker on the property." ;
 .
 
+# The sensor samples the water in a pipe.
 :sample_location
-    a s223:Junction ;
+    a s223:Pipe ;
+    rdfs:label "Sampled pipe" ;
     s223:hasMedium s223:Fluid-Water ;
 .
 
