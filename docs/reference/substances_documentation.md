@@ -724,7 +724,7 @@
 
 **Superclasses:** `s223:EnumerationKind-Role`
 
-## MakeUp
+## Role-MakeUp
 
 **Description:** A connection point that admits water to replace what a process consumes or loses.
 

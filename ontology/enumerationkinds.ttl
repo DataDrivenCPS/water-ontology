@@ -554,7 +554,7 @@ watr:Role-MakeUp
     a watr:Class ;
     a watr:Role-MakeUp ;
     a sh:NodeShape ;
-    rdfs:label "MakeUp" ;
+    rdfs:label "Role-MakeUp" ;
     rdfs:comment "A connection point that admits water to replace what a process consumes or loses." ;
     rdfs:subClassOf s223:EnumerationKind-Role ;
 .
