@@ -108,10 +108,10 @@ possible target removed at that range.
 
 State a target-specific treatment objective only when the equipment design or
 plant intent supports it: a polishing filter can state turbidity removal, an RO
-unit can state desalination, and a reuse barrier can additionally state organics
-removal. The same restraint applies to ozone and thermal treatment: their broad
-process terms do not infer disinfection, because either may serve another
-objective. Do not infer these from generic method hierarchies. This keeps the
+unit can state desalination, and a water reuse treatment unit can state organics
+removal when designed for that purpose. The same restraint applies to ozone and
+thermal treatment: their broad process terms do not infer disinfection, because
+either may serve another objective. Do not infer these from generic method hierarchies. This keeps the
 model useful for practitioner queries without treating a method label as a
 complete treatment claim.
 
