@@ -8,7 +8,7 @@ Fletcher's September 21–22 review is addressed as follows:
 
 | Request | Release preparation |
 | --- | --- |
-| Filtration wording includes membranes | Definitions distinguish filters, media beds, and membranes. |
+| Filtration wording includes membranes | Filtration explicitly includes media and membrane filtration. MembraneProcess is a separate separation family: MF, UF and RO belong to both; membrane distillation and electrodialysis have no filtration parent. |
 | Settling rather than sedimentation as the mechanism | Active process is `Process-Settling`; the published sedimentation URI remains deprecated with a replacement link. Clarification remains an objective. |
 | Default constituent removal for separation | Declared on `Process-Separation` and inherited by its descendants, without choosing a target or guaranteeing performance. |
 | Chemical processes may imply removal | Adsorption, ion exchange, and precipitation declare broad constituent removal; generic oxidation, reduction, dosing, and mixing do not universally imply it. |

@@ -174,7 +174,7 @@ WaTr defines a set of process types that can be used to describe the processes e
 
 ### Abstract and Concrete Process Requirements
 
-Process types form a subclass hierarchy (e.g. `Process-ReverseOsmosis` is a `Process-MembraneProcess`, which is a `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies. An *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
+Process types form a subclass hierarchy with multiple inheritance (e.g. `Process-ReverseOsmosis` is a subtype of both `Process-MembraneProcess` and `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies. An *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
 
 ```ttl
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -304,15 +304,19 @@ watr:Process-AO
 
 `Process-SolidLiquidSeparation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train, microfiltration or ultrafiltration in a membrane bioreactor, flotation in a DAF, centrifugation in a centrifuge. The step names that family rather than `Process-Separation` above it, because screening and stripping are separations too and neither is the step in which a train parts its biomass from the treated water. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
 
-Solid-liquid separation cuts across filtration rather than sitting above or below it. `Process-Filtration` is a `Process-Separation` and `Process-MembraneProcess` is a `Process-Filtration`, but reverse osmosis and membrane distillation retain dissolved species, so filtration as a family is not a solid-liquid separation. The subtypes that part solids from liquid — media filtration, microfiltration, ultrafiltration — declare both parents:
+Solid-liquid separation cuts across filtration rather than sitting above or below it. `Process-Filtration` and `Process-MembraneProcess` are separate subtypes of `Process-Separation`. Microfiltration, ultrafiltration and reverse osmosis are subtypes of both families. Media filtration, microfiltration and ultrafiltration additionally declare `Process-SolidLiquidSeparation`; reverse osmosis does not satisfy the suspended-solids separation step of an activated-sludge train.
+
+Membrane distillation and electrodialysis are membrane processes without a filtration parent. Membrane distillation transports water as vapour; electrodialysis transports ions under an electric potential. Electrodialysis retains its existing chemical-process parent; that separate classification is not revised here.
 
 ```ttl
 watr:Process-Microfiltration
     rdfs:subClassOf watr:Process-MembraneProcess ,
+                    watr:Process-Filtration ,
                     watr:Process-SolidLiquidSeparation .
 
 watr:Process-ReverseOsmosis
-    rdfs:subClassOf watr:Process-MembraneProcess .
+    rdfs:subClassOf watr:Process-MembraneProcess ,
+                    watr:Process-Filtration .
 ```
 
 `watr:SystemProcessCoverageShape` warns when neither a system nor any transitively nested member performs a required constituent process:

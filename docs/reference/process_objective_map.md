@@ -94,14 +94,18 @@ treatment objective follows the arrow — every subclass inherits it.
           - GAC Filtration *(also under another parent, above)*
           - **Rapid Sand Filtration** — `watr:Process-RapidSandFiltration`
           - **Slow Sand Filtration** — `watr:Process-SlowSandFiltration`
-        - **Membrane Process** — `watr:Process-MembraneProcess`
-          - **Membrane Distillation (MD)** — `watr:Process-MembraneDistillation`
-          - **Microfiltration** — `watr:Process-Microfiltration`
-          - **Reverse Osmosis (RO)** — `watr:Process-ReverseOsmosis`
-            - **Closed Circuit Reverse Osmosis (CCRO)** — `watr:Process-ClosedCircuitReverseOsmosis`
-            - **Feed Reversal Reverse Osmosis (FRRO)** — `watr:Process-FeedReversalReverseOsmosis`
-            - **Osmotically Assisted Reverse Osmosis (OARO)** — `watr:Process-OsmoticallyAssistedReverseOsmosis`
-          - **Ultrafiltration** — `watr:Process-Ultrafiltration`
+        - **Microfiltration** — `watr:Process-Microfiltration`
+        - **Reverse Osmosis (RO)** — `watr:Process-ReverseOsmosis`
+          - **Closed Circuit Reverse Osmosis (CCRO)** — `watr:Process-ClosedCircuitReverseOsmosis`
+          - **Feed Reversal Reverse Osmosis (FRRO)** — `watr:Process-FeedReversalReverseOsmosis`
+          - **Osmotically Assisted Reverse Osmosis (OARO)** — `watr:Process-OsmoticallyAssistedReverseOsmosis`
+        - **Ultrafiltration** — `watr:Process-Ultrafiltration`
+      - **Membrane Process** — `watr:Process-MembraneProcess`
+        - Electrodialysis *(also under another parent, above)*
+        - **Membrane Distillation (MD)** — `watr:Process-MembraneDistillation`
+        - Microfiltration *(also under another parent, above)*
+        - Reverse Osmosis (RO) *(also under another parent, above)*
+        - Ultrafiltration *(also under another parent, above)*
       - **Screening** — `watr:Process-Screening`
       - **Solid-Liquid Separation** — `watr:Process-SolidLiquidSeparation`
         - **Centrifugation** — `watr:Process-Centrifugation`

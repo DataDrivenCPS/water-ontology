@@ -402,10 +402,10 @@ def test_a_separation_that_is_not_solid_liquid_does_not_cover(
 
     All of these are a watr:Process-Separation, so naming the family here would
     accept them as the step in which an activated-sludge train separates its
-    biomass from the treated water. The last two are a watr:Process-Filtration
-    as well: filtration is not a solid-liquid separation as a family, only in the
-    subtypes that retain what is suspended -- which is why Microfiltration and
-    Ultrafiltration are declared as both and reverse osmosis is not.
+    biomass from the treated water. Reverse osmosis is also filtration, while
+    membrane distillation is a membrane process without a filtration parent.
+    Neither satisfies suspended-solids separation. Microfiltration and
+    ultrafiltration explicitly belong to all three families.
     """
     body = (
         "ex:AS2 a s223:System ;\n"

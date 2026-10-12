@@ -81,13 +81,13 @@ watr:Process-Stripping a watr:Class, watr:Process-Stripping ;
     rdfs:comment "Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds." ;
     rdfs:subClassOf watr:Process-Separation .
 
-# Filtration is a Separation but not, as a family, a solid-liquid one: reverse
-# osmosis and membrane distillation are filtration and retain dissolved species,
-# not suspended solids. The filtration processes that do part solids from liquid
-# say so themselves, below.
+# Filtration can separate suspended or dissolved constituents. Membrane use
+# alone does not imply filtration: electrodialysis transports ions, while
+# membrane distillation involves evaporation and vapour transport.
+# MF, UF and RO explicitly belong to both filtration and membrane processes.
 watr:Process-Filtration a watr:Class, watr:Process-Filtration ;
     rdfs:label "Filtration" ;
-    rdfs:comment "A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass." ;
+    rdfs:comment "Separation of constituents by passing liquid water through a filter or membrane. Includes media filtration and membrane filtration such as microfiltration, ultrafiltration and reverse osmosis; membrane use alone does not imply filtration." ;
     rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-MediaFiltration a watr:Class, watr:Process-MediaFiltration ;
@@ -176,13 +176,13 @@ watr:Process-GACFiltration a watr:Class, watr:Process-GACFiltration ;
 
 watr:Process-MembraneProcess a watr:Class, watr:Process-MembraneProcess ;
     rdfs:label "Membrane Process" ;
-    rdfs:comment "A process that uses a semi-permeable membrane to separate substances." ;
-    rdfs:subClassOf watr:Process-Filtration .
+    rdfs:comment "A separation process that uses a membrane. Includes membrane filtration, membrane distillation and electrodialysis; transport may be driven by pressure, a vapour-pressure difference or an electric potential." ;
+    rdfs:subClassOf watr:Process-Separation .
 
 watr:Process-ReverseOsmosis a watr:Class, watr:Process-ReverseOsmosis ;
     rdfs:label "Reverse Osmosis (RO)" ;
     rdfs:comment "Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained." ;
-    rdfs:subClassOf watr:Process-MembraneProcess .
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-Filtration .
 
 watr:Process-ClosedCircuitReverseOsmosis a watr:Class, watr:Process-ClosedCircuitReverseOsmosis ;
     rdfs:label "Closed Circuit Reverse Osmosis (CCRO)" ;
@@ -207,7 +207,7 @@ watr:Process-MembraneDistillation a watr:Class, watr:Process-MembraneDistillatio
 watr:Process-Electrodialysis a watr:Class, watr:Process-Electrodialysis ;
     rdfs:label "Electrodialysis" ;
     rdfs:comment "A process that uses ion-exchange membranes and an electric potential to separate ions from water." ;
-    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-Separation .
+    rdfs:subClassOf watr:Process-ChemicalProcess, watr:Process-Separation, watr:Process-MembraneProcess .
 
 watr:Process-ElectroDialyticCrystallization a watr:Class, watr:Process-ElectroDialyticCrystallization ;
     rdfs:label "Electro-Dialytic Crystallization (EDC)" ;
@@ -521,12 +521,12 @@ watr:Process-BiologicallyActiveFiltration a watr:Class, watr:Process-Biologicall
 watr:Process-Microfiltration a watr:Class, watr:Process-Microfiltration ;
     rdfs:label "Microfiltration" ;
     rdfs:comment "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
-    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-Filtration, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Ultrafiltration a watr:Class, watr:Process-Ultrafiltration ;
     rdfs:label "Ultrafiltration" ;
     rdfs:comment "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately." ;
-    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-SolidLiquidSeparation .
+    rdfs:subClassOf watr:Process-MembraneProcess, watr:Process-Filtration, watr:Process-SolidLiquidSeparation .
 
 watr:Process-Backwashing a watr:Class, watr:Process-Backwashing ;
     rdfs:label "Backwashing" ;

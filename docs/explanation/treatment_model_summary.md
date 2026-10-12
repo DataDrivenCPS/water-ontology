@@ -38,6 +38,27 @@ objective of an individual piece of equipment or system.
 Inference never derives a mechanism from an objective. Neither relation
 certifies measured treatment efficiency or permit compliance.
 
+## Filtration and membrane processes
+
+`Process-Filtration` and `Process-MembraneProcess` are separate subtypes of
+`Process-Separation`. Microfiltration, ultrafiltration and reverse osmosis are
+subtypes of both. Media filtration, microfiltration and ultrafiltration also
+qualify as solid-liquid separation; reverse osmosis does not satisfy that
+suspended-solids separation requirement.
+
+Membrane distillation and electrodialysis are membrane processes without a
+filtration parent. Membrane use alone therefore does not satisfy a filter's
+required filtration process. This changes queries that previously found membrane
+distillation through the filtration hierarchy; query `Process-MembraneProcess`
+when all membrane-based separations are intended. Existing term URIs are retained.
+
+EPA's [Membrane Filtration Guidance Manual, Chapter 2](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=901V0500.TXT)
+includes MF, UF and RO in membrane filtration and distinguishes electrodialysis
+from filtration. DOE's [solar-desalination projects](https://www.energy.gov/cmei/systems/solar-desalination)
+describe thermally driven membrane distillation. These mechanisms support this
+ontology classification; the hierarchy itself is an ontology design choice.
+See the [membrane-process example](../../examples/membrane-process-classification.ttl).
+
 ## Solids-removal terminology
 
 `TreatmentObjective-SuspendedSolidsRemoval` explicitly covers removal of

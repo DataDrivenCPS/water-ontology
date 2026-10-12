@@ -1,0 +1,24 @@
+@prefix : <urn:example/membrane-process-classification#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/membrane-process-classification> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "Membrane processes and filtration are overlapping families" .
+
+# These generic equipment instances focus on process classification.
+# All three units perform membrane processes. Only MF also counts as
+# filtration and suspended-solid separation. All inherit constituent removal.
+:microfiltrationUnit a s223:Equipment ;
+    rdfs:label "Microfiltration unit" ;
+    watr:hasProcess watr:Process-Microfiltration .
+
+:distillationUnit a s223:Equipment ;
+    rdfs:label "Membrane distillation unit" ;
+    watr:hasProcess watr:Process-MembraneDistillation .
+
+:electrodialysisUnit a s223:Equipment ;
+    rdfs:label "Electrodialysis unit" ;
+    watr:hasProcess watr:Process-Electrodialysis .

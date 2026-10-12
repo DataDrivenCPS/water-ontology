@@ -224,7 +224,7 @@
 
 **Description:** A process that uses ion-exchange membranes and an electric potential to separate ions from water.
 
-**Superclasses:** `watr:Process-ChemicalProcess`, `watr:Process-Separation`
+**Superclasses:** `watr:Process-ChemicalProcess`, `watr:Process-MembraneProcess`, `watr:Process-Separation`
 
 ## Electrolysis
 
@@ -264,7 +264,7 @@
 
 ## Filtration
 
-**Description:** A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass.
+**Description:** Separation of constituents by passing liquid water through a filter or membrane. Includes media filtration and membrane filtration such as microfiltration, ultrafiltration and reverse osmosis; membrane use alone does not imply filtration.
 
 **Superclasses:** `watr:Process-Separation`
 
@@ -370,15 +370,15 @@
 
 ## Membrane Process
 
-**Description:** A process that uses a semi-permeable membrane to separate substances.
+**Description:** A separation process that uses a membrane. Includes membrane filtration, membrane distillation and electrodialysis; transport may be driven by pressure, a vapour-pressure difference or an electric potential.
 
-**Superclasses:** `watr:Process-Filtration`
+**Superclasses:** `watr:Process-Separation`
 
 ## Microfiltration
 
 **Description:** Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
-**Superclasses:** `watr:Process-MembraneProcess`, `watr:Process-SolidLiquidSeparation`
+**Superclasses:** `watr:Process-Filtration`, `watr:Process-MembraneProcess`, `watr:Process-SolidLiquidSeparation`
 
 ## Mixing
 
@@ -454,7 +454,7 @@
 
 **Description:** Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.
 
-**Superclasses:** `watr:Process-MembraneProcess`
+**Superclasses:** `watr:Process-Filtration`, `watr:Process-MembraneProcess`
 
 ## Screening
 
@@ -568,7 +568,7 @@
 
 **Description:** Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.
 
-**Superclasses:** `watr:Process-MembraneProcess`, `watr:Process-SolidLiquidSeparation`
+**Superclasses:** `watr:Process-Filtration`, `watr:Process-MembraneProcess`, `watr:Process-SolidLiquidSeparation`
 
 ## pHAdjustment (deprecated)
 
