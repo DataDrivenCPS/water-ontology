@@ -23,7 +23,7 @@ Fletcher's September 21–22 review is addressed as follows:
 | Chlorine-removal and reuse wording | Prose uses chlorine removal and water reuse treatment unit. |
 | Additional cleaning activities | Stated directly through `hasProcess` and imply `EquipmentCleaning`; no separate activity category or permission list. |
 | Anoxic/aerobic/anaerobic classification | Retained as explicit roles, as accepted in Fletcher's later comment. |
-| Repurposed equipment | Current type and operating context in timestamped models; no conversion-history vocabulary. |
+| Repurposed equipment | Keep the same physical equipment’s instance URI; update its type and operating context. Model versioning and history are handled by another system. |
 
 Earlier review points are also covered: chlorination includes dosing and contact
 time; GAC is a filtration activity; RO does not imply desalination; objective

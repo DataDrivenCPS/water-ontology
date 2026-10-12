@@ -222,11 +222,16 @@ plausibility check is performed. A tank may have a single bidirectional fluid po
 Reactors keep inlet and outlet requirements. `Clarifier` specializes
 `SedimentationTank` by adding the clarification objective.
 
-Repurposing an unchanged vessel is represented by its current role, processes,
-and objectives. A physically rebuilt vessel may require a different equipment
-class. Historical conversions are represented by timestamped models. Keeping a
-specialized equipment type retains its intrinsic defaults, so use a suitable
-generic type if those requirements no longer describe the equipment.
+When the same physical equipment is repurposed, keep its instance URI and
+replace its obsolete equipment type with a type appropriate to its current use.
+Update its asserted roles, processes, and objectives to reflect that use as well.
+Keeping the old specialized type retains its intrinsic defaults, even if an
+explicit process assertion is removed. For example, a vessel converted from
+chlorination service to storage should use a suitable storage-tank type and
+have obsolete treatment assertions removed.
+
+Model versioning and historical configurations are outside this ontology's
+scope and must be managed by another system.
 
 A basin may contain several `watr:EquipmentRegion` instances. Locate a sensor
 with `s223:hasObservationLocation` at the specific region or connection point

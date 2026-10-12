@@ -190,10 +190,11 @@ process, and at least one connection point. Sensors observe the relevant equipme
 for containment constraints and the worked example. Recirculation has connection-point roles as well as an activity term used
 in compound process definitions.
 
-An unchanged repurposed vessel gets its current operating context and a suitable
-equipment type; a physically rebuilt vessel may need a different type. Retaining
-a specialized type retains its intrinsic defaults. Historical conversions belong
-in timestamped models rather than a new conversion-history vocabulary.
+When the same physical equipment is repurposed, keep its instance URI, replace
+its obsolete equipment type with a suitable current type, and update its roles,
+processes, and objectives. Retaining the old specialized type retains its
+intrinsic defaults. Model versioning and historical configurations are outside
+this ontology's scope and must be managed by another system.
 
 ## Systems and queries
 
