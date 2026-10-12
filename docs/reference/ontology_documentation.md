@@ -422,13 +422,21 @@
 
 **Superclass URI :** http://data.ashrae.org/standard223#Compressor
 
+## HeatExchanger
+
+**Description:** Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points.
+
+**URI:** https://watermetadata.org/ontology/watr#HeatExchanger
+
+**Superclass URI :** http://data.ashrae.org/standard223#Equipment
+
 ## Evaporator
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
 **URI:** https://watermetadata.org/ontology/watr#Evaporator
 
-**Superclass URI :** http://data.ashrae.org/standard223#HydronicHeatExchanger
+**Superclass URI :** https://watermetadata.org/ontology/watr#HeatExchanger
 
 ## Condenser
 
@@ -436,7 +444,7 @@
 
 **URI:** https://watermetadata.org/ontology/watr#Condenser
 
-**Superclass URI :** http://data.ashrae.org/standard223#HydronicHeatExchanger
+**Superclass URI :** https://watermetadata.org/ontology/watr#HeatExchanger
 
 ## FlowSensor
 
