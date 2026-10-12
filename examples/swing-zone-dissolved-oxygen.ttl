@@ -26,6 +26,8 @@
     # The ontology requires both to be said -- see watr:TreatmentObjectiveRequiresProcessShape.
     watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     s223:hasConnectionPoint :zone_inlet, :zone_outlet ;
+    s223:contains :do_meter ;
+    s223:hasProperty :dissolved_oxygen ;
 .
 
 :zone_inlet
@@ -40,9 +42,10 @@
     s223:isConnectionPointOf :swing_zone ;
 .
 
-# What the zone is doing at a given moment. A dissolved oxygen reading near zero
-# does not withdraw watr:Role-Aerobic from the basin above, and a reading of
-# 2 mg/L does not withdraw watr:Role-Anoxic. Nothing here is a role.
+# An illustrative concentration reading of 2.0 mg/L. This does not withdraw
+# watr:Role-Anoxic: the basin is still commissioned to support that regime.
+# The value is not a regime threshold and does not assign or remove roles.
+# This is one illustrative snapshot, without a timestamp or time-series history.
 #
 # The meter observes the basin itself: s223:hasObservationLocation takes a
 # Connectable, and s223:Equipment is one. Naming the basin is what ties the
@@ -50,7 +53,7 @@
 # point would leave the two halves of this example unrelated.
 :do_meter
     a watr:OxygenMeter ;
-    rdfs:label "Dissolved Oxygen Meter" ;
+    rdfs:label "Dissolved Oxygen Concentration Sensor" ;
     s223:hasObservationLocation :swing_zone ;
     s223:observes :dissolved_oxygen ;
 .
@@ -62,4 +65,5 @@
     s223:ofSubstance watr:Constituent-DissolvedOxygen ;
     qudt:hasQuantityKind quantitykind:MassConcentration ;
     qudt:hasUnit unit:MilliGM-PER-L ;
+    s223:hasValue 2.0 ;
 .
