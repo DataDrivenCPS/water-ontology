@@ -410,7 +410,7 @@ watr:Constituent-InorganicSolids
     a watr:Class ;
     a watr:Constituent-InorganicSolids ;
     a sh:NodeShape ;
-    rdfs:comment "The inorganic (fixed) fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates." ;
+    rdfs:comment "The inorganic fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates." ;
     rdfs:label "Constituent-InorganicSolids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
 .
