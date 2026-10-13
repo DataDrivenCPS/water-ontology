@@ -968,12 +968,19 @@ watr:Compressor
     rdfs:comment "An equipment that increases the pressure of a gas" ;
     rdfs:subClassOf s223:Compressor .
 
+watr:HeatExchanger
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Heat Exchanger" ;
+    rdfs:comment "Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points, so it covers single-feed evaporators and air-cooled condensers." ;
+    rdfs:subClassOf s223:Equipment .
+
 watr:Evaporator
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
-    rdfs:subClassOf s223:HydronicHeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf watr:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ];
@@ -988,7 +995,7 @@ watr:Condenser
     a watr:Class ;
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
-    rdfs:subClassOf s223:HydronicHeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf watr:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Condensation ];

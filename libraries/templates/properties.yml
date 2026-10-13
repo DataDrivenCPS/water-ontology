@@ -109,7 +109,7 @@ on-off-command:
     @prefix s223: <http://data.ashrae.org/standard223#> .
 
     P:name a s223:EnumeratedActuatableProperty ;
-      s223:hasEnumerationKind s223:EnumerationKind-OnOff .
+      s223:hasEnumerationKind s223:Binary-OnOff .
 
 speed-command:
   body: >
@@ -156,8 +156,8 @@ status:
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
 
-    P:name a s223:QuantifiableObservableProperty ;
-      qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    P:name a s223:EnumeratedObservableProperty ;
+      s223:hasEnumerationKind s223:Binary-OnOff .
 turbidity:
   body: >
     @prefix P: <urn:___param___#> .

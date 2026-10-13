@@ -3,11 +3,12 @@ from pathlib import Path
 import pytest
 import shifty
 from ontoenv import OntoEnv
-from rdflib import Graph, Namespace
+from rdflib import OWL, RDF, Graph, Namespace, URIRef
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 WATR = Namespace("https://watermetadata.org/ontology/watr#")
+WATR_ONTOLOGY_PREFIX = "https://watermetadata.org/ontology/"
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,9 +71,23 @@ def water_graph() -> Graph:
 
 @pytest.fixture(scope="session")
 def ontology_shapes_graph(water_graph: Graph) -> Graph:
-    """Resolve the water ontology's full import closure once per session."""
+    """Resolve the water ontology's full import closure once per session.
+
+    Only the external imports (223P, QUDT, SHACL) are resolved through OntoEnv;
+    the watr modules come from ``water_graph``. Resolving the modules as well
+    would load each one twice, and since every load mints fresh blank nodes,
+    each watr property shape would appear twice. Two identical qualified value
+    shapes on one class are siblings, so ``sh:qualifiedValueShapesDisjoint``
+    would then reject every value.
+    """
+    external = Graph()
+    root = URIRef("urn:watr-tests:external-imports")
+    external.add((root, RDF.type, OWL.Ontology))
+    for imported in set(water_graph.objects(None, OWL.imports)):
+        if not str(imported).startswith(WATR_ONTOLOGY_PREFIX):
+            external.add((root, OWL.imports, imported))
     env = OntoEnv.connect(ROOT, read_only=True)
-    shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
+    shapes_graph, _imported = env.get_dependencies(external, fetch_missing=True)
     shapes_graph += water_graph
     return shapes_graph
 

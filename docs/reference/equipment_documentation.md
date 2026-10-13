@@ -474,11 +474,17 @@
 
 **Superclass:** Compressor
 
+## HeatExchanger
+
+**Description:** Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points.
+
+**Superclass:** Equipment
+
 ## Evaporator
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
-**Superclass:** HydronicHeatExchanger
+**Superclass:** HeatExchanger
 
 ## Evaporator
 
@@ -490,7 +496,7 @@
 
 **Description:** A device used to condense a gaseous substance back into a liquid
 
-**Superclass:** HydronicHeatExchanger
+**Superclass:** HeatExchanger
 
 ## Condenser
 

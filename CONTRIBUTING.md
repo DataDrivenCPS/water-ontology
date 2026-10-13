@@ -58,8 +58,10 @@ uv sync
 single source of truth for dependencies. If you add one, specify a version
 range, re-run `uv sync`, and mention it in your PR.
 
-To refresh the vendored copy of 223P, run `./download-s223.sh`. This only works
-if you already have access to that repository.
+To refresh the vendored copy of 223P, run `./download-s223.sh`. It downloads the
+current release from <https://open223.info/223p.ttl> into `s223/223p.ttl` (the copy
+the build and tests resolve) and `libraries/223p.ttl` (the same file, for
+BuildingMOTIF), then re-index with `uv run ontoenv update`.
 
 ## Repository layout
 
@@ -68,7 +70,7 @@ if you already have access to that repository.
 | `ontology/` | **The ontology source. Edit these files.** |
 | `build/` | Compiled ontology documents. Generated, git-ignored. Never edit or commit these! |
 | `libraries/` | BuildingMOTIF templates (`templates/`, `nrel-223p-templates/`) and the vendored `223p.ttl` |
-| `s223/` | Vendored ASHRAE 223P ontology files. |
+| `s223/` | Vendored ASHRAE 223P (`223p.ttl`, from open223.info), resolved by OntoEnv. |
 | `examples/` | Example models that must pass validation; `examples/nonconforming/` holds models that must *fail*. |
 | `scripts/` | Compile, validation, and documentation utilities. |
 | `tests/` | pytest suite. |

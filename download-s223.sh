@@ -1,17 +1,18 @@
 #!/bin/bash
+# Refresh the vendored copy of ASHRAE 223P from open223.info.
+#
+# s223/223p.ttl is what OntoEnv resolves for the build and the tests;
+# libraries/223p.ttl is the same file, loaded alongside the BuildingMOTIF
+# templates. Keep the two identical.
+set -euo pipefail
 
-# if 223standard directory does not exist, clone the repo
-if [ ! -d "223standard" ]; then
-  git clone https://bas-im.emcs.cornell.edu/223/223standard.git
-fi
-# otherwise, update the repo
-pushd 223standard
-git pull
-popd
+URL="https://open223.info/223p.ttl"
 
 # remove the old s223/ folder
 rm -rf s223
-
-# copy inference, extensions, collections, models, validation, vocab folders to s223/
 mkdir s223
-cp -r 223standard/inference 223standard/extensions 223standard/collections 223standard/models 223standard/validation 223standard/vocab s223
+curl -sSfL -o s223/223p.ttl "$URL"
+cp s223/223p.ttl libraries/223p.ttl
+
+grep -o 'owl:versionInfo "[^"]*"' s223/223p.ttl | head -1
+echo "Re-index with: uv run ontoenv update"
