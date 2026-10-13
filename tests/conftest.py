@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "ontology"
-S223_DIR = ROOT / "s223"
 
 
 def _ttl_files(directory: Path) -> list[Path]:

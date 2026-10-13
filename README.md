@@ -34,11 +34,10 @@ To cut a release, bump `ONTOLOGY_VERSION` in
 
 - `ontology/` contains our ontology source modules — edit these
 - `build/` contains the compiled ontology documents (generated, not tracked)
-- `s223/` contains the vendored 223P ontology (`223p.ttl`, from [open223.info](https://open223.info/223p.ttl))
 - `libraries/` contains BuildingMOTIF libraries and templates for building models
     - `templates` contains some water-specific templates
     - `nrel-223p-templates` contains some generic templates for the 223P ontology
-    - `223p.ttl` is the same 223P file as `s223/223p.ttl`
+    - `223p.ttl` is the vendored 223P ontology (from [open223.info](https://open223.info/223p.ttl)), resolved by OntoEnv and loaded by BuildingMOTIF
 - `notebooks/` contains code showing how to build and query models.
 
 ## Development Setup
