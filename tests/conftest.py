@@ -59,10 +59,16 @@ def nonconforming_example_file(request: pytest.FixtureRequest) -> Path:
 
 
 def _has_example_result_with_severity(
-    data_graph: Graph, report_graph: Graph, severities: set
+    data_graph: Graph, report_graph: Graph, ontology_graph: Graph, severities: set
 ) -> bool:
-    """Return whether example data has a validation result at a given severity."""
+    """Check example data, excluding imported terms that are only referenced.
+
+    An imported subject enters scope when the example explicitly describes it.
+    Local object-only nodes remain in scope.
+    """
     example_nodes = set(data_graph.all_nodes())
+    referenced_imports = set(ontology_graph.subjects()) - set(data_graph.subjects())
+    example_nodes -= referenced_imports
     for result in report_graph.subjects(SH.focusNode, None):
         severity = report_graph.value(result, SH.resultSeverity)
         if severity not in severities:
@@ -72,19 +78,21 @@ def _has_example_result_with_severity(
     return False
 
 
-def _has_example_violations(data_graph: Graph, report_graph: Graph) -> bool:
+def _has_example_violations(
+    data_graph: Graph, report_graph: Graph, ontology_graph: Graph
+) -> bool:
     """Return whether the SHACL report contains a violation on example data."""
     return _has_example_result_with_severity(
-        data_graph, report_graph, {SH.Violation}
+        data_graph, report_graph, ontology_graph, {SH.Violation}
     )
 
 
 def _has_example_warnings_or_violations(
-    data_graph: Graph, report_graph: Graph
+    data_graph: Graph, report_graph: Graph, ontology_graph: Graph
 ) -> bool:
     """Return whether the report contains a warning or violation on example data."""
     return _has_example_result_with_severity(
-        data_graph, report_graph, {SH.Warning, SH.Violation}
+        data_graph, report_graph, ontology_graph, {SH.Warning, SH.Violation}
     )
 
 
@@ -191,9 +199,11 @@ def _validation_result(example_file: Path, ontology_shapes_graph: Graph) -> dict
         "report_graph": report_graph,
         "report_string": report_string,
         "data_graph": data_graph,
-        "has_example_violations": _has_example_violations(data_graph, report_graph),
+        "has_example_violations": _has_example_violations(
+            data_graph, report_graph, ontology_shapes_graph
+        ),
         "has_example_warnings_or_violations": _has_example_warnings_or_violations(
-            data_graph, report_graph
+            data_graph, report_graph, ontology_shapes_graph
         ),
     }
 
