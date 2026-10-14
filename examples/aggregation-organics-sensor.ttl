@@ -15,8 +15,11 @@
 .
 
 :sample_location
-    a s223:Junction ;
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Effluent sample point" ;
+    s223:isConnectionPointOf :sample_equipment ;
     s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :organics_property ;
 .
 
 :organics_sensor
@@ -51,5 +54,10 @@
     a s223:QuantifiableProperty  ;
     rdfs:label "Rolling Window 24 Hours" ;
     s223:hasValue 24 ;
+    qudt:hasQuantityKind quantitykind:Time ;
     qudt:hasUnit unit:HR ;
 .
+
+:sample_equipment a s223:Equipment ;
+    rdfs:label "Sampled equipment" ;
+    s223:hasConnectionPoint :sample_location .

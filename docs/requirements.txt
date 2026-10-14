@@ -1,4 +1,7 @@
-jupyter-book
+jupyter-book>=1.0.3,<2
 matplotlib
 numpy
-buildingmotif[topquadrant] @ git+https://github.com/NREL/buildingmotif.git@develop
+sphinx-tabs>=3.4.5
+sphinx-toolbox>=3.8.1
+sphinx-autodoc-bmotif>=0.2.1
+buildingmotif @ git+https://github.com/NREL/buildingmotif.git@develop

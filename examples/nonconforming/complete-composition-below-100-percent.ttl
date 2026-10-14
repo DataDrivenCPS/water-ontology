@@ -1,0 +1,35 @@
+@prefix : <urn:example/complete-composition#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/complete-composition-below-100-percent> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "complete-composition-below-100-percent" ;
+    rdfs:comment "An explicitly complete composition totaling only 90 percent; CompleteCompositionShape rejects it." .
+
+:medium a watr:Class, :medium, sh:NodeShape ;
+    rdfs:subClassOf watr:Water-Brine ;
+    rdfs:label "Complete brine composition" ;
+    rdfs:comment "An explicitly complete composition totaling only 90 percent; CompleteCompositionShape rejects it." ;
+    watr:hasCompleteComposition true ;
+    s223:composedOf :salt, :water .
+
+:salt a s223:QuantifiableProperty ;
+    rdfs:label "salt" ;
+    s223:ofConstituent watr:Salt-NaCl ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasValue 10 .
+
+:water a s223:QuantifiableProperty ;
+    rdfs:label "water" ;
+    s223:ofConstituent s223:Constituent-H2O ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasValue 80 .

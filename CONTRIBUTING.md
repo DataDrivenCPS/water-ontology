@@ -121,7 +121,7 @@ walks, so a newly added or re-pointed module is picked up automatically.
 
 If you run `scripts/compile-water-ontology.py` directly rather than through
 `make`, refresh it yourself first with `uv run ontoenv update`. Otherwise, the
-closure wil lbe resolved against a stale index.
+closure will be resolved against a stale index.
 
 One compile emits two documents:
 
@@ -181,7 +181,8 @@ compile adds all of these -- do not write them by hand.
 ## Adding and changing terms
 
 Add terms to the module that fits: equipment to `equipment.ttl`, processes to
-`processtypes.ttl`, media and constituents to `substances.ttl`, enumerations to
+`processtypes.ttl`, treatment objectives to `objectives.ttl`, class-default rules
+to `class-defaults.ttl`, media and constituents to `substances.ttl`, enumerations to
 `enumerationkinds.ttl`. Keep related definitions near each other so diffs stay
 readable.
 
@@ -192,7 +193,7 @@ sub-vocabularies use a `Category-Specific` prefix, which keeps families
 alphabetically adjacent:
 
 - `watr:Process-Filtration`, `watr:Process-MediaFiltration`
-- `watr:Constituent-NaCl`, `watr:Constituent-Organics`
+- `watr:Salt-NaCl`, `watr:Constituent-Organics`
 - `watr:Coagulant-Alum`, `watr:Disinfectant-Ozone`, `watr:Water-Brine`
 
 **Every term needs a label and a definition — both are enforced.** The
@@ -221,20 +222,21 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
-        sh:hasValue watr:Process-Sedimentation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Instances of GravityThickener must have the Sedimentation process." ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Settling ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Instances of GravityThickener must have a Settling process." ;
     ] .
 ```
 
-**Equipment classes must stay consistent with the processes they inherit.** A
-subclass may only *refine* an ancestor's `watr:hasProcess` constraint, never
-contradict it: at least one of its required processes must be the same as, or a
-transitive subclass of, each process an ancestor requires. Adding a new
-equipment class often means adding a matching process to `processtypes.ttl`
-first. `tests/test_processtype_consistency.py` enforces this and names the
-offending class when it fails.
+**Equipment classes must satisfy inherited process constraints.** A bare
+`sh:class` applies to every process value. Qualified minimum-count requirements
+apply to matching values, so a subclass can satisfy an inherited slot with a
+more specific process or carry several processes to satisfy separate slots.
+Use qualified constraints for class-specific requirements; keep the general
+process-value type guard. SHACL-AF inference supplies class-required processes
+and objectives, including when a locally typed value already satisfies a slot.
+`tests/test_processtype_consistency.py` checks the unqualified ancestor constraints.
+See the [process requirements](docs/explanation/processes.md#abstract-and-concrete-process-requirements).
 
 Add an example under `examples/` demonstrating any substantive new term. If the
 change makes a previously valid pattern invalid, add a case to
@@ -253,7 +255,7 @@ watr:OldTerm
 
 Keep the original definition in place so existing models still resolve.
 
-## [Testing](Testing.md)
+## Testing
 
 ```bash
 make test

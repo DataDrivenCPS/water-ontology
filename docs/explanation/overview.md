@@ -14,13 +14,29 @@ While its initial focus is building mechanical, electrical and plumbing systems,
 
 This standard provides well-defined classes used to describe entities relevant to water treatment system information. Entities in WaTr models will generally be instances of the many classes defined or referred to by the standard. The classes in the standard provide 'names' for the fundamental building blocks used in WaTr models (e.g. a pump will be an instance of the class `watr:Pump`) and also have rules defining how they are used (e.g. a pump must convey water).
 
+## Treatment Function
+
+WaTr describes treatment equipment along three axes. `watr:hasTreatmentObjective` states
+what the equipment is intended to accomplish, `watr:hasProcess` states the
+activity it performs, and `s223:hasRole` states where it is commissioned to
+serve in a particular treatment system. For example, a primary clarifier has
+clarification as its treatment objective, settling as its process, and primary as its
+role. Equipment classes can supply fixed process and treatment objective values during
+inference, while installation-specific roles are stated on equipment instances.
+See [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md) for the
+modeling pattern and examples.
+
 ## Topology
 
 This standard can be used to describe the topology of the equipment and connections in a water treatment system, but not the geometric details. Topology refers to the way entities are connected and how some media (e.g. water, chemicals) is conveyed between them. There are several different classes used to describe which entities participate in connections and how they connect: Connectables, which include the entities that are capable of connecting to each other; ConnectionPoints, which model where Connectables can be connected; and Connections, which describe physical things through which the medium is conveyed, like pipes or channels. These Mediums (e.g. water, chemicals) are defined as an EnumerationKind in the standard. There are also multiple relations used to describe the details of these connections, and how the multiple entities involved in a connection relate to each other. Though there are many relations to describe different perspectives of a connection, only `s223:cnx` needs to be manually added to the model, and the rest can be automatically added to the model through the process of inference.
 
 ## Composition
 
-Composition is about what entities make up what other entities. For example, a piece of mechanical equipment like a reactor may in fact be made up of other pieces of mechanical equipment, such as a mixer and a heating element. Additionally, a treatment stage may be made up of several different processes that receive a similar treatment service, or a treatment train may be made up of different stages, reactors, or separators. Several different modeling constructs use the idea of composition. These modeling constructs include Equipment, which may contain other equipment (e.g. a reactor containing a mixer); Stages, which may have Processes that receive a similar treatment service; StageGroups, which group together similarly controlled Stages; Systems that represent a collection of interrelated Equipment; or PhysicalSpaces, which may contain other PhysicalSpaces as a treatment plant contains multiple reactors. PhysicalSpaces may also enclose ProcessSpaces, indicating that the ProcessSpace is completely within the PhysicalSpace. For example, a treatment plant (a PhysicalSpace) may enclose several different areas served by independently controlled processes (ProcessSpaces).
+Composition describes how entities form larger assemblies or functional groups. Equipment can contain other equipment: a reactor may contain a mixer and a heating element. An `s223:System` groups equipment for a functional purpose using `s223:hasMember`, and systems can contain other systems. For example, a biological treatment train can group its reactors and clarifier into a system.
+
+Treatment stages such as primary, secondary, and tertiary are represented by roles on equipment using `s223:hasRole`. If an explicit grouping of equipment serving a stage is useful, model it as an `s223:System`. WaTr has no dedicated `Stage` or `StageGroup` classes.
+
+Physical spaces describe location and containment separately from functional grouping. A plant building can contain rooms, and PhysicalSpaces can enclose DomainSpaces representing the spaces served by a particular domain. Equipment can be associated with its physical location using `s223:hasPhysicalLocation`. See [Definitions and Concepts](definitions.md) for the distinctions between equipment, systems, spaces, and treatment stages.
 
 ## Telemetry 
 

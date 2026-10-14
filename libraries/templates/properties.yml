@@ -156,8 +156,8 @@ status:
     @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix s223: <http://data.ashrae.org/standard223#> .
 
-    P:name a s223:QuantifiableObservableProperty ;
-      qudt:hasEnumerationKind s223:EnumerationKind-Status .
+    P:name a s223:EnumeratedObservableProperty ;
+      s223:hasEnumerationKind s223:EnumerationKind-RunStatus .
 turbidity:
   body: >
     @prefix P: <urn:___param___#> .
@@ -198,7 +198,7 @@ cl2-mgL:
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
       qudt:hasUnit unit:MilliGM-PER-L;
-      s223:ofSubstance watr:Chlorine .
+      s223:ofSubstance watr:Constituent-ChlorineResidual .
 
 concentration:
   body: >

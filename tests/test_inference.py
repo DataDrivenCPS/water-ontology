@@ -49,6 +49,7 @@ def _fraction(name: str, constituent: URIRef, value=None) -> str:
         f":{name} a s223:QuantifiableProperty ;\n"
         f"{value_line}"
         f"    s223:ofConstituent <{constituent}> ;\n"
+        "    qudt:hasQuantityKind quantitykind:MassFraction ;\n"
         f"    qudt:hasUnit unit:PERCENT .\n"
     )
 
@@ -58,10 +59,12 @@ def _graph_with(fractions: str, composed: str) -> Graph:
     return Graph().parse(
         data=(
             "@prefix : <urn:example/complement#> .\n"
+            "@prefix watr: <https://watermetadata.org/ontology/watr#> .\n"
+            "@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .\n"
             "@prefix qudt: <http://qudt.org/schema/qudt/> .\n"
             "@prefix s223: <http://data.ashrae.org/standard223#> .\n"
             "@prefix unit: <http://qudt.org/vocab/unit/> .\n"
-            f":medium s223:composedOf {composed} .\n" + fractions
+            f":medium watr:hasCompleteComposition true ; s223:composedOf {composed} .\n" + fractions
         ),
         format="ttl",
     )
@@ -125,3 +128,48 @@ def test_complement_is_silent_when_the_remainder_would_be_negative(
     )
     inferred = _inferred_values(data_graph, ontology_shapes_graph)
     assert inferred.value(COMPLEMENT["water"], S223.hasValue) is None
+
+
+def test_partial_composition_does_not_invent_a_complement(ontology_shapes_graph):
+    data = _graph_with(
+        _fraction("salt", WATR["Salt-NaCl"], 12)
+        + _fraction("water", S223["Constituent-H2O"]), ":salt, :water",
+    )
+    data.remove((COMPLEMENT.medium, WATR.hasCompleteComposition, None))
+    inferred = _inferred_values(data, ontology_shapes_graph)
+    assert inferred.value(COMPLEMENT.water, S223.hasValue) is None
+
+
+def test_mixed_fraction_bases_do_not_infer_a_complement(ontology_shapes_graph):
+    qudt = Namespace("http://qudt.org/schema/qudt/")
+    kinds = Namespace("http://qudt.org/vocab/quantitykind/")
+    data = _graph_with(
+        _fraction("salt", WATR["Salt-NaCl"], 12)
+        + _fraction("water", S223["Constituent-H2O"]), ":salt, :water",
+    )
+    data.set((COMPLEMENT.salt, qudt.hasQuantityKind, kinds.VolumeFraction))
+    inferred = _inferred_values(data, ontology_shapes_graph)
+    assert inferred.value(COMPLEMENT.water, S223.hasValue) is None
+
+
+def test_conflicting_exact_fractions_are_reported(ontology_shapes_graph):
+    data = _graph_with(
+        _fraction("saltA", WATR["Salt-NaCl"], 10)
+        + _fraction("saltB", WATR["Salt-NaCl"], 20), ":saltA, :saltB",
+    )
+    sh = Namespace("http://www.w3.org/ns/shacl#")
+    _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+    assert list(report.subjects(sh.sourceShape, WATR.CompositionIntervalShape))
+
+
+def test_mass_and_volume_percentages_are_not_summed_together(ontology_shapes_graph):
+    data = _graph_with(
+        _fraction("salt", WATR["Salt-NaCl"], 60)
+        + _fraction("water", S223["Constituent-H2O"], 70), ":salt, :water",
+    )
+    qudt = Namespace("http://qudt.org/schema/qudt/")
+    kinds = Namespace("http://qudt.org/vocab/quantitykind/")
+    data.set((COMPLEMENT.salt, qudt.hasQuantityKind, kinds.VolumeFraction))
+    sh = Namespace("http://www.w3.org/ns/shacl#")
+    _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+    assert not list(report.subjects(sh.sourceShape, WATR.CompositionPercentageShape))

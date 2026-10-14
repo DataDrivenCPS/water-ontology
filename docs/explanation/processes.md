@@ -1,8 +1,11 @@
-# Modeling Composition, Topology, and Processes
+# Modeling Composition, Topology, and Treatment Function
 
-The WaTr ontology supports modeling the **processes** involved in a water treatment system (e.g. "UV disinfection), the **composition** of the system and its components (e.g. "this reactor contains a mixer"), and the **topology** of the system (e.g. "this pump is connected to this reactor").
+The WaTr ontology supports modeling the **treatment function** of equipment,
+the **composition** of the system and its components (for example, "this
+reactor contains a lamp"), and the **topology** of the system (for example,
+"this pump is connected to this reactor").
 
-To explain these concepts, we will use the following model of a ultraviolet disinfection system:
+To explain these concepts, we will use the following model of an ultraviolet disinfection system:
 
 ![](Topology.png)
 
@@ -28,19 +31,19 @@ We model this using the `s223:contains` relationship between the lamps and the u
 
 :myPFR a watr:PlugFlowReactor .
 
-:myUVLamp1 a watr:Lamp ;
+:myUVLamp1 a s223:Equipment ;
     s223:hasProperty [
         a s223:QuantifiableObservableProperty ;
         qudt:hasQuantityKind qudtqk:Wavelength ;
         s223:hasValue 250 ;
-        s223:hasUnit unit:NanoM ;
+        qudt:hasUnit unit:NanoM ;
     ] .
-:myUVLamp2 a watr:Lamp ;
+:myUVLamp2 a s223:Equipment ;
     s223:hasProperty [
         a s223:QuantifiableObservableProperty ;
         qudt:hasQuantityKind qudtqk:Wavelength ;
         s223:hasValue 250 ;
-        s223:hasUnit unit:NanoM ;
+        qudt:hasUnit unit:NanoM ;
     ] .
 ```
 
@@ -122,26 +125,44 @@ watr:Water-Seawater
     ] .
 ```
 
-Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. This compatibility claim means only that the media share a compatible constituent; it does not say that their compositions are equivalent or check a material balance. `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content in this abstraction, while the saline media additionally declare `watr:Salt-NaCl`. The [`ro-mixture-test.ttl`](../../examples/ro-mixture-test.ttl) example shows the resulting seawater-feed, freshwater-permeate, brine-concentrate configuration validating.
+Because seawater, brackish water, brine, and freshwater all declare `s223:Constituent-H2O`, S223 treats them as mutually compatible: a single piece of equipment can accept a seawater feed and emit freshwater and brine streams without the validator flagging the distinct media as inconsistent. This compatibility claim means only that the media share a compatible constituent; it does not say that their compositions are equivalent or check a material balance. `Water-Freshwater` declares only `Constituent-H2O`, reflecting its negligible salt content in this abstraction, while the saline media additionally declare `watr:Salt-NaCl`. The {download}`ro-mixture-test.ttl <../../examples/ro-mixture-test.ttl>` example shows the resulting seawater-feed, freshwater-permeate, brine-concentrate configuration validating.
 
 `watr:Fluid-Sludge` is likewise an aqueous medium: it is a `s223:Mix-Fluid` and a `s223:Fluid-Water`, so equipment that accepts water-based fluids (for example, `s223:Pump`) keeps the actual sludge medium on its connection points instead of substituting the less specific `Fluid-Water`.
 
-WaTr follows S223's self-enumerated medium pattern: a reusable medium designation is both a class and an instance of itself, and it is used directly as the value of `s223:hasMedium`. For a reusable salinity such as 15-percent brine, mint a more specific medium class, type it as itself, subclass it from `Water-Brine`, and assert its quantified composition directly. The [`brine-composition.ttl`](../../examples/brine-composition.ttl) example demonstrates this pattern.
+WaTr follows S223's self-enumerated medium pattern: a reusable medium designation is both a class and an instance of itself, and it is used directly as the value of `s223:hasMedium`. For a reusable salinity such as 15-percent brine, mint a more specific medium class, type it as itself, subclass it from `Water-Brine`, and assert its quantified composition directly. The {download}`brine-composition.ttl <../../examples/brine-composition.ttl>` example demonstrates this pattern.
 
 Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium does not acquire the `s223:composedOf` statements of `Water-Brine`; it must repeat every constituent needed to describe its own composition. The superclass organizes the medium vocabulary and participates in class compatibility, but it is not an RDF template that copies constituent properties to subclasses or ordinary instances.
 
-Where a composition *is* quantified, `watr:CompositionPercentageShape` checks that it stays physically possible: for any node with `s223:composedOf` fractions given in `unit:PERCENT`, the declared percentages may not add up to more than 100%. When a constituent is given as a range with `s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the lowest declared percentage for that constituent counts, since the upper bounds of a set of ranges need not be simultaneously satisfiable — `Brine-5to10Percent` (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. The shape does not require the percentages to add up *to* 100: a partially specified composition that names only some of its constituents remains valid. The [`composition-exceeds-100-percent.ttl`](../../examples/nonconforming/composition-exceeds-100-percent.ttl) example shows a composition the rule rejects.
+Where a composition *is* quantified, `watr:CompositionPercentageShape` checks that it stays physically possible: for any node with `s223:composedOf` fractions given in `unit:PERCENT`, the declared percentages on each common mass or volume basis may not add up to more than 100%. When a constituent is given as a range with `s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the greatest declared lower bound for that constituent counts, since the upper bounds of a set of ranges need not be simultaneously satisfiable — `Brine-5to10Percent` (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. The shape does not require the percentages to add up *to* 100: a partially specified composition that names only some of its constituents remains valid. The {download}`composition-exceeds-100-percent.ttl <../../examples/nonconforming/composition-exceeds-100-percent.ttl>` example shows a composition the rule rejects.
 
-The other direction is handled by `watr:CompositionComplementRule`, a SHACL-AF rule that fills in a percentage you did not state. If a medium's fractions are given in percent and exactly one of them carries no `s223:hasValue`, that fraction is inferred to be the remainder of the others — declare 12% salt and leave the water fraction empty, and the rule supplies 88%. It generalizes beyond two constituents: 20% salt and 10% solids leaves 70% for water. The fraction being completed can be an inline blank node or a named one; name it when something else in the model needs to refer to the inferred value. The [`brine-inferred-complement.ttl`](../../examples/brine-inferred-complement.ttl) example shows both forms.
+When `watr:hasCompleteComposition true` is asserted, the common-basis fractions
+must also permit a total of 100%. `watr:CompleteCompositionShape` rejects exact
+fractions totaling 90%, or ranges whose upper bounds total only 90%. It uses the
+tightest upper bound per constituent; a missing value or a lower-only bound can
+still reach 100% and does not by itself establish a deficit. Mixed units or bases
+do not establish a common total. The
+{download}`complete-composition-ranges.ttl <../../examples/complete-composition-ranges.ttl>`
+example demonstrates feasible bounds, and the
+{download}`complete-composition-below-100-percent.ttl <../../examples/nonconforming/complete-composition-below-100-percent.ttl>`
+example demonstrates a rejected complete composition.
 
-The rule deliberately stays silent in four cases, because none of them determines a single value: more than one fraction is unquantified, no fraction is quantified at all (so a medium that names `Constituent-H2O` alone is not claimed to be 100% water), a quantified fraction is a `s223:Aspect-LowLimit` or `s223:Aspect-HighLimit` range, or the remainder would be negative — that last case is the over-100% error, which `watr:CompositionPercentageShape` reports rather than papering over.
+The other direction is handled by `watr:CompositionComplementRule`, a SHACL-AF rule that fills in a percentage you did not state. If a medium explicitly declares `watr:hasCompleteComposition true`, its fractions share a mass or volume basis and percent units, and exactly one of them carries no `s223:hasValue`, that fraction is inferred to be the remainder of the others — declare 12% salt and leave the water fraction empty, and the rule supplies 88%. It generalizes beyond two constituents: 20% salt and 10% solids leaves 70% for water. The fraction being completed can be an inline blank node or a named one; name it when something else in the model needs to refer to the inferred value. The {download}`brine-inferred-complement.ttl <../../examples/brine-inferred-complement.ttl>` example shows both forms.
+
+The rule stays silent unless composition completeness is explicitly asserted and all fractions have the same basis and units. It also stays silent in four cases, because none of them determines a single value: more than one fraction is unquantified, no fraction is quantified at all (so a medium that names `Constituent-H2O` alone is not claimed to be 100% water), a quantified fraction is a `s223:Aspect-LowLimit` or `s223:Aspect-HighLimit` range, or the remainder would be negative — that last case is the over-100% error, which `watr:CompositionPercentageShape` reports rather than papering over.
 
 ## Processes
 
-Tr is careful to differentiate between *what* a unit process is doing vs *how* that unit process is put together.
-For example, our UV Disinfection System is a unit process that performs UV disinfection, but it is made up of a plug flow reactor and two UV lamps.
-Another kind of UV disinfection system might use a different kind of reactor, or a different number of lamps, but it would still be performing UV disinfection.
-WaTr is designed so that consumers of a WaTr graph can query for all unit processes that perform UV disinfection, regardless of how they are constructed.
+The complete equipment modeling pattern is described in [Equipment Type,
+Treatment Objective, Process, and Role](equipment_function.md). This section introduces the
+process portion of that pattern in the context of the UV system.
+
+WaTr differentiates what a treatment unit does from how that unit is put
+together. For example, the UV system performs ultraviolet irradiation for the
+treatment objective of disinfection, but it is made up of a plug flow reactor and two UV
+lamps. Another UV system might use a different kind of reactor or a different
+number of lamps, but it would still perform ultraviolet irradiation. Consumers
+can query for all units that have disinfection as their treatment objective regardless of
+how they are constructed.
 
 The process enacted by a unit process is defined by the `watr:hasProcess` property.
 
@@ -155,16 +176,252 @@ The process enacted by a unit process is defined by the `watr:hasProcess` proper
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
+    watr:hasProcess watr:Process-UVIrradiation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
 .
 ```
 
 WaTr defines a set of process types that can be used to describe the processes enacted by unit processes. These process types are defined in the `watr:Process` class and its subclasses. The process type is a high-level description of what the unit process does, without specifying how it is constructed.
 
+### Abstract and Concrete Process Requirements
+
+Process types form a subclass hierarchy with multiple inheritance (e.g. `Process-ReverseOsmosis` is a subtype of both `Process-MembraneProcess` and `Process-Filtration`), and the equipment classes mirror that hierarchy: a `ReverseOsmosisMembrane` is a kind of `Filter`. WaTr expresses the `hasProcess` requirement as a pair of constraints that line up with these two hierarchies. An *abstract* parent says *what kind* of process the equipment performs, and a *concrete* subclass pins down *which one*:
+
+```ttl
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+watr:Filter
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;   # any filtration process
+        sh:qualifiedMinCount 1 ;
+    ] .
+
+watr:ReverseOsmosisMembrane
+    sh:property [
+        sh:path watr:hasProcess ;
+        sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ] ;   # specifically RO
+        sh:qualifiedMinCount 1 ;
+    ] .
+```
+
+Because `Process-ReverseOsmosis` is an `rdfs:subClassOf` `Process-Filtration`, a single `watr:hasProcess watr:Process-ReverseOsmosis` on an instance satisfies *both* the inherited general requirement and the concrete one, because the specific process counts as the general kind. The parents are effectively abstract: they describe the family of process the equipment performs, and the concrete subclass narrows it to the exact process. The same pattern is used for the digester, disinfection, and separation families (e.g. a `Digester` requires a `Process-Digestion`; an `AnaerobicDigester` requires a `Process-AnaerobicDigestion`).
+
+### Additional processes
+
+Each slot means "performs **at least** this process". Equipment may declare further processes beyond the one its class requires. A moving bed bioreactor aerates, a granular media filter backwashes, an anaerobic digester mixes:
+
+```ttl
+:myMBBR a watr:MovingBedBioreactor ;
+    watr:hasProcess watr:Process-Biofiltration ,   # satisfies MBBR and, transitively, Filter
+                    watr:Process-Aeration .        # additional
+```
+
+The defining process remains required. With inference enabled, class defaults
+add biofiltration to an MBBR that states only aeration, or reverse osmosis to an
+RO unit that states only microfiltration. With `infer=False`, missing class-required
+processes cause validation failures.
+
+This is why the constraints are `sh:qualifiedValueShape` with `sh:qualifiedMinCount 1`. A bare `sh:class` applies to *every* value on the path, so it would forbid the additional processes; `sh:maxCount` caps the path and has the same effect. Use `sh:qualifiedMaxCount 1` when a particular process must appear exactly once, and avoid `sh:qualifiedValueShapesDisjoint`, which prevents a value from satisfying both a parent's slot and a child's.
+
+`watr:UnitProcess` is the one class that uses a bare `sh:class`: it requires every value to be a `watr:Process`.
+
+WaTr does not maintain equipment/process permission lists or issue plausibility
+warnings for additional processes. Possible future checks are tracked in
+[Pending Ontology Features](pending_features.md).
+
+### Process vs. Role
+
+A WaTr equipment model separates four claims:
+
+| claim | representation |
+|---|---|
+| equipment identity | `rdf:type`, such as `a watr:BeltThickener` |
+| treatment objective | `watr:hasTreatmentObjective` |
+| performed process | `watr:hasProcess` |
+| commissioned function in a system | `s223:hasRole` |
+
+A treatment objective names the intended result, such as thickening or disinfection. A
+process is an activity performed by equipment or by a system, such as
+filtration, sedimentation, or backwashing. A role identifies the commissioned
+function of an entity within a system, such as a treatment stage, a zone regime,
+or the purpose of a connection point.
+
+S223 roles describe commissioned function, not instantaneous operating state — a heating coil keeps `Role-Heating` while it is switched off. `Role-Aerobic`, `Role-Anoxic` and `Role-Anaerobic` say which regime a zone is commissioned to run in, which is what makes the role slots on `AerationBasin` and `MixingBasin` discriminate between the zones of a train: read as bare capability they would be vacuous, since any basin with diffusers *can* be run aerobic. A swing zone commissioned for either regime carries both `Role-Aerobic` and `Role-Anoxic`, and keeps both whatever its blowers are doing.
+
+The dissolved oxygen present at a point in time is a reading, not a role. It belongs on an `s223:QuantifiableObservableProperty` of the medium, which is what a `watr:OxygenMeter` observes:
+
+```ttl
+:swing_zone a watr:AerationBasin ;
+    s223:hasRole watr:Role-Aerobic, watr:Role-Anoxic ;      # commissioned for either
+    watr:hasProcess watr:Process-Aeration, watr:Process-Denitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+
+:do_meter a watr:OxygenMeter ;
+    s223:hasObservationLocation :swing_zone ;
+    s223:observes :dissolved_oxygen .
+
+:dissolved_oxygen a s223:QuantifiableObservableProperty ;    # what it is doing now
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:MilliGM-PER-L .
+```
+
+A reading near zero does not withdraw `Role-Aerobic` from the basin, and a reading of 2 mg/L does not withdraw `Role-Anoxic`. `examples/swing-zone-dissolved-oxygen.ttl` is the whole model, validated with the rest of the examples.
+
+WaTr defines roles in these groups:
+
+| group | roles |
+|---|---|
+| treatment stage | `Role-Primary`, `Role-Secondary`, `Role-Tertiary`, `Role-Pretreatment`, `Role-Posttreatment` |
+| zone regime | `Role-Aerobic`, `Role-Anoxic`, `Role-Anaerobic` |
+| operational purpose | `Role-Storage`, `Role-Equalization`, `Role-Detention`, `Role-Retention`, `Role-Containment`, `Role-Extended`, `Role-Stepfeed` |
+| connection point | `Role-Drain`, `Role-Overflow`, `Role-Feed`, `Role-Permeate`, `Role-MakeUp` |
+
+`watr:Role-Primary` and `watr:Role-Secondary` refer to wastewater treatment stages. The similarly named S223 roles refer to primary and secondary loops.
+
+### Processes performed by systems
+
+See [Processes Performed by Systems](system_processes.md) for the complete
+treatment-train pattern and coverage queries.
+
+Some processes belong to a collection rather than to one member. A backwash pump pumps, a tank stores water, and valves control flow; the backwash system performs backwashing:
+
+```ttl
+:BackwashSystem a s223:System ;
+    s223:hasMember :myBackwashPump, :myBackwashTank, :myBackwashValve ;
+    watr:hasProcess watr:Process-Backwashing .
+```
+
+`watr:ProcessBearerShape` enforces the subject boundary: `watr:hasProcess` may be asserted on an `s223:Equipment` or an `s223:System`, and nothing else. `watr:ProcessValueShape` enforces the other end of the relation: every value must be a `watr:Process`. These are shapes rather than `rdfs:domain` and `rdfs:range` axioms on purpose — axioms would infer types onto an invalid model instead of rejecting it.
+
+Treatment-train processes such as MLE, A2O, UCT, and Bardenpho are asserted on the system whose members perform their constituent steps. An integrated unit such as a sequencing batch reactor may carry a compound process itself.
+
+`watr:includesProcess` records what a compound process decomposes into, stated once on the process type rather than repeated in every model:
+
+```ttl
+watr:Process-ActivatedSludge
+    watr:includesProcess watr:Process-Aeration ,
+                         watr:Process-SolidLiquidSeparation .
+
+watr:Process-AO
+    watr:includesProcess watr:Process-Nitrification ,
+                         watr:Process-Denitrification .
+```
+
+`Process-SolidLiquidSeparation` is a process family. Sedimentation satisfies it in a conventional activated-sludge train, microfiltration or ultrafiltration in a membrane bioreactor, flotation in a DAF, centrifugation in a centrifuge. The step names that family rather than `Process-Separation` above it, because screening and stripping are separations too and neither is the step in which a train parts its biomass from the treated water. Recirculation is declared on configurations that require it, including MLE, A2O, UCT, and the Bardenpho processes.
+
+Solid-liquid separation cuts across filtration rather than sitting above or below it. `Process-Filtration` and `Process-MembraneProcess` are separate subtypes of `Process-Separation`. Microfiltration, ultrafiltration and reverse osmosis are subtypes of both families. Media filtration, microfiltration and ultrafiltration additionally declare `Process-SolidLiquidSeparation`; reverse osmosis does not satisfy the suspended-solids separation step of an activated-sludge train.
+
+Membrane distillation and electrodialysis are membrane processes without a filtration parent. Membrane distillation transports water as vapour; electrodialysis transports ions under an electric potential. Electrodialysis retains its existing chemical-process parent; that separate classification is not revised here.
+
+```ttl
+watr:Process-Microfiltration
+    rdfs:subClassOf watr:Process-MembraneProcess ,
+                    watr:Process-Filtration ,
+                    watr:Process-SolidLiquidSeparation .
+
+watr:Process-ReverseOsmosis
+    rdfs:subClassOf watr:Process-MembraneProcess ,
+                    watr:Process-Filtration .
+```
+
+`watr:SystemProcessCoverageShape` warns when neither a system, any transitively nested member, nor equipment contained within a member performs a required constituent process:
+
+```ttl
+:MLESystem a s223:System ;
+    s223:hasMember :anoxicZone, :aerationBasin, :secondaryClarifier, :rasPump ;
+    watr:hasProcess watr:Process-MLE .
+
+:anoxicZone a watr:MixingBasin ;
+    watr:hasProcess watr:Process-Mixing , watr:Process-Denitrification ;
+    s223:hasRole watr:Role-Anoxic .
+```
+
+Coverage findings have severity `sh:Warning`, allowing partial system models. A compound process uses `watr:includesProcess` for its steps; it is not an `rdfs:subClassOf` those steps.
+
+### Process assertions
+
+| strength | meaning | stated on | expressed by |
+|---|---|---|---|
+| **required** | an equipment class requires the process | equipment class | `sh:qualifiedValueShape` + `sh:qualifiedMinCount 1` |
+| **constituent** | a compound process includes the step | process class | `watr:includesProcess` |
+| **explicit** | the modeler states an additional activity | equipment or system instance | `watr:hasProcess` |
+
+### Treatment Objective and process
+
+What a piece of equipment is *for* is separate from what it *does*, and the two are separate vocabularies. `watr:TreatmentObjective-*` names objectives; `watr:Process-*` names activities. No term is both.
+
+The separation is needed because neither relation between them is a hierarchy. One process serves several treatment objectives:
+
+```ttl
+:primaryClarifier   watr:hasProcess watr:Process-Settling ;
+                    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification ;
+                    s223:hasRole    watr:Role-Primary .
+
+:gravityThickener   watr:hasProcess watr:Process-Settling ;
+                    watr:hasTreatmentObjective watr:TreatmentObjective-Thickening .
+```
+
+and one treatment objective is reached by several processes:
+
+```ttl
+:chlorinationUnit   watr:hasProcess watr:Process-Chlorination ;
+                    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
+
+:uvUnit             watr:hasProcess watr:Process-UVIrradiation ;
+                    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
+```
+
+A practitioner reads a clarifier the same way: its job is to clarify, and it
+does so by settling. Naming the mechanism alone leaves the objective unstated.
+Ultraviolet irradiation likewise names the activity, while disinfection names
+the treatment objective.
+
+Class-defined processes and design objectives follow equipment when its stage
+changes. Target-specific objectives may depend on plant intent and remain
+explicit. A primary and a secondary clarifier share settling and clarification
+and differ in their commissioned stage role.
+
+#### Relating a process to its fixed treatment objective
+
+Where a process achieves the same thing wherever it is performed, the process type says so once with `watr:achievesTreatmentObjective`, rather than every machine repeating it:
+
+```ttl
+watr:Process-Denitrification  watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+watr:Process-Chlorination     watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
+watr:Process-MLE              watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+```
+
+Filtration and settling inherit broad constituent removal from separation;
+the modeler states their specific target or product objective. Generic ozonation,
+UV irradiation, and thermal treatment leave their objectives to equipment design
+or plant intent. Two cases are worth spelling out. `Process-Nitrification` achieves `TreatmentObjective-AmmoniaControl` and *not* `TreatmentObjective-NitrogenRemoval`, which is also why `TreatmentObjective-AmmoniaControl` sits outside `TreatmentObjective-NutrientRemoval`. `Process-ChemicalPrecipitation` declares broad constituent removal; its specific
+target depends on the reagent. The objectives it may serve are named so the equipment has something to point at — `TreatmentObjective-Softening`, `TreatmentObjective-PhosphorusRemoval`, `TreatmentObjective-MetalsRemoval`, `TreatmentObjective-SulfateRemoval`, `TreatmentObjective-SilicaRemoval` — and their specific targets are stated on the equipment.
+
+#### Constraints
+
+- `watr:ProcessValueShape` and `watr:TreatmentObjectiveValueShape` keep the vocabularies apart: an objective asserted with `watr:hasProcess` is rejected, and an activity asserted with `watr:hasTreatmentObjective` likewise.
+- `watr:TreatmentObjectiveRequiresProcessShape` requires a process after inference;
+  a class default can supply it. With inference disabled, it must be stated explicitly.
+- `watr:ProcessBearerShape` restricts both predicates to `s223:Equipment` and `s223:System`.
+
+#### Equipment carrying several processes
+
+Two patterns remain, and both keep every value on `watr:hasProcess`. **Refinement** states one activity at two levels: a `ReverseOsmosisMembrane` requires `Process-Filtration` from `watr:Filter` and `Process-ReverseOsmosis` of its own, and a single value satisfies both. **Co-occurrence** is several activities in one vessel, as a `SequencingBatchReactor` aerates and settles in successive phases.
+
+Requirements from ancestors combine conjunctively, as everywhere in SHACL.
+
 
 ## Putting It All Together
 
-All of this information is captured in a single graph (the "WaTr model" of a treatment train). Below is the complete example of the UV disinfection system, including the composition, topology, and process information of this unit process.
+The fragments above illustrate individual aspects of a model. The complete
+example below combines composition, topology, and treatment function. UV lamps
+use generic `s223:Equipment` with wavelength properties; WaTr defines no separate
+lamp class. The reactor explicitly performs UV irradiation, since containment
+does not copy a parent's process onto its components.
 
 ```ttl
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
@@ -176,36 +433,64 @@ All of this information is captured in a single graph (the "WaTr model" of a tre
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
 :UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
+    rdfs:label "UVDisinfectionSystem" ;
+    watr:hasProcess watr:Process-UVIrradiation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection ;
     s223:contains :myPFR, :myUVLamp1, :myUVLamp2 ;
     s223:cnx :UVInlet, :UVOutlet .
 
 :UVInlet a s223:InletConnectionPoint ;
+    rdfs:label "UVInlet" ;
     s223:hasMedium s223:Fluid-Water .
 :UVOutlet a s223:OutletConnectionPoint ;
+    rdfs:label "UVOutlet" ;
     s223:hasMedium s223:Fluid-Water .
 
 :myPFR a watr:PlugFlowReactor ;
+    rdfs:label "myPFR" ;
+    watr:hasProcess watr:Process-UVIrradiation ;
     s223:cnx :PFRInlet, :PFROutlet .
 :PFRInlet a s223:InletConnectionPoint ;
+    rdfs:label "PFRInlet" ;
     s223:hasMedium s223:Fluid-Water ;
     s223:mapsTo :UVInlet .
 :PFROutlet a s223:OutletConnectionPoint ;
+    rdfs:label "PFROutlet" ;
     s223:hasMedium s223:Fluid-Water ;
     s223:mapsTo :UVOutlet .
 
-:myUVLamp1 a watr:Lamp ;
+:myUVLamp1 a s223:Equipment ;
+    rdfs:label "myUVLamp1" ;
     s223:hasProperty [
         a s223:QuantifiableObservableProperty ;
+        rdfs:label "Emitted wavelength" ;
         qudt:hasQuantityKind qudtqk:Wavelength ;
         s223:hasValue 250 ;
-        s223:hasUnit unit:NanoM ;
+        qudt:hasUnit unit:NanoM ;
     ] .
-:myUVLamp2 a watr:Lamp ;
+:myUVLamp2 a s223:Equipment ;
+    rdfs:label "myUVLamp2" ;
     s223:hasProperty [
         a s223:QuantifiableObservableProperty ;
+        rdfs:label "Emitted wavelength" ;
         qudt:hasQuantityKind qudtqk:Wavelength ;
         s223:hasValue 250 ;
-        s223:hasUnit unit:NanoM ;
+        qudt:hasUnit unit:NanoM ;
     ] .
 ```
+
+### Treatment objectives inferred from mechanisms
+
+SHACL-AF rules supply class-required processes and design objectives, then
+supply the objectives declared by those processes or their ancestors. All
+separation processes imply broad constituent removal. A modeler still states
+the specific target or product intent, such as desalination, arsenic removal,
+lead removal, or resource recovery. Backwashing and other cleaning activities
+imply equipment cleaning. These annotations describe intended function and do
+not validate observed removal efficiency or permit compliance.
+
+A flowing **medium** is distinct from a filter **medium**: water or brine flows
+through equipment, while sand, carbon, resin, or a membrane provides the
+separation material. Shared-constituent compatibility is a topology check. It
+does not establish membrane selectivity, pumping suitability, or mass balance.
+See the [treatment references and review decisions](treatment_review.md).
