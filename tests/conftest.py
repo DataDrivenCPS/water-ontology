@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -114,16 +115,47 @@ def water_graph_without_class_defaults() -> Graph:
     return g
 
 
-@pytest.fixture(scope="session")
-def ontoenv():
-    """One resolver for the session; building it is the expensive part."""
+@contextmanager
+def _test_environment(root: Path, temporary_root: Path):
+    """Resolve current sources without writing to the development environment.
+
+    Reuse only downloaded vocabulary from its cache. Local models and compiled
+    graphs are excluded, and source modules are always indexed afresh.
+    """
+    cached_graphs = []
+    options = {}
+    if (root / ".ontoenv").is_dir():
+        with OntoEnv.connect(str(root), read_only=True) as existing:
+            options = {
+                "offline": existing.is_offline(),
+                "remote_cache_ttl_secs": existing.remote_cache_ttl_secs(),
+            }
+            cache = temporary_root / "vocabulary-cache"
+            cache.mkdir(parents=True)
+            for name in sorted(existing.get_ontology_names()):
+                location = str(existing.get_ontology(name).location)
+                if not location.startswith(("http://", "https://")):
+                    continue
+                path = cache / f"{len(cached_graphs)}.ttl"
+                existing.copy_graph(name).serialize(path, format="turtle")
+                cached_graphs.append((name, path))
+
     with OntoEnv.create(
-        str(ROOT),
-        overwrite=True,
-        search_directories=[str(WATER_DIR), str(S223_DIR)],
+        str(temporary_root / "resolver"),
+        search_directories=[str(root / "ontology"), str(root / "s223")],
         includes=["*.ttl"],
+        **options,
     ) as env:
+        for name, path in cached_graphs:
+            env.add_no_imports(str(path), rename=name)
         env.update(force=True)
+        yield env
+
+
+@pytest.fixture(scope="session")
+def ontoenv(tmp_path_factory):
+    """One isolated resolver for the session, with reusable remote vocabulary."""
+    with _test_environment(ROOT, tmp_path_factory.mktemp("ontoenv")) as env:
         yield env
 
 

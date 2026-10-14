@@ -625,3 +625,38 @@ def test_no_process_slot_uses_qualified_value_shapes_disjoint(water_graph):
         for ps in water_graph.subjects(SH.qualifiedValueShapesDisjoint, None)
     }
     assert not offenders, f"sh:qualifiedValueShapesDisjoint still present on {offenders}"
+
+
+@pytest.mark.parametrize("nested_system,depth", [(False, 1), (False, 2), (True, 2)])
+def test_contained_equipment_covers_system_steps(nested_system, depth, water_graph):
+    membership = ("ex:train s223:hasMember ex:subsystem . "
+                  "ex:subsystem a s223:System; s223:hasMember ex:basin, ex:settler ."
+                  if nested_system else "ex:train s223:hasMember ex:basin, ex:settler .")
+    containment = "ex:basin s223:contains ex:region ."
+    if depth == 2:
+        containment += "ex:region s223:contains ex:inner ."
+    performer = "inner" if depth == 2 else "region"
+    body = (
+        "ex:train a s223:System; watr:hasProcess watr:Process-ActivatedSludge ."
+        + membership + containment
+        + "ex:basin a s223:Equipment . ex:region a watr:EquipmentRegion ."
+        + f"ex:{performer} a watr:EquipmentRegion; watr:hasProcess watr:Process-Aeration ."
+        + _member("settler", "Settling")
+    )
+    assert not _findings(body, water_graph, WATR.SystemProcessCoverageShape)
+    inferred = _materialized(body, water_graph)
+    # Coverage inspects descendants; it does not assert their activities on parents.
+    assert not list(inferred.objects(EX.basin, WATR.hasProcess))
+
+
+def test_unrelated_equipment_region_cannot_cover_a_system_step(water_graph):
+    body = (
+        "ex:train a s223:System; watr:hasProcess watr:Process-ActivatedSludge; "
+        "s223:hasMember ex:basin, ex:settler ."
+        "ex:basin a s223:Equipment ."
+        "ex:elsewhere a s223:Equipment; s223:contains ex:region ."
+        "ex:region a watr:EquipmentRegion; watr:hasProcess watr:Process-Aeration ."
+        + _member("settler", "Settling")
+    )
+    findings = _findings(body, water_graph, WATR.SystemProcessCoverageShape)
+    assert any("Process-Aeration" in message for message in findings)

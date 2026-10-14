@@ -23,6 +23,9 @@ that usable:
     naming a constituent we have not modeled yet is incomplete, not wrong.
 """
 
+from pathlib import Path
+
+import pytest
 import shifty
 from rdflib import Graph, Literal, Namespace
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
@@ -210,7 +213,60 @@ def test_legacy_solids_objective_remains_compatible(ontology_shapes_graph):
     assert new in set(query_graph.objects(
         example.legacyObjective, RDF.type / (RDFS.subClassOf * "*")
     ))
-    inherited_targets = set(query_graph.objects(
-        example.legacyObjective, RDF.type / (RDFS.subClassOf * "*") / WATR.targetsConstituent
-    ))
+    inherited_targets = _effective_targets(query_graph, example.legacyObjective)
     assert inherited_targets == {WATR["Constituent-SuspendedSolids"]}
+
+
+# Execute the published query so its override semantics stay usable by consumers.
+def _effective_targets(graph, objective):
+    guide = (Path(__file__).parents[1] / "docs/guides/querying_treatment_function.md").read_text()
+    section = guide.split("## Find equipment by constituent", 1)[1]
+    query = section.split("```sparql", 1)[1].split("```", 1)[0]
+    prefixes = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX watr: <https://watermetadata.org/ontology/watr#>
+    """
+    model = Graph() + graph
+    unit = Namespace("urn:constituents#").queryUnit
+    model.add((unit, WATR.hasTreatmentObjective, objective))
+    return {row.constituent for row in model.query(prefixes + query)
+            if row.unit == unit and row.objective == objective}
+
+
+@pytest.mark.parametrize("objective,targets", [
+    ("NitrogenRemoval", {"Nitrogen"}),
+    ("PhosphorusRemoval", {"Phosphorus"}),
+    ("NutrientRemoval", {"Nitrogen", "Phosphorus"}),
+    ("Clarification", {"SuspendedSolids"}),
+    ("Softening", {"Hardness"}),
+    ("Desalination", {"Salt"}),
+    ("LeadRemoval", {"Lead"}),
+])
+def test_constituent_query_uses_specific_targets(objective, targets, water_graph):
+    assert _effective_targets(water_graph, WATR[f"TreatmentObjective-{objective}"]) == {
+        WATR[f"Constituent-{target}"] for target in targets
+    }
+
+
+@pytest.mark.parametrize("override", [False, True])
+def test_local_objective_target_overrides_its_class(override, water_graph):
+    local = Namespace("urn:constituents#")
+    graph = Graph() + water_graph
+    graph.add((local.objective, RDF.type, WATR["TreatmentObjective-NitrogenRemoval"]))
+    if override:
+        graph.add((local.objective, WATR.targetsConstituent, local.selenium))
+    assert _effective_targets(graph, local.objective) == {
+        local.selenium if override else WATR["Constituent-Nitrogen"]
+    }
+
+
+def test_constituent_query_keeps_independent_inheritance_branches(water_graph):
+    local = Namespace("urn:constituents#")
+    graph = Graph() + water_graph
+    graph.add((local.objective, RDF.type, local.DualObjective))
+    for parent in ("NitrogenRemoval", "PhosphorusRemoval"):
+        graph.add((local.DualObjective, RDFS.subClassOf, WATR[f"TreatmentObjective-{parent}"]))
+    assert _effective_targets(graph, local.objective) == {
+        WATR["Constituent-Nitrogen"], WATR["Constituent-Phosphorus"]
+    }

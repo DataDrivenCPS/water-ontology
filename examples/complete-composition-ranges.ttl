@@ -1,0 +1,53 @@
+@prefix : <urn:example/complete-composition#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/complete-composition-ranges> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "complete-composition-ranges" ;
+    rdfs:comment "A complete composition whose salt and water intervals permit a total of 100 percent." .
+
+:medium a watr:Class, :medium, sh:NodeShape ;
+    rdfs:subClassOf watr:Water-Brine ;
+    rdfs:label "Complete brine composition" ;
+    rdfs:comment "A complete composition whose salt and water intervals permit a total of 100 percent." ;
+    watr:hasCompleteComposition true ;
+    s223:composedOf :saltLow, :saltHigh, :waterLow, :waterHigh .
+
+:saltLow a s223:QuantifiableProperty ;
+    rdfs:label "saltLow" ;
+    s223:ofConstituent watr:Salt-NaCl ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasAspect s223:Aspect-LowLimit ;
+    s223:hasValue 5 .
+
+:saltHigh a s223:QuantifiableProperty ;
+    rdfs:label "saltHigh" ;
+    s223:ofConstituent watr:Salt-NaCl ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasAspect s223:Aspect-HighLimit ;
+    s223:hasValue 10 .
+
+:waterLow a s223:QuantifiableProperty ;
+    rdfs:label "waterLow" ;
+    s223:ofConstituent s223:Constituent-H2O ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasAspect s223:Aspect-LowLimit ;
+    s223:hasValue 90 .
+
+:waterHigh a s223:QuantifiableProperty ;
+    rdfs:label "waterHigh" ;
+    s223:ofConstituent s223:Constituent-H2O ;
+    qudt:hasQuantityKind quantitykind:MassFraction ;
+    qudt:hasUnit unit:PERCENT ;
+    s223:hasAspect s223:Aspect-HighLimit ;
+    s223:hasValue 95 .

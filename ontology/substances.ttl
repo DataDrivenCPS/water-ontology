@@ -801,3 +801,51 @@ watr:CompositionIntervalShape
             }
         """ ;
     ] .
+
+# A complete common-basis composition must have enough possible material to
+# reach 100%. Exact values also act as upper bounds; a lower-only or unknown
+# fraction can still reach 100%. Duplicate bounds describe one constituent.
+watr:CompleteCompositionShape
+    a sh:NodeShape ;
+    rdfs:label "Complete Composition Feasibility" ;
+    rdfs:comment "A composition explicitly marked complete must permit a total of 100 percent on its common mass or volume basis. Exact values and upper bounds constrain the maximum; unknown and lower-only fractions remain unconstrained up to 100 percent." ;
+    sh:targetSubjectsOf s223:composedOf ;
+    sh:sparql [
+        sh:prefixes <https://watermetadata.org/ontology/modules/substances> ;
+        sh:message "The complete composition of {$this} can reach at most {?maximum}%, below 100%." ;
+        sh:select """
+            SELECT $this ?kind ?maximum WHERE {
+                $this watr:hasCompleteComposition true .
+                {
+                    SELECT $this ?kind (SUM(?upper) AS ?maximum) WHERE {
+                        {
+                            SELECT $this ?kind ?constituent (MIN(?bound) AS ?upper) WHERE {
+                                $this s223:composedOf ?fraction .
+                                ?fraction s223:ofConstituent ?constituent ;
+                                          qudt:hasUnit unit:PERCENT ;
+                                          qudt:hasQuantityKind ?kind .
+                                FILTER (?kind IN (quantitykind:MassFraction, quantitykind:VolumeFraction))
+                                OPTIONAL {
+                                    ?fraction s223:hasValue ?value .
+                                    FILTER NOT EXISTS { ?fraction s223:hasAspect s223:Aspect-LowLimit }
+                                }
+                                BIND (COALESCE(?value, 100) AS ?bound)
+                            }
+                            GROUP BY $this ?kind ?constituent
+                        }
+                    }
+                    GROUP BY $this ?kind
+                }
+                # Different units or bases do not establish a common total.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?other .
+                    FILTER NOT EXISTS {
+                        ?other s223:ofConstituent ?otherConstituent ;
+                               qudt:hasUnit unit:PERCENT ;
+                               qudt:hasQuantityKind ?kind .
+                    }
+                }
+                FILTER (?maximum < 100)
+            }
+        """ ;
+    ] .

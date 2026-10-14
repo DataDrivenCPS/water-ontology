@@ -33,19 +33,50 @@ objective. Following the treatment objective hierarchy includes more specific tr
 ```sparql
 SELECT DISTINCT ?unit ?objective WHERE {
   ?unit watr:hasTreatmentObjective ?objective .
-  ?objective rdfs:subClassOf* watr:TreatmentObjective-NutrientRemoval .
+  ?objective rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-NutrientRemoval .
 }
 ORDER BY ?unit ?objective
 ```
 
-For an exact treatment objective such as desalination, the query can be shorter:
+For an exact treatment objective such as desalination, match its designation or
+a locally typed instance:
 
 ```sparql
 SELECT DISTINCT ?unit WHERE {
-  ?unit watr:hasTreatmentObjective watr:TreatmentObjective-Desalination .
+  ?unit watr:hasTreatmentObjective ?objective .
+  ?objective rdf:type? watr:TreatmentObjective-Desalination .
 }
 ORDER BY ?unit
 ```
+
+## Find equipment by constituent
+
+Resolve targets from the most specific objective that declares them. An explicit
+`targetsConstituent` on an objective takes precedence over targets on its
+ancestors. If it declares none, use the nearest declaring ancestor on each
+inheritance branch. This prevents nitrogen removal from inheriting phosphorus
+from the broader nutrient-removal objective. Independent inheritance branches
+may contribute several targets.
+
+```sparql
+SELECT DISTINCT ?unit ?objective ?constituent WHERE {
+  ?unit watr:hasTreatmentObjective ?objective .
+  ?objective rdf:type?/rdfs:subClassOf* ?source .
+  ?source watr:targetsConstituent ?constituent .
+  FILTER NOT EXISTS {
+    ?objective rdf:type?/rdfs:subClassOf* ?nearer .
+    ?nearer watr:targetsConstituent ?nearerTarget ;
+            rdf:type?/rdfs:subClassOf* ?source .
+    FILTER (?nearer != ?source)
+  }
+}
+ORDER BY ?unit ?objective ?constituent
+```
+
+The optional `rdf:type` step supports locally typed objective instances as well
+as the vocabulary's self-typed terms. To find units targeting a particular
+constituent, bind `?constituent` with `VALUES` inside the query. A plain ancestor
+path collects overridden targets too and should not be used for this question.
 
 ## Find equipment by process
 
@@ -56,12 +87,13 @@ ultrafiltration:
 ```sparql
 SELECT DISTINCT ?unit ?process WHERE {
   ?unit watr:hasProcess ?process .
-  ?process rdfs:subClassOf* watr:Process-MembraneProcess .
+  ?process rdf:type?/rdfs:subClassOf* watr:Process-MembraneProcess .
 }
 ORDER BY ?unit ?process
 ```
 
-The path through `rdfs:subClassOf*` is important. Class-default inference adds
+The optional `rdf:type` step supports local process instances, and
+`rdfs:subClassOf*` includes more specific process types. Class-default inference adds
 the values required by equipment classes; it does not add every ancestor of a
 process value as another `watr:hasProcess` triple.
 
@@ -72,8 +104,9 @@ shows the intended treatment function of each unit:
 
 ```sparql
 SELECT DISTINCT ?unit ?objective ?role WHERE {
-  ?unit watr:hasProcess watr:Process-Settling ;
+  ?unit watr:hasProcess ?process ;
         watr:hasTreatmentObjective ?objective .
+  ?process rdf:type?/rdfs:subClassOf* watr:Process-Settling .
   OPTIONAL { ?unit s223:hasRole ?role }
 }
 ORDER BY ?unit ?objective ?role
@@ -88,7 +121,7 @@ clarification equipment commissioned for the primary treatment stage:
 SELECT DISTINCT ?unit WHERE {
   ?unit watr:hasTreatmentObjective ?objective ;
         s223:hasRole watr:Role-Primary .
-  ?objective rdfs:subClassOf* watr:TreatmentObjective-Clarification .
+  ?objective rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-Clarification .
 }
 ORDER BY ?unit
 ```
@@ -111,7 +144,7 @@ in the model:
 ```sparql
 SELECT DISTINCT ?unit ?process ?objective WHERE {
   ?unit watr:hasProcess ?process .
-  ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
+  ?process rdf:type?/rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
 }
 ORDER BY ?unit ?process ?objective
 ```
@@ -149,9 +182,9 @@ This query includes units with the objective and members of systems with it:
 
 ```sparql
 SELECT DISTINCT ?unit WHERE {
-  { ?unit watr:hasTreatmentObjective/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval }
+  { ?unit watr:hasTreatmentObjective/rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval }
   UNION
-  { ?system watr:hasTreatmentObjective/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval ;
+  { ?system watr:hasTreatmentObjective/rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval ;
             s223:hasMember+ ?unit }
 }
 ORDER BY ?unit

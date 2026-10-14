@@ -235,7 +235,9 @@ composition, equipment suitability, membrane selectivity, or mass balance.
 Composition is not copied through subclassing. A specialized medium states its
 own constituents. Percentages are checked on a common mass or volume basis;
 individual values must lie between zero and 100 and declared intervals must be
-consistent. Partial compositions are allowed. Complement inference additionally
+consistent. Partial compositions are allowed. An explicitly complete composition
+must permit a total of 100% on its common basis; exact values or upper bounds
+that cannot reach 100% are rejected. Complement inference additionally
 requires `hasCompleteComposition true`, a common basis and percent units, exactly
 one missing value, and no ranges or duplicated constituent declarations.
 

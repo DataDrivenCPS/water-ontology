@@ -197,7 +197,7 @@ watr:achievesTreatmentObjective
 watr:targetsConstituent
     a rdf:Property ;
     rdfs:label "targets constituent" ;
-    rdfs:comment "Relates a treatment objective to the constituent it removes, converts or controls. Inherited down the objective hierarchy: a child objective without one targets what its parent targets." ;
+    rdfs:comment "Relates a treatment objective to the constituent it removes, converts or controls. An explicit target takes precedence over ancestor targets; without one, use the nearest declaring ancestor on each inheritance branch. See the constituent query in docs/guides/querying_treatment_function.md." ;
 .
 
 # The consumer of watr:achievesTreatmentObjective is watr:ProcessObjectiveRule in
@@ -332,18 +332,19 @@ watr:TreatmentObjectiveRequiresProcessProperty
 watr:SystemProcessCoverageShape
     a sh:NodeShape ;
     rdfs:label "System process coverage" ;
-    rdfs:comment "Warns when a system claims a compound process but nothing in it performs one of the constituent processes." ;
+    rdfs:comment "Warns when a system claims a compound process but neither it, a nested member, nor equipment contained within a member performs a constituent process." ;
     sh:targetClass s223:System ;
     # sh:severity must sit on the NodeShape.
     sh:severity sh:Warning ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes <https://watermetadata.org/ontology/watr> ;
-        sh:message "{$this} claims a process that includes {?missing}, but neither it nor any member performs that process." ;
+        sh:message "{$this} claims a process that includes {?missing}, but neither it, any member, nor equipment contained within a member performs that process." ;
         # hasMember* rather than hasMember+: the zero-length match makes the
         # system itself a candidate performer, since a train may state a step
-        # directly instead of through a member. Nested subsystems are covered by
-        # the transitive part.
+        # directly instead of through a member. contains* then reaches nested
+        # equipment regions and hardware within those members. This is evidence
+        # for system coverage; it does not copy processes onto enclosing equipment.
         #
         # Compound processes include their steps; they are not subclasses of
         # those steps. This keeps the claimed compound process from satisfying
@@ -352,11 +353,11 @@ watr:SystemProcessCoverageShape
             SELECT $this ?missing
             WHERE {
                 $this watr:hasProcess ?claimed .
-                ?claimed rdfs:subClassOf*/watr:includesProcess ?missing .
+                ?claimed rdf:type?/rdfs:subClassOf*/watr:includesProcess ?missing .
                 FILTER NOT EXISTS {
-                    $this s223:hasMember* ?performer .
+                    $this s223:hasMember*/s223:contains* ?performer .
                     ?performer watr:hasProcess ?actual .
-                    ?actual rdfs:subClassOf* ?missing .
+                    ?actual rdf:type?/rdfs:subClassOf* ?missing .
                 }
             }
         """ ;

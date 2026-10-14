@@ -90,23 +90,29 @@ satisfy that step through a more specific process.
 The system process coverage check examines every step included by a claimed
 compound process. A step is covered when the system itself, a member, or a
 member of a nested subsystem performs that process or a more specific process.
+Equipment contained within those members also counts, including functional
+regions and their component hardware. A basin's region need not be repeated as
+a direct system member, and its process need not be copied onto the basin.
+Unrelated equipment outside that membership and containment chain cannot cover
+a step.
 
 The following query shows the same coverage test in a form suitable for
 inspecting a model:
 
 ```sparql
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX s223: <http://data.ashrae.org/standard223#>
 PREFIX watr: <https://watermetadata.org/ontology/watr#>
 
 SELECT ?system ?missingStep WHERE {
   ?system watr:hasProcess ?compound .
-  ?compound rdfs:subClassOf*/watr:includesProcess ?missingStep .
+  ?compound rdf:type?/rdfs:subClassOf*/watr:includesProcess ?missingStep .
 
   FILTER NOT EXISTS {
-    ?system s223:hasMember* ?performer .
+    ?system s223:hasMember*/s223:contains* ?performer .
     ?performer watr:hasProcess ?actualProcess .
-    ?actualProcess rdfs:subClassOf* ?missingStep .
+    ?actualProcess rdf:type?/rdfs:subClassOf* ?missingStep .
   }
 }
 ```
@@ -117,6 +123,8 @@ missing treatment steps for review.
 
 ```{note}
 Class-default inference targets `s223:Equipment`, not `s223:System`. State a
-system's compound process and treatment objective directly on the system. Equipment members
-can still receive class-defined processes and treatment objectives when inference runs.
+system's compound process directly on the system. Process-to-objective inference
+supplies its intrinsic objectives; state any additional intended objectives
+explicitly. Equipment members can receive class-defined processes and treatment
+objectives when inference runs.
 ```

@@ -180,6 +180,10 @@
 
 **Superclasses:** `watr:Coagulant`
 
+## Complete Composition Feasibility
+
+**Description:** A composition explicitly marked complete must permit a total of 100 percent on its common mass or volume basis. Exact values and upper bounds constrain the maximum; unknown and lower-only fractions remain unconstrained up to 100 percent.
+
 ## Composition Complement Rule
 
 **Description:** Completes an explicitly complete, common-basis percent composition (watr:hasCompleteComposition true) that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case.

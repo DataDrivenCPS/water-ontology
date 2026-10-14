@@ -135,6 +135,17 @@ Composition is **not inherited** through `rdfs:subClassOf`. A specialized medium
 
 Where a composition *is* quantified, `watr:CompositionPercentageShape` checks that it stays physically possible: for any node with `s223:composedOf` fractions given in `unit:PERCENT`, the declared percentages on each common mass or volume basis may not add up to more than 100%. When a constituent is given as a range with `s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the greatest declared lower bound for that constituent counts, since the upper bounds of a set of ranges need not be simultaneously satisfiable — `Brine-5to10Percent` (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. The shape does not require the percentages to add up *to* 100: a partially specified composition that names only some of its constituents remains valid. The [`composition-exceeds-100-percent.ttl`](../../examples/nonconforming/composition-exceeds-100-percent.ttl) example shows a composition the rule rejects.
 
+When `watr:hasCompleteComposition true` is asserted, the common-basis fractions
+must also permit a total of 100%. `watr:CompleteCompositionShape` rejects exact
+fractions totaling 90%, or ranges whose upper bounds total only 90%. It uses the
+tightest upper bound per constituent; a missing value or a lower-only bound can
+still reach 100% and does not by itself establish a deficit. Mixed units or bases
+do not establish a common total. The
+[`complete-composition-ranges.ttl`](../../examples/complete-composition-ranges.ttl)
+example demonstrates feasible bounds, and the
+[`complete-composition-below-100-percent.ttl`](../../examples/nonconforming/complete-composition-below-100-percent.ttl)
+example demonstrates a rejected complete composition.
+
 The other direction is handled by `watr:CompositionComplementRule`, a SHACL-AF rule that fills in a percentage you did not state. If a medium explicitly declares `watr:hasCompleteComposition true`, its fractions share a mass or volume basis and percent units, and exactly one of them carries no `s223:hasValue`, that fraction is inferred to be the remainder of the others — declare 12% salt and leave the water fraction empty, and the rule supplies 88%. It generalizes beyond two constituents: 20% salt and 10% solids leaves 70% for water. The fraction being completed can be an inline blank node or a named one; name it when something else in the model needs to refer to the inferred value. The [`brine-inferred-complement.ttl`](../../examples/brine-inferred-complement.ttl) example shows both forms.
 
 The rule stays silent unless composition completeness is explicitly asserted and all fractions have the same basis and units. It also stays silent in four cases, because none of them determines a single value: more than one fraction is unquantified, no fraction is quantified at all (so a medium that names `Constituent-H2O` alone is not claimed to be 100% water), a quantified fraction is a `s223:Aspect-LowLimit` or `s223:Aspect-HighLimit` range, or the remainder would be negative — that last case is the over-100% error, which `watr:CompositionPercentageShape` reports rather than papering over.
@@ -319,7 +330,7 @@ watr:Process-ReverseOsmosis
                     watr:Process-Filtration .
 ```
 
-`watr:SystemProcessCoverageShape` warns when neither a system nor any transitively nested member performs a required constituent process:
+`watr:SystemProcessCoverageShape` warns when neither a system, any transitively nested member, nor equipment contained within a member performs a required constituent process:
 
 ```ttl
 :MLESystem a s223:System ;

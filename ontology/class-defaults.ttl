@@ -84,7 +84,7 @@ watr:ClassDefaultsRule
                 FILTER ( ?min > 0 )
                 FILTER NOT EXISTS {
                     $this ?pred ?existing .
-                    ?existing rdfs:subClassOf* ?value .
+                    ?existing rdf:type?/rdfs:subClassOf* ?value .
                 }
             }
         """ ;
@@ -155,7 +155,7 @@ watr:ProcessObjectiveRule
             CONSTRUCT { $this watr:hasTreatmentObjective ?objective . }
             WHERE {
                 $this watr:hasProcess ?process .
-                ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
+                ?process rdf:type?/rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
             }
         """ ;
     ] ;
