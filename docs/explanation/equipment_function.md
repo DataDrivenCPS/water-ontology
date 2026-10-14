@@ -138,7 +138,7 @@ Roles describe commissioned use, not instantaneous operating conditions. An
 aerobic/anoxic swing zone can carry both roles because it is commissioned to
 serve in either regime. Its current dissolved-oxygen concentration is modeled
 as an observable property, as shown in
-[`swing-zone-dissolved-oxygen.ttl`](../../examples/swing-zone-dissolved-oxygen.ttl).
+{download}`swing-zone-dissolved-oxygen.ttl <../../examples/swing-zone-dissolved-oxygen.ttl>`.
 
 ````{important}
 The equipment class supplies process and treatment objective values that are fixed by that
@@ -168,7 +168,9 @@ triples.
 ## Class requirements and additional processes
 
 Equipment classes state the processes and treatment objectives that define their instances.
-Requirements on ancestor classes also apply. A reverse-osmosis membrane, for
+Requirements on ancestor classes also apply. Named vocabulary terms and local
+instances of process or objective types can satisfy these requirements; defaults
+are suppressed when a stated value already satisfies a slot. A reverse-osmosis membrane, for
 example, is a filter and must perform reverse osmosis, which is a kind of
 filtration. Its class supplies broad constituent removal; the modeler states desalination when that is the plant intent.
 
@@ -267,7 +269,8 @@ flow order, and `s223:mapsTo` to map the outermost region ports to their parent
 equipment's ports.
 
 Sensors can use `s223:hasObservationLocation` to observe a region directly.
-Process-to-objective inference applies to each region. Containment does not
+Process-to-objective inference applies to each region. System coverage checks
+inspect regions and hardware contained within system members. Containment does not
 propagate a child's processes or objectives to its parent, and operating roles
 are stated explicitly rather than inferred from readings.
 
@@ -276,6 +279,6 @@ describes physical location, `DomainSpace` describes a service space, and an S22
 `Zone` groups DomainSpaces for control or functional purposes. An actual
 sub-basin can use an existing basin or reactor class when its constraints fit.
 
-See [the single-basin regions example](../../examples/single-basin-regions.ttl)
+See {download}`the single-basin regions example <../../examples/single-basin-regions.ttl>`
 for a basin containing two functional regions, their component hardware, and
 their internal flow connection, and sensors observing the regions directly.

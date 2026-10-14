@@ -17,6 +17,7 @@ make test
 uv run python scripts/check_watr_terms.py examples
 uv run python scripts/generate_reference_docs.py
 uv run python scripts/generate-process-objective-map.py
+uv run python scripts/generate_template_docs.py
 make local-docs
 ```
 
@@ -25,6 +26,7 @@ Do not commit compiled build artifacts, HTML output, or OntoEnv caches.
 
 The build checks cover composition constraints, explicit complement-inference
 premises, class defaults, process objective inference, system coverage,
-equipment-region containment, contaminant targets, port structure, and compiler
+equipment-region containment and coverage, local process/objective instances,
+effective constituent targets, resolver isolation, port structure, and compiler
 prefix metadata.
 The documentation queries should parse as SPARQL with the listed prefixes.

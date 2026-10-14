@@ -1,87 +1,68 @@
-
 turbidity
-#########
+=========
 
-.. tabs::
+Generated from ``libraries/templates`` by
+``scripts/generate_template_docs.py``. Bind the ``P:`` parameters
+before using these graph fragments as a plant model.
 
-    .. tab:: Turtle
+Template
+--------
 
-        .. code:: turtle
+.. code-block:: turtle
 
-           @prefix P: <urn:___param___#> .
-           @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns3: <http://qudt.org/schema/qudt/> .
-           @prefix ns4: <http://qudt.org/vocab/quantitykind/> .
-           @prefix ns5: <http://qudt.org/vocab/unit/> .
-           
-           P:name a ns1:QuantifiableObservableProperty ;
-               ns3:hasQuantityKind ns4:Turbidity ;
-               ns3:hasUnit ns5:NTU .
-           
-           
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
 
-    .. tab:: With Inline Dependencies
+    P:name a s223:QuantifiableObservableProperty ;
+        qudt:hasQuantityKind quantitykind:Turbidity ;
+        qudt:hasUnit unit:NTU .
 
-        .. code:: turtle
 
-            @prefix P: <urn:___param___#> .
-            @prefix ns1: <http://qudt.org/schema/qudt/> .
+With dependencies
+-----------------
 
-            P:name a <http://data.ashrae.org/standard223#QuantifiableObservableProperty> ;
-                ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-                ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+.. code-block:: turtle
 
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+
+    P:name a s223:QuantifiableObservableProperty ;
+        qudt:hasQuantityKind quantitykind:Turbidity ;
+        qudt:hasUnit unit:NTU .
 
 
 Parameters
 ----------
 
-- name
-
+- ``name``
 
 Dependencies
 ------------
 
+None.
 
+Graph
+-----
 
-Dependents
-----------
+.. graphviz::
 
-Nothing depends on this template.
-
-Graph Visualization
---------------------
-
-.. tabs::
-
-    .. tab:: Template
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns3:hasQuantityKind</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns3:hasUnit</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableObservableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableObservableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableObservableProperty</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Turbidity</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/Turbidity' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/Turbidity</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>NTU</B></td></tr><tr><td href='http://qudt.org/vocab/unit/NTU' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/unit/NTU</font></td></tr></table> >];
-            }
-            
-
-    .. tab:: With Inline Dependencies
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasQuantityKind</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasUnit</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Turbidity</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/Turbidity' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/Turbidity</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>NTU</B></td></tr><tr><td href='http://qudt.org/vocab/unit/NTU' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/unit/NTU</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableObservableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableObservableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableObservableProperty</font></td></tr></table> >];
-            }
-            
+    digraph {
+     node [ fontname="DejaVu Sans" ] ;
+        node0 -> node1 [ color=BLACK, label=< <font point-size='10' color='#336633'>qudt:hasQuantityKind</font> > ] ;
+        node0 -> node2 [ color=BLACK, label=< <font point-size='10' color='#336633'>qudt:hasUnit</font> > ] ;
+        node0 -> node3 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
+    # urn:___param___#name node0
+    node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
+    # http://qudt.org/vocab/quantitykind/Turbidity node1
+    node1 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Turbidity</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/Turbidity' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/Turbidity</font></td></tr></table> > ]
+    # http://qudt.org/vocab/unit/NTU node2
+    node2 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>NTU</B></td></tr><tr><td href='http://qudt.org/vocab/unit/NTU' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/unit/NTU</font></td></tr></table> > ]
+    # http://data.ashrae.org/standard223#QuantifiableObservableProperty node3
+    node3 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableObservableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableObservableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableObservableProperty</font></td></tr></table> > ]
+    }

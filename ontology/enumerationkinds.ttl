@@ -31,7 +31,7 @@ watr:DataProcessing-Filter
     a sh:NodeShape ;
     rdfs:label "Filter" ;
     rdfs:comment "Parent class for filtering methods to remove outliers or unwanted data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:DataProcessing-Aggregate
     a watr:Class ;
@@ -39,7 +39,7 @@ watr:DataProcessing-Aggregate
     a sh:NodeShape ;
     rdfs:label "Aggregate" ;
     rdfs:comment "Parent class for aggregation functions that combine multiple data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Aggregate-Mean
     a watr:Class ;
@@ -245,7 +245,7 @@ watr:DataProcessing-Interpolation
     a sh:NodeShape ;
     rdfs:label "Interpolation" ;
     rdfs:comment "Parent class for interpolation methods to estimate values between known data points" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Interpolation-Linear
     a watr:Class ;
@@ -301,7 +301,7 @@ watr:DataProcessing-Normalization
     a sh:NodeShape ;
     rdfs:label "Normalization" ;
     rdfs:comment "Parent class for normalization methods to scale data to a standard range" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Normalization-MinMax
     a watr:Class ;
@@ -333,7 +333,7 @@ watr:DataProcessing-Synchronization
     a sh:NodeShape ;
     rdfs:label "Synchronization" ;
     rdfs:comment "Parent class for synchronization methods to align data from multiple sources to common time intervals" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Synchronization-Resampling
     a watr:Class ;
@@ -373,7 +373,7 @@ watr:DataProcessing-ErrorMetrics
     a sh:NodeShape ;
     rdfs:label "Error Metrics" ;
     rdfs:comment "Parent class for error and uncertainty measurements" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Error-AbsoluteError
     a watr:Class ;
@@ -437,7 +437,7 @@ watr:DataProcessing-PrecisionMetrics
     a sh:NodeShape ;
     rdfs:label "Precision Metrics" ;
     rdfs:comment "Metrics for precision and repeatability measurements" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Precision-RepeatabilityStdDev
     a watr:Class ;
@@ -477,7 +477,7 @@ watr:DataProcessing-AccuracyMetrics
     a sh:NodeShape ;
     rdfs:label "Accuracy Metrics" ;
     rdfs:comment "Combined accuracy measures (precision and trueness)" ;
-    rdfs:subClassOf s223:EnumerationKind-DataProcessing ;
+    rdfs:subClassOf watr:EnumerationKind-DataProcessing ;
 .
 watr:Accuracy-TotalUncertainty
     a watr:Class ;

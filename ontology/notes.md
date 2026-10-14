@@ -194,8 +194,8 @@ is what lets an MBR satisfy the activated-sludge separation step with its
 membrane while an RO train does not. Recirculation is configuration-specific and is declared on MLE, A2O, UCT
 (by inheritance), and the Bardenpho processes rather than on ActivatedSludge.
 watr:SystemProcessCoverageShape then warns when a system claims a compound process
-but neither it nor any member (hasMember*, so nested subsystems count and the
-system itself counts) performs one of the steps. Warning, not violation: a model
+but neither it, any nested member, nor equipment contained within a member
+(hasMember*/contains*, including the system itself) performs one of the steps. Warning, not violation: a model
 may describe the train before every member is entered.
 
 A compound process uses rdfs:subClassOf for its process family and
@@ -247,19 +247,21 @@ process type instead of on every machine.
 
 Incineration declares TreatmentObjective-BiosolidsDisposal but its parent Process-Combustion
 does not: combustion also covers burning biogas for energy, which disposes of
-nothing. The other two disposal routes are not processes at all -- landfilling and
-land application name where the biosolids end up rather than an activity, so they
-are TreatmentObjective-Landfill and TreatmentObjective-LandApplication.
+nothing. Landfilling and land application are placement activities, represented
+by Process-Landfilling and Process-LandApplication; both imply the
+TreatmentObjective-BiosolidsDisposal objective.
 
-Most processes declare no treatment objective; filtration and sedimentation serve whatever
-objective the equipment is built for. Two cases are worth spelling out.
+Filtration and settling inherit broad constituent removal from separation.
+Their specific target or product objective is stated by the modeler. Generic
+UV irradiation, ozonation, and thermal treatment leave specific objectives to
+equipment design or plant intent.
 
 Process-Nitrification -> TreatmentObjective-AmmoniaControl, NOT TreatmentObjective-NitrogenRemoval.
 TreatmentObjective-AmmoniaControl is deliberately not under TreatmentObjective-NutrientRemoval; the
 comment on it in treatment objectives.ttl says why.
 
-Process-ChemicalPrecipitation declares nothing: which constituent it targets
-depends on the reagent, so the treatment objective belongs on the equipment. The objectives
+Process-ChemicalPrecipitation declares broad constituent removal. Its specific
+target depends on the reagent and is stated on the equipment. The objectives
 it may serve are named so the equipment has something to point at --
 TreatmentObjective-Softening, TreatmentObjective-PhosphorusRemoval, TreatmentObjective-MetalsRemoval,
 TreatmentObjective-SulfateRemoval, TreatmentObjective-SilicaRemoval -- and all are left unwired. Lime
@@ -337,7 +339,7 @@ axes.
 Any class may require a treatment objective, a process, or both. These families put the
 treatment objective on the parent and the process on the subclass because there the objective
 is common and the mechanism varies; that is an organizing choice, not a rule.
-watr:SedimentationTank states both itself -- TreatmentObjective-Clarification and
+watr:Clarifier states both itself -- TreatmentObjective-Clarification and
 Process-Settling -- as does watr:Digester, with TreatmentObjective-Stabilization and
 Process-Digestion.
 
@@ -359,16 +361,16 @@ The file is INSIDE the import closure: ontology/watr.ttl imports
 <https://watermetadata.org/ontology/modules/class-defaults>, so the rule ships with the ontology and
 fires wherever it is used. That is deliberate. shifty.validate runs SHACL-AF
 rules as part of validation (infer=True by default), so the rule fires before the
-constraints are checked and satisfies them itself: a bare
-"ex:gt a watr:GravityThickener ." goes from five violations to zero.
+constraints are checked. A bare "ex:gt a watr:GravityThickener ." receives
+its process and objective, but still requires explicit liquid and sludge ports.
 
 Know what that costs. A class's process and treatment objective requirements can no longer
 fail for an instance that merely declares its type, so the ontology no longer
 distinguishes a model that states what a machine does from one that only types
 it. If you need that distinction -- when the data comes from a plant rather than
-from the ontology -- validate against the closure with watr:ClassDefaultsRule
-removed. tests/test_class_defaults.py does exactly that, and pins both what
-including the rule buys and what removing it restores.
+from the ontology -- validate with infer=False or resolve the ontology without
+importing the class-defaults module. tests/test_class_defaults.py exercises the
+latter path and checks which requirements must then be stated explicitly.
 
 Why equipment carries more than one process
 ------------------------------------------

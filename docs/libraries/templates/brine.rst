@@ -1,67 +1,71 @@
-
 brine
-#####
+=====
 
-.. tabs::
+Generated from ``libraries/templates`` by
+``scripts/generate_template_docs.py``. Bind the ``P:`` parameters
+before using these graph fragments as a plant model.
 
-    .. tab:: Turtle
+Template
+--------
 
-        .. code:: turtle
+.. code-block:: turtle
 
-           @prefix P: <urn:___param___#> .
-           @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-           
-           P:name a ns1:Class,
-                   P:name ;
-               rdfs:label "Brine-VariablePercent" ;
-               ns1:composedOf P:salt-name,
-                   P:water-name ;
-               rdfs:subClassOf ns1:Fluid-Water,
-                   <https://watermetadata.org/ontology/watr#Water-Brine> .
-           
-           
+    @prefix P: <urn:___param___#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-    .. tab:: With Inline Dependencies
+    P:name a s223:Class,
+            P:name ;
+        rdfs:label "Brine-VariablePercent" ;
+        s223:composedOf P:salt-name,
+            P:water-name ;
+        rdfs:subClassOf s223:Fluid-Water,
+            watr:Water-Brine .
 
-        .. code:: turtle
 
-            @prefix P: <urn:___param___#> .
-            @prefix ns1: <http://data.ashrae.org/standard223#> .
-            @prefix ns2: <http://qudt.org/schema/qudt/> .
-            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+With dependencies
+-----------------
 
-            P:name a ns1:Class,
-                    P:name ;
-                rdfs:label "Brine-VariablePercent" ;
-                ns1:composedOf P:salt-name,
-                    P:water-name ;
-                rdfs:subClassOf ns1:Fluid-Water,
-                    <https://watermetadata.org/ontology/watr#Water-Brine> .
+.. code-block:: turtle
 
-            P:salt-name a ns1:QuantifiableProperty ;
-                ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassFraction> ;
-                ns1:hasValue P:salt-value ;
-                ns1:ofConstituent <https://watermetadata.org/ontology/watr#Constituent-NaCl> ;
-                ns2:hasUnit ns2:PERCENT .
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-            P:water-name a ns1:QuantifiableProperty ;
-                ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassFraction> ;
-                ns1:hasValue P:water-value ;
-                ns1:ofConstituent ns1:Constituent-H20 ;
-                ns2:hasUnit ns2:PERCENT .
+    P:name a s223:Class,
+            P:name ;
+        rdfs:label "Brine-VariablePercent" ;
+        s223:composedOf P:salt-name,
+            P:water-name ;
+        rdfs:subClassOf s223:Fluid-Water,
+            watr:Water-Brine .
 
+    P:salt-name a s223:QuantifiableProperty ;
+        s223:hasValue P:salt-value ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT .
+
+    P:water-name a s223:QuantifiableProperty ;
+        s223:hasValue P:water-value ;
+        s223:ofConstituent s223:Constituent-H2O ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT .
 
 
 Parameters
 ----------
 
-- salt-name is a :doc:`constituent-salt`
-- salt-value is a :doc:`constituent-salt`
-- water-name is a :doc:`constituent-water`
-- water-value is a :doc:`constituent-water`
-- name
-
+- ``name``
+- ``salt-name``
+- ``salt-value``
+- ``water-name``
+- ``water-value``
 
 Dependencies
 ------------
@@ -69,72 +73,29 @@ Dependencies
 - :doc:`constituent-salt`
 - :doc:`constituent-water`
 
+Graph
+-----
 
-Dependents
-----------
+.. graphviz::
 
-Nothing depends on this template.
-
-Graph Visualization
---------------------
-
-.. tabs::
-
-    .. tab:: Template
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node0 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:composedOf</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:composedOf</font> >];
-            node0 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Brine-VariablePercent</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Class</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Class' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Class</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Water-Brine</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Water-Brine' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Water-Brine</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>water-name</B></td></tr><tr><td href='urn:___param___#water-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#water-name</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>salt-name</B></td></tr><tr><td href='urn:___param___#salt-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#salt-name</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Fluid-Water</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Fluid-Water' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Fluid-Water</font></td></tr></table> >];
-            }
-            
-
-    .. tab:: With Inline Dependencies
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasQuantityKind</font> >];
-            node2 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns2:hasUnit</font> >];
-            node2 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasQuantityKind</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns2:hasUnit</font> >];
-            node4 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:composedOf</font> >];
-            node2 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:ofConstituent</font> >];
-            node0 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasValue</font> >];
-            node2 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasValue</font> >];
-            node4 -> node8 [color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> >];
-            node4 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> >];
-            node2 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node11 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:ofConstituent</font> >];
-            node4 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node12 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node0 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:composedOf</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>salt-name</B></td></tr><tr><td href='urn:___param___#salt-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#salt-name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>MassFraction</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/MassFraction' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/MassFraction</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>water-name</B></td></tr><tr><td href='urn:___param___#water-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#water-name</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/schema/qudt/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/schema/qudt/PERCENT</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Brine-VariablePercent</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-H20</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Constituent-H20' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Constituent-H20</font></td></tr></table> >];
-            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>salt-value</B></td></tr><tr><td href='urn:___param___#salt-value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#salt-value</font></td></tr></table> >];
-            node7 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>water-value</B></td></tr><tr><td href='urn:___param___#water-value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#water-value</font></td></tr></table> >];
-            node8 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Fluid-Water</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Fluid-Water' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Fluid-Water</font></td></tr></table> >];
-            node9 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Water-Brine</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Water-Brine' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Water-Brine</font></td></tr></table> >];
-            node10 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableProperty</font></td></tr></table> >];
-            node11 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Constituent-NaCl</font></td></tr></table> >];
-            node12 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Class</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Class' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Class</font></td></tr></table> >];
-            }
-            
+    digraph {
+     node [ fontname="DejaVu Sans" ] ;
+        node0 -> node1 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:composedOf</font> > ] ;
+        node0 -> node2 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:composedOf</font> > ] ;
+        node0 -> node3 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
+        node0 -> node0 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
+        node0 -> node4 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> > ] ;
+        node0 -> node5 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdfs:subClassOf</font> > ] ;
+    # urn:___param___#name node0
+    node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Brine-VariablePercent</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
+    # urn:___param___#salt-name node1
+    node1 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>salt-name</B></td></tr><tr><td href='urn:___param___#salt-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#salt-name</font></td></tr></table> > ]
+    # urn:___param___#water-name node2
+    node2 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>water-name</B></td></tr><tr><td href='urn:___param___#water-name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#water-name</font></td></tr></table> > ]
+    # http://data.ashrae.org/standard223#Class node3
+    node3 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Class</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Class' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Class</font></td></tr></table> > ]
+    # http://data.ashrae.org/standard223#Fluid-Water node4
+    node4 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Fluid-Water</B></td></tr><tr><td href='http://data.ashrae.org/standard223#Fluid-Water' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#Fluid-Water</font></td></tr></table> > ]
+    # https://watermetadata.org/ontology/watr#Water-Brine node5
+    node5 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Water-Brine</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Water-Brine' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Water-Brine</font></td></tr></table> > ]
+    }

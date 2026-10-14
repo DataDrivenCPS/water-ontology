@@ -17,7 +17,8 @@ An equipment class supplies required processes and a specific design objective
 only when every unit of that class has that intended function. SHACL-AF inference
 materializes those requirements. `ProcessObjectiveRule` then adds objectives
 intrinsic to each performed process, including those inherited from its parents.
-Roles remain explicit.
+Roles remain explicit. The rules support named vocabulary terms and locally
+typed process or objective instances.
 
 The modeler states plant intent and any additional processes beyond defaults.
 A more specific process satisfies a general class requirement: reverse osmosis
@@ -57,7 +58,7 @@ includes MF, UF and RO in membrane filtration and distinguishes electrodialysis
 from filtration. DOE's [solar-desalination projects](https://www.energy.gov/cmei/systems/solar-desalination)
 describe thermally driven membrane distillation. These mechanisms support this
 ontology classification; the hierarchy itself is an ontology design choice.
-See the [membrane-process example](../../examples/membrane-process-classification.ttl).
+See the {download}`membrane-process example <../../examples/membrane-process-classification.ttl>`.
 
 ## Solids-removal terminology
 
@@ -72,7 +73,7 @@ The published `TreatmentObjective-SolidsRemoval` URI remains deprecated with
 original suspended-solids meaning and subclasses the replacement so existing
 models remain compatible. Use the explicit replacement in new models.
 
-See the [suspended and dissolved solids example](../../examples/solids-removal-objectives.ttl).
+See the {download}`suspended and dissolved solids example <../../examples/solids-removal-objectives.ttl>`.
 
 ## Settling, clarification, and thickening
 
@@ -95,8 +96,8 @@ clarification efficiency is inferred. Connection-point roles remain optional.
 These requirements are not imposed on every `SedimentationTank`, which also
 includes septic tanks that retain solids for periodic pump-out.
 
-See the [conforming gravity thickener](../../examples/gravity-thickener-outlets.ttl)
-and [nonconforming thickener with two sludge outlets](../../examples/nonconforming/gravity-thickener-without-liquid-outlet.ttl).
+See the {download}`conforming gravity thickener <../../examples/gravity-thickener-outlets.ttl>`
+and {download}`nonconforming thickener with two sludge outlets <../../examples/nonconforming/gravity-thickener-without-liquid-outlet.ttl>`.
 
 ```ttl
 @prefix : <urn:example/treatment-function#> .
@@ -129,7 +130,10 @@ Named objectives group common targets under constituent removal: suspended
 solids, dissolved solids, organics, nutrients, and chlorine residual. Dissolved
 solids include desalination, hardness, silica, sulfate, and arsenic removal;
 metals removal includes lead removal. `targetsConstituent` names the relevant
-constituent and can be inherited through an objective's parents.
+constituent. Explicit targets take precedence over ancestor targets; without
+an explicit target, use the nearest declaring ancestor on each inheritance branch.
+The [constituent query](../guides/querying_treatment_function.md#find-equipment-by-constituent)
+implements this rule.
 
 A plant can extend the target vocabulary without editing WaTr:
 
@@ -202,19 +206,22 @@ Compound processes are asserted on an `s223:System`. `includesProcess` lists the
 steps that its members should cover; it does not make the compound process a
 subclass of each step. A2O includes nitrification, denitrification, phosphorus
 removal, and recirculation, and inherits aeration and solid–liquid separation
-requirements from activated sludge.
+requirements from activated sludge. Coverage follows nested system membership
+and equipment containment, including regions and their hardware. This inspection
+does not propagate child processes or objectives onto enclosing equipment.
 
 A system's objective does not assert that every member independently achieves
 it. Queries for involvement can include both objective bearers and system members:
 
 ```sparql
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX watr: <https://watermetadata.org/ontology/watr#>
 PREFIX s223: <http://data.ashrae.org/standard223#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT ?unit WHERE {
-  { ?unit watr:hasTreatmentObjective/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval }
+  { ?unit watr:hasTreatmentObjective/rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval }
   UNION
-  { ?system watr:hasTreatmentObjective/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval ;
+  { ?system watr:hasTreatmentObjective/rdf:type?/rdfs:subClassOf* watr:TreatmentObjective-NitrogenRemoval ;
             s223:hasMember+ ?unit }
 }
 ```

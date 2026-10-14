@@ -36,7 +36,9 @@ fluid port; and SHACL severity and RDF/source comments are explained.
 Composition arithmetic now requires an explicit complete-composition premise
 before filling in a remainder. It does not sum mass and volume fractions together,
 and individual percentages must lie between zero and 100. Partial compositions
-remain valid and retain unknown values. Published process and role URIs retired
+remain valid and retain unknown values. An explicitly complete composition on
+a common basis must permit a total of 100%; exact values and upper bounds that
+cannot reach that total are rejected. Published process and role URIs retired
 by this work remain present with deprecation and replacement metadata.
 
 Some earlier suggestions remain intentionally outside this PR: numerical permit
@@ -80,6 +82,10 @@ Shared constituents establish S223 topology compatibility, not equivalent
 composition, material balance, membrane selectivity, or equipment suitability.
 For example, retaining an aqueous-sludge designation on pump ports does not
 certify that a particular pump is suitable for that sludge.
+
+The documentation includes local process/objective instances, explicit target
+overrides in constituent queries, and system coverage through contained regions.
+Test resolvers preserve the development environment and reuse cached vocabulary.
 
 The local documentation build also removes an obsolete Sphinx directive: the
 current template package exposes a MyST plugin, while this Jupyter Book uses

@@ -1,6 +1,6 @@
-# Definitions and Concepts 
+# Definitions and Concepts
 
-The ontology is inspired by two ontologies developed to represent metadata used in building operations, Brick and ASHRAE 223P. The concepts present in this ontology can be used to represent the information described in the previous section. The WaTr ontology is a graph model, and relies on several graph data concepts. All WaTr models use several high level classes that describe the structure and content of a WaTr model. 
+The ontology is inspired by two ontologies developed to represent metadata used in building operations, Brick and ASHRAE 223P. The concepts present in this ontology can be used to represent the information described in the previous section. The WaTr ontology is a graph model, and relies on several graph data concepts. All WaTr models use several high level classes that describe the structure and content of a WaTr model.
 
 ## Graph Data Concepts
 
@@ -13,17 +13,17 @@ Classes are organized into a hierarchy, and entities are an instance of a given 
 Examples of relationships are *encapsulation* (one entity is contained within another), *sequence* (one entity takes effect before another in some process) and *instantiation* (one entity's type is given by another).
 
 - **Relation:** A predicate (RDF property) used to describe a given relationship.
-Examples of a relation are the WaTr relation `watr:contains`, which defines the relationship between two pieces of equipment in which one contains another.  
+Examples of a relation are the WaTr relation `s223:contains`, which defines the relationship between two pieces of equipment in which one contains another.
 
  - **Graph:** An abstract organizational data structure representing a set of entities (nodes) and relationships (edges) described in triple-structure. WaTr models are represented by a directed, labeled graph, and use the RDF standard. We recommend reading the [Wikipedia page on the abstract graph data structure](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) for more information.
 
  - **A WaTr Model:** A WaTr model is a digital representation of a water treatment train in RDF graph structure that uses the WaTr standard. This means that elements of the water treatment train are represented using the modeling constructs defined in the standard. The standard leverages semantic web technologies, allowing easy integration with other types of models based on RDF.
 
- - **Namespaces:** RDF graphs have been defined to connect different data sources and ontologies. Several ontologies are used within WaTr Models including QUDT, ASHRAE 223P, and WaTr itself. Namespaces are used to distinguish between different types of resources and properties within an RDF Graph, primarily to avoid naming conflicts. Within WaTr models and throughout this document you may see ASHRAE 223P concepts denoted with the prefix `s223`, primarily for describing the connectivity of equipment, `watr`, for the different types of equipment and enumerations used in defining the treatment train, as well as `qudt`, `quantitykind`, and `unit`, for the concepts related to units of measure. 
+ - **Namespaces:** RDF graphs have been defined to connect different data sources and ontologies. Several ontologies are used within WaTr Models including QUDT, ASHRAE 223P, and WaTr itself. Namespaces are used to distinguish between different types of resources and properties within an RDF Graph, primarily to avoid naming conflicts. Within WaTr models and throughout this document you may see ASHRAE 223P concepts denoted with the prefix `s223`, primarily for describing the connectivity of equipment, `watr`, for the different types of equipment and enumerations used in defining the treatment train, as well as `qudt`, `quantitykind`, and `unit`, for the concepts related to units of measure.
 
 ## WaTr Top Level Classes
 
-The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can be used to model the entities within a water treatment train, particularly to add more classes for Equipment, Substances, and Enumerations to represent water treatment. This section provides a basic definition of the classes at the top level of the hierarchy to help users understand what the ontology aims to represent, which is described in the [overview](WaTr-overview). 
+The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can be used to model the entities within a water treatment train, particularly to add more classes for Equipment, Substances, and Enumerations to represent water treatment. This section provides a basic definition of the classes at the top level of the hierarchy to help users understand what the ontology aims to represent, which is described in the [overview](overview.md).
 
  - **Connection:** A modeling construct for representing a physical thing (e.g., pipe, duct, wire) that connects and conveys a medium between two Connectable things.
 

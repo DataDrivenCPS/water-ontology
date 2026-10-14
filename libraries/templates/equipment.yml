@@ -26,7 +26,7 @@ basin:
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-    P:name a watr:Basin ;
+    P:name a watr:Tank ;
       rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
       s223:cnx P:in, P:out, P:drain, P:overflow ;
@@ -106,7 +106,8 @@ membrane:
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-    P:name a watr:Membrane ;
+    P:name a s223:Equipment ;
+      watr:hasProcess watr:Process-MembraneProcess ;
       rdfs:label P:label ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
@@ -125,7 +126,7 @@ membrane-module:
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-    P:name a watr:Equipment ;
+    P:name a s223:Equipment ;
       rdfs:label P:label ;
       s223:contains P:membrane ;
       s223:hasConnectionPoint P:in, P:out ;
@@ -303,7 +304,7 @@ contact-chamber:
 
     P:name a watr:DisinfectionUnit ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Disinfection ;
+      watr:hasProcess P:process ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -344,7 +345,7 @@ concentration-sensor:
   optional: ["where", "label"]
   dependencies:
    - template: quantifiable-property
-     args: {"name": "property", "unit": "unit", "substance": "constituent", "property-unit": "unit", "property-constituent": "substance"}
+     args: {"name": "property", "unit": "unit", "constituent": "substance"}
 
 flocculation-basin:
   body: >
@@ -418,7 +419,7 @@ disinfection-unit:
 
     P:name a watr:DisinfectionUnit ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Disinfection ;
+      watr:hasProcess P:process ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .

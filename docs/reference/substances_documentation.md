@@ -396,49 +396,49 @@
 
 **Description:** Combined accuracy measures (precision and trueness)
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Aggregate
 
 **Description:** Parent class for aggregation functions that combine multiple data points
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Error Metrics
 
 **Description:** Parent class for error and uncertainty measurements
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Filter
 
 **Description:** Parent class for filtering methods to remove outliers or unwanted data points
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Interpolation
 
 **Description:** Parent class for interpolation methods to estimate values between known data points
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Normalization
 
 **Description:** Parent class for normalization methods to scale data to a standard range
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Precision Metrics
 
 **Description:** Metrics for precision and repeatability measurements
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Synchronization
 
 **Description:** Parent class for synchronization methods to align data from multiple sources to common time intervals
 
-**Superclasses:** `s223:EnumerationKind-DataProcessing`
+**Superclasses:** `watr:EnumerationKind-DataProcessing`
 
 ## Disinfectant
 

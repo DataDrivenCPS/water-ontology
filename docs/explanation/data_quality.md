@@ -57,7 +57,12 @@ The following relations may be applied to an `s223:QuantifiableProperty`. Each r
 
 When a `QuantifiableProperty` is linked via `watr:hasProcessedData`, the processing method applied to produce it is described by attaching an `s223:hasAspect` triple whose object is one of the `watr:EnumerationKind-DataProcessing` enumeration values below.
 
-All of these enumeration kinds are subclasses of `watr:EnumerationKind-DataProcessing`, which is itself a subclass of `s223:EnumerationKind`.
+The category headings below identify the processing families in the ontology.
+They descend from `watr:EnumerationKind-DataProcessing`, which is a subclass of
+`s223:EnumerationKind`.
+Their values participate in S223's enumeration hierarchy. `s223:hasAspect`
+records a processing method such as `Aggregate-Mean`; `watr:hasAggregation`
+separately records aggregation semantics such as `Aggregation-Mean`.
 
 ### Aggregation (`watr:DataProcessing-Aggregate`)
 
@@ -155,43 +160,58 @@ Combined accuracy measures that encompass both precision and trueness.
 The following Turtle fragment shows a temperature sensor property with data quality metadata. The raw property carries range and drop-rate characterization, and links to a processed (hourly mean) form of the data:
 
 ```turtle
+@prefix : <urn:example/data-quality#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
-@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# Raw temperature reading from a sensor
 :t1_temp a s223:QuantifiableObservableProperty ;
-    s223:hasQuantityKind qudt:Temperature ;
-    s223:hasUnit unit:DEG_C ;
-
-    # Normal operating range: max 100°C
-    watr:hasVariableRange [
-        a s223:QuantifiableProperty ;
-        s223:hasValue 100 ;
-        s223:hasAspect s223:Aspect-Maximum ;
-    ] ;
-
-    # Expected data drop rate
-    watr:hasDropRate [
-        a s223:QuantifiableProperty ;
-        s223:hasValue 10 ;
-        s223:hasUnit unit:NUM-PER-HR ;
-    ] ;
-
-    # Link to a processed (hourly mean) version of the data
-    watr:hasProcessedData :t1_temp_mean ;
-.
-
-# Hourly mean of the raw temperature data
-:t1_temp_mean a s223:QuantifiableProperty ;
+    rdfs:label "Raw temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    watr:hasVariableRange :upperLimit ;
+    watr:hasDropRate :dropRate ;
+    watr:hasProcessedData :hourlyMean, :interpolated .
+:upperLimit a s223:QuantifiableProperty ;
+    rdfs:label "Normal operating upper limit" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect s223:Aspect-HighLimit ;
+    s223:hasValue 100 .
+:dropRate a s223:QuantifiableProperty ;
+    rdfs:label "Expected missing samples per hour" ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:NUM-PER-HR ;
+    s223:hasValue 10 .
+:hourlyMean a s223:QuantifiableProperty ;
+    rdfs:label "Hourly mean temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
     s223:hasAspect watr:Aggregate-Mean ;
-    watr:hasTemporalResolution [
-        a s223:QuantifiableProperty ;
-        s223:hasUnit unit:HR ;
-        s223:hasValue 1 ;
-    ] ;
-.
+    watr:hasAggregation watr:Aggregation-Mean ;
+    watr:hasTemporalResolution :oneHour .
+:oneHour a s223:QuantifiableProperty ;
+    rdfs:label "Hourly output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR ;
+    s223:hasValue 1 .
+:interpolated a s223:QuantifiableProperty ;
+    rdfs:label "Interpolated temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect watr:Interpolation-Linear ;
+    watr:hasTemporalResolution :oneMinute .
+:oneMinute a s223:QuantifiableProperty ;
+    rdfs:label "One-minute output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:MIN ;
+    s223:hasValue 1 .
 ```
+
+The complete fragment is also available as
+{download}`data-quality-temperature.ttl <../../examples/data-quality-temperature.ttl>`.
 
 For a hands-on walkthrough using these annotations with SPARQL queries, see the [Data Quality Tutorial](../tutorials/data-quality-tutorial.md).

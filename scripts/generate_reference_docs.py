@@ -6,15 +6,16 @@ from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
-    "equipment": ("Equipment", ("equipment",)),
-    "processes": ("Processes", ("processtypes",)),
-    "objectives": ("Treatment Objectives", ("objectives",)),
-    "substances": ("Substances and Enumerations", ("substances", "enumerationkinds")),
+    "model": ("Model Relations and Rules", ("watr", "class-defaults")),
+    "equipment": ("Equipment Classes", ("equipment",)),
+    "processes": ("Processes Classes", ("processtypes",)),
+    "objectives": ("Treatment Objectives Classes", ("objectives",)),
+    "substances": ("Substances and Enumerations Classes", ("substances", "enumerationkinds")),
 }
 
 
 def render(graph: Graph, title: str) -> str:
-    lines = [f"# {title} Classes", ""]
+    lines = [f"# {title}", ""]
     terms = sorted(set(graph.subjects(RDFS.label, None)), key=str)
     for term in terms:
         if not isinstance(term, URIRef) or (term, RDF.type, OWL.Ontology) in graph:

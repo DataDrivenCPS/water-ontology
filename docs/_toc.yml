@@ -1,9 +1,7 @@
 # Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
-
 format: jb-book
 root: README.md
-parts: 
+parts:
 - caption: Explanation
   chapters:
   - file: explanation/purpose_scope.md
@@ -25,12 +23,67 @@ parts:
   chapters:
   - file: guides/querying_treatment_function.md
   - file: guides/todo.md
-  
+  - file: explanation/treatment_model_work.md
 - caption: Reference
   chapters:
+  - file: reference/ontology_documentation.md
+  - file: reference/model_documentation.md
   - file: reference/equipment_documentation.md
   - file: reference/processes_documentation.md
   - file: reference/objectives_documentation.md
   - file: reference/process_objective_map.md
   - file: reference/substances_documentation.md
   - file: libraries/index.rst
+    sections:
+    - file: libraries/templates/index.rst
+      sections:
+      - file: libraries/templates/basin.rst
+      - file: libraries/templates/bidirectional-cp.rst
+      - file: libraries/templates/bladder.rst
+      - file: libraries/templates/brine.rst
+      - file: libraries/templates/check-valve.rst
+      - file: libraries/templates/chlorination-unit.rst
+      - file: libraries/templates/cl2-mgL.rst
+      - file: libraries/templates/concentration.rst
+      - file: libraries/templates/concentration-sensor.rst
+      - file: libraries/templates/conductivity.rst
+      - file: libraries/templates/constituent-salt.rst
+      - file: libraries/templates/constituent-water.rst
+      - file: libraries/templates/contact-chamber.rst
+      - file: libraries/templates/controller.rst
+      - file: libraries/templates/disinfection-unit.rst
+      - file: libraries/templates/electric-current.rst
+      - file: libraries/templates/filter.rst
+      - file: libraries/templates/filtration.rst
+      - file: libraries/templates/flocculation-basin.rst
+      - file: libraries/templates/flow-rate.rst
+      - file: libraries/templates/inlet-cp.rst
+      - file: libraries/templates/junction.rst
+      - file: libraries/templates/membrane.rst
+      - file: libraries/templates/membrane-module.rst
+      - file: libraries/templates/on-off-command.rst
+      - file: libraries/templates/opening-command.rst
+      - file: libraries/templates/opening-ratio.rst
+      - file: libraries/templates/outlet-cp.rst
+      - file: libraries/templates/ph.rst
+      - file: libraries/templates/pipe.rst
+      - file: libraries/templates/pressure.rst
+      - file: libraries/templates/property.rst
+      - file: libraries/templates/pump.rst
+      - file: libraries/templates/pump-with-vfd.rst
+      - file: libraries/templates/quantifiable-property.rst
+      - file: libraries/templates/rapid-sand-filter.rst
+      - file: libraries/templates/sedimentation-tank.rst
+      - file: libraries/templates/sensor.rst
+      - file: libraries/templates/speed-command.rst
+      - file: libraries/templates/status.rst
+      - file: libraries/templates/tank.rst
+      - file: libraries/templates/temperature.rst
+      - file: libraries/templates/toc-ppm.rst
+      - file: libraries/templates/turbidity.rst
+      - file: libraries/templates/uf-unit.rst
+      - file: libraries/templates/uv-reactor.rst
+      - file: libraries/templates/valve.rst
+      - file: libraries/templates/vfd.rst
+      - file: libraries/templates/volume.rst
+      - file: libraries/templates/water-flow.rst

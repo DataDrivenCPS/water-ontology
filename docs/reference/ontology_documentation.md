@@ -4,6 +4,7 @@ The source modules define equipment, treatment mechanisms, treatment objectives,
 constituents, media, and enumerations. Use the generated references for current
 definitions and their complete lists of parent classes:
 
+- [Model relations and rules](model_documentation.md)
 - [Equipment](equipment_documentation.md)
 - [Processes](processes_documentation.md)
 - [Treatment objectives](objectives_documentation.md)
