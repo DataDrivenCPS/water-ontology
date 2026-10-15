@@ -2,16 +2,7 @@
 
 WaTr includes a set of metadata properties and enumeration kinds that allow models to capture the quality, characteristics, and processing history of sensor measurements. This metadata is attached to instances of `s223:QuantifiableProperty` (and in some cases directly to `s223:Sensor`) using `watr:` relations.
 
-## Overview
-
-Data quality metadata in WaTr serves two purposes:
-
-1. **Characterizing raw measurements** — describing the physical and temporal limits of a sensor (e.g., its measurement range, accuracy, and response time).
-2. **Describing processed data** — linking a raw property to derived versions of itself (e.g., aggregated, interpolated, or normalized streams) and characterizing the processing method applied.
-
-The two mechanisms work together: a `QuantifiableProperty` representing a raw sensor reading can carry characterization relations directly, and can also point to one or more `QuantifiableProperty` instances representing processed forms of that data via `watr:hasProcessedData`.
-
-## Data Quality Relations
+## Requirements
 
 The following relations may be applied to an `s223:QuantifiableProperty`. Each relation points to another `s223:QuantifiableProperty` whose value (and units) convey the metadata quantity.
 
@@ -53,7 +44,7 @@ The following relations may be applied to an `s223:QuantifiableProperty`. Each r
 |---|---|---|
 | `watr:hasProcessedData` | `s223:QuantifiableProperty` | Links to a `QuantifiableProperty` that represents a processed, filtered, or transformed form of the raw measurement. The processing method is conveyed via `s223:hasAspect` using a `watr:EnumerationKind-DataProcessing` value. |
 
-## Data Processing Enumeration Kinds
+## Definitions: data processing enumeration kinds
 
 When a `QuantifiableProperty` is linked via `watr:hasProcessedData`, the processing method applied to produce it is described by attaching an `s223:hasAspect` triple whose object is one of the `watr:EnumerationKind-DataProcessing` enumeration values below.
 
@@ -154,6 +145,25 @@ Combined accuracy measures that encompass both precision and trueness.
 | `watr:Accuracy-ExpandedUncertainty` | Expanded Uncertainty | Total uncertainty multiplied by a coverage factor. |
 | `watr:Accuracy-PercentRecovery` | Percent Recovery | Ratio of measured to known value (for spike/recovery tests). |
 | `watr:Accuracy-RSquared` | R-Squared | Coefficient of determination for calibration curves. |
+
+## Rationale
+
+Data quality metadata in WaTr serves two purposes:
+
+1. **Characterizing raw measurements** — describing the physical and temporal limits of a sensor (e.g., its measurement range, accuracy, and response time).
+2. **Describing processed data** — linking a raw property to derived versions of itself (e.g., aggregated, interpolated, or normalized streams) and characterizing the processing method applied.
+
+The two mechanisms work together: a `QuantifiableProperty` representing a raw sensor reading can carry characterization relations directly, and can also point to one or more `QuantifiableProperty` instances representing processed forms of that data via `watr:hasProcessedData`.
+
+## Validation
+
+Each relation in the tables above has a `sh:class s223:QuantifiableProperty`
+constraint on its value, declared on `s223:QuantifiableProperty` in `watr.ttl`
+(`hasProcessedData`, `hasAccuracy`, `hasVariableRange` and the rest). A value that
+is not a `QuantifiableProperty` is a violation, and a `watr:hasAggregation` value
+must be a `watr:EnumerationKind-Aggregation`. Nothing checks that the processing
+aspect matches the aggregation, that the units agree, or that a processed property
+is derived from its raw one; those are modeling conventions.
 
 ## Example
 
