@@ -80,8 +80,9 @@ process configuration and are not universal inferred objectives.
 
 Shared constituents establish S223 topology compatibility, not equivalent
 composition, material balance, membrane selectivity, or equipment suitability.
-For example, retaining an aqueous-sludge designation on pump ports does not
-certify that a particular pump is suitable for that sludge.
+For example, a sludge medium on pump ports does not certify that a particular
+pump is suitable for that sludge. `watr:Pump` accepts any `s223:Mix-Fluid` so that
+sludge pumps validate; it is not a suitability check.
 
 The documentation includes local process/objective instances, explicit target
 overrides in constituent queries, and system coverage through contained regions.

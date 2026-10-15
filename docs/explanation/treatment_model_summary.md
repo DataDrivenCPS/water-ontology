@@ -89,8 +89,8 @@ separate thickening process. Production of both streams does not mean the plant
 relies on both as finished products.
 
 Both `Clarifier` and `GravityThickener` require a water-medium outlet not
-classified as sludge and a distinct sludge-medium outlet. Sludge is a water
-subclass, so the liquid outlet explicitly excludes sludge media. Multiple sludge
+classified as sludge and a distinct sludge-medium outlet. Sludge is a mixture,
+not a kind of water, so a sludge port cannot satisfy the liquid outlet. Multiple sludge
 outlets and intermittent withdrawal are permitted; no solids concentration or
 clarification efficiency is inferred. Connection-point roles remain optional.
 These requirements are not imposed on every `SedimentationTank`, which also
