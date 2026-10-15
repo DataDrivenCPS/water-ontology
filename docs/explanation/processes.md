@@ -152,9 +152,10 @@ watr:Water-Seawater
 `Water-Freshwater` declares only `Constituent-H2O`; the saline media also declare
 `watr:Salt-NaCl`.
 
-`watr:Fluid-Sludge` is a semi-solid slurry, a subclass of `s223:Mix-Fluid` composed
-of `s223:Constituent-H2O`, `watr:Constituent-OrganicSolids` and
-`watr:Constituent-InorganicSolids`. It is not a `Fluid-Water`.
+`watr:Fluid-Sludge` is a semi-solid slurry. It is represented as an
+`s223:Mix-Fluid` composed of `s223:Constituent-H2O`,
+`watr:Constituent-OrganicSolids` and `watr:Constituent-InorganicSolids`, and is not
+a `Fluid-Water`.
 
 A flowing medium differs from a filter medium. Water, brine or sludge flows
 through the equipment; sand, carbon, resin or a membrane is the material that
@@ -183,7 +184,7 @@ Sludge shares `Constituent-H2O`, so the same rules accept water in and sludge ou
 of a clarifier, sludge in and supernatant out of a thickener, and a sludge pipe
 joined to either kind of connection point. See
 {download}`clarifier-sludge-compatibility.ttl <../../examples/clarifier-sludge-compatibility.ttl>`,
-which validates both directions. Sludge is a mixture rather than a kind of water,
+which shows validation in both directions. Sludge is a mixture rather than a kind of water,
 so a sludge port never stands in for a water port, and S223's pump shape does not
 accept it; see [pumps](treatment_model_summary.md#pumps).
 

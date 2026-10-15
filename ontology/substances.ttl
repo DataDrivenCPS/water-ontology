@@ -376,7 +376,7 @@ watr:Constituent-OrganicSolids
     a watr:Class ;
     a watr:Constituent-OrganicSolids ;
     a sh:NodeShape ;
-    rdfs:comment "The organic (volatile) fraction of the solids in a treatment medium, such as biomass and other biodegradable matter." ;
+    rdfs:comment "The organic fraction of the solids in a treatment medium, such as biomass and other biodegradable matter." ;
     rdfs:label "Constituent-OrganicSolids" ;
     rdfs:subClassOf watr:Constituent-Solids ;
 .

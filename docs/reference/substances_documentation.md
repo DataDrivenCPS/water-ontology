@@ -316,7 +316,7 @@
 
 ## Constituent-OrganicSolids
 
-**Description:** The organic (volatile) fraction of the solids in a treatment medium, such as biomass and other biodegradable matter.
+**Description:** The organic fraction of the solids in a treatment medium, such as biomass and other biodegradable matter.
 
 **Superclasses:** `watr:Constituent-Solids`
 
