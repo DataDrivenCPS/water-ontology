@@ -88,11 +88,10 @@ A clarifier produces overflow and sludge underflow; the sludge may be sent to a
 separate thickening process. Production of both streams does not mean the plant
 relies on both as finished products.
 
-Both `Clarifier` and `GravityThickener` require a water-medium outlet not
-classified as sludge and a distinct sludge-medium outlet. Sludge is a mixture,
-not a kind of water, so a sludge port cannot satisfy the liquid outlet. Multiple sludge
-outlets and intermittent withdrawal are permitted; no solids concentration or
-clarification efficiency is inferred. Connection-point roles remain optional.
+`Clarifier` and `GravityThickener` each require a water outlet and a separate
+sludge outlet. Sludge is not a kind of water, so one port cannot fill both.
+Multiple sludge outlets and intermittent withdrawal are permitted; no solids
+concentration or clarification efficiency is inferred. Connection-point roles remain optional.
 These requirements are not imposed on every `SedimentationTank`, which also
 includes septic tanks that retain solids for periodic pump-out.
 
