@@ -6,7 +6,7 @@ supporting treatment references.
 
 ## What the ontology and modeler supply
 
-### What the model states
+### Modeling
 
 | Question | Model relation | Meaning |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ state their objectives and processes. `watr:achievesTreatmentObjective` belongs
 in process definitions: it ties a process type to an objective that applies
 wherever the process is performed. Do not use it on individual equipment.
 
-### Why
+### Rationale
 
 An equipment class supplies required processes and a design objective only when
 every unit of that class has that function. The modeler states plant intent and
@@ -31,7 +31,7 @@ both slots. Additional processes are allowed with no plausibility check.
 Inference never derives a mechanism from an objective. Neither relation
 certifies measured treatment efficiency or permit compliance.
 
-### How it is validated
+### Validation
 
 Two SHACL-AF rules in `class-defaults.ttl` run before the constraints:
 
@@ -56,7 +56,7 @@ Shapes in `watr.ttl` check the relations themselves:
 
 ## Filtration and membrane processes
 
-### What the ontology defines
+### Definitions
 
 | Process | Parents |
 | --- | --- |
@@ -69,7 +69,7 @@ Shapes in `watr.ttl` check the relations themselves:
 
 A `Filter` requires at least one `Process-Filtration`.
 
-### Why
+### Rationale
 
 EPA's [Membrane Filtration Guidance Manual, Chapter 2](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=901V0500.TXT)
 includes MF, UF and RO in membrane filtration and distinguishes electrodialysis
@@ -77,7 +77,7 @@ from filtration. DOE's [solar-desalination projects](https://www.energy.gov/cmei
 describe thermally driven membrane distillation. These mechanisms support the
 classification; the hierarchy itself is an ontology design choice.
 
-### How it is validated
+### Validation
 
 Membrane use alone does not satisfy a filter's filtration requirement, since
 membrane distillation and electrodialysis have no filtration parent. Reverse
@@ -90,7 +90,7 @@ See the {download}`membrane-process example <../../examples/membrane-process-cla
 
 ## Solids-removal terminology
 
-### What the ontology defines
+### Definitions
 
 - `TreatmentObjective-SuspendedSolidsRemoval` covers suspended solids, including
   settleable solids. Clarification and turbidity removal are its children.
@@ -100,14 +100,14 @@ See the {download}`membrane-process example <../../examples/membrane-process-cla
 - `TreatmentObjective-SolidsRemoval` is deprecated with
   `dcterms:isReplacedBy TreatmentObjective-SuspendedSolidsRemoval`.
 
-### Why
+### Rationale
 
 The published `SolidsRemoval` URI was ambiguous between suspended and dissolved
 solids. It keeps its original suspended-solids meaning and subclasses the
 replacement, so existing models remain compatible. Use the explicit replacement
 in new models.
 
-### How it is validated
+### Validation
 
 No shape applies; this is vocabulary. See the
 {download}`suspended and dissolved solids example <../../examples/solids-removal-objectives.ttl>`.
@@ -118,7 +118,7 @@ No shape applies; this is vocabulary. See the
 as a deprecated published URI with `dcterms:isReplacedBy Process-Settling`.
 Sedimentation remains an alternate label familiar to practitioners.
 
-### What the shapes require
+### Requirements
 
 | Class | Subclass of | Process | Objective | Outlet connection points |
 |---|---|---|---|---|
@@ -126,7 +126,7 @@ Sedimentation remains an alternate label familiar to practitioners.
 | `Clarifier` | `SedimentationTank` | inherited | at least one `TreatmentObjective-Clarification` | at least one water outlet and at least one sludge outlet |
 | `GravityThickener` | `Thickener` | at least one `Process-Settling` | at least one `TreatmentObjective-Thickening` (inherited from `Thickener`) | at least one water outlet and at least one sludge outlet |
 
-### Why
+### Rationale
 
 A clarifier and a gravity thickener each split their feed into a clarified water
 stream and a sludge stream. They differ in which stream they exist for: the
@@ -139,7 +139,7 @@ tanks, which retain solids for periodic pump-out and have no sludge outlet.
 `Clarifier` is a specialization of `SedimentationTank`, not an alias, because it
 adds the clarification objective.
 
-### How it is validated
+### Validation
 
 Both classes apply `watr:LiquidSludgeOutletShape`, which makes two independent
 checks on `s223:hasConnectionPoint`. Each needs at least one match:
@@ -175,7 +175,7 @@ the separation process. It preserves the modeler's thickening objective.
 
 ## General removal and specific targets
 
-### What the ontology defines
+### Definitions
 
 All separation processes inherit `TreatmentObjective-ConstituentRemoval`, which
 records separation from a stream rather than loss from the whole plant. Adsorption,
@@ -190,7 +190,7 @@ nearest declaring ancestor on each inheritance branch. The
 [constituent query](../guides/querying_treatment_function.md#find-equipment-by-constituent)
 implements this rule.
 
-### Why
+### Rationale
 
 - RO inherits the broad objective without assuming desalination. A plant may
   state PFAS removal or resource recovery, including from concentrate.
@@ -203,7 +203,7 @@ implements this rule.
 - The broad parent names no target on purpose. A local target-specific objective
   supplies one.
 
-### How it is validated
+### Validation
 
 | Shape | Requires |
 | --- | --- |
@@ -227,7 +227,7 @@ for the complete hierarchies and intrinsic objective relationships.
 
 ## Filtration, thermal treatment, and disinfection
 
-### What the ontology defines
+### Definitions
 
 | Mechanism | Intrinsic objective |
 | --- | --- |
@@ -240,7 +240,7 @@ for the complete hierarchies and intrinsic objective relationships.
 | Ozonation, thermal treatment | none; design or plant intent supplies it |
 | Sulfite dosing | chlorine residual removal |
 
-### Why
+### Rationale
 
 The contaminants a filter removes depend on its material and application, so the
 mechanism does not supply every target-specific objective. Thermal hydrolysis has
@@ -250,14 +250,14 @@ describes intended treatment, and performance depends on operating conditions.
 Generic UV can support photolysis or advanced oxidation, so it has no universal
 disinfection objective.
 
-### How it is validated
+### Validation
 
 No extra shape applies. Equipment classes carry their required processes, and
 inference adds the intrinsic objectives from the table.
 
 ## Maintenance, tanks, zones, and repurposing
 
-### What the shapes require
+### Requirements
 
 | Class | Requirement |
 | --- | --- |
@@ -269,7 +269,7 @@ inference adds the intrinsic objectives from the table.
 Cleaning processes (backwashing, air scouring, purging) inherit
 `TreatmentObjective-EquipmentCleaning`. Roles are optional.
 
-### Why
+### Rationale
 
 - Restoring operation is an objective even when the output is not a product
   stream, so cleaning has its own objective. Modelers state cleaning activities
@@ -286,7 +286,7 @@ Cleaning processes (backwashing, air scouring, purging) inherit
   connection-point roles as well as an activity term used in compound process
   definitions.
 
-### How it is validated
+### Validation
 
 Each requirement above is a SHACL shape on the class and fails as a violation.
 The `sh:message` on each names the rule that was broken.
@@ -300,21 +300,21 @@ by another system.
 
 ## Systems and queries
 
-### What the model states
+### Modeling
 
 Compound processes are asserted on an `s223:System`. `includesProcess` lists the
 steps its members should cover. A2O includes nitrification, denitrification,
 phosphorus removal and recirculation, and inherits aeration and solid-liquid
 separation requirements from activated sludge.
 
-### Why
+### Rationale
 
 `includesProcess` does not make the compound process a subclass of each step. A
 system's objective does not assert that every member independently achieves it.
 Inspection does not propagate child processes or objectives onto enclosing
 equipment.
 
-### How it is validated
+### Validation
 
 `SystemProcessCoverageShape` (warning) reports a system that claims a compound
 process when neither it, a nested member, nor equipment contained within a member
@@ -344,20 +344,20 @@ and [system processes](system_processes.md) for examples.
 
 ## Flowing media and composition
 
-### What the model states
+### Modeling
 
 The flowing medium is water, brine, or sludge. Filter media such as sand,
 carbon or resin are treatment materials, not the water pipe's medium. A
 specialized medium states its own constituents; composition is not copied
 through subclassing.
 
-### Why
+### Rationale
 
 Shared constituents establish S223 topology compatibility. They do not establish
 equivalent composition, equipment suitability, membrane selectivity or mass
 balance.
 
-### How it is validated
+### Validation
 
 | Rule | Requires |
 | --- | --- |
