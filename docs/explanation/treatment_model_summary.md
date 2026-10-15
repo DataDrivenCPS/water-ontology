@@ -45,28 +45,23 @@ instances. Roles are never inferred. Because the rules run first, a class's
 process and objective requirements cannot fail for an instance that only
 declares its type.
 
-Shapes in `watr.ttl` check the relations themselves:
-
-| Shape | Requires |
-| --- | --- |
-| bearer guard | `hasProcess` and `hasTreatmentObjective` appear only on `s223:Equipment` or `s223:System`. |
-| `ProcessValueShape` | Every `hasProcess` value is a `watr:Process`. |
-| `TreatmentObjectiveValueShape` | Every `hasTreatmentObjective` value is a `watr:TreatmentObjective`. |
-| `TreatmentObjectiveRequiresProcessShape` | Equipment with an objective also states at least one `hasProcess`. |
+Shapes in `watr.ttl` check the relations themselves. `hasProcess` and
+`hasTreatmentObjective` may appear only on equipment or a system, because a
+process is performed by a machine or by a collection of them. Every `hasProcess`
+value must be a `watr:Process` and every `hasTreatmentObjective` value a
+`watr:TreatmentObjective`, which keeps the two vocabularies from being swapped.
+And equipment that states an objective must also state a process, since an
+objective with no mechanism says nothing checkable.
 
 ## Filtration and membrane processes
 
 ### Definitions
 
-| Process | Parents |
-| --- | --- |
-| `Process-Filtration` | `Process-Separation` |
-| `Process-MembraneProcess` | `Process-Separation` |
-| Media filtration | `Process-Filtration`, `Process-SolidLiquidSeparation` |
-| Microfiltration, ultrafiltration | `Process-MembraneProcess`, `Process-Filtration`, `Process-SolidLiquidSeparation` |
-| Reverse osmosis | `Process-MembraneProcess`, `Process-Filtration` (not solid-liquid separation) |
-| Membrane distillation, electrodialysis | `Process-MembraneProcess` only |
-
+`Process-Filtration` and `Process-MembraneProcess` are separate subtypes of
+`Process-Separation`. Microfiltration, ultrafiltration and reverse osmosis are
+subtypes of both. Media filtration, microfiltration and ultrafiltration also
+declare `Process-SolidLiquidSeparation`; reverse osmosis does not. Membrane
+distillation and electrodialysis are membrane processes with no filtration parent.
 A `Filter` requires at least one `Process-Filtration`.
 
 ### Rationale
@@ -79,11 +74,11 @@ classification; the hierarchy itself is an ontology design choice.
 
 ### Validation
 
-Membrane use alone does not satisfy a filter's filtration requirement, since
-membrane distillation and electrodialysis have no filtration parent. Reverse
-osmosis does not satisfy a suspended-solids (solid-liquid) separation
-requirement. Existing term URIs are retained, but queries that previously found
-membrane distillation through the filtration hierarchy now need
+Because membrane distillation and electrodialysis have no filtration parent,
+membrane use alone does not satisfy a filter's filtration requirement. Reverse
+osmosis likewise does not satisfy a suspended-solids separation step, such as the
+one in activated sludge. Existing term URIs are retained, so a query that used to
+reach membrane distillation through the filtration hierarchy no longer does; query
 `Process-MembraneProcess` to find every membrane separation.
 
 See the {download}`membrane-process example <../../examples/membrane-process-classification.ttl>`.
@@ -205,10 +200,13 @@ implements this rule.
 
 ### Validation
 
-| Shape | Requires |
-| --- | --- |
-| `ConstituentTargetValueShape` | Every `targetsConstituent` value is an `s223:Medium-Constituent`. |
-| `ConstituentRemovalTargetShape` (warning) | A plant's constituent-removal objective states a target or inherits one. Vocabulary terms are exempt; `tests/test_constituent_targets.py` checks them instead. |
+Every `targetsConstituent` value must be an `s223:Medium-Constituent`
+(`ConstituentTargetValueShape`). A constituent-removal objective in a plant model
+must name its target or inherit one from its parent, and
+`ConstituentRemovalTargetShape` warns when it does not. An objective that names a
+constituent the vocabulary lacks is incomplete rather than wrong, which is why this
+is a warning. The vocabulary's own terms are exempt; `tests/test_constituent_targets.py`
+checks that each named objective resolves to a constituent.
 
 A plant can extend the target vocabulary without editing WaTr:
 
@@ -229,16 +227,13 @@ for the complete hierarchies and intrinsic objective relationships.
 
 ### Definitions
 
-| Mechanism | Intrinsic objective |
-| --- | --- |
-| Media filtration (sand, granular carbon) | none specific. GAC filtration also performs adsorption. |
-| Microfiltration, ultrafiltration | none specific. Both are membrane and solid-liquid processes. |
-| Thermal hydrolysis | none. It is both hydrolysis and thermal treatment. |
-| Chlorination | disinfection |
-| UV disinfection equipment class | disinfection, from its design |
-| Generic UV irradiation | none |
-| Ozonation, thermal treatment | none; design or plant intent supplies it |
-| Sulfite dosing | chlorine residual removal |
+Media filtration and membrane filtration carry no target-specific objective. GAC
+filtration also performs adsorption. Thermal hydrolysis is both hydrolysis and
+thermal treatment, with no single product objective. Chlorination declares
+disinfection, and the UV disinfection equipment class inherits disinfection from
+its design. Generic UV irradiation, ozonation and thermal treatment declare none,
+leaving it to design or plant intent. Sulfite dosing implies chlorine residual
+removal.
 
 ### Rationale
 
@@ -271,20 +266,22 @@ Cleaning processes (backwashing, air scouring, purging) inherit
 
 ### Rationale
 
-- Restoring operation is an objective even when the output is not a product
-  stream, so cleaning has its own objective. Modelers state cleaning activities
-  directly with `watr:hasProcess`, alongside the equipment's other processes.
-- A storage tank may have one bidirectional port; flow-through reactors and
-  separation tanks need distinct inlets and outlets.
-- Aerobic, anoxic and anaerobic roles stay explicit operating contexts, following
-  Fletcher's later acceptance of that choice.
-- A region is a functional portion of a basin, not a separate installed unit.
-  Sensors observe the relevant region or connection point with
-  `hasObservationLocation`. See
-  [functional regions](equipment_function.md#functional-regions-within-equipment)
-  for the containment constraints and a worked example. Recirculation has
-  connection-point roles as well as an activity term used in compound process
-  definitions.
+Restoring operation is an objective even when the output is not a product stream,
+so cleaning has its own objective. Modelers state cleaning activities directly
+with `watr:hasProcess`, alongside the equipment's other processes.
+
+A storage tank may have one bidirectional port, while flow-through reactors and
+separation tanks need distinct inlets and outlets. Aerobic, anoxic and anaerobic
+roles stay explicit operating contexts, following Fletcher's later acceptance of
+that choice.
+
+A region is a functional portion of a basin, not a separate installed unit.
+Sensors observe the relevant region or connection point with
+`hasObservationLocation`. See
+[functional regions](equipment_function.md#functional-regions-within-equipment)
+for the containment constraints and a worked example. Recirculation has
+connection-point roles as well as an activity term used in compound process
+definitions.
 
 ### Validation
 
@@ -359,12 +356,11 @@ balance.
 
 ### Validation
 
-| Rule | Requires |
-| --- | --- |
-| Range | Each constituent percentage lies between 0 and 100. |
-| Consistency | A constituent has no conflicting exact values or bounds. |
-| Total | Percentages on a common mass or volume basis do not exceed 100%. |
-| Complete composition | An explicitly complete composition can reach 100%. Exact values or upper bounds that cannot are rejected. |
+Each constituent percentage must lie between 0 and 100, and a constituent may not
+have conflicting exact values or bounds. Percentages on a common mass or volume
+basis may not total more than 100%. A composition explicitly declared complete
+must be able to reach 100%, so exact values or upper bounds that cannot are
+rejected.
 
 Partial compositions are allowed. Complement inference additionally requires
 `hasCompleteComposition true`, a common basis and percent units, exactly one
