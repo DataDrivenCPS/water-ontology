@@ -30,13 +30,17 @@ sedimentation, and that it occupies the primary stage of this treatment system.
 
 ## Treatment objective: what the equipment is for
 
-A treatment objective is the intended, meaningful change to the treated stream.
-Examples include clarification, disinfection, desalination, thickening, and
-nitrogen removal. Treatment-objective values use `watr:hasTreatmentObjective` and come
-from the `watr:TreatmentObjective-*` vocabulary.
+### Definitions
 
-The treatment objective is not always determined by the physical mechanism. A sedimentation
-process can clarify a water stream or thicken a solids stream:
+A treatment objective is the intended, meaningful change to the treated stream,
+such as clarification, disinfection, desalination, thickening or nitrogen
+removal. Values use `watr:hasTreatmentObjective` and come from the
+`watr:TreatmentObjective-*` vocabulary.
+
+### Rationale
+
+The physical mechanism does not always determine the objective. Settling can
+clarify a water stream or thicken a solids stream:
 
 ```ttl
 :primaryClarifier a watr:Clarifier ;
@@ -49,17 +53,31 @@ process can clarify a water stream or thicken a solids stream:
     watr:hasProcess watr:Process-Settling .
 ```
 
-The process is the same in both units. The treatment objective distinguishes what each unit
-is designed to accomplish.
+The process is the same in both units. The objective distinguishes what each is
+designed to accomplish. A process specifies a mechanism and an objective its
+intended result; neither certifies measured performance or permit compliance.
+
+### Validation
+
+- `TreatmentObjectiveValueShape`: every value is a `watr:TreatmentObjective`.
+- `TreatmentObjectiveRequiresProcessShape`: equipment or a system that states an
+  objective also states at least one `watr:hasProcess`.
+- A bearer guard allows the relation only on equipment and systems.
 
 ## Process: what the equipment does
 
-A process is a physical, chemical, or biological activity performed by a piece
-of equipment or by a system. Examples include sedimentation, chlorination,
-ultraviolet irradiation, filtration, aeration, and denitrification. Process
-values use `watr:hasProcess` and come from the `watr:Process-*` vocabulary.
+### Definitions
 
-Several processes can achieve the same treatment objective:
+A process is a physical, chemical or biological activity performed by equipment
+or by a system, such as sedimentation, chlorination, ultraviolet irradiation,
+filtration, aeration or denitrification. Values use `watr:hasProcess` and come
+from the `watr:Process-*` vocabulary. The process hierarchy describes kinds of
+activities: `watr:Process-ReverseOsmosis` is a kind of membrane process and
+filtration process. The objective hierarchy is separate.
+
+### Rationale
+
+Several processes can serve the same objective:
 
 ```ttl
 :chlorineContactor a watr:ChlorinationUnit ;
@@ -71,14 +89,17 @@ Several processes can achieve the same treatment objective:
     watr:hasProcess watr:Process-UVIrradiation .
 ```
 
-The process hierarchy describes kinds of activities. For example,
-`watr:Process-ReverseOsmosis` is a kind of membrane process and filtration
-process. The treatment objective hierarchy separately organizes treatment objectives.
+### Validation
 
-### Processes with a fixed treatment objective
+- `ProcessValueShape`: every value is a `watr:Process`.
+- A bearer guard allows the relation only on equipment and systems.
 
-When a process has the same treatment objective wherever it is performed, the process type
-is related to that treatment objective with `watr:achievesTreatmentObjective`:
+## Fixed objectives and the decision rule
+
+### Definitions
+
+When a process has the same objective wherever it is performed, the process type
+carries it with `watr:achievesTreatmentObjective`:
 
 ```ttl
 watr:Process-Chlorination
@@ -88,43 +109,44 @@ watr:Process-Denitrification
     watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 ```
 
-Some processes imply a broad objective without choosing a specific target.
-Settling can clarify or thicken, and chemical precipitation can soften water or
-remove phosphorus, metals, sulfate, or silica. Both imply constituent removal;
-the specific objective comes from equipment design or plant intent.
+Some processes imply only a broad objective. Settling can clarify or thicken, and
+chemical precipitation can soften water or remove phosphorus, metals, sulfate or
+silica. Both imply constituent removal; the specific objective comes from
+equipment design or plant intent.
 
-`achievesTreatmentObjective` belongs to the process vocabulary. The
-`ProcessObjectiveRule` uses it to materialize `hasTreatmentObjective` on the
-performing equipment or system. No rule derives a process from an objective.
+### Rationale
 
-### Decision rule, including filtration
+Use a process term for the mechanism or operating method, and an objective for the
+change the unit is meant to deliver. A process may carry a selectivity qualifier
+without a universal objective. Microfiltration, ultrafiltration, nanofiltration
+and reverse osmosis specify a membrane method and retention range, not every
+target removed at that range.
 
-Use a process term for the mechanism or operating method; use a treatment
-objective for the change the unit is intended to deliver. A process may carry a
-selectivity qualifier without entailing a universal objective. For example,
-microfiltration, ultrafiltration, nanofiltration, and reverse osmosis specify a
-membrane method and retention range. They do not, by themselves, assert every
-possible target removed at that range.
+State a target-specific objective only when design or plant intent supports it: a
+polishing filter can state turbidity removal, an RO unit desalination, and a
+water reuse unit organics removal. The same restraint applies to ozone and thermal
+treatment, whose broad process terms do not infer disinfection. Do not infer
+objectives from generic method hierarchies; a method label is not a complete
+treatment claim.
 
-State a target-specific treatment objective only when the equipment design or
-plant intent supports it: a polishing filter can state turbidity removal, an RO
-unit can state desalination, and a water reuse treatment unit can state organics
-removal when designed for that purpose. The same restraint applies to ozone and
-thermal treatment: their broad process terms do not infer disinfection, because
-either may serve another objective. Do not infer these from generic method hierarchies. This keeps the
-model useful for practitioner queries without treating a method label as a
-complete treatment claim.
+### Validation
+
+`ProcessObjectiveRule` uses `achievesTreatmentObjective` to add
+`hasTreatmentObjective` to the performing equipment or system. Inference runs
+before validation. No rule derives a process from an objective.
 
 ## Role: where the equipment sits
 
-A role describes the commissioned function or position of an entity in a
-particular system. Roles include treatment stages such as `watr:Role-Primary`,
-zone regimes such as `watr:Role-Anoxic`, and connection-point purposes such as
-`watr:Role-Drain`.
+### Definitions
 
-Moving a clarifier from the primary stage to the secondary stage does not change
-its sedimentation process or its clarification treatment objective. It does change its
-role:
+A role is the commissioned function or position of an entity in a particular
+system. Roles include treatment stages (`watr:Role-Primary`), zone regimes
+(`watr:Role-Anoxic`) and connection-point purposes (`watr:Role-Drain`).
+
+### Rationale
+
+Moving a clarifier from the primary to the secondary stage keeps its settling
+process and clarification objective. Only its role changes:
 
 ```ttl
 :primaryClarifier a watr:Clarifier ;
@@ -136,48 +158,51 @@ role:
 
 Roles describe commissioned use, not instantaneous operating conditions. An
 aerobic/anoxic swing zone can carry both roles because it is commissioned to
-serve in either regime. Its current dissolved-oxygen concentration is modeled
-as an observable property, as shown in
+serve in either regime. Its current dissolved-oxygen concentration is an
+observable property, as in
 {download}`swing-zone-dissolved-oxygen.ttl <../../examples/swing-zone-dissolved-oxygen.ttl>`.
 
-````{important}
-The equipment class supplies process and treatment objective values that are fixed by that
-class, but it cannot supply an installation-specific role. After SHACL-AF
-inference, the following short model has `watr:Process-Settling` and
-`watr:TreatmentObjective-Thickening`:
+### Validation
+
+Roles are never inferred. After inference this model has
+`watr:Process-Settling` and `watr:TreatmentObjective-Thickening`:
 
 ```ttl
 :sludgeThickener a watr:GravityThickener .
 ```
 
-The inferred process comes from `watr:GravityThickener`, and the inferred
-treatment objective comes from its `watr:Thickener` ancestor. A role is never inferred by
-this rule. If the thickener serves a particular stage or function in the plant,
-state that role on the instance:
+The process comes from `watr:GravityThickener` and the objective from its
+`watr:Thickener` ancestor. A stage or function in the plant must be stated:
 
 ```ttl
 :sludgeThickener a watr:GravityThickener ;
     s223:hasRole watr:Role-Primary .
 ```
 
-Run inference before querying for class-supplied process and treatment objective values. A
-triplestore that only loads the Turtle source will not contain those inferred
-triples.
-````
+Run inference before querying for class-supplied processes and objectives. A
+triplestore loaded from the Turtle source alone does not contain them.
 
 ## Class requirements and additional processes
 
-Equipment classes state the processes and treatment objectives that define their instances.
-Requirements on ancestor classes also apply. Named vocabulary terms and local
-instances of process or objective types can satisfy these requirements; defaults
-are suppressed when a stated value already satisfies a slot. A reverse-osmosis membrane, for
-example, is a filter and must perform reverse osmosis, which is a kind of
-filtration. Its class supplies broad constituent removal; the modeler states desalination when that is the plant intent.
+### Requirements
 
-An equipment instance may perform additional activities. A filter may be
-cleaned or backwashed, and a reactor may mix, aerate, or recirculate water.
-The modeler states these activities explicitly with `watr:hasProcess`; no
-equipment/process permission list is required.
+An equipment class states the processes and objectives that define its instances,
+and requirements on ancestor classes also apply. A reverse-osmosis membrane is a
+filter and must perform reverse osmosis, which is a kind of filtration. Its class
+supplies broad constituent removal; the modeler states desalination when that is
+the plant intent.
+
+### Rationale
+
+A class carries a specific design objective only when every unit of that class is
+built for it. `Clarifier` specializes `SedimentationTank` by adding the
+clarification objective. Separation processes imply broad constituent removal, so
+RO does not imply desalination, and cleaning processes such as backwashing imply
+equipment cleaning rather than product-water removal.
+
+An instance may perform further activities. A filter may be backwashed, and a
+reactor may mix, aerate or recirculate. State them with `watr:hasProcess`; no
+equipment/process permission list exists.
 
 ```ttl
 :membrane a watr:ReverseOsmosisMembrane ;
@@ -186,99 +211,78 @@ equipment/process permission list is required.
     watr:hasTreatmentObjective watr:TreatmentObjective-Desalination .
 ```
 
-WaTr accepts explicitly declared additional processes while checking their
-types and preserving class requirements. It does not currently judge whether
-an equipment/process combination is plausible.
+### Validation
 
-## Validation rules
+`ClassDefaultsRule` copies the class's required processes and objectives onto
+the instance, unless a stated value already satisfies the slot. Named vocabulary
+terms and local instances of process or objective types both satisfy a slot.
+Additional processes are accepted when their type is valid and the class
+requirements still hold. There is no equipment/process plausibility check.
 
-WaTr applies the following checks to these statements:
+## Repurposing equipment
 
-- Every value of `watr:hasProcess` must be a `watr:Process`.
-- Every value of `watr:hasTreatmentObjective` must be a `watr:TreatmentObjective`.
-- An equipment or system that states a treatment objective must also state a process.
-- Only equipment and systems may carry `watr:hasProcess` or
-  `watr:hasTreatmentObjective`.
-- Inference supplies intrinsic process objectives before validation.
+### Modeling
 
-Warnings are intended for practitioner review. They do not make a graph invalid
-when validation is configured to fail only on `sh:Violation` results.
+Keep the instance URI and replace the obsolete equipment type with one that fits
+the current use. Update the asserted roles, processes and objectives too. A vessel
+converted from chlorination to storage should become a storage-tank type with the
+obsolete treatment assertions removed.
 
-## Design requirements, defaults, and operating context
+### Rationale
 
-`hasTreatmentObjective` relates a unit or system to its objective.
-`achievesTreatmentObjective` relates a process type to an objective that follows
-wherever it is performed. Inference uses the second relation to add the first.
-A process specifies a treatment mechanism and an objective specifies its intended
-result; neither certifies measured performance or permit compliance.
+Keeping the old specialized type keeps its intrinsic defaults, even after an
+explicit process assertion is removed. Model versioning and historical
+configurations are outside this ontology's scope and must be managed by another
+system.
 
-Equipment carries a specific design objective only when every unit of that class
-is built for it. Separation processes imply broad constituent removal, while the
-plant states the target-specific objective when the class cannot determine it.
-RO therefore does not automatically imply desalination. Cleaning processes,
-including backwashing, imply equipment cleaning rather than product-water removal.
+### Validation
 
-A modeler can state additional processes beyond defaults. Their values must be
-processes, and the class requirements still apply. No equipment/process
-plausibility check is performed. A tank may have a single bidirectional fluid port.
-Reactors keep inlet and outlet requirements. `Clarifier` specializes
-`SedimentationTank` by adding the clarification objective.
-
-When the same physical equipment is repurposed, keep its instance URI and
-replace its obsolete equipment type with a type appropriate to its current use.
-Update its asserted roles, processes, and objectives to reflect that use as well.
-Keeping the old specialized type retains its intrinsic defaults, even if an
-explicit process assertion is removed. For example, a vessel converted from
-chlorination service to storage should use a suitable storage-tank type and
-have obsolete treatment assertions removed.
-
-Model versioning and historical configurations are outside this ontology's
-scope and must be managed by another system.
-
-A basin may contain several `watr:EquipmentRegion` instances. Locate a sensor
-with `s223:hasObservationLocation` at the specific region or connection point
-whose property it observes; aerobic, anoxic, and anaerobic roles describe that
-region's operating context and remain explicit. See the functional-region
-modeling pattern below.
-
-Turtle `#` comments explain the source and are not RDF triples. `rdfs:comment`
-and `skos:definition` are queryable RDF properties; the reference generator
-accepts either. Published terms use `rdfs:comment` consistently.
-
-SHACL severities distinguish `sh:Violation` (invalid data), `sh:Warning`
-(incomplete data), and `sh:Info` (advisory findings). The examples
-and tests inspect those severities explicitly; applications may choose how to
-present warnings. See [data quality](data_quality.md).
+None. Nothing detects a stale type.
 
 ## Functional regions within equipment
 
-Use `watr:EquipmentRegion` for an identifiable functional portion of equipment
-that performs a treatment activity, even if it has no physical partition. For
-example, one basin can contain an anoxic region and an aerobic region. Each is
-equipment in the WaTr model, with its own processes and optional operating roles.
+### Requirements
 
-Every region must have exactly one direct parent through `s223:contains`, and
-the parent must be equipment. A region must declare at least one `watr:hasProcess`
-and at least one `s223:hasConnectionPoint`.
-Regions can contain nested regions or component equipment, but containment
-ancestry must be acyclic and must ultimately reach equipment that is not itself
-an `EquipmentRegion`. Roles are optional. Connection points identify flow
-boundaries and use the existing S223 direction and medium constraints; they
-need not be physical fittings. Use connections between region ports to describe
-flow order, and `s223:mapsTo` to map the outermost region ports to their parent
-equipment's ports.
+`watr:EquipmentRegion` is an identifiable functional portion of equipment that
+performs a treatment activity, even without a physical partition. It must have:
 
-Sensors can use `s223:hasObservationLocation` to observe a region directly.
-Process-to-objective inference applies to each region. System coverage checks
-inspect regions and hardware contained within system members. Containment does not
-propagate a child's processes or objectives to its parent, and operating roles
-are stated explicitly rather than inferred from readings.
+- exactly one direct parent through `s223:contains`, which must be equipment;
+- at least one `watr:hasProcess`;
+- at least one `s223:hasConnectionPoint`;
+- an acyclic containment ancestry that ends at equipment that is not a region.
 
-Equipment regions are distinct from spatial representations: `PhysicalSpace`
-describes physical location, `DomainSpace` describes a service space, and an S223
-`Zone` groups DomainSpaces for control or functional purposes. An actual
-sub-basin can use an existing basin or reactor class when its constraints fit.
+Roles are optional. Regions may contain nested regions or component equipment.
+
+### Rationale
+
+One basin can hold an anoxic and an aerobic region, each with its own processes
+and optional operating role. Connection points mark flow boundaries and use the
+S223 direction and medium constraints; they need not be physical fittings. Use
+connections between region ports for flow order, and `s223:mapsTo` to map the
+outermost region ports to the parent's ports. Locate a sensor with
+`s223:hasObservationLocation` at the region or connection point whose property it
+observes. Operating roles stay explicit and are not inferred from readings.
+
+Regions differ from spatial representations: `PhysicalSpace` is location,
+`DomainSpace` a service space and an S223 `Zone` a group of domain spaces. An
+actual sub-basin can use an existing basin or reactor class when its constraints
+fit.
+
+### Validation
+
+Each requirement is a shape on `watr:EquipmentRegion` with its own `sh:message`
+(for example "An EquipmentRegion must have exactly one direct parent Equipment
+through s223:contains."). Process-to-objective inference applies to each region,
+and system coverage checks inspect regions and the hardware inside system
+members. Containment does not propagate a child's processes or objectives to its
+parent.
 
 See {download}`the single-basin regions example <../../examples/single-basin-regions.ttl>`
-for a basin containing two functional regions, their component hardware, and
-their internal flow connection, and sensors observing the regions directly.
+for a basin with two functional regions, their component hardware, their internal
+flow connection, and sensors observing the regions directly.
+
+## Severities
+
+`sh:Violation` marks invalid data, `sh:Warning` incomplete data and `sh:Info` an
+advisory. Applications decide which fail validation. See
+[data quality](data_quality.md).
