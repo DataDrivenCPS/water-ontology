@@ -174,6 +174,7 @@ oil or refrigerant. `watr:Pump` restates those checks for any `s223:Mix-Fluid`.
 
 **S223 compatibility.** Connection points and connections must carry compatible
 media, by the constituent rule above.
+
 **`watr:CompositionPercentageShape`.** For any node with `s223:composedOf`
 fractions in `unit:PERCENT`, the percentages on each common mass or volume basis
 may not exceed 100%. For a constituent given as a range with
@@ -182,6 +183,7 @@ lower bound counts, since upper bounds need not hold at once. `Brine-5to10Percen
 (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. A
 partial composition that names only some constituents stays valid. See
 {download}`composition-exceeds-100-percent.ttl <../../examples/nonconforming/composition-exceeds-100-percent.ttl>`.
+
 **`watr:CompleteCompositionShape`.** When `watr:hasCompleteComposition true` is
 asserted, the common-basis fractions must be able to total 100%. Exact fractions
 totaling 90% fail, as do ranges whose tightest upper bounds total 90%. A missing
@@ -190,6 +192,7 @@ a deficit. Mixed units or bases establish no common total. See
 {download}`complete-composition-ranges.ttl <../../examples/complete-composition-ranges.ttl>`
 and the rejected
 {download}`complete-composition-below-100-percent.ttl <../../examples/nonconforming/complete-composition-below-100-percent.ttl>`.
+
 **`watr:CompositionComplementRule`** (SHACL-AF). Fills in a percentage you did
 not state. It applies when the medium declares `watr:hasCompleteComposition true`,
 the fractions share a basis and percent units, and exactly one carries no
