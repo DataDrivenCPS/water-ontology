@@ -16,7 +16,7 @@ these choices.
 | `Tank` | `s223:Equipment` | at least one carrying a fluid, in any direction; any drain or overflow point must be a fluid outlet | none |
 | `Reactor` | `Tank`, `UnitProcess` | at least one fluid inlet and one fluid outlet that is not a drain; any recirculating or return point must be a fluid outlet | any process |
 | `SeparationTank` | `Tank`, `UnitProcess` | at least two fluid outlets | a `Process-Separation` |
-| `SequencingBatchReactor` | `Reactor`, `SeparationTank` | adds at least one sludge outlet | `Process-ActivatedSludge` and `Process-Settling` |
+| `SequencingBatchReactor` | `Reactor`, `SeparationTank` | adds at least one sludge outlet; a bidirectional fill-and-draw port may be added but does not replace the inlet and outlet | `Process-ActivatedSludge` and `Process-Settling` |
 
 A fluid here is any `s223:Mix-Fluid`, which covers water, sludge and air. The
 drain and overflow roles are `watr:Role-Drain` and `watr:Role-Overflow`; the
@@ -29,7 +29,9 @@ storage tank filled and emptied through one bidirectional port is a tank. A
 reactor is flow-through, so it needs a distinct way in and out. Its drain does not
 count as the outlet, because a drain empties the vessel rather than passing the
 treated stream on. A separation tank splits its feed, so it needs at least two
-outlets.
+outlets. A sequencing batch reactor settles in the same vessel it treats in, so
+its waste sludge leaves from it directly rather than from a downstream
+clarifier.
 
 A drain, overflow or recirculation point is optional. When one is modeled, the
 role says which way it flows, so a drain marked on an inlet is an error.

@@ -250,10 +250,13 @@ watr:SequencingBatchReactor
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SequencingBatchReactor must have the OrganicsRemoval treatment objective." ;
     ] ;
-    # has 1 in, 1out (both water),  OR 1 bidirectional (water)
+    # The fill inlet and the decant outlet are required by watr:Reactor. The
+    # waste sludge outlet is what an SBR adds: it settles in the same vessel,
+    # so the sludge leaves from it rather than from a downstream clarifier.
+    # A bidirectional fill-and-draw port is allowed in addition, not instead.
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A SBR has at least 1 sludge return point" ;
+        rdfs:comment "A SBR has at least 1 sludge outlet" ;
         sh:qualifiedMinCount 1 ;
         sh:qualifiedValueShape [
             sh:class s223:OutletConnectionPoint ;
@@ -262,48 +265,7 @@ watr:SequencingBatchReactor
                 sh:class watr:Fluid-Sludge ;
             ] ;
         ] ;
-    ] ;
-    sh:xone (
-        # 1 in (water) and 1 out (water)
-        [ sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 inlet fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:InletConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-        ] ;
-        sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 outlet fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:OutletConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-
-        ] ]
-        # OR 1 bidirectional (water)
-        [ sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 bidirectional fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:BidirectionalConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-        ] ]
-    ) .
+    ] .
 
 watr:PlugFlowReactor
     a  sh:NodeShape ;
@@ -1038,8 +1000,10 @@ watr:RotatingBiologicalContactor
     rdfs:label "Rotating Biological Contactor (RBC)" ;
     rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
     # Both a Reactor and a Filter, like watr:MovingBedBioreactor: the discs turn
-    # in a tank, and the rotation is what aerates the biofilm as it lifts clear
-    # of the liquid. The Reactor parent is what permits declaring that aeration.
+    # in a tank that the wastewater flows through, so it has a reactor's inlet
+    # and outlet. The rotation aerates the biofilm as it lifts clear of the
+    # liquid; a model states that with watr:hasProcess watr:Process-Aeration
+    # alongside the required biofiltration.
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
@@ -1053,9 +1017,10 @@ watr:MovingBedBioreactor
     a watr:Class ;
     rdfs:label "Moving Bed Bioreactor (MBBR)" ;
     rdfs:comment "MBBR process using suspended growth media a tank" ;
-    # Both a Reactor and a Filter: an MBBR is a tank of suspended biofilm
-    # carriers. The Reactor parent is what permits it to declare the aeration
-    # that supplies oxygen and keeps the carriers circulating.
+    # Both a Reactor and a Filter: an MBBR is a flow-through tank of suspended
+    # biofilm carriers, so it has a reactor's inlet and outlet. The aeration that
+    # supplies oxygen and keeps the carriers circulating is stated with
+    # watr:hasProcess watr:Process-Aeration alongside the required biofiltration.
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
