@@ -172,37 +172,37 @@ oil or refrigerant. `watr:Pump` restates those checks for any `s223:Mix-Fluid`.
 
 ### Validation
 
-- **S223 compatibility.** Connection points and connections must carry compatible
-  media, by the constituent rule above.
-- **`watr:CompositionPercentageShape`.** For any node with `s223:composedOf`
-  fractions in `unit:PERCENT`, the percentages on each common mass or volume basis
-  may not exceed 100%. For a constituent given as a range with
-  `s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the greatest declared
-  lower bound counts, since upper bounds need not hold at once. `Brine-5to10Percent`
-  (5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. A
-  partial composition that names only some constituents stays valid. See
-  {download}`composition-exceeds-100-percent.ttl <../../examples/nonconforming/composition-exceeds-100-percent.ttl>`.
-- **`watr:CompleteCompositionShape`.** When `watr:hasCompleteComposition true` is
-  asserted, the common-basis fractions must be able to total 100%. Exact fractions
-  totaling 90% fail, as do ranges whose tightest upper bounds total 90%. A missing
-  value or a lower-only bound can still reach 100% and does not by itself establish
-  a deficit. Mixed units or bases establish no common total. See
-  {download}`complete-composition-ranges.ttl <../../examples/complete-composition-ranges.ttl>`
-  and the rejected
-  {download}`complete-composition-below-100-percent.ttl <../../examples/nonconforming/complete-composition-below-100-percent.ttl>`.
-- **`watr:CompositionComplementRule`** (SHACL-AF). Fills in a percentage you did
-  not state. It applies when the medium declares `watr:hasCompleteComposition true`,
-  the fractions share a basis and percent units, and exactly one carries no
-  `s223:hasValue`. That fraction becomes the remainder of the others: 12% salt
-  with an empty water fraction yields 88%, and 20% salt with 10% solids leaves 70%
-  for water. The completed fraction can be an inline blank node or a named one;
-  name it when something else must refer to the inferred value. See
-  {download}`brine-inferred-complement.ttl <../../examples/brine-inferred-complement.ttl>`.
-  The rule stays silent when more than one fraction is unquantified, when none is
-  quantified (so a medium naming only `Constituent-H2O` is not claimed to be 100%
-  water), when a quantified fraction is a low-limit or high-limit range, or when the
-  remainder would be negative. The negative case is the over-100% error that
-  `CompositionPercentageShape` reports.
+**S223 compatibility.** Connection points and connections must carry compatible
+media, by the constituent rule above.
+**`watr:CompositionPercentageShape`.** For any node with `s223:composedOf`
+fractions in `unit:PERCENT`, the percentages on each common mass or volume basis
+may not exceed 100%. For a constituent given as a range with
+`s223:Aspect-LowLimit` and `s223:Aspect-HighLimit`, only the greatest declared
+lower bound counts, since upper bounds need not hold at once. `Brine-5to10Percent`
+(5-10% salt, 90-95% water) conforms because its lower bounds sum to 95%. A
+partial composition that names only some constituents stays valid. See
+{download}`composition-exceeds-100-percent.ttl <../../examples/nonconforming/composition-exceeds-100-percent.ttl>`.
+**`watr:CompleteCompositionShape`.** When `watr:hasCompleteComposition true` is
+asserted, the common-basis fractions must be able to total 100%. Exact fractions
+totaling 90% fail, as do ranges whose tightest upper bounds total 90%. A missing
+value or a lower-only bound can still reach 100% and does not by itself establish
+a deficit. Mixed units or bases establish no common total. See
+{download}`complete-composition-ranges.ttl <../../examples/complete-composition-ranges.ttl>`
+and the rejected
+{download}`complete-composition-below-100-percent.ttl <../../examples/nonconforming/complete-composition-below-100-percent.ttl>`.
+**`watr:CompositionComplementRule`** (SHACL-AF). Fills in a percentage you did
+not state. It applies when the medium declares `watr:hasCompleteComposition true`,
+the fractions share a basis and percent units, and exactly one carries no
+`s223:hasValue`. That fraction becomes the remainder of the others: 12% salt
+with an empty water fraction yields 88%, and 20% salt with 10% solids leaves 70%
+for water. The completed fraction can be an inline blank node or a named one;
+name it when something else must refer to the inferred value. See
+{download}`brine-inferred-complement.ttl <../../examples/brine-inferred-complement.ttl>`.
+The rule stays silent when more than one fraction is unquantified, when none is
+quantified (so a medium naming only `Constituent-H2O` is not claimed to be 100%
+water), when a quantified fraction is a low-limit or high-limit range, or when the
+remainder would be negative. The negative case is the over-100% error that
+`CompositionPercentageShape` reports.
 
 ## Processes
 
@@ -475,15 +475,14 @@ in their stage role.
 
 ### Validation
 
-- `watr:ProcessValueShape` and `watr:TreatmentObjectiveValueShape` keep the
-  vocabularies apart. An objective asserted with `watr:hasProcess` is rejected,
-  and an activity asserted with `watr:hasTreatmentObjective` likewise.
-- `watr:TreatmentObjectiveRequiresProcessShape` requires a process after
-  inference. A class default can supply it; with inference disabled it must be
-  stated.
-- `watr:ProcessBearerShape` restricts both predicates to `s223:Equipment` and
-  `s223:System`. These are shapes, not `rdfs:domain` and `rdfs:range` axioms, on
-  purpose: axioms would infer types onto an invalid model instead of rejecting it.
+`watr:ProcessValueShape` and `watr:TreatmentObjectiveValueShape` keep the
+vocabularies apart: an objective asserted with `watr:hasProcess` is rejected, and
+an activity asserted with `watr:hasTreatmentObjective` likewise.
+`watr:TreatmentObjectiveRequiresProcessShape` requires a process after inference;
+a class default can supply it, and with inference disabled it must be stated.
+`watr:ProcessBearerShape` restricts both predicates to `s223:Equipment` and
+`s223:System`. These are shapes, not `rdfs:domain` and `rdfs:range` axioms, on
+purpose: axioms would infer types onto an invalid model instead of rejecting it.
 
 ## Putting It All Together
 

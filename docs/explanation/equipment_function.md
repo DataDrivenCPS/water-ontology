@@ -59,10 +59,11 @@ intended result; neither certifies measured performance or permit compliance.
 
 ### Validation
 
-- `TreatmentObjectiveValueShape`: every value is a `watr:TreatmentObjective`.
-- `TreatmentObjectiveRequiresProcessShape`: equipment or a system that states an
-  objective also states at least one `watr:hasProcess`.
-- A bearer guard allows the relation only on equipment and systems.
+Every value must be a `watr:TreatmentObjective`
+(`TreatmentObjectiveValueShape`), and the relation is allowed only on equipment
+and systems. Equipment or a system that states an objective must also state at
+least one `watr:hasProcess` (`TreatmentObjectiveRequiresProcessShape`), because an
+objective with no stated mechanism cannot be checked.
 
 ## Process: what the equipment does
 
@@ -91,8 +92,8 @@ Several processes can serve the same objective:
 
 ### Validation
 
-- `ProcessValueShape`: every value is a `watr:Process`.
-- A bearer guard allows the relation only on equipment and systems.
+Every value must be a `watr:Process` (`ProcessValueShape`), and the relation is
+allowed only on equipment and systems.
 
 ## Fixed objectives and the decision rule
 
