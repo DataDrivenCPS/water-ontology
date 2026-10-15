@@ -19,7 +19,7 @@ Fletcher's September 21–22 review is addressed as follows:
 | Additional processes beyond defaults | Allowed explicitly while preserving required processes and process-value validation. Plausibility checks are deferred. |
 | Solids-removal objective naming | SuspendedSolidsRemoval and DissolvedSolidsRemoval are explicit sibling branches; the ambiguous published SolidsRemoval URI is deprecated with a replacement link. |
 | Clarifier versus SedimentationTank | Clarifier is a specialization with the clarification design objective, not an alias. |
-| Clarifier overflow and sludge | Wording describes both streams and possible further thickening. Clarifier and GravityThickener require distinct water (excluding sludge) and sludge outlets; conforming and nonconforming examples demonstrate validation. |
+| Clarifier overflow and sludge | Wording describes both streams and possible further thickening. Clarifier and GravityThickener require a water outlet and a separate sludge outlet; conforming and nonconforming examples demonstrate validation. |
 | Chlorine-removal and reuse wording | Prose uses chlorine removal and water reuse treatment unit. |
 | Additional cleaning activities | Stated directly through `hasProcess` and imply `EquipmentCleaning`; no separate activity category or permission list. |
 | Anoxic/aerobic/anaerobic classification | Retained as explicit roles, as accepted in Fletcher's later comment. |
@@ -82,7 +82,8 @@ Shared constituents establish S223 topology compatibility, not equivalent
 composition, material balance, membrane selectivity, or equipment suitability.
 For example, a sludge medium on pump ports does not certify that a particular
 pump is suitable for that sludge. `watr:Pump` accepts any `s223:Mix-Fluid` so that
-sludge pumps validate; it is not a suitability check.
+sludge pumps validate, as a workaround for S223's narrower pump shape; see
+[pumps](treatment_model_summary.md#pumps). It is not a suitability check.
 
 The documentation includes local process/objective instances, explicit target
 overrides in constituent queries, and system coverage through contained regions.

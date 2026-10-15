@@ -10,7 +10,7 @@ of itself and says how each was produced.
 
 ## Characterizing a measurement
 
-### Requirements
+### Definitions
 
 Each characterization relation points from a `QuantifiableProperty` to another
 `QuantifiableProperty` whose value and unit carry the metadata quantity.
@@ -101,9 +101,9 @@ what a downstream reader uses to interpret the value.
 
 ### Validation
 
-`watr:hasProcessedData` takes a `QuantifiableProperty`, and a `watr:hasAggregation`
-value must be a `watr:EnumerationKind-Aggregation`; anything else is a violation.
-Nothing checks that the aspect agrees with the aggregation, or that a processed
+`watr:hasProcessedData` takes a `QuantifiableProperty`. A property has at most one
+`watr:hasAggregation`, and its value must be a `watr:EnumerationKind-Aggregation`.
+A value of the wrong type, or a second aggregation, is a violation. Nothing checks that the aspect agrees with the aggregation, or that a processed
 property was actually derived from its raw one.
 
 ## Example
@@ -162,7 +162,9 @@ The following Turtle fragment shows a temperature sensor property with data qual
     s223:hasValue 1 .
 ```
 
-The complete fragment is also available as
+The complete model is
 {download}`data-quality-temperature.ttl <../../examples/data-quality-temperature.ttl>`.
+It adds a temperature sensor that observes the raw property, because S223 warns
+about an observable property that no sensor observes.
 
 For a hands-on walkthrough using these annotations with SPARQL queries, see the [Data Quality Tutorial](../tutorials/data-quality-tutorial.md).

@@ -52,6 +52,20 @@ Questions to resolve:
 
 Origin: [Daly's recirculation question on PR #39](https://github.com/DataDrivenCPS/water-ontology/pull/39#discussion_r3806523244).
 
+## WaTr pumps as S223 pumps
+
+**Status:** Workaround in place; waiting on S223.
+
+`watr:Pump` should be a subclass of `s223:Pump`. It is not, because S223's pump
+shape warns on any medium other than water, oil or refrigerant, and a treatment
+plant pumps sludge and mixed liquor. `watr:Pump` instead restates the S223 checks
+for any `s223:Mix-Fluid`, types conforming pumps as `s223:Pump` by rule, and
+reports each pump that relies on this at `sh:Info`. See
+[pumps](treatment_model_summary.md#pumps).
+
+If the S223 pump shape accepts any `Mix-Fluid`, remove the workaround in
+`ontology/equipment.ttl` and make `watr:Pump` a subclass of `s223:Pump` again.
+
 ## Equipment/process plausibility checks
 
 **Status:** Deferred; removed from PR #39 during review preparation.

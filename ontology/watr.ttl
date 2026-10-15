@@ -158,7 +158,7 @@ watr:includesProcess
 # belongs to s223:hasRole: a primary and a secondary clarifier share their
 # treatment objective and their process, and differ in their role.
 #
-# See docs/explanation/processes.md.
+# See docs/explanation/equipment_function.md.
 watr:hasTreatmentObjective
     a rdf:Property ;
     rdfs:label "has treatment objective" ;

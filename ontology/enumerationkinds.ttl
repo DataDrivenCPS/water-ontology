@@ -511,9 +511,9 @@ watr:Accuracy-RSquared
 .
 
 # Roles describe how an entity can serve within a system. WaTr defines treatment
-# stage, zone capability, operational-purpose, and connection-point roles. The
+# stage, zone regime, operational-purpose, and connection-point roles. The
 # process performed by equipment or a system is modeled with watr:hasProcess.
-# See docs/explanation/processes.md.
+# See docs/explanation/equipment_function.md.
 watr:Role-Backwash
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -671,7 +671,7 @@ watr:Role-Pretreatment
 # primary, secondary, tertiary. These mirror S223 role names into the watr
 # namespace but DO NOT carry the S223 meaning: s223:Role-Primary and
 # s223:Role-Secondary denote primary and secondary *loops*. Always use the watr:
-# terms for treatment stages. See docs/explanation/processes.md.
+# terms for treatment stages. See docs/explanation/equipment_function.md.
 watr:Role-Primary
     a s223:EnumerationKind-Role ;
     a watr:Class ;

@@ -23,17 +23,17 @@ The compound process watr:Process-A2O is asserted on the system, not on any
 tank; its constituent steps are covered by the zones, the clarifier, and the two
 recycle subsystems. Class-default inference supplies the processes and outcomes
 fixed by each equipment class (mixing on the basins, aeration on the aerobic
-basin, sedimentation and clarification on the clarifier); only the
+basin, settling and clarification on the clarifier); only the
 installation-specific activities (EBPR, denitrification, nitrification,
 recirculation) are stated explicitly. Validate through a SHACL-AF-capable engine
 (shifty) to materialize those defaults.
 
-Recycle media note: sludge is modeled as an aqueous fluid (watr:Fluid-Sludge
-is a subclass of s223:Fluid-Water), so the recycle pumps retain the actual
-process medium on their connection points: watr:Sludge-MixedLiquor for the
-internal recycle and watr:Fluid-Sludge for RAS. This also satisfies the S223
-pump requirement for a water-based fluid without changing the declared medium
-at a pump boundary.
+Recycle media note: the recycle pumps carry the actual process medium on their
+connection points: watr:Sludge-MixedLiquor for the internal recycle and
+watr:Fluid-Sludge for RAS. Sludge is an s223:Mix-Fluid, not an s223:Fluid-Water,
+so these are watr:Pumps that S223's water, oil or refrigerant pump shape does
+not cover; validation reports each at sh:Info as relying on the watr:Pump
+workaround.
 The pumps and valves are modeling scaffolding for the recycle assemblies, as
 the source figure gives no pump or valve counts.""" ;
     dcterms:source <https://www.epa.gov/sites/default/files/2019-08/documents/nutrient_control_design_manual.pdf> ;

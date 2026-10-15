@@ -27,86 +27,106 @@ occur in several tanks and other equipment.
 
 ### Validation
 
-A bearer guard in `watr.ttl` rejects either relation on anything that is not
-equipment or a system. `ProcessValueShape` and `TreatmentObjectiveValueShape`
-require every value to be a `watr:Process` and a `watr:TreatmentObjective`
-respectively, so the two vocabularies cannot be swapped.
+The same shapes apply as on equipment: `ProcessBearerShape` rejects either relation
+on anything else, and the value shapes require a `watr:Process` and a
+`watr:TreatmentObjective`. See
+[equipment function](equipment_function.md#treatment-objective-and-process).
 
 ## Compound treatment processes
 
 ### Modeling
 
-Activated sludge, MLE, A2O, UCT and Bardenpho each comprise several activities.
-State the compound process on the system and the activities on its members:
+Activated sludge, AO, MLE, A2O, UCT and the Bardenpho processes each comprise
+several activities. State the compound process on the system and the activities
+on its members:
 
 ```ttl
 :a2oTrain a s223:System ;
     s223:hasMember :anaerobicZone, :anoxicZone,
-                   :aerobicZone, :finalClarifier ;
-    watr:hasProcess watr:Process-A2O ;
-    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval,
-                    watr:TreatmentObjective-PhosphorusRemoval .
+                   :aerobicZone, :finalClarifier, :rasSystem ;
+    watr:hasProcess watr:Process-A2O .
 
 :anaerobicZone a watr:MixingBasin ;
     s223:hasRole watr:Role-Anaerobic ;
-    watr:hasProcess watr:Process-Mixing,
-                    watr:Process-EnhancedBiologicalPhosphorusRemoval .
+    watr:hasProcess watr:Process-EnhancedBiologicalPhosphorusRemoval .
 
 :anoxicZone a watr:MixingBasin ;
     s223:hasRole watr:Role-Anoxic ;
-    watr:hasProcess watr:Process-Mixing,
-                    watr:Process-Denitrification .
+    watr:hasProcess watr:Process-Denitrification .
 
 :aerobicZone a watr:AerationBasin ;
     s223:hasRole watr:Role-Aerobic ;
-    watr:hasProcess watr:Process-Aeration,
-                    watr:Process-Nitrification .
+    watr:hasProcess watr:Process-Nitrification .
 
-:finalClarifier a watr:SedimentationTank ;
-    s223:hasRole watr:Role-Secondary ;
-    watr:hasProcess watr:Process-Settling,
-                    watr:Process-Recirculation ;
-    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
+:finalClarifier a watr:Clarifier ;
+    s223:hasRole watr:Role-Secondary .
+
+:rasSystem a s223:System ;
+    s223:hasMember :rasPump, :rasValve ;
+    watr:hasProcess watr:Process-Recirculation .
 ```
+
+Inference adds mixing to both mixing basins, aeration to the aerobic zone, and
+settling and clarification to the clarifier, from their classes. Recirculation
+is performed by the return activated sludge assembly, a nested system, since a
+pump alone only pumps.
 
 ### Rationale
 
-Roles identify the commissioned zones and treatment stage. Processes identify
-the activities carried out in those zones.
+The compound process belongs to the train because no single zone performs it.
+Roles identify the commissioned zones and treatment stage; processes identify the
+activities carried out in them. An integrated unit that performs every step in
+one vessel, such as a sequencing batch reactor, may carry a compound process
+itself.
 
 ### Validation
 
-Class-default inference targets `s223:Equipment`, not `s223:System`. State a
-system's compound process directly on the system. Process-to-objective inference
-supplies the process's intrinsic objectives; state any additional objectives
-explicitly. Equipment members still receive class-defined processes and
-objectives when inference runs.
+`ProcessObjectiveRule` gives the system the objectives its process implies:
+`Process-A2O` brings nitrogen and phosphorus removal, and organics removal through
+`Process-ActivatedSludge`. State any other objective explicitly.
+`ClassDefaultsRule` targets equipment, so a system receives nothing from a class,
+but its equipment members still do. Whether the steps are covered is checked
+below.
 
 ## Steps of a compound process
 
 ### Definitions
 
-`watr:includesProcess` relates a compound process to the activities that must be
-represented in the system:
+`watr:includesProcess` relates a compound process type to the steps a system
+performing it must cover:
 
 ```ttl
+watr:Process-ActivatedSludge
+    watr:includesProcess watr:Process-Aeration ,
+                         watr:Process-SolidLiquidSeparation .
+
 watr:Process-A2O
-    watr:includesProcess watr:Process-Nitrification,
-                         watr:Process-Denitrification,
-                         watr:Process-EnhancedBiologicalPhosphorusRemoval,
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    watr:includesProcess watr:Process-Nitrification ,
+                         watr:Process-Denitrification ,
+                         watr:Process-EnhancedBiologicalPhosphorusRemoval ,
                          watr:Process-Recirculation .
 ```
 
-A step may name a process family. Activated sludge includes
-`watr:Process-SolidLiquidSeparation`, which a sedimentation tank, microfiltration
-membrane, dissolved-air flotation unit or centrifuge satisfies through a more
-specific process.
+Steps are inherited down the process hierarchy, so an A2O system must also cover
+aeration and solid-liquid separation. Recirculation is a step of the
+configurations that need it: MLE, A2O and the Bardenpho processes, and UCT
+through A2O.
+
+A step may name a process family. `Process-SolidLiquidSeparation` is met by
+settling in a conventional train, by microfiltration or ultrafiltration in a
+membrane bioreactor, by flotation in a DAF unit, or by centrifugation.
 
 ### Rationale
 
 The relation says A2O includes these steps, not that A2O is a kind of
-nitrification, denitrification or recirculation. The process hierarchy describes
-kinds of activities; `includesProcess` describes composition.
+nitrification or recirculation. The process hierarchy describes kinds of
+activities; `includesProcess` describes composition.
+
+The step names the family, not `Process-Separation` above it, because screening
+and stripping are separations too, and neither is the step that parts the biomass
+from the treated water. Reverse osmosis is a membrane filtration but not a
+solid-liquid separation, so it does not meet that step.
 
 ### Validation
 
@@ -116,28 +136,34 @@ kinds of activities; `includesProcess` describes composition.
 
 ### Requirements
 
-For every step included by a compound process a system claims, one of these
-performs that step or a more specific process:
-
-- the system itself;
-- a member, or a member of a nested subsystem;
-- equipment contained within those members, including functional regions and
-  their hardware.
+For every step of a compound process a system claims, something within the
+system must perform that step or a more specific process: the system itself, a
+member, a member of a nested subsystem, or equipment contained within any of
+those, including functional regions and their hardware.
 
 ### Rationale
 
 A basin's region need not be repeated as a direct system member, and its process
-need not be copied onto the basin. Unrelated equipment outside the membership and
-containment chain cannot cover a step. A compound process includes its steps
-rather than subclassing them, which keeps the claimed process from satisfying its
-own coverage.
+need not be copied onto the basin. Equipment outside the membership and
+containment chain cannot cover a step, however close it sits in the plant.
+Because a compound process includes its steps rather than subclassing them,
+claiming the compound process never covers its own steps.
 
 ### Validation
 
-`SystemProcessCoverageShape` in `watr.ttl` reports each uncovered step with
-severity `sh:Warning`. A system can therefore be modeled before every component
-is entered, while the missing steps stay visible for review. Evidence is read
-from the system and its members; no process is copied onto enclosing equipment.
+`SystemProcessCoverageShape` in `watr.ttl` reports each uncovered step as a
+`sh:Warning`: "{$this} claims a process that includes {?missing}, but neither it,
+any member, nor equipment contained within a member performs that process." A
+system can therefore be modeled before all its equipment is entered, with the
+missing steps visible for review. The shape targets `s223:System` only, so an
+integrated unit carrying a compound process is not checked for its steps; that is
+why `SequencingBatchReactor` requires settling as well as activated sludge.
+
+In {download}`a2o-train.ttl <../../examples/a2o-train.ttl>`, the zones and the
+clarifier cover the biological steps and settling, and two nested recycle
+assemblies, each a pump and a valve, cover recirculation. Remove both assemblies
+from the train's members and the shape warns that `Process-Recirculation` is not
+covered.
 
 The same test as a query, for inspecting a model:
 
@@ -158,3 +184,7 @@ SELECT ?system ?missingStep WHERE {
   }
 }
 ```
+
+To find every unit involved in a system's objective, including members that do
+not carry it themselves, see the
+[query guide](../guides/querying_treatment_function.md#find-units-contributing-to-a-system-objective).

@@ -99,7 +99,7 @@ process value as another `watr:hasProcess` triple.
 
 ## Compare treatment objectives for the same process
 
-Sedimentation is used for both clarification and thickening. Querying both axes
+Settling is used for both clarification and thickening. Querying both axes
 shows the intended treatment function of each unit:
 
 ```sparql
