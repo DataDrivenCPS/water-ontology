@@ -61,3 +61,14 @@
 :sample_equipment a s223:Equipment ;
     rdfs:label "Sampled equipment" ;
     s223:hasConnectionPoint :sample_location .
+
+# TEMPORARY: this sensor exists only to satisfy S223's warning that an
+# ObservableProperty should be observed by a Sensor. It is not a real
+# measurement of the daily maximum, which is computed from the raw organics
+# sensor. Remove it once the example no longer needs to silence that warning.
+:organics_daily_max_sensor
+    a watr:TotalOrganicCompoundConcentrationSensor ;
+    rdfs:label "Daily Maximum Organics (derived) placeholder sensor" ;
+    s223:hasObservationLocation :sample_location ;
+    s223:observes :organics_daily_max ;
+.

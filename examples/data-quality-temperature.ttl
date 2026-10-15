@@ -47,3 +47,17 @@
     qudt:hasQuantityKind quantitykind:Time ;
     qudt:hasUnit unit:MIN ;
     s223:hasValue 1 .
+
+# TEMPORARY: this sensor exists only to satisfy S223's warning that an
+# ObservableProperty should be observed by a Sensor. Remove it once the example
+# no longer needs to silence that warning, along with :t1_location.
+:t1_sensor
+    a s223:TemperatureSensor ;
+    rdfs:label "Temperature sensor" ;
+    s223:hasObservationLocation :t1_location ;
+    s223:observes :t1_temp ;
+.
+:t1_location
+    a s223:Equipment ;
+    rdfs:label "Measured equipment" ;
+.
