@@ -43,7 +43,13 @@ install-jupyter-venv:
 	uv add ipykernel
 	uv run ipython kernel install --user --name=nawi-water-ontology
 
-local-docs: | $(ONTOENV_DIR)
+.PHONY: reference-docs
+reference-docs:
+	uv run python scripts/generate_reference_docs.py
+	uv run python scripts/generate-process-objective-map.py
+	uv run python scripts/generate_template_docs.py
+
+local-docs: reference-docs | $(ONTOENV_DIR)
 	uv run jupyter-book build docs
 	uv run jupyter-book build docs
 	uv run python scripts/build_llms_txt.py

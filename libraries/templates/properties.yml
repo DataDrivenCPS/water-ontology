@@ -34,7 +34,7 @@ ph:
 
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Acidity ;
-      qudt:unit unit:PH .
+      qudt:hasUnit unit:PH .
 pressure:
   body: >
     @prefix P: <urn:___param___#> .
@@ -198,7 +198,7 @@ cl2-mgL:
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Concentration ;
       qudt:hasUnit unit:MilliGM-PER-L;
-      s223:ofSubstance watr:Chlorine .
+      s223:ofSubstance watr:Constituent-ChlorineResidual .
 
 concentration:
   body: >

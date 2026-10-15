@@ -1,4 +1,4 @@
-# NAWI Water Ontology
+# Water Treatment (WaTr) Ontology
 
 ## URIs and Versioning
 
@@ -10,14 +10,15 @@ https://watermetadata.org/ontology/watr#Pump
 
 A version identifies a *document*, never a term — the convention QUDT, Brick,
 and ASHRAE 223P all follow. `watr:Pump` means the same thing in every release,
-so upgrading the ontology never requires rewriting existing models.
+so upgrades do not require changing term namespaces. Deprecated terms identify
+their replacements; modeling constraints may still require a model update.
 
 | Role | IRI |
 | --- | --- |
 | Term namespace (`watr:`) | `https://watermetadata.org/ontology/watr#` |
 | Published document, latest | `https://watermetadata.org/ontology/watr` |
 | Published document, versioned | `https://watermetadata.org/ontology/0.2/watr` |
-| Development modules (not published) | `https://watermetadata.org/ontology/modules/{equipment,processtypes,substances,enumerationkinds}` |
+| Development modules (not published) | `https://watermetadata.org/ontology/modules/{equipment,processtypes,objectives,class-defaults,substances,enumerationkinds}` |
 
 The two published documents have identical term definitions. They differ only
 in their ontology IRI, `owl:versionIRI`, and the `rdfs:isDefinedBy` each term
@@ -28,7 +29,7 @@ Terms are never renamed or re-namespaced when they change. Retire one with
 `owl:deprecated true` plus `dcterms:isReplacedBy` pointing at its successor.
 
 To cut a release, bump `ONTOLOGY_VERSION` in
-`scripts/compile-water-ontology.py` and the matching variable in the `Makefile`.
+`scripts/compile-water-ontology.py`.
 
 ## Layout
 
@@ -76,7 +77,8 @@ told the format explicitly (`Graph().parse(url, format="turtle")`).
 
 `libraries` contains a few libraries that can be used to build up the treatment train models
 
-See the ModelBuilder notebook for more information on how to use these libraries and templates to build models
+Start with [Creating a Model](docs/tutorials/creating-models.md) and the
+[treatment model summary](docs/explanation/treatment_model_summary.md).
+[BuildingMOTIF templates](docs/libraries/index.rst) provide reusable graph fragments.
 
-To document the templates, run `make local-docs` and open `docs/_build/html/index.html` in a browser. This should also auto-build when you push to the repostitory, making the docs available at https://datadrivencps.github.io/water-ontology/
-# water-models
+To document the templates, run `make local-docs` and open `docs/_build/html/index.html` in a browser. This should also auto-build when you push to the repository, making the docs available at https://datadrivencps.github.io/water-ontology/

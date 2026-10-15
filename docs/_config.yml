@@ -35,9 +35,11 @@ html:
 
 # add sphinx extensions
 sphinx:
+  config:
+    myst_heading_anchors: 4
+  local_extensions:
+    sparql_paths: _ext
   extra_extensions:
     - sphinx.ext.graphviz
-    - sphinx_autodoc_bmotif
     - sphinx_toolbox.collapse
-    - sphinx_toolbox.code
     - sphinx_tabs.tabs

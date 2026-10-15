@@ -1,0 +1,14 @@
+@prefix : <urn:example/storage-tank#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/storage-tank> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "Storage tank with a shared port" .
+
+:tank a watr:Tank ; rdfs:label "Storage tank" ; s223:hasConnectionPoint :port .
+:port a s223:BidirectionalConnectionPoint ;
+    rdfs:label "Shared inlet and outlet" ;
+    s223:hasMedium s223:Fluid-Water ; s223:isConnectionPointOf :tank .

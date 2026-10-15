@@ -1,100 +1,81 @@
-
 constituent-salt
-################
+================
 
-.. tabs::
+Generated from ``libraries/templates`` by
+``scripts/generate_template_docs.py``. Bind the ``P:`` parameters
+before using these graph fragments as a plant model.
 
-    .. tab:: Turtle
+Template
+--------
 
-        .. code:: turtle
+.. code-block:: turtle
 
-           @prefix P: <urn:___param___#> .
-           @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
-           @prefix ns3: <http://qudt.org/schema/qudt/> .
-           
-           P:name a ns1:QuantifiableProperty ;
-               ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassFraction> ;
-               ns1:hasValue P:value ;
-               ns1:ofConstituent ns2:Constituent-NaCl ;
-               ns3:hasUnit ns3:PERCENT .
-           
-           
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-    .. tab:: With Inline Dependencies
+    P:name a s223:QuantifiableProperty ;
+        s223:hasValue P:value ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT .
 
-        .. code:: turtle
 
-            @prefix P: <urn:___param___#> .
-            @prefix ns1: <http://data.ashrae.org/standard223#> .
-            @prefix ns2: <http://qudt.org/schema/qudt/> .
+With dependencies
+-----------------
 
-            P:name a ns1:QuantifiableProperty ;
-                ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassFraction> ;
-                ns1:hasValue P:value ;
-                ns1:ofConstituent <https://watermetadata.org/ontology/watr#Constituent-NaCl> ;
-                ns2:hasUnit ns2:PERCENT .
+.. code-block:: turtle
 
+    @prefix P: <urn:___param___#> .
+    @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+    @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+    P:name a s223:QuantifiableProperty ;
+        s223:hasValue P:value ;
+        s223:ofConstituent watr:Salt-NaCl ;
+        qudt:hasQuantityKind quantitykind:MassFraction ;
+        qudt:hasUnit unit:PERCENT .
 
 
 Parameters
 ----------
 
-- name
-- value
-
+- ``name``
+- ``value``
 
 Dependencies
 ------------
 
+None.
 
+Graph
+-----
 
-Dependents
-----------
+.. graphviz::
 
-- :doc:`brine`
-
-Graph Visualization
---------------------
-
-.. tabs::
-
-    .. tab:: Template
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasQuantityKind</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasValue</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns3:hasUnit</font> >];
-            node0 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:ofConstituent</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableProperty</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>MassFraction</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/MassFraction' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/MassFraction</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>value</B></td></tr><tr><td href='urn:___param___#value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#value</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/schema/qudt/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/schema/qudt/PERCENT</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Constituent-NaCl</font></td></tr></table> >];
-            }
-            
-
-    .. tab:: With Inline Dependencies
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasQuantityKind</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasValue</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns2:hasUnit</font> >];
-            node0 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:ofConstituent</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>MassFraction</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/MassFraction' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/MassFraction</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>value</B></td></tr><tr><td href='urn:___param___#value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#value</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableProperty</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/schema/qudt/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/schema/qudt/PERCENT</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Constituent-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Constituent-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Constituent-NaCl</font></td></tr></table> >];
-            }
-            
+    digraph {
+     node [ fontname="DejaVu Sans" ] ;
+        node0 -> node1 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasValue</font> > ] ;
+        node0 -> node2 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:ofConstituent</font> > ] ;
+        node0 -> node3 [ color=BLACK, label=< <font point-size='10' color='#336633'>qudt:hasQuantityKind</font> > ] ;
+        node0 -> node4 [ color=BLACK, label=< <font point-size='10' color='#336633'>qudt:hasUnit</font> > ] ;
+        node0 -> node5 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
+    # urn:___param___#name node0
+    node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
+    # urn:___param___#value node1
+    node1 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>value</B></td></tr><tr><td href='urn:___param___#value' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#value</font></td></tr></table> > ]
+    # https://watermetadata.org/ontology/watr#Salt-NaCl node2
+    node2 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Salt-NaCl</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Salt-NaCl' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Salt-NaCl</font></td></tr></table> > ]
+    # http://qudt.org/vocab/quantitykind/MassFraction node3
+    node3 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>MassFraction</B></td></tr><tr><td href='http://qudt.org/vocab/quantitykind/MassFraction' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/quantitykind/MassFraction</font></td></tr></table> > ]
+    # http://qudt.org/vocab/unit/PERCENT node4
+    node4 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>PERCENT</B></td></tr><tr><td href='http://qudt.org/vocab/unit/PERCENT' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://qudt.org/vocab/unit/PERCENT</font></td></tr></table> > ]
+    # http://data.ashrae.org/standard223#QuantifiableProperty node5
+    node5 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>QuantifiableProperty</B></td></tr><tr><td href='http://data.ashrae.org/standard223#QuantifiableProperty' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#QuantifiableProperty</font></td></tr></table> > ]
+    }
