@@ -4,7 +4,7 @@
 The [review disposition](treatment_review.md) records Fletcher's comments and
 supporting treatment references.
 
-## What the ontology and modeler supply
+## Equipment, processes, and objectives
 
 ### Modeling
 
