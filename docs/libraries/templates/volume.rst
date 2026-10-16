@@ -1,5 +1,5 @@
 volume
-======
+========
 
 Generated from ``libraries/templates`` by
 ``scripts/generate_template_docs.py``. Bind the ``P:`` parameters

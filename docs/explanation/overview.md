@@ -6,13 +6,13 @@ The WaTr ontology represents information critical to the operation of water trea
 
 ASHRAE Standard 223P is a consensus-based standard for creating machine-readable semantic models to represent automation and control data, and other building system information. It is focused on building mechanical, electrical, and plumbing systems, and designed to support the implementation of analytics and supervisory controls applications. The standard provides methods to contextualize time series data so that software applications can access the necessary data streams in an automated way. 
 
-While its initial focus is building mechanical, electrical and plumbing systems, the modeling constructs defined for the ASHRAE 223P, and tools created to support it, are applicable to any process automation domain. The WaTr ontology extends ASHRAE 223P to support modeling of wastewater treatment systems. It does this by creating constructs for the types of equipment, processes, and chemicals. It reuses the structures for modeling mechanical systems defined in 223P. 
+While its initial focus is building mechanical, electrical and plumbing systems, the modeling constructs defined for the ASHRAE 223P, and tools created to support it, are applicable to any process automation domain. The WaTr ontology extends ASHRAE 223P to support modeling of water and wastewater treatment systems. It does this by creating constructs for the types of equipment, processes, and chemicals. It reuses the structures for modeling mechanical systems defined in 223P. 
 
 ![ASHRAE 223P Extension Diagram](images/223-extension.png)
 
 ## Type
 
-This standard provides well-defined classes used to describe entities relevant to water treatment system information. Entities in WaTr models will generally be instances of the many classes defined or referred to by the standard. The classes in the standard provide 'names' for the fundamental building blocks used in WaTr models (e.g. a pump will be an instance of the class `watr:Pump`) and also have rules defining how they are used (e.g. a pump must convey water).
+This standard provides well-defined classes used to describe entities relevant to water treatment system information. Entities in WaTr models will generally be instances of the many classes defined or referred to by the standard. The classes in the standard provide 'names' for the fundamental building blocks used in WaTr models (e.g. a pump will be an instance of the class `watr:Pump`) and also have rules defining how they are used (e.g. a pump must have an inlet and an outlet carrying a fluid). These rules are SHACL shapes, and validating a model against them reports what is missing or wrong; the [explanation pages](equipment_function.md) describe each rule and why it exists.
 
 ## Treatment Function
 

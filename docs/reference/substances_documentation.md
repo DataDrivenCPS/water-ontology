@@ -254,6 +254,12 @@
 
 **Superclasses:** `s223:Medium-Constituent`
 
+## Constituent-InorganicSolids
+
+**Description:** The inorganic fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates.
+
+**Superclasses:** `watr:Constituent-Solids`
+
 ## Inorganics
 
 **Description:** Inorganic chemical matter present as a constituent of a treatment medium.
@@ -307,6 +313,12 @@
 **Description:** Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia.
 
 **Superclasses:** `watr:Constituent-Nitrogen`
+
+## Constituent-OrganicSolids
+
+**Description:** The organic fraction of the solids in a treatment medium, such as biomass and other biodegradable matter.
+
+**Superclasses:** `watr:Constituent-Solids`
 
 ## Organics
 
@@ -464,7 +476,7 @@
 
 **Superclasses:** `s223:EnumerationKind-Aspect`
 
-## DataQuality
+## DataProcessing
 
 **Description:** This EnumerationKind describes methods of data processing, aggregation, or imputation
 
@@ -538,9 +550,9 @@
 
 ## Sludge
 
-**Description:** A semi-solid slurry composed of water and solids.
+**Description:** A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener.
 
-**Superclasses:** `s223:Fluid-Water`
+**Superclasses:** `s223:Mix-Fluid`
 
 ## Heavy Metal Removal Agent
 

@@ -1,0 +1,63 @@
+@prefix : <urn:example/uv-disinfection#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/uv-disinfection> a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "UV disinfection system" .
+
+# The walkthrough model in docs/explanation/processes.md. The outer unit is an
+# UltravioletLightUnit, not a bare UnitProcess: S223 warns when equipment
+# contains equipment of its own class branch, and the plug flow reactor inside
+# is itself a UnitProcess. The class supplies UV irradiation and disinfection.
+:uvSystem a watr:UltravioletLightUnit ;
+    rdfs:label "UV disinfection system" ;
+    s223:contains :reactor, :lamp1, :lamp2 ;
+    s223:cnx :systemInlet, :systemOutlet .
+
+:systemInlet a s223:InletConnectionPoint ;
+    rdfs:label "UV system inlet" ;
+    s223:hasMedium s223:Fluid-Water .
+:systemOutlet a s223:OutletConnectionPoint ;
+    rdfs:label "UV system outlet" ;
+    s223:hasMedium s223:Fluid-Water .
+
+# Containment does not copy the parent's process onto its components, so the
+# reactor states the irradiation it hosts.
+:reactor a watr:PlugFlowReactor ;
+    rdfs:label "Irradiation reactor" ;
+    watr:hasProcess watr:Process-UVIrradiation ;
+    s223:cnx :reactorInlet, :reactorOutlet .
+:reactorInlet a s223:InletConnectionPoint ;
+    rdfs:label "Reactor inlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:mapsTo :systemInlet .
+:reactorOutlet a s223:OutletConnectionPoint ;
+    rdfs:label "Reactor outlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:mapsTo :systemOutlet .
+
+# WaTr has no lamp class. The rated wavelength identifies the lamps; it is a
+# fixed characteristic, not a reading, so it is not an ObservableProperty.
+:lamp1 a s223:Equipment ;
+    rdfs:label "UV lamp 1" ;
+    s223:hasProperty :lamp1Wavelength .
+:lamp1Wavelength a s223:QuantifiableProperty ;
+    rdfs:label "Lamp 1 emitted wavelength" ;
+    qudt:hasQuantityKind quantitykind:Wavelength ;
+    qudt:hasUnit unit:NanoM ;
+    s223:hasValue 250 .
+
+:lamp2 a s223:Equipment ;
+    rdfs:label "UV lamp 2" ;
+    s223:hasProperty :lamp2Wavelength .
+:lamp2Wavelength a s223:QuantifiableProperty ;
+    rdfs:label "Lamp 2 emitted wavelength" ;
+    qudt:hasQuantityKind quantitykind:Wavelength ;
+    qudt:hasUnit unit:NanoM ;
+    s223:hasValue 250 .

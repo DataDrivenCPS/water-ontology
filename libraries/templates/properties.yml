@@ -34,7 +34,7 @@ ph:
 
     P:name a s223:QuantifiableObservableProperty ;
       qudt:hasQuantityKind quantitykind:Acidity ;
-      qudt:unit unit:PH .
+      qudt:hasUnit unit:PH .
 pressure:
   body: >
     @prefix P: <urn:___param___#> .
@@ -109,7 +109,7 @@ on-off-command:
     @prefix s223: <http://data.ashrae.org/standard223#> .
 
     P:name a s223:EnumeratedActuatableProperty ;
-      s223:hasEnumerationKind s223:EnumerationKind-OnOff .
+      s223:hasEnumerationKind s223:Binary-OnOff .
 
 speed-command:
   body: >
@@ -157,7 +157,7 @@ status:
     @prefix s223: <http://data.ashrae.org/standard223#> .
 
     P:name a s223:EnumeratedObservableProperty ;
-      s223:hasEnumerationKind s223:EnumerationKind-RunStatus .
+      s223:hasEnumerationKind s223:Binary-OnOff .
 turbidity:
   body: >
     @prefix P: <urn:___param___#> .

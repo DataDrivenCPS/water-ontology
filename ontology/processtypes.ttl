@@ -444,7 +444,7 @@ watr:Process-FourStageBardenpho a watr:Class, watr:Process-FourStageBardenpho ;
 # single machine does -- which is why no equipment class requires any of them.
 # They are asserted on an s223:System, and watr:includesProcess records the steps
 # the train is made of so that watr:SystemProcessCoverageShape can check the
-# members actually cover them. See docs/explanation/processes.md.
+# members actually cover them. See docs/explanation/system_processes.md.
 #
 # A compound process uses watr:includesProcess for its constituent steps and
 # rdfs:subClassOf for its process family. A Bardenpho is a kind of activated

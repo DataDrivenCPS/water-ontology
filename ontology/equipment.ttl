@@ -250,10 +250,13 @@ watr:SequencingBatchReactor
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of SequencingBatchReactor must have the OrganicsRemoval treatment objective." ;
     ] ;
-    # has 1 in, 1out (both water),  OR 1 bidirectional (water)
+    # The fill inlet and the decant outlet are required by watr:Reactor. The
+    # waste sludge outlet is what an SBR adds: it settles in the same vessel,
+    # so the sludge leaves from it rather than from a downstream clarifier.
+    # A bidirectional fill-and-draw port is allowed in addition, not instead.
     sh:property [
         sh:path s223:hasConnectionPoint ;
-        rdfs:comment "A SBR has at least 1 sludge return point" ;
+        rdfs:comment "A SBR has at least 1 sludge outlet" ;
         sh:qualifiedMinCount 1 ;
         sh:qualifiedValueShape [
             sh:class s223:OutletConnectionPoint ;
@@ -262,48 +265,7 @@ watr:SequencingBatchReactor
                 sh:class watr:Fluid-Sludge ;
             ] ;
         ] ;
-    ] ;
-    sh:xone (
-        # 1 in (water) and 1 out (water)
-        [ sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 inlet fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:InletConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-        ] ;
-        sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 outlet fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:OutletConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-
-        ] ]
-        # OR 1 bidirectional (water)
-        [ sh:property [
-            sh:path s223:hasConnectionPoint ;
-            rdfs:comment "A SBR has at least 1 bidirectional fluid connection point" ;
-            sh:qualifiedMinCount 1 ;
-            sh:qualifiedValueShape [
-                sh:class s223:BidirectionalConnectionPoint ;
-                sh:property [
-                    sh:path s223:hasMedium ;
-                    sh:class s223:Mix-Fluid ;
-                ] ;
-            ] ;
-        ] ]
-    ) .
+    ] .
 
 watr:PlugFlowReactor
     a  sh:NodeShape ;
@@ -566,8 +528,8 @@ watr:SedimentationTank
     ] .
 
 # Shared outlet requirements for conventional clarifiers and gravity thickeners.
-# Sludge is a subclass of water, so exclude sludge from the liquid outlet slot.
-# This also prevents a single port from satisfying both slots. No concentration
+# Sludge is a mixture, not a kind of water, so a sludge port cannot satisfy the
+# liquid outlet slot and a single port cannot satisfy both slots. No concentration
 # threshold or simultaneous flow is asserted; multiple sludge outlets are allowed.
 watr:LiquidSludgeOutletShape
     a sh:NodeShape ;
@@ -580,10 +542,9 @@ watr:LiquidSludgeOutletShape
                 sh:path s223:hasMedium ;
                 sh:minCount 1 ;
                 sh:class s223:Fluid-Water ;
-                sh:not [ sh:class watr:Fluid-Sludge ] ;
             ] ;
         ] ;
-        sh:message "A clarifier or gravity thickener must have a liquid outlet carrying water not classified as sludge." ;
+        sh:message "A clarifier or gravity thickener must have a liquid outlet carrying water." ;
     ] ;
     sh:property [
         sh:path s223:hasConnectionPoint ;
@@ -750,8 +711,117 @@ watr:Pump
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Pump" ;
-    rdfs:comment "A device used to move fluids by mechanical action" ;
-    rdfs:subClassOf s223:Pump .
+    rdfs:comment "A device used to move fluids by mechanical action. Unlike s223:Pump, which asks for water, oil or refrigerant, it accepts any s223:Mix-Fluid, so it covers sludge and other slurries." ;
+    # WORKAROUND, not the intended modeling. A pump should be a subclass of
+    # s223:Pump, but SHACL cannot relax a constraint a superclass imposes and
+    # s223:Pump warns on any medium other than water, oil or refrigerant, which
+    # excludes sludge and other slurries. So watr:Pump sits beside s223:Pump:
+    #   - the checks below restate the S223 pump checks with the medium widened
+    #     to any s223:Mix-Fluid;
+    #   - s223:Pump is declared a subclass of watr:Pump (further down), so S223
+    #     pumps are watr:Pumps;
+    #   - the sh:rule at the end types a watr:Pump as s223:Pump when it conforms
+    #     to the S223 shape, so water, oil and refrigerant pumps stay s223:Pumps;
+    #   - the sh:Info constraint above flags every pump that needs the workaround.
+    # Remove all of it, and make watr:Pump a subclass of s223:Pump again, once the
+    # S223 pump shape accepts any Mix-Fluid.
+    rdfs:subClassOf s223:Equipment ;
+    # WORKAROUND, pending a change to the S223 pump shape (see below).
+    # Report, at sh:Info, each pump that relies on it: one with a fluid
+    # connection point whose medium s223:Pump does not accept. Such a pump is not
+    # reflected as an s223:Pump, so it is checked only by the restated shapes here.
+    sh:property [
+      sh:path s223:hasConnectionPoint ;
+      sh:severity sh:Info ;
+      sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Workaround: {$this} has a connection point with medium {?medium}, which s223:Pump does not accept (water, oil or refrigerant). It is validated as a watr:Pump only and is not typed s223:Pump. This workaround can be removed if the S223 pump shape accepts any Mix-Fluid." ;
+        sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT DISTINCT $this ?medium
+WHERE {
+  $this s223:hasConnectionPoint ?cp .
+  ?cp s223:hasMedium ?medium .
+  FILTER (EXISTS {?cp a ?cptype . FILTER (?cptype IN (s223:InletConnectionPoint, s223:OutletConnectionPoint, s223:BidirectionalConnectionPoint))}) .
+  FILTER (NOT EXISTS {?medium a/rdfs:subClassOf* s223:Fluid-Water}) .
+  FILTER (NOT EXISTS {?medium a/rdfs:subClassOf* s223:Fluid-Oil}) .
+  FILTER (NOT EXISTS {?medium a/rdfs:subClassOf* s223:Constituent-Refrigerant}) .
+  FILTER (NOT EXISTS {?medium a/rdfs:subClassOf* s223:Constituent-Electricity}) .
+}
+""" ;
+      ] ;
+    ] ;
+    sh:property [
+        rdfs:comment "The non-electrical connection points of a Pump must have compatible media." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:sparql [
+            a sh:SPARQLConstraint ;
+            sh:message "A Pump's connection points {?cpa} and {?cpb} on {$this} have incompatible media {$mediuma} and {$mediumb}." ;
+            sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT $this ?cpa ?cpb ?mediuma ?mediumb
+WHERE {
+  $this s223:hasConnectionPoint ?cpa .
+  $this s223:hasConnectionPoint ?cpb .
+  FILTER (?cpa != ?cpb) .
+  ?cpa s223:hasMedium ?mediuma .
+  FILTER (NOT EXISTS {?mediuma a/rdfs:subClassOf* s223:Constituent-Electricity}) .
+  ?cpb s223:hasMedium ?mediumb .
+  FILTER (NOT EXISTS {?mediumb a/rdfs:subClassOf* s223:Constituent-Electricity}) .
+  FILTER (?mediuma != ?mediumb) .
+  FILTER (NOT EXISTS {?mediumb a/rdfs:subClassOf* ?mediuma}) .
+  FILTER (NOT EXISTS {?mediuma a/rdfs:subClassOf* ?mediumb}) .
+}
+""" ;
+        ] ;
+    ] ;
+    sh:property [
+        rdfs:comment "A Pump has at least one inlet carrying a fluid or refrigerant" ;
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:InletConnectionPoint ;
+            sh:node [ sh:property [
+                sh:path s223:hasMedium ;
+                sh:or ( [ sh:class s223:Mix-Fluid ] [ sh:class s223:Constituent-Refrigerant ] ) ;
+            ] ] ;
+        ] ;
+        sh:severity sh:Warning ;
+        sh:message "A Pump shall have at least one inlet using a Mix-Fluid (water, oil, sludge) or Constituent-Refrigerant medium." ;
+    ] ;
+    sh:property [
+        rdfs:comment "A Pump has at least one outlet carrying a fluid or refrigerant" ;
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [
+            sh:class s223:OutletConnectionPoint ;
+            sh:node [ sh:property [
+                sh:path s223:hasMedium ;
+                sh:or ( [ sh:class s223:Mix-Fluid ] [ sh:class s223:Constituent-Refrigerant ] ) ;
+            ] ] ;
+        ] ;
+        sh:severity sh:Warning ;
+        sh:message "A Pump shall have at least one outlet using a Mix-Fluid (water, oil, sludge) or Constituent-Refrigerant medium." ;
+    ] ;
+    # Reflect a watr:Pump into s223:Pump when it meets the S223 shape, so tools
+    # that select s223:Pump still find water, oil and refrigerant pumps. The
+    # condition is conformance to s223:Pump, where any result, warning included,
+    # is non-conformance; a sludge pump therefore stays out and draws no warning.
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object s223:Pump ;
+        sh:condition s223:Pump ;
+    ] .
+
+# Part of the watr:Pump workaround described there (remove with it). Every S223
+# pump is a WaTr pump: s223:Pump is the narrower case (water, oil or refrigerant
+# only). Together with the reflection rule on watr:Pump, a pump of either kind
+# is found by selecting watr:Pump.
+s223:Pump rdfs:subClassOf watr:Pump .
 
 watr:PressureExchanger
     a  sh:NodeShape ;
@@ -930,8 +1000,10 @@ watr:RotatingBiologicalContactor
     rdfs:label "Rotating Biological Contactor (RBC)" ;
     rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
     # Both a Reactor and a Filter, like watr:MovingBedBioreactor: the discs turn
-    # in a tank, and the rotation is what aerates the biofilm as it lifts clear
-    # of the liquid. The Reactor parent is what permits declaring that aeration.
+    # in a tank that the wastewater flows through, so it has a reactor's inlet
+    # and outlet. The rotation aerates the biofilm as it lifts clear of the
+    # liquid; a model states that with watr:hasProcess watr:Process-Aeration
+    # alongside the required biofiltration.
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
@@ -945,9 +1017,10 @@ watr:MovingBedBioreactor
     a watr:Class ;
     rdfs:label "Moving Bed Bioreactor (MBBR)" ;
     rdfs:comment "MBBR process using suspended growth media a tank" ;
-    # Both a Reactor and a Filter: an MBBR is a tank of suspended biofilm
-    # carriers. The Reactor parent is what permits it to declare the aeration
-    # that supplies oxygen and keeps the carriers circulating.
+    # Both a Reactor and a Filter: an MBBR is a flow-through tank of suspended
+    # biofilm carriers, so it has a reactor's inlet and outlet. The aeration that
+    # supplies oxygen and keeps the carriers circulating is stated with
+    # watr:hasProcess watr:Process-Aeration alongside the required biofiltration.
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
@@ -1151,12 +1224,19 @@ watr:Compressor
     rdfs:comment "An equipment that increases the pressure of a gas" ;
     rdfs:subClassOf s223:Compressor .
 
+watr:HeatExchanger
+    a  sh:NodeShape ;
+    a watr:Class ;
+    rdfs:label "Heat Exchanger" ;
+    rdfs:comment "Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points, so it covers single-feed evaporators and air-cooled condensers." ;
+    rdfs:subClassOf s223:Equipment .
+
 watr:Evaporator
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Evaporator" ;
     rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
-    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf watr:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ] ;
@@ -1169,7 +1249,7 @@ watr:Condenser
     a watr:Class ;
     rdfs:label "Condenser" ;
     rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
-    rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
+    rdfs:subClassOf watr:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
         sh:qualifiedValueShape [ sh:class watr:Process-Condensation ] ;

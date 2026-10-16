@@ -71,7 +71,7 @@ With dependencies
         s223:hasMedium P:in-medium .
 
     P:on-off-command a s223:EnumeratedActuatableProperty ;
-        s223:hasEnumerationKind s223:EnumerationKind-OnOff .
+        s223:hasEnumerationKind s223:Binary-OnOff .
 
     P:out-mapsto a s223:OutletConnectionPoint ;
         s223:hasMedium P:out-medium .

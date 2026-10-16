@@ -148,7 +148,7 @@
 
 **Description:** A device used to condense a gaseous substance back into a liquid
 
-**Superclasses:** `s223:HeatExchanger`, `watr:UnitProcess`
+**Superclasses:** `watr:HeatExchanger`, `watr:UnitProcess`
 
 ## Conditioner
 
@@ -268,7 +268,7 @@
 
 **Description:** A device used to turn the liquid form of a substance into its gaseous form
 
-**Superclasses:** `s223:HeatExchanger`, `watr:UnitProcess`
+**Superclasses:** `watr:HeatExchanger`, `watr:UnitProcess`
 
 ## Filter
 
@@ -341,6 +341,12 @@
 **Description:** A chamber used to remove grit from wastewater
 
 **Superclasses:** `s223:Equipment`, `watr:UnitProcess`
+
+## Heat Exchanger
+
+**Description:** Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points, so it covers single-feed evaporators and air-cooled condensers.
+
+**Superclasses:** `s223:Equipment`
 
 ## Imhoff Tank
 
@@ -476,9 +482,9 @@
 
 ## Pump
 
-**Description:** A device used to move fluids by mechanical action
+**Description:** A device used to move fluids by mechanical action. Unlike s223:Pump, which asks for water, oil or refrigerant, it accepts any s223:Mix-Fluid, so it covers sludge and other slurries.
 
-**Superclasses:** `s223:Pump`
+**Superclasses:** `s223:Equipment`
 
 ## Rapid Sand Filter
 

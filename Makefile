@@ -12,7 +12,7 @@ ONTOENV_DIR := .ontoenv
 # both the external dependencies (223P, QUDT, SHACL) and the internal module
 # imports the compile walks.
 $(ONTOENV_DIR):
-	uv run ontoenv init ontology s223
+	uv run ontoenv init ontology libraries
 	uv run ontoenv config set offline true
 	uv run ontoenv config set remote_cache_ttl_secs 31536000
 	uv run ontoenv config add excludes 'build/*'

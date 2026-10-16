@@ -18,10 +18,9 @@
 .
 watr:EnumerationKind-DataProcessing 
     a watr:Class ;
-    # Is this an intentional modeling pattern? 
-    a s223:EnumerationKind-DataQuality ;
+    a watr:EnumerationKind-DataProcessing ;
     a sh:NodeShape ;
-    rdfs:label "DataQuality" ;
+    rdfs:label "DataProcessing" ;
     rdfs:comment "This EnumerationKind describes methods of data processing, aggregation, or imputation" ;
     rdfs:subClassOf s223:EnumerationKind ;
 .
@@ -135,7 +134,6 @@ watr:Aggregation-Total
     a watr:Class ;
     a watr:Aggregation-Total ;
     a sh:NodeShape ;
-    owl:equivalentClass s223:Aspect-Total ;
     rdfs:label "Total" ;
     rdfs:comment "The associated property represents the total amount of the characterized quantity or substance." ;
     rdfs:subClassOf watr:EnumerationKind-Aggregation ;
@@ -513,9 +511,9 @@ watr:Accuracy-RSquared
 .
 
 # Roles describe how an entity can serve within a system. WaTr defines treatment
-# stage, zone capability, operational-purpose, and connection-point roles. The
+# stage, zone regime, operational-purpose, and connection-point roles. The
 # process performed by equipment or a system is modeled with watr:hasProcess.
-# See docs/explanation/processes.md.
+# See docs/explanation/equipment_function.md.
 watr:Role-Backwash
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -673,7 +671,7 @@ watr:Role-Pretreatment
 # primary, secondary, tertiary. These mirror S223 role names into the watr
 # namespace but DO NOT carry the S223 meaning: s223:Role-Primary and
 # s223:Role-Secondary denote primary and secondary *loops*. Always use the watr:
-# terms for treatment stages. See docs/explanation/processes.md.
+# terms for treatment stages. See docs/explanation/equipment_function.md.
 watr:Role-Primary
     a s223:EnumerationKind-Role ;
     a watr:Class ;
@@ -743,7 +741,7 @@ watr:Role-Posttreatment
 watr:EnumerationKind-Runtime
     a s223:EnumerationKind ;
     a watr:Class ;
-    a s223:EnumerationKind-Runtime ;
+    a watr:EnumerationKind-Runtime ;
     a sh:NodeShape ;
     rdfs:label "Runtime" ;
     rdfs:comment "An enumeration kind describing the accumulated operating time of a piece of equipment." ;

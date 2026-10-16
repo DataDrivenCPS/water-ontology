@@ -1,159 +1,110 @@
 # Data Quality Metadata
 
-WaTr includes a set of metadata properties and enumeration kinds that allow models to capture the quality, characteristics, and processing history of sensor measurements. This metadata is attached to instances of `s223:QuantifiableProperty` (and in some cases directly to `s223:Sensor`) using `watr:` relations.
+A sensor reading is only as useful as what is known about it: how precise the
+sensor is, what range it can measure, how often it reports, and whether the value
+you are looking at is the raw reading or an hourly average of it. WaTr records this
+with `watr:` relations on `s223:QuantifiableProperty` (and, for some, directly on
+`s223:Sensor`). The metadata serves two purposes that work together. It
+characterizes the raw measurement, and it links a raw property to processed forms
+of itself and says how each was produced.
 
-## Overview
+## Characterizing a measurement
 
-Data quality metadata in WaTr serves two purposes:
+### Definitions
 
-1. **Characterizing raw measurements** — describing the physical and temporal limits of a sensor (e.g., its measurement range, accuracy, and response time).
-2. **Describing processed data** — linking a raw property to derived versions of itself (e.g., aggregated, interpolated, or normalized streams) and characterizing the processing method applied.
+Each characterization relation points from a `QuantifiableProperty` to another
+`QuantifiableProperty` whose value and unit carry the metadata quantity.
 
-The two mechanisms work together: a `QuantifiableProperty` representing a raw sensor reading can carry characterization relations directly, and can also point to one or more `QuantifiableProperty` instances representing processed forms of that data via `watr:hasProcessedData`.
+- *Measurement:* `watr:hasTemporalResolution` is the minimum interval between
+  successive data points, `watr:hasNumericResolution` the smallest distinguishable
+  difference between values, `watr:hasResponseTime` the time to respond to a step
+  change, and `watr:hasCalibrationCurve` the relationship between raw output and
+  calibrated engineering units.
+- *Range:* `watr:hasTemporalRange` is the start and end of the recorded data,
+  `watr:hasNumericRange` the span between minimum and maximum measured values,
+  `watr:hasVariableRange` the expected maximum or minimum during normal operation,
+  and `watr:hasMeasurementRange` the maximum or minimum that can physically be
+  measured. The last also applies directly to an `s223:Sensor`.
+- *Error and uncertainty:* `watr:hasAccuracy` is the maximum expected deviation
+  from the true value, `watr:hasPrecision` the repeatability or reproducibility
+  under identical conditions, and `watr:hasBias` a systematic offset or drift.
+- *Availability:* `watr:hasDropRate` is the number of data points lost per unit
+  time to latency or other causes.
 
-## Data Quality Relations
+### Rationale
 
-The following relations may be applied to an `s223:QuantifiableProperty`. Each relation points to another `s223:QuantifiableProperty` whose value (and units) convey the metadata quantity.
+Each quantity is itself a property, with its own value, quantity kind and unit,
+rather than a bare number on the reading. A sensor's drop rate or upper limit is
+then queried and unit-converted like any other measurement. The relations stay
+separate because they answer different questions: the measurement range says what
+the hardware can see, the variable range says what the process normally does, and
+accuracy and precision say how far to trust either.
 
-### Measurement Characterization
+### Validation
 
-| Relation | Range | Description |
-|---|---|---|
-| `watr:hasTemporalResolution` | `s223:QuantifiableProperty` | Minimum time interval between successive measurements or data points. |
-| `watr:hasNumericResolution` | `s223:QuantifiableProperty` | Smallest distinguishable difference between two measured values, in engineering units. |
-| `watr:hasResponseTime` | `s223:QuantifiableProperty` | Time required for the sensor or measurement system to respond to a step change in the measured variable. |
-| `watr:hasCalibrationCurve` | `s223:QuantifiableProperty` | Mathematical relationship or lookup table between raw sensor output and calibrated engineering units. |
+A shape on `s223:QuantifiableProperty` in `watr.ttl` requires the value of each of
+these relations to be a `QuantifiableProperty`; anything else is a violation.
+Nothing checks that units agree or that the numbers are consistent with each
+other. Those are modeling conventions.
 
-### Range Characterization
+## Processed data and processing methods
 
-| Relation | Range | Description |
-|---|---|---|
-| `watr:hasTemporalRange` | `s223:QuantifiableProperty` | Start and end times for which data has been recorded. |
-| `watr:hasNumericRange` | `s223:QuantifiableProperty` | Span between the minimum and maximum measured values in engineering units. |
-| `watr:hasVariableRange` | `s223:QuantifiableProperty` | Expected maximum or minimum for the measured variable during normal operation. |
-| `watr:hasMeasurementRange` | `s223:QuantifiableProperty` | Maximum or minimum that can physically be measured (e.g., by the sensor hardware). Also applicable directly to `s223:Sensor`. |
+### Definitions
 
-### Error and Uncertainty Characterization
+`watr:hasProcessedData` links a raw property to a `QuantifiableProperty` that is a
+processed, filtered or transformed form of it. The processed property says how it
+was made with an `s223:hasAspect` triple whose object is a
+`watr:EnumerationKind-DataProcessing` value. These values form families beneath
+that class, which is itself a subclass of `s223:EnumerationKind`:
 
-| Relation | Range | Description |
-|---|---|---|
-| `watr:hasAccuracy` | `s223:QuantifiableProperty` | Maximum expected deviation between the measured value and the true value, in engineering units. |
-| `watr:hasPrecision` | `s223:QuantifiableProperty` | Repeatability or reproducibility of measurements under identical conditions. |
-| `watr:hasBias` | `s223:QuantifiableProperty` | Systematic offset or drift in measurements relative to the true value. |
+- **Aggregation** (`watr:DataProcessing-Aggregate`) combines many points into one:
+  `Aggregate-Mean`, `-Median`, `-Max`, `-Min`, `-Sum`, `-Count`, `-StdDev`,
+  `-Variance`, `-Range` (maximum minus minimum) and `-Mode`.
+- **Interpolation** (`DataProcessing-Interpolation`) estimates values between or in
+  place of missing points: `Interpolation-Linear`, `-Spline` (cubic), `-Polynomial`,
+  `-NearestNeighbor`, `-ForwardFill` (carry the last valid value forward) and
+  `-BackwardFill`.
+- **Normalization** (`DataProcessing-Normalization`) scales data to a standard
+  range or distribution: `Normalization-MinMax` (to [0, 1]), `-ZScore` (mean 0,
+  standard deviation 1) and `-Decimal` (decimal scaling).
+- **Synchronization** (`DataProcessing-Synchronization`) aligns data from several
+  sources to common time intervals: `Synchronization-Resampling`, `-Upsampling`,
+  `-Downsampling` and `-TimeAlignment`.
+- **Filtering** (`DataProcessing-Filter`) is a parent for methods that remove
+  outliers or unwanted points. It has no members; model authors define the specific
+  filters they need beneath it.
+- **Error metrics** (`DataProcessing-ErrorMetrics`) characterize the error of
+  measurements: `Error-AbsoluteError`, `-RelativeError`, `-MeanAbsoluteError`,
+  `-MeanSquaredError`, `-RootMeanSquaredError`, `-MeanAbsolutePercentageError` and
+  `-Bias` (a trueness measure).
+- **Precision metrics** (`DataProcessing-PrecisionMetrics`) characterize
+  repeatability and reproducibility: `Precision-RepeatabilityStdDev` (same operator,
+  equipment and short time), `-ReproducibilityStdDev` (different operators,
+  equipment and time), `-CoefficientOfVariation` and `-ConfidenceInterval`.
+- **Accuracy metrics** (`DataProcessing-AccuracyMetrics`) combine precision and
+  trueness: `Accuracy-TotalUncertainty`, `-ExpandedUncertainty` (total uncertainty
+  times a coverage factor), `-PercentRecovery` (for spike and recovery tests) and
+  `-RSquared` (for calibration curves).
 
-### Data Availability
+### Rationale
 
-| Relation | Range | Description |
-|---|---|---|
-| `watr:hasDropRate` | `s223:QuantifiableProperty` | Number of data points lost within a unit of time due to latencies or other factors. |
+A raw reading and its hourly mean are different quantities with different
+uncertainty, and a model needs to say which one a value is. Giving the processed
+form its own property keeps the raw stream intact and lets each processed stream
+carry its own resolution, range and quality metadata. The processing method is
+an enumeration value, not free text, so queries can find every mean or every
+interpolated series.
 
-### Processed Data
+`s223:hasAspect` records the method, such as `Aggregate-Mean`. `watr:hasAggregation`
+separately records the aggregation semantics, such as `Aggregation-Mean`, which is
+what a downstream reader uses to interpret the value.
 
-| Relation | Range | Description |
-|---|---|---|
-| `watr:hasProcessedData` | `s223:QuantifiableProperty` | Links to a `QuantifiableProperty` that represents a processed, filtered, or transformed form of the raw measurement. The processing method is conveyed via `s223:hasAspect` using a `watr:EnumerationKind-DataProcessing` value. |
+### Validation
 
-## Data Processing Enumeration Kinds
-
-When a `QuantifiableProperty` is linked via `watr:hasProcessedData`, the processing method applied to produce it is described by attaching an `s223:hasAspect` triple whose object is one of the `watr:EnumerationKind-DataProcessing` enumeration values below.
-
-The category headings below identify the processing families in the ontology.
-They descend from `watr:EnumerationKind-DataProcessing`, which is a subclass of
-`s223:EnumerationKind`.
-Their values participate in S223's enumeration hierarchy. `s223:hasAspect`
-records a processing method such as `Aggregate-Mean`; `watr:hasAggregation`
-separately records aggregation semantics such as `Aggregation-Mean`.
-
-### Aggregation (`watr:DataProcessing-Aggregate`)
-
-Statistical functions that combine multiple data points into a single value.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Aggregate-Mean` | Mean | Arithmetic mean (average) of data points. |
-| `watr:Aggregate-Median` | Median | Middle value of sorted data points. |
-| `watr:Aggregate-Max` | Maximum | Maximum value from data points. |
-| `watr:Aggregate-Min` | Minimum | Minimum value from data points. |
-| `watr:Aggregate-Sum` | Sum | Sum of all data points. |
-| `watr:Aggregate-Count` | Count | Count of data points. |
-| `watr:Aggregate-StdDev` | Standard Deviation | Standard deviation of data points. |
-| `watr:Aggregate-Variance` | Variance | Variance of data points. |
-| `watr:Aggregate-Range` | Range | Difference between maximum and minimum values. |
-| `watr:Aggregate-Mode` | Mode | Most frequently occurring value in data points. |
-
-### Interpolation (`watr:DataProcessing-Interpolation`)
-
-Methods for estimating values between or in place of missing data points.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Interpolation-Linear` | Linear Interpolation | Linear interpolation between two adjacent data points. |
-| `watr:Interpolation-Spline` | Spline Interpolation | Cubic spline interpolation for smooth curves. |
-| `watr:Interpolation-Polynomial` | Polynomial Interpolation | Polynomial interpolation using multiple data points. |
-| `watr:Interpolation-NearestNeighbor` | Nearest Neighbor | Use the value of the nearest known data point. |
-| `watr:Interpolation-ForwardFill` | Forward Fill | Propagate the last valid observation forward to fill gaps. |
-| `watr:Interpolation-BackwardFill` | Backward Fill | Propagate the next valid observation backward to fill gaps. |
-
-### Normalization (`watr:DataProcessing-Normalization`)
-
-Methods for scaling data to a standard range or distribution.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Normalization-MinMax` | Min-Max Normalization | Scale data to a fixed range, typically [0, 1]. |
-| `watr:Normalization-ZScore` | Z-Score Normalization | Standardize data to have mean = 0 and standard deviation = 1. |
-| `watr:Normalization-Decimal` | Decimal Scaling | Normalize by moving the decimal point of values. |
-
-### Synchronization (`watr:DataProcessing-Synchronization`)
-
-Methods for aligning data from multiple sources to common time intervals.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Synchronization-Resampling` | Resampling | Resample data to a different frequency or time interval. |
-| `watr:Synchronization-Upsampling` | Upsampling | Increase the sampling frequency of data to a higher rate. |
-| `watr:Synchronization-Downsampling` | Downsampling | Decrease the sampling frequency of data to a lower rate. |
-| `watr:Synchronization-TimeAlignment` | Time Alignment | Align data points from different sources to common timestamps. |
-
-### Filtering (`watr:DataProcessing-Filter`)
-
-Parent class for filtering methods that remove outliers or unwanted data points. Specific filter subclasses may be defined by model authors as needed.
-
-### Error Metrics (`watr:DataProcessing-ErrorMetrics`)
-
-Quantities that characterize the error or uncertainty of measurements.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Error-AbsoluteError` | Absolute Error | Absolute difference between measured and true/reference value. |
-| `watr:Error-RelativeError` | Relative Error | Error expressed as a percentage of the true/reference value. |
-| `watr:Error-MeanAbsoluteError` | Mean Absolute Error (MAE) | Average of absolute errors across multiple measurements. |
-| `watr:Error-MeanSquaredError` | Mean Squared Error (MSE) | Average of squared errors. |
-| `watr:Error-RootMeanSquaredError` | Root Mean Squared Error (RMSE) | Square root of MSE, in the same units as measurements. |
-| `watr:Error-MeanAbsolutePercentageError` | Mean Absolute Percentage Error (MAPE) | Average of absolute percentage errors. |
-| `watr:Error-Bias` | Bias | Systematic deviation from the true value (a trueness measure). |
-
-### Precision Metrics (`watr:DataProcessing-PrecisionMetrics`)
-
-Quantities that characterize the repeatability and reproducibility of measurements.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Precision-RepeatabilityStdDev` | Repeatability Standard Deviation | Standard deviation under repeatability conditions (same operator, equipment, short time). |
-| `watr:Precision-ReproducibilityStdDev` | Reproducibility Standard Deviation | Standard deviation under reproducibility conditions (different operators, equipment, time). |
-| `watr:Precision-CoefficientOfVariation` | Coefficient of Variation | Ratio of standard deviation to mean (relative precision). |
-| `watr:Precision-ConfidenceInterval` | Confidence Interval | Range within which the true value likely falls at a specified confidence level. |
-
-### Accuracy Metrics (`watr:DataProcessing-AccuracyMetrics`)
-
-Combined accuracy measures that encompass both precision and trueness.
-
-| Enumeration Kind | Label | Description |
-|---|---|---|
-| `watr:Accuracy-TotalUncertainty` | Total Uncertainty | Combined standard uncertainty from all sources. |
-| `watr:Accuracy-ExpandedUncertainty` | Expanded Uncertainty | Total uncertainty multiplied by a coverage factor. |
-| `watr:Accuracy-PercentRecovery` | Percent Recovery | Ratio of measured to known value (for spike/recovery tests). |
-| `watr:Accuracy-RSquared` | R-Squared | Coefficient of determination for calibration curves. |
+`watr:hasProcessedData` takes a `QuantifiableProperty`. A property has at most one
+`watr:hasAggregation`, and its value must be a `watr:EnumerationKind-Aggregation`.
+A value of the wrong type, or a second aggregation, is a violation. Nothing checks that the aspect agrees with the aggregation, or that a processed
+property was actually derived from its raw one.
 
 ## Example
 
@@ -211,7 +162,9 @@ The following Turtle fragment shows a temperature sensor property with data qual
     s223:hasValue 1 .
 ```
 
-The complete fragment is also available as
+The complete model is
 {download}`data-quality-temperature.ttl <../../examples/data-quality-temperature.ttl>`.
+It adds a temperature sensor that observes the raw property, because S223 warns
+about an observable property that no sensor observes.
 
 For a hands-on walkthrough using these annotations with SPARQL queries, see the [Data Quality Tutorial](../tutorials/data-quality-tutorial.md).

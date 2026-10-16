@@ -4,12 +4,12 @@ from pathlib import Path
 import pytest
 import shifty
 from ontoenv import OntoEnv
-from rdflib import Graph, Namespace, URIRef
-from rdflib.namespace import OWL
+from rdflib import OWL, RDF, Graph, Namespace, URIRef
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 WATR = Namespace("https://watermetadata.org/ontology/watr#")
+WATR_ONTOLOGY_PREFIX = "https://watermetadata.org/ontology/"
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +17,6 @@ EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 LOCAL_DPR_EXAMPLE = EXAMPLES_DIR / "union-dpr-model.ttl"
 WATER_DIR = ROOT / "ontology"
-S223_DIR = ROOT / "s223"
 
 CLASS_DEFAULTS_FILE = WATER_DIR / "class-defaults.ttl"
 CLASS_DEFAULTS_URI = URIRef("https://watermetadata.org/ontology/modules/class-defaults")
@@ -167,10 +166,31 @@ def ontoenv(tmp_path_factory):
         yield env
 
 
+def _external_imports(water_graph: Graph) -> Graph:
+    """A graph importing only the non-watr ontologies that ``water_graph`` imports."""
+    external = Graph()
+    root = URIRef("urn:watr-tests:external-imports")
+    external.add((root, RDF.type, OWL.Ontology))
+    for imported in set(water_graph.objects(None, OWL.imports)):
+        if not str(imported).startswith(WATR_ONTOLOGY_PREFIX):
+            external.add((root, OWL.imports, imported))
+    return external
+
+
 @pytest.fixture(scope="session")
 def ontology_shapes_graph(water_graph: Graph, ontoenv: OntoEnv) -> Graph:
-    """Resolve the water ontology's full import closure once per session."""
-    shapes_graph, _imported = ontoenv.get_dependencies(water_graph, fetch_missing=True)
+    """Resolve the water ontology's full import closure once per session.
+
+    Only the external imports (223P, QUDT, SHACL) are resolved through OntoEnv;
+    the watr modules come from ``water_graph``. Resolving the modules as well
+    would load each one twice, and since every load mints fresh blank nodes,
+    each watr property shape would appear twice. Two identical qualified value
+    shapes on one class are siblings, so ``sh:qualifiedValueShapesDisjoint``
+    would then reject every value.
+    """
+    shapes_graph, _imported = ontoenv.get_dependencies(
+        _external_imports(water_graph), fetch_missing=True
+    )
     shapes_graph += water_graph
     return shapes_graph
 
@@ -181,7 +201,7 @@ def shapes_graph_without_class_defaults(
 ) -> Graph:
     """The same closure resolved from a graph that does not import the rule."""
     shapes_graph, _imported = ontoenv.get_dependencies(
-        water_graph_without_class_defaults, fetch_missing=True
+        _external_imports(water_graph_without_class_defaults), fetch_missing=True
     )
     shapes_graph += water_graph_without_class_defaults
     return shapes_graph

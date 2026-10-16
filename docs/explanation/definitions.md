@@ -13,7 +13,7 @@ Classes are organized into a hierarchy, and entities are an instance of a given 
 Examples of relationships are *encapsulation* (one entity is contained within another), *sequence* (one entity takes effect before another in some process) and *instantiation* (one entity's type is given by another).
 
 - **Relation:** A predicate (RDF property) used to describe a given relationship.
-Examples of a relation are the WaTr relation `s223:contains`, which defines the relationship between two pieces of equipment in which one contains another.
+An example is the S223 relation `s223:contains`, which WaTr uses for one piece of equipment containing another.
 
  - **Graph:** An abstract organizational data structure representing a set of entities (nodes) and relationships (edges) described in triple-structure. WaTr models are represented by a directed, labeled graph, and use the RDF standard. We recommend reading the [Wikipedia page on the abstract graph data structure](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) for more information.
 
@@ -29,7 +29,7 @@ The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can
 
  - **ConnectionPoint:** An abstract modeling construct representing the point where one Connectable thing connects to another.
 
- - **Domain:** A categorization of water treatment service or specialization used to characterize equipment or spaces (e.g., filtration, chemical treatment, sedimentation).
+ - **Domain:** An S223 categorization of the building or plant service that equipment or a space belongs to, such as HVAC, electrical or plumbing. WaTr defines no domains of its own; it expresses treatment function with processes and objectives instead.
 
  - **Connectable:** This is the top level entity that defines the classes that may be connected via ConnectionPoints and Connections. There are three major sub-classes of connectable
 
@@ -45,9 +45,21 @@ The WaTr standard extends a hierarchy of classes defined in ASHRAE 223P that can
 
  - **Properties:** Properties often represent the actuation and measurement points within a water treatment train. They may be associated with real-time data. They also may define the attributes of other entities (e.g. Equipment, DomainSpaces, Systems). They can be further contextualized using enumerations.
 
- - **Enumerations:** The standard uses enumerations to convey groups of useful values for describing attributes of Properties, Equipment, and other things in the model. For example, the enumeration `Role-Cooling` describes that the equipment in question provides cooling.
+ - **Enumerations:** The standard uses enumerations to convey groups of useful values for describing attributes of Properties, Equipment, and other things in the model. For example, the enumeration `watr:Role-Primary` says that equipment serves the primary treatment stage.
 
  - **FunctionBlock:** Is used to model transfer and/or transformation of information (e.g. control algorithms). It has relations to input properties and output properties, that represent input and output data. The actual algorithms that perform the transformations are not modeled in WaTr.
+
+## WaTr Treatment Concepts
+
+ - **Process:** A physical, chemical or biological activity performed by equipment or a system, such as settling or chlorination, stated with `watr:hasProcess`.
+
+ - **Treatment objective:** The intended change to the treated stream, such as clarification or disinfection, stated with `watr:hasTreatmentObjective`. See [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md).
+
+ - **Role:** The commissioned function or position of an entity in a particular system, such as a treatment stage, stated with `s223:hasRole`.
+
+ - **Medium:** The substance flowing through a connection point or connection, such as water, brine or sludge, stated with `s223:hasMedium`. See [media and constituents](processes.md#media-and-constituents).
+
+ - **Equipment region:** A functional portion of a piece of equipment, such as the anoxic zone of a single basin. See [functional regions](equipment_function.md#functional-regions-within-equipment).
 
 ## Treatment Stages
 

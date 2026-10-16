@@ -22,7 +22,7 @@
 # belongs to s223:hasRole. A primary and a secondary clarifier share their
 # treatment objective and their process, and differ in their role.
 #
-# See docs/explanation/processes.md.
+# See docs/explanation/equipment_function.md.
 watr:TreatmentObjective a watr:Class, sh:NodeShape ;
     rdfs:label "Treatment Objective" ;
     rdfs:comment "An objective that a piece of equipment or a system is intended to achieve." ;

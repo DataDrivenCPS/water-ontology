@@ -1,0 +1,72 @@
+@prefix : <urn:example/evaporator-condenser#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/evaporator-condenser> a owl:Ontology ;
+    rdfs:label "Thermal Desalination Evaporator and Condenser" ;
+    rdfs:comment "A single-feed evaporator boils seawater into vapor and a brine concentrate, and a water-cooled condenser turns the vapor into distillate. The evaporator has one inlet and two outlets, which is why watr:Evaporator is not a s223:HydronicHeatExchanger: that class requires at least two liquid inlets, each paired with an outlet." ;
+    owl:imports
+        <https://watermetadata.org/ontology/watr>,
+        <http://data.ashrae.org/standard223/1.0/model/all> .
+
+# Seawater in; vapor and brine out.
+:evaporator a watr:Evaporator ;
+    rdfs:label "Brine evaporator" ;
+    watr:hasProcess watr:Process-Evaporation ;
+    s223:hasConnectionPoint :evaporator-feed, :evaporator-vapor, :evaporator-brine .
+
+:evaporator-feed a s223:InletConnectionPoint ;
+    rdfs:label "Seawater feed" ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :evaporator .
+
+:evaporator-vapor a s223:OutletConnectionPoint ;
+    rdfs:label "Vapor outlet" ;
+    s223:hasMedium s223:Water-Steam ;
+    s223:isConnectionPointOf :evaporator ;
+    s223:connectsThrough :vapor-pipe .
+
+:evaporator-brine a s223:OutletConnectionPoint ;
+    rdfs:label "Brine concentrate" ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :evaporator .
+
+:vapor-pipe a s223:Pipe ;
+    rdfs:label "Vapor line" ;
+    s223:hasMedium s223:Water-Steam ;
+    s223:connectsFrom :evaporator ;
+    s223:connectsTo :condenser ;
+    s223:connectsAt :evaporator-vapor, :condenser-vapor .
+
+# Vapor in, distillate out; cooling water passes through on a separate circuit.
+:condenser a watr:Condenser ;
+    rdfs:label "Distillate condenser" ;
+    watr:hasProcess watr:Process-Condensation ;
+    s223:hasConnectionPoint :condenser-vapor, :condenser-distillate, :condenser-coolant-in, :condenser-coolant-out .
+
+:condenser-vapor a s223:InletConnectionPoint ;
+    rdfs:label "Vapor inlet" ;
+    s223:hasMedium s223:Water-Steam ;
+    s223:isConnectionPointOf :condenser ;
+    s223:connectsThrough :vapor-pipe ;
+    s223:pairedConnectionPoint :condenser-distillate .
+
+:condenser-distillate a s223:OutletConnectionPoint ;
+    rdfs:label "Distillate" ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :condenser ;
+    s223:pairedConnectionPoint :condenser-vapor .
+
+:condenser-coolant-in a s223:InletConnectionPoint ;
+    rdfs:label "Cooling water supply" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :condenser ;
+    s223:pairedConnectionPoint :condenser-coolant-out .
+
+:condenser-coolant-out a s223:OutletConnectionPoint ;
+    rdfs:label "Cooling water return" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :condenser ;
+    s223:pairedConnectionPoint :condenser-coolant-in .

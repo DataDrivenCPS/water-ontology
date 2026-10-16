@@ -35,16 +35,15 @@ To cut a release, bump `ONTOLOGY_VERSION` in
 
 - `ontology/` contains our ontology source modules — edit these
 - `build/` contains the compiled ontology documents (generated, not tracked)
-- `s223/` contains ontology files from the 223P ontology
 - `libraries/` contains BuildingMOTIF libraries and templates for building models
     - `templates` contains some water-specific templates
     - `nrel-223p-templates` contains some generic templates for the 223P ontology
-    - `223p.ttl` is a recent copy of the 223P ontology
+    - `223p.ttl` is the vendored 223P ontology (from [open223.info](https://open223.info/223p.ttl)), resolved by OntoEnv and loaded by BuildingMOTIF
 - `notebooks/` contains code showing how to build and query models.
 
 ## Development Setup
 
-0. (to update 223, run the `download-s223.sh` script; this will only work for those with existing access to that repo)
+0. (to update 223P, run the `download-s223.sh` script, which fetches the current release from open223.info)
 1. Install [`uv`](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) for working with Python
 2. Install the dependencies with `uv sync`
 3. `uv sync` installs OntoEnv 0.6 or later for both the Python API and CLI. Run it as `uv run ontoenv`; no separate CLI installation is needed. If you need a system-wide CLI, use `cargo install --locked ontoenv-cli`.
@@ -79,7 +78,7 @@ told the format explicitly (`Graph().parse(url, format="turtle")`).
 `libraries` contains a few libraries that can be used to build up the treatment train models
 
 Start with [Creating a Model](docs/tutorials/creating-models.md) and the
-[treatment model summary](docs/explanation/treatment_model_summary.md).
+[treatment function](docs/explanation/equipment_function.md) explanation.
 [BuildingMOTIF templates](docs/libraries/index.rst) provide reusable graph fragments.
 
 To document the templates, run `make local-docs` and open `docs/_build/html/index.html` in a browser. This should also auto-build when you push to the repository, making the docs available at https://datadrivencps.github.io/water-ontology/

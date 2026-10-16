@@ -3,7 +3,7 @@
 The treatment vocabulary and inference model are implemented. Main, including
 merged PR #46, is incorporated. The
 [review disposition](treatment_review.md) records the comments and decisions;
-the [model summary](treatment_model_summary.md) documents current behavior.
+the [equipment classes](treatment_model_summary.md) page documents current behavior.
 
 Source modules live in `ontology/`. The build emits `build/watr.ttl` and a
 versioned document. Published term URIs stay unversioned and retired terms carry
