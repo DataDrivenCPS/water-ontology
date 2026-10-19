@@ -126,6 +126,7 @@ watr:SeparationTank a sh:NodeShape ;
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Separation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Separation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -142,6 +143,7 @@ watr:SequencingBatchReactor
     rdfs:subClassOf watr:Reactor, watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-ActivatedSludge ;
         sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -249,6 +251,7 @@ watr:StaticMixer
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Mixing ;
         sh:qualifiedValueShape [ sh:class watr:Process-Mixing ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -264,6 +267,7 @@ watr:AerationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Aeration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Aeration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -285,6 +289,7 @@ watr:MixingBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Mixing ;
         sh:qualifiedValueShape [ sh:class watr:Process-Mixing ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -306,6 +311,7 @@ watr:MembraneAeratedBiofilmReaactor
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Aeration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Aeration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -321,6 +327,7 @@ watr:CoagulationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Coagulation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Coagulation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -336,6 +343,7 @@ watr:FlocculationBasin
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Flocculation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Flocculation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -351,6 +359,7 @@ watr:Digester
     rdfs:subClassOf watr:Reactor, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Digestion ;
         sh:qualifiedValueShape [ sh:class watr:Process-Digestion ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -366,6 +375,7 @@ watr:AnaerobicDigester
     rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-AnaerobicDigestion ;
         sh:qualifiedValueShape [ sh:class watr:Process-AnaerobicDigestion ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -381,6 +391,7 @@ watr:AerobicDigester
     rdfs:subClassOf watr:Digester ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-AerobicDigestion ;
         sh:qualifiedValueShape [ sh:class watr:Process-AerobicDigestion ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -396,6 +407,7 @@ watr:DisinfectionUnit
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Disinfection ;
         sh:qualifiedValueShape [ sh:class watr:Process-Disinfection ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -411,6 +423,7 @@ watr:ChlorinationUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Chlorination ;
         sh:qualifiedValueShape [ sh:class watr:Process-Chlorination ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -426,6 +439,7 @@ watr:UltravioletLightUnit
     rdfs:subClassOf watr:DisinfectionUnit ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-UVDisinfection ;
         sh:qualifiedValueShape [ sh:class watr:Process-UVDisinfection ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -441,6 +455,7 @@ watr:SedimentationTank
     rdfs:subClassOf watr:SeparationTank ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Sedimentation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -470,6 +485,7 @@ watr:Screen
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Screening ;
         sh:qualifiedValueShape [ sh:class watr:Process-Screening ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -485,6 +501,7 @@ watr:GritChamber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Sedimentation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -528,6 +545,7 @@ watr:Cogenerator
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Cogeneration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Cogeneration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -543,6 +561,7 @@ watr:Boiler
     rdfs:subClassOf s223:Boiler, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Incineration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Incineration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -586,6 +605,7 @@ watr:DewateringUnit
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Dewatering ;
         sh:qualifiedValueShape [ sh:class watr:Process-Dewatering ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -615,6 +635,7 @@ watr:DissolvedAirFlotationThickener
     rdfs:subClassOf watr:Thickener;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Flotation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Flotation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -630,6 +651,7 @@ watr:CentrifugalThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Centrifugation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -645,6 +667,7 @@ watr:GravityThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Sedimentation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -660,6 +683,7 @@ watr:BeltThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Filtration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -682,6 +706,7 @@ watr:RotaryDrumThickener
     rdfs:subClassOf watr:Thickener ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Filtration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -727,6 +752,7 @@ watr:Filter
     # such process satisfies both this slot and the subclass's own.
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Filtration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ];
         sh:qualifiedMinCount 1 ;
         sh:qualifiedMaxCount 1 ;
@@ -743,6 +769,7 @@ watr:ReverseOsmosisMembrane
     # both this slot and the one inherited from watr:Filter.
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-ReverseOsmosis ;
         sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ];
         sh:qualifiedMinCount 1 ;
         sh:qualifiedMaxCount 1 ;
@@ -757,6 +784,7 @@ watr:RotatingBiologicalContactor
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Biofiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -786,6 +814,7 @@ watr:TricklingFilter
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-TricklingFiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-TricklingFiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -801,6 +830,7 @@ watr:OxidationDitch
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-ActivatedSludge ;
         sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -838,6 +868,7 @@ watr:MicrofiltrationUnit
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Microfiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Microfiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -853,6 +884,7 @@ watr:UltrafiltrationUnit
     rdfs:subClassOf watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Ultrafiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-Ultrafiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -889,6 +921,7 @@ watr:RapidSandFilter
     rdfs:subClassOf watr:MediaFiltrationUnit ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-RapidSandFiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-RapidSandFiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -911,6 +944,7 @@ watr:IonExchangeMembrane
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-IonExchange ;
         sh:qualifiedValueShape [ sh:class watr:Process-IonExchange ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -926,6 +960,7 @@ watr:ElectrodialysisUnit
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Electrodialysis ;
         sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -941,6 +976,7 @@ watr:Electrolyzer
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Electrolysis ;
         sh:qualifiedValueShape [ sh:class watr:Process-Electrolysis ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -956,6 +992,7 @@ watr:Crystallizer
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Crystallization ;
         sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -978,6 +1015,7 @@ watr:Evaporator
     rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Evaporation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -993,6 +1031,7 @@ watr:Condenser
     rdfs:subClassOf s223:HeatExchanger, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Condensation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Condensation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1235,6 +1274,7 @@ watr:ElectroDialyticCrystallizer
     rdfs:subClassOf s223:Equipment, watr:UnitProcess  ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Electrodialysis ;
         sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1243,6 +1283,7 @@ watr:ElectroDialyticCrystallizer
     ] ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Crystallization ;
         sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1286,6 +1327,7 @@ watr:SolventExtractionSystem
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-SolventExtraction ;
         sh:qualifiedValueShape [ sh:class watr:Process-SolventExtraction ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1315,6 +1357,7 @@ watr:UVH2O2Reactor
     rdfs:subClassOf watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-AdvancedOxidation ;
         sh:qualifiedValueShape [ sh:class watr:Process-AdvancedOxidation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1330,6 +1373,7 @@ watr:BiologicalAeratedFilter
     rdfs:subClassOf watr:Reactor, watr:Filter ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-BiologicallyActiveFiltration ;
         sh:qualifiedValueShape [ sh:class watr:Process-BiologicallyActiveFiltration ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1345,6 +1389,7 @@ watr:ElectrocoagulationUnit
     rdfs:subClassOf s223:Equipment, watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Electrocoagulation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Electrocoagulation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1360,6 +1405,7 @@ watr:OzonationUnit
     rdfs:subClassOf s223:Equipment, watr:Reactor ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Ozonation ;
         sh:qualifiedValueShape [ sh:class watr:Process-Ozonation ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1375,6 +1421,7 @@ watr:GranularActivatedCarbonAdsorber
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-GranularActivatedCarbon ;
         sh:qualifiedValueShape [ sh:class watr:Process-GranularActivatedCarbon ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;
@@ -1390,6 +1437,7 @@ watr:Grinder
     rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     sh:property [
         sh:path watr:hasProcess ;
+        sh:defaultValue watr:Process-Comminution ;
         sh:qualifiedValueShape [ sh:class watr:Process-Comminution ];
         sh:qualifiedValueShapesDisjoint true ;
         sh:qualifiedMinCount 1 ;

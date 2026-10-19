@@ -23,7 +23,7 @@ We model this using the `s223:contains` relationship between the lamps and the u
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
 
-:UVDisinfectionSystem a watr:UnitProcess ;
+:UVDisinfectionSystem a watr:UltravioletLightUnit ;
     s223:contains :myPFR, :myUVLamp1, :myUVLamp2 .
 
 :myPFR a watr:PlugFlowReactor .
@@ -70,7 +70,7 @@ You can see the connections (the `Pipe`s) and connection points in the image at 
 @prefix : <urn:uv_example/> .
 
 # defines the "interface" to the unit process
-:UVDisinfectionSystem a watr:UnitProcess ;
+:UVDisinfectionSystem a watr:UltravioletLightUnit ;
     s223:cnx :UVInlet, :UVOutlet .
 :UVInlet a s223:InletConnectionPoint ;
     s223:hasMedium s223:Fluid-Water .
@@ -144,27 +144,82 @@ Another kind of UV disinfection system might use a different kind of reactor, or
 WaTr is designed so that consumers of a WaTr graph can query for all unit processes that perform UV disinfection, regardless of how they are constructed.
 
 The process enacted by a unit process is defined by the `watr:hasProcess` property.
+A specialized equipment class can supply that process through a class default:
 
 ```ttl
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix qudt: <http://qudt.org/schema/qudt/> .
-@prefix qudtqk: <http://qudt.org/vocab/quantitykind/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
-:UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
-.
+:UVDisinfectionSystem a watr:UltravioletLightUnit .
 ```
 
+SHACL-AF inference adds
+`:UVDisinfectionSystem watr:hasProcess watr:Process-UVDisinfection`.
+For a generic `watr:UnitProcess` or `watr:Reactor`, supply `watr:hasProcess`
+explicitly because those classes do not choose a process.
+
 WaTr defines a set of process types that can be used to describe the processes enacted by unit processes. These process types are defined in the `watr:Process` class and its subclasses. The process type is a high-level description of what the unit process does, without specifying how it is constructed.
+
+### Inferring class defaults
+
+`watr:ClassDefaultsRule` supplies missing property values from explicit
+`sh:defaultValue` annotations on a class's property shapes. Equipment classes
+with an unambiguous required process carry a process default. For example,
+`:mixer a watr:StaticMixer` gains
+`:mixer watr:hasProcess watr:Process-Mixing` when SHACL-AF inference runs.
+The [class-defaults example](../../examples/class-defaults.ttl) shows both a
+missing process and a site-specific process that overrides the default.
+The [reverse-osmosis example](../../examples/ro-mixture-test.ttl) and equipment
+templates also omit process triples that their classes supply. Run inference
+with ``shifty`` and the WaTr shapes before querying for processes; the
+[template guide](../libraries/index.rst) shows the BuildingMOTIF workflow.
+
+Defaults are inherited through `rdfs:subClassOf`. A subclass's defaults replace
+the ancestor default set for the same property, so a `watr:RapidSandFilter`
+gets rapid sand filtration rather than generic filtration. Multiple defaults
+on the selected class are inferred together, as with the electrodialysis and
+crystallization processes on `watr:ElectroDialyticCrystallizer`. Defaults from
+unrelated classes are combined. Any existing value on the instance suppresses
+**all** defaults for that property, while other missing properties can still
+receive defaults. Values supplied by the model remain subject to the existing
+SHACL constraints.
+
+The rule works for any simple predicate path, including a treatment-objective
+property declared by an application. For example, an application can extend a
+mixer class as follows; the `app:` terms here are illustrative application
+vocabulary, not terms currently defined by WaTr:
+
+```ttl
+@prefix app: <urn:my-application:> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+app:Mixer rdfs:subClassOf watr:StaticMixer ;
+    sh:property [
+        sh:path app:treatmentObjective ;
+        sh:defaultValue app:Homogenization ;
+    ] .
+```
+
+Run inference before querying or validating the completed graph, including
+application class definitions in the shapes graph:
+
+```python
+inferred = shifty.infer(data_graph, shapes_graph=ontology_shapes_graph).graph()
+```
+
+`sh:defaultValue` is an annotation; this rule gives it inference behavior.
+Constraints such as `sh:class`, `sh:hasValue`, and `sh:in` alone do not declare
+defaults. The rule copies annotated RDF values; it does not create process
+instances or choose among alternatives. Deactivated class/property shapes and
+complex property paths are ignored. Defaults use absence in the graph at the
+time inference runs: after editing explicit values, rerun from the authored
+input graph to avoid retaining defaults from an earlier run.
 
 
 ## Putting It All Together
 
-All of this information is captured in a single graph (the "WaTr model" of a treatment train). Below is the complete example of the UV disinfection system, including the composition, topology, and process information of this unit process.
+All of this information is captured in a single graph (the "WaTr model" of a treatment train). Below is the complete example of the UV disinfection system, including its composition and topology. Its equipment class supplies the process during inference.
 
 ```ttl
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
@@ -175,8 +230,7 @@ All of this information is captured in a single graph (the "WaTr model" of a tre
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix : <urn:uv_example/> .
-:UVDisinfectionSystem a watr:UnitProcess ;
-    watr:hasProcess watr:Process-UltravioletDisinfection ;
+:UVDisinfectionSystem a watr:UltravioletLightUnit ;
     s223:contains :myPFR, :myUVLamp1, :myUVLamp2 ;
     s223:cnx :UVInlet, :UVOutlet .
 

@@ -58,6 +58,48 @@ watr:UnitProcess
     ] ;
 .
 
+watr:ClassDefaultsRule
+  a sh:NodeShape ;
+  rdfs:label "Class Defaults Rule" ;
+  rdfs:comment "Infers explicitly annotated sh:defaultValue values on simple property paths when an instance has no value for that property. Defaults are inherited through rdfs:subClassOf; a more specific class's defaults replace ancestor defaults for the same property. Explicit instance values are preserved and remain subject to validation. Defaults from unrelated classes are combined." ;
+  sh:targetSubjectsOf rdf:type ;
+  sh:rule [
+    a sh:SPARQLRule ;
+    rdfs:label "Infer missing property values from class defaults" ;
+    sh:construct """
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX sh: <http://www.w3.org/ns/shacl#>
+      CONSTRUCT {
+        $this ?path ?default .
+      }
+      WHERE {
+        $this rdf:type/rdfs:subClassOf* ?class .
+        ?class sh:property ?propertyShape .
+        ?propertyShape sh:path ?path ;
+                       sh:defaultValue ?default .
+        FILTER (isIRI(?path))
+        FILTER NOT EXISTS { ?class sh:deactivated true }
+        FILTER NOT EXISTS { ?propertyShape sh:deactivated true }
+        FILTER NOT EXISTS { $this ?path ?existing }
+
+        # A subclass overrides the whole default set for this property.
+        FILTER NOT EXISTS {
+          $this rdf:type/rdfs:subClassOf* ?specificClass .
+          ?specificClass rdfs:subClassOf+ ?class ;
+                         sh:property ?specificShape .
+          ?specificShape sh:path ?path ;
+                         sh:defaultValue ?specificDefault .
+          FILTER NOT EXISTS { ?specificClass sh:deactivated true }
+          FILTER NOT EXISTS { ?specificShape sh:deactivated true }
+          # Equivalent classes in a subclass cycle do not suppress each other.
+          FILTER NOT EXISTS { ?class rdfs:subClassOf+ ?specificClass }
+        }
+      }
+    """ ;
+  ] ;
+.
+
 s223:QuantifiableProperty
   sh:property [
      sh:path watr:hasTemporalResolution ;

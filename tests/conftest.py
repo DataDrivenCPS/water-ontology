@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import shifty
 from ontoenv import OntoEnv
-from rdflib import Graph, Namespace
+from rdflib import OWL, Graph, Namespace, URIRef
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
@@ -15,6 +15,7 @@ EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 WATER_DIR = ROOT / "ontology"
 S223_DIR = ROOT / "s223"
+QUDT_FIXTURE = ROOT / "tests/fixtures/qudt-3.3.0.ttl"
 
 
 def _ttl_files(directory: Path) -> list[Path]:
@@ -69,11 +70,46 @@ def water_graph() -> Graph:
 
 
 @pytest.fixture(scope="session")
-def ontology_shapes_graph(water_graph: Graph) -> Graph:
+def ontoenv(tmp_path_factory: pytest.TempPathFactory):
+    """Index only source ontologies in an isolated, offline environment."""
+    with OntoEnv.create(
+        str(tmp_path_factory.mktemp("ontoenv")),
+        search_directories=[str(WATER_DIR), str(S223_DIR)],
+        includes=["*.ttl"],
+        offline=True,
+    ) as env:
+        env.update()
+        yield env
+
+
+@pytest.fixture(scope="session")
+def qudt_graph() -> Graph:
+    """Use pinned upstream vocabulary descriptions without network access."""
+    return Graph().parse(QUDT_FIXTURE)
+
+
+@pytest.fixture(scope="session")
+def ontology_shapes_graph(
+    water_graph: Graph, ontoenv: OntoEnv, qudt_graph: Graph
+) -> Graph:
     """Resolve the water ontology's full import closure once per session."""
-    env = OntoEnv.connect(ROOT, read_only=True)
-    shapes_graph, _imported = env.get_dependencies(water_graph, fetch_missing=True)
+    # water_graph already contains every local module. Importing them again
+    # creates distinct copies of their blank-node shapes, which makes duplicate
+    # qualifiedValueShapesDisjoint constraints exclude each other's values.
+    external_imports = Graph()
+    for imported in water_graph.objects(None, OWL.imports):
+        # Local modules are already merged. QUDT vocabulary comes from the
+        # pinned subset; SHACL's own metashapes are not used by these tests.
+        if str(imported).startswith((
+            "https://watermetadata.org/ontology/", "http://qudt.org/"
+        )) or imported == URIRef(str(SH)):
+            continue
+        external_imports.add((URIRef("urn:test:imports"), OWL.imports, imported))
+    shapes_graph, _imported = ontoenv.get_dependencies(
+        external_imports, fetch_missing=False
+    )
     shapes_graph += water_graph
+    shapes_graph += qudt_graph
     return shapes_graph
 
 

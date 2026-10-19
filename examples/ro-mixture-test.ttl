@@ -13,7 +13,6 @@
 
 :ro a watr:ReverseOsmosisMembrane ;
     rdfs:label "RO constituent compatibility test" ;
-    watr:hasProcess watr:Process-ReverseOsmosis ;
     s223:hasConnectionPoint :feed, :permeate, :concentrate .
 
 :feed a s223:InletConnectionPoint ;
