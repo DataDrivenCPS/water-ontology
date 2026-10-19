@@ -1,11 +1,15 @@
+Template Libraries
+==================
 
-Equipment templates rely on WaTr class defaults for their process values.
-Run SHACL-AF inference with ``shifty`` before querying ``watr:hasProcess``;
-for example, ``uv-reactor`` gains ``watr:Process-UVDisinfection``. An explicit
-process on an instance overrides its class default.
+The reference pages describe graph fragments generated from the current
+``libraries/templates`` YAML definitions. Bind their ``P:`` parameters and
+resolve dependencies with BuildingMOTIF before validating a plant model.
+Equipment-class defaults and treatment-objective inference apply to instantiated
+models as described in :doc:`../explanation/equipment_function`. Explicit
+instance values suppress class defaults for the same property.
 
-In a BuildingMOTIF model-building context, complete defaults before compiling
-the model, as shown in ``notebooks/ModelBuilder.ipynb``:
+Complete defaults with ``shifty`` before BuildingMOTIF compilation, as shown in
+``notebooks/ModelBuilder.ipynb``:
 
 .. code-block:: python
 
@@ -16,15 +20,13 @@ the model, as shown in ``notebooks/ModelBuilder.ipynb``:
    bldg.add_graph(completed)
    graph = bldg.compile([shapes])
 
-This explicit step also supports BuildingMOTIF's PySHACL backend, whose
-ontology import step does not copy the property-shape default annotations
-into the graph queried by rules.
+This step also supports BuildingMOTIF's PySHACL backend, whose ontology import
+does not copy property-shape default annotations into the graph queried by rules.
 
-.. autotemplatedoc:: libraries/templates docs/libraries/
+The membrane template uses generic S223 equipment with an explicit membrane
+process; choose a concrete equipment or process type when the mechanism is known.
+The disinfection-unit template requires a process binding because disinfection
+names an objective. Its equipment class supplies the design objective.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-   :glob:
-
-   templates/index.rst
+Run ``uv run python scripts/generate_template_docs.py`` after template changes.
+The navigation lists every template shipped in the library.

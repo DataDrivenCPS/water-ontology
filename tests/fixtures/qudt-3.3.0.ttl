@@ -1,10 +1,13 @@
 # QUDT.org, CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
 # Extracted from https://qudt.org/3.3.0/vocab/unit and
 # https://qudt.org/3.3.0/vocab/quantitykind.
+# Schema: https://qudt.org/3.3.0/schema/qudt.
 # This is a test vocabulary subset, not either complete ontology.
 # Regenerate with scripts/extract_test_qudt.py.
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prefix: <http://qudt.org/vocab/prefix/> .
 @prefix qkdv: <http://qudt.org/vocab/dimensionvector/> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
@@ -18,17 +21,90 @@
 @prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-quantitykind:Duv a qudt:QuantityKind ;
-    rdfs:label "Delta u,v"@en ;
-    dcterms:description "Duv is a metric that is short for Delta u,v (not to be confused with Delta u',v') and describes the distance of a light color point from the black body curve."^^qudt:LatexString ;
-    qudt:applicableUnit unit:UNITLESS ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
-    qudt:informativeReference "https://www.waveformlighting.com/tech/calculate-duv-from-cie-1931-xy-coordinates"^^xsd:anyURI,
-        "https://www1.eere.energy.gov/buildings/publications/pdfs/ssl/led-color-characteristics-factsheet.pdf"^^xsd:anyURI ;
-    qudt:plainTextDescription "Duv is a metric that is short for Delta u,v (not to be confused with Delta u',v') and describes the distance of a light color point from the black body curve." ;
-    rdfs:comment "Applicable units are those of quantitykind:Duv" ;
+qudt:hasUnit a owl:ObjectProperty ;
+    rdfs:label "has unit" ;
+    dcterms:description """
+  <p>This property relates a factor unit to its unit or system of units with a unit of measure that is either:
+  </p>
+  <dl>
+  <dd>a) defined by the system,</dd>
+  <dd>b) accepted for use by the system and is convertible to a unit of equivalent dimension that is defined by the system,</dd>
+  <dd>c) a reference to the unit of measure of a quantity (variable or constant) of interest.</dd>
+  </dl>
+  <p>Systems of units may distinguish between base and derived units.
+  Base units are the units which measure the base quantities for the corresponding system of quantities.\u0020
+  The base units are used to define units for all other quantities as products of powers of the base units.\u0020
+  Such units are called derived units for the system.\u0020
+  """^^rdf:HTML ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:range qudt:Unit .
+
+qudt:isDeltaQuantity a owl:DatatypeProperty ;
+    rdfs:label "is Delta Quantity" ;
+    dcterms:description """
+  This property is used to identify a Quantity instance that is a measure of a change, or interval, of some property,
+   rather than a measure of its absolute value.\u0020
+  This is important for measurements such as temperature differences where the conversion among units would be calculated differently because of offsets.
+  """ ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:range xsd:boolean .
+
+qudt:quantityValue a owl:ObjectProperty ;
+    rdfs:label "quantity value" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:range qudt:QuantityValue .
+
+qudt:value a rdf:Property ;
+    rdfs:label "value" ;
+    dcterms:description "A property to relate an observable thing with a value expressed as a decimal"^^rdf:HTML ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> .
+
+quantitykind:Concentration a qudt:QuantityKind ;
+    rdfs:label "Concentration"@en ;
+    dcterms:description "In chemistry, concentration is defined as the abundance of a constituent divided by the total volume of a mixture. Furthermore, in chemistry, four types of mathematical description can be distinguished: mass concentration, molar concentration, number concentration, and volume concentration. The term concentration can be applied to any kind of chemical mixture, but most frequently it refers to solutes in solutions."^^qudt:LatexString ;
+    qudt:applicableUnit unit:CentiMOL-PER-L,
+        unit:FemtoMOL-PER-L,
+        unit:KiloMOL-PER-M3,
+        unit:MOL-PER-DeciM3,
+        unit:MOL-PER-L,
+        unit:MOL-PER-M3,
+        unit:MicroMOL-PER-L,
+        unit:MilliMOL-PER-L,
+        unit:MilliMOL-PER-M3,
+        unit:NanoMOL-PER-L,
+        unit:PicoMOL-PER-L,
+        unit:PicoMOL-PER-M3 ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Concentration"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A1E0L-3I0M0H0T0D0 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Concentration"^^xsd:anyURI ;
+    qudt:plainTextDescription "In chemistry, concentration is defined as the abundance of a constituent divided by the total volume of a mixture. Furthermore, in chemistry, four types of mathematical description can be distinguished: mass concentration, molar concentration, number concentration, and volume concentration. The term concentration can be applied to any kind of chemical mixture, but most frequently it refers to solutes in solutions." ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q3686031> ;
+    rdfs:comment "Applicable units are those of quantitykind:Concentration" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:Conductivity a qudt:QuantityKind ;
+    rdfs:label "Conductivity"@en ;
+    dcterms:description """
+  $\\textit{Conductivity}$ is a scalar or tensor quantity the product of which by the electric field strength in a medium is equal to the electric current density.\u0020
+  For an isotropic medium the conductivity is a scalar quantity; for an anisotropic medium it is a tensor quantity.
+  $$\\mathbf{J} = \\sigma \\mathbf{E}$$
+  Where $\\mathbf{J}$ is electric current density, and $\\mathbf{E}$ is electric field strength.
+  """^^qudt:LatexString ;
+    dcterms:isReplacedBy quantitykind:ElectricConductivity ;
+    qudt:deprecated true ;
+    qudt:deprecatedInVersion "3.1.11" ;
+    qudt:hasDimensionVector qkdv:A0E2L-3I0M-1H0T3D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD025" ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=121-12-03"^^xsd:anyURI,
+        "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI,
+        "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD025"^^xsd:anyURI ;
+    qudt:latexDefinition "$\\mathbf{J} = \\sigma \\mathbf{E}$, where $\\mathbf{J}$ is electric current density, and $\\mathbf{E}$ is electric field strength."^^qudt:LatexString ;
+    qudt:latexSymbol "$\\gamma$"^^qudt:LatexString,
+        "$\\sigma$"^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Conductivity\" is a scalar or tensor quantity the product of which by the electric field strength in a medium is equal to the electric current density. For an isotropic medium the conductivity is a scalar quantity; for an anisotropic medium it is a tensor quantity." ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
-    rdfs:seeAlso quantitykind:CorrelatedColorTemperature .
+    rdfs:seeAlso quantitykind:ElectricCurrentDensity,
+        quantitykind:ElectricFieldStrength .
 
 quantitykind:GaugePressure a qudt:QuantityKind ;
     rdfs:label "Gauge Pressure"@en ;
@@ -163,118 +239,30 @@ quantitykind:MassFraction a qudt:QuantityKind ;
     rdfs:comment "Applicable units are those of quantitykind:MassFraction" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
 
-quantitykind:VolumeFlowRate a qudt:QuantityKind ;
-    rdfs:label "Volume Flow Rate"@en ;
-    dcterms:description "Volumetric Flow Rate, (also known as volume flow rate, rate of fluid flow or volume velocity) is the volume of fluid which passes through a given surface per unit time."^^qudt:LatexString ;
-    qudt:applicableUnit unit:BBL_UK_PET-PER-DAY,
-        unit:BBL_UK_PET-PER-HR,
-        unit:BBL_UK_PET-PER-MIN,
-        unit:BBL_UK_PET-PER-SEC,
-        unit:BBL_US-PER-DAY,
-        unit:BBL_US-PER-MIN,
-        unit:BBL_US_PET-PER-HR,
-        unit:BBL_US_PET-PER-SEC,
-        unit:BU_UK-PER-DAY,
-        unit:BU_UK-PER-HR,
-        unit:BU_UK-PER-MIN,
-        unit:BU_UK-PER-SEC,
-        unit:BU_US_DRY-PER-DAY,
-        unit:BU_US_DRY-PER-HR,
-        unit:BU_US_DRY-PER-MIN,
-        unit:BU_US_DRY-PER-SEC,
-        unit:CentiM3-PER-DAY,
-        unit:CentiM3-PER-HR,
-        unit:CentiM3-PER-MIN,
-        unit:CentiM3-PER-SEC,
-        unit:DeciM3-PER-DAY,
-        unit:DeciM3-PER-HR,
-        unit:DeciM3-PER-MIN,
-        unit:DeciM3-PER-SEC,
-        unit:FT3-PER-DAY,
-        unit:FT3-PER-HR,
-        unit:FT3-PER-MIN,
-        unit:FT3-PER-SEC,
-        unit:GAL_UK-PER-DAY,
-        unit:GAL_UK-PER-HR,
-        unit:GAL_UK-PER-MIN,
-        unit:GAL_UK-PER-SEC,
-        unit:GAL_US-PER-DAY,
-        unit:GAL_US-PER-HR,
-        unit:GAL_US-PER-MIN,
-        unit:GAL_US-PER-SEC,
-        unit:GI_UK-PER-DAY,
-        unit:GI_UK-PER-HR,
-        unit:GI_UK-PER-MIN,
-        unit:GI_UK-PER-SEC,
-        unit:GI_US-PER-DAY,
-        unit:GI_US-PER-HR,
-        unit:GI_US-PER-MIN,
-        unit:GI_US-PER-SEC,
-        unit:IN3-PER-HR,
-        unit:IN3-PER-MIN,
-        unit:IN3-PER-SEC,
-        unit:KiloL-PER-HR,
-        unit:L-PER-DAY,
-        unit:L-PER-HR,
-        unit:L-PER-MIN,
-        unit:L-PER-SEC,
-        unit:M3-PER-DAY,
-        unit:M3-PER-HR,
-        unit:M3-PER-MIN,
-        unit:M3-PER-SEC,
-        unit:M3-PER-YR,
-        unit:MilliL-PER-DAY,
-        unit:MilliL-PER-HR,
-        unit:MilliL-PER-MIN,
-        unit:MilliL-PER-SEC,
-        unit:OZ_VOL_UK-PER-DAY,
-        unit:OZ_VOL_UK-PER-HR,
-        unit:OZ_VOL_UK-PER-MIN,
-        unit:OZ_VOL_UK-PER-SEC,
-        unit:OZ_VOL_US-PER-DAY,
-        unit:OZ_VOL_US-PER-HR,
-        unit:OZ_VOL_US-PER-MIN,
-        unit:OZ_VOL_US-PER-SEC,
-        unit:PINT_UK-PER-DAY,
-        unit:PINT_UK-PER-HR,
-        unit:PINT_UK-PER-MIN,
-        unit:PINT_UK-PER-SEC,
-        unit:PINT_US-PER-DAY,
-        unit:PINT_US-PER-HR,
-        unit:PINT_US-PER-MIN,
-        unit:PINT_US-PER-SEC,
-        unit:PK_UK-PER-DAY,
-        unit:PK_UK-PER-HR,
-        unit:PK_UK-PER-MIN,
-        unit:PK_UK-PER-SEC,
-        unit:PK_US_DRY-PER-DAY,
-        unit:PK_US_DRY-PER-HR,
-        unit:PK_US_DRY-PER-MIN,
-        unit:PK_US_DRY-PER-SEC,
-        unit:QT_UK-PER-DAY,
-        unit:QT_UK-PER-HR,
-        unit:QT_UK-PER-MIN,
-        unit:QT_UK-PER-SEC,
-        unit:QT_US-PER-DAY,
-        unit:QT_US-PER-HR,
-        unit:QT_US-PER-MIN,
-        unit:QT_US-PER-SEC,
-        unit:YD3-PER-DAY,
-        unit:YD3-PER-HR,
-        unit:YD3-PER-MIN,
-        unit:YD3-PER-SEC ;
-    qudt:exactMatch quantitykind:VolumePerTime ;
-    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T-1D0 ;
-    qudt:iec61360Code "0112/2///62720#UAD239" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD239"^^xsd:anyURI,
-        "https://en.wikipedia.org/wiki/Volumetric_flow_rate"^^xsd:anyURI ;
-    qudt:isoNormativeReference "http://www.iso.org/iso/catalogue_detail?csnumber=31889"^^xsd:anyURI ;
-    qudt:latexDefinition "$q_V = \\frac{dV}{dt}$, where $V$ is volume and $t$ is time."^^qudt:LatexString ;
-    qudt:plainTextDescription "Volumetric Flow Rate, (also known as volume flow rate, rate of fluid flow or volume velocity) is the volume of fluid which passes through a given surface per unit time." ;
-    qudt:symbol "q_V" ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q1134348> ;
-    rdfs:comment "Applicable units are those of quantitykind:VolumeFlowRate" ;
-    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+quantitykind:SpeedRatio a qudt:QuantityKind ;
+    rdfs:label "Speed Ratio"@en ;
+    dcterms:description "Speed ratio generally refers to the ratio of the rotational speeds of two interconnected rotating components, but it sometimes relates linear speeds." ;
+    qudt:applicableUnit unit:FRACTION,
+        unit:GR,
+        unit:NUM,
+        unit:ONE-PER-ONE,
+        unit:PERCENT,
+        unit:PERMILLE,
+        unit:PERMITTIVITY_REL,
+        unit:PPB,
+        unit:PPM,
+        unit:PPQ,
+        unit:PPT,
+        unit:PPTH,
+        unit:PPTM,
+        unit:PSU,
+        unit:UNITLESS ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://sciencing.com/calculate-speed-ratio-7598425.html"^^xsd:anyURI ;
+    qudt:plainTextDescription "Speed ratio generally refers to the ratio of the rotational speeds of two interconnected rotating components, but it sometimes relates linear speeds." ;
+    rdfs:comment "Applicable units are those of quantitykind:DimensionlessRatio" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:DimensionlessRatio .
 
 quantitykind:VolumeFraction a qudt:QuantityKind ;
     rdfs:label "Volume Fraction"@en ;
@@ -304,6 +292,79 @@ quantitykind:VolumeFraction a qudt:QuantityKind ;
     rdfs:comment "Applicable units are those of quantitykind:VolumeFraction" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
+
+quantitykind:Wavelength a qudt:QuantityKind ;
+    rdfs:label "Vlnové délka"@cs,
+        "Wellenlänge"@de,
+        "wavelength"@en,
+        "longitud de onda"@es,
+        "طول موج"@fa,
+        "longueur d'onde"@fr,
+        "lunghezza d'onda"@it,
+        "Jarak gelombang"@ms,
+        "comprimento de onda"@pt,
+        "длина волны"@ru,
+        "dalga boyu"@tr,
+        "波长"@zh ;
+    dcterms:description "For a monochromatic wave, \"wavelength\" is the distance between two successive points in a direction perpendicular to the wavefront where at a given instant the phase differs by $2\\pi$. The wavelength of a sinusoidal wave is the spatial period of the wave—the distance over which the wave's shape repeats. The SI unit of wavelength is the meter."^^qudt:LatexString ;
+    qudt:applicableUnit unit:ANGSTROM,
+        unit:AU,
+        unit:BTU_IT-PER-LB_F,
+        unit:CHAIN,
+        unit:CHAIN_US,
+        unit:CentiM,
+        unit:DecaM,
+        unit:DeciM,
+        unit:FATH,
+        unit:FM,
+        unit:FT,
+        unit:FT_US,
+        unit:FUR,
+        unit:FemtoM,
+        unit:GAUGE_FR,
+        unit:GA_Charriere,
+        unit:HectoM,
+        unit:IN,
+        unit:KiloM,
+        unit:LY,
+        unit:M,
+        unit:MI,
+        unit:MI_N,
+        unit:MI_UK,
+        unit:MI_US,
+        unit:MicroIN,
+        unit:MicroM,
+        unit:MilLength,
+        unit:MilliIN,
+        unit:MilliM,
+        unit:NanoM,
+        unit:PARSEC,
+        unit:PCA,
+        unit:PT,
+        unit:PicoM,
+        unit:PlanckLength,
+        unit:ROD,
+        unit:YD,
+        unit:ZOLL ;
+    qudt:hasDimensionVector qkdv:A0E0L1I0M0H0T0D0 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Wavelength"^^xsd:anyURI ;
+    qudt:latexDefinition "$\\lambda = \\frac{c}{\\nu}$, where $\\lambda$ is the wave length, $\\nu$ is the frequency, and $c$ is the speed of light in the medium."^^qudt:LatexString ;
+    qudt:symbol "λ" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q41364> ;
+    vaem:todo "belongs to SOQ-ISO" ;
+    rdfs:comment "Applicable units are those of quantitykind:Length" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:Length .
+
+qudt:QuantityValue a owl:Class ;
+    rdfs:label "Quantity value" ;
+    dcterms:description """
+  <p>A <em>Quantity Value</em>\u0020
+  """^^rdf:HTML ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:subClassOf qudt:Concept,
+        qudt:Quantifiable,
+        qudt:Verifiable .
 
 quantitykind:AbsoluteHumidity a qudt:QuantityKind ;
     rdfs:label "Absolute Humidity"@en ;
@@ -387,6 +448,42 @@ quantitykind:AbsoluteHumidity a qudt:QuantityKind ;
     rdfs:seeAlso quantitykind:RelativeHumidity ;
     skos:broader quantitykind:Density .
 
+quantitykind:AmountOfSubstanceFraction a qudt:QuantityKind ;
+    rdfs:label "Fractional Amount of Substance"@en ;
+    dcterms:description "\"Fractional Amount of Substance\" is defined as tthe amount of a constituent divided by the total amount of all constituents in a mixture."^^qudt:LatexString ;
+    qudt:applicableUnit unit:PPB,
+        unit:PPM,
+        unit:PPQ,
+        unit:PPT,
+        unit:PPTH,
+        unit:PPTM ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Amount_fraction"^^xsd:anyURI ;
+    qudt:isoNormativeReference "http://www.iso.org/iso/catalogue_detail?csnumber=31894"^^xsd:anyURI ;
+    qudt:latexDefinition "$x_B = \\frac{n_B}{n}$, where $n_B$ is the amount of substance $B$ and $n$ is the total amount of substance."^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Fractional Amount of Substance\" is defined as tthe amount of a constituent divided by the total amount of all constituents in a mixture." ;
+    qudt:symbol "X_B" ;
+    rdfs:comment "Applicable units are those of quantitykind:AmountOfSubstanceFraction" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:BoilingPoint a qudt:QuantityKind ;
+    rdfs:label "Boiling Point Temperature"@en ;
+    dcterms:description "A temperature that is the one at which a substance will change its physical state from a liquid to a gas.  It is also the temperature where the liquid and gaseous forms of a pure substance can exist in equilibrium."^^qudt:LatexString ;
+    qudt:applicableUnit unit:DEG_C,
+        unit:DEG_F,
+        unit:DEG_R,
+        unit:DecaK,
+        unit:K,
+        unit:MegaK,
+        unit:MilliDEG_C,
+        unit:MilliK,
+        unit:PlanckTemperature ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:plainTextDescription "A temperature that is the one at which a substance will change its physical state from a liquid to a gas.  It is also the temperature where the liquid and gaseous forms of a pure substance can exist in equilibrium." ;
+    rdfs:comment "Applicable units are those of quantitykind:BoilingPoint" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:Temperature .
+
 quantitykind:ChargeNumber a qudt:QuantityKind ;
     rdfs:label "Charge Number"@en ;
     dcterms:description "The \"Charge Number\", or just valance of an ion is the coefficient that, when multiplied by the elementary charge, gives the ion's charge."^^qudt:LatexString ;
@@ -414,6 +511,57 @@ quantitykind:CoefficientOfPerformance a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
 
+quantitykind:CorrelatedColorTemperature a qudt:QuantityKind ;
+    rdfs:label "Correlated Colour Temperature"@en,
+        "Correlated Color Temperature"@en-US ;
+    dcterms:description "Correlated color temperature (CCT) is a measure of light source color appearance defined by the proximity of the light source's chromaticity coordinates to the blackbody locus, as a single number rather than the two required to specify a chromaticity."^^qudt:LatexString ;
+    qudt:applicableUnit unit:DecaK,
+        unit:K,
+        unit:MegaK,
+        unit:MilliK ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:informativeReference "https://www.lrc.rpi.edu/programs/NLPIP/lightingAnswers/pdf/print/lightSources.pdf"^^xsd:anyURI ;
+    qudt:plainTextDescription "Correlated color temperature (CCT) is a measure of light source color appearance defined by the proximity of the light source's chromaticity coordinates to the blackbody locus, as a single number rather than the two required to specify a chromaticity." ;
+    rdfs:comment "Applicable units are those of quantitykind:CorrelatedColorTemperature" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:Duv ;
+    skos:broader quantitykind:ThermodynamicTemperature .
+
+quantitykind:CountRate a qudt:QuantityKind ;
+    rdfs:label "CountRate"@en ;
+    dcterms:description "A measure of a number of items counted per time period."^^qudt:LatexString ;
+    qudt:applicableUnit unit:NUM-PER-HR,
+        unit:NUM-PER-MIN,
+        unit:NUM-PER-SEC,
+        unit:NUM-PER-YR,
+        unit:SAMPLE-PER-SEC ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T-1D0 ;
+    qudt:informativeReference "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2/HTML/link/ifcintegercountratemeasure.htm"^^xsd:anyURI ;
+    qudt:plainTextDescription "This measure may be used for measuring integer units per second or per hour. For example, it may be used to measure the number of books per hour passing along a part of a mechanical book handling system, the number of people per hour travelling along a moving walkway or the number of vehicles per hour travelling along a section of road. " ;
+    qudt:qkdvDenominator qkdv:A0E0L0I0M0H0T1D0 ;
+    qudt:qkdvNumerator qkdv:A0E0L0I0M0H0T0D1 ;
+    rdfs:comment "Applicable units are those of quantitykind:CountRate" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:Frequency .
+
+quantitykind:CurrentLinkage a qudt:QuantityKind ;
+    rdfs:label "Current Linkage"@en ;
+    dcterms:description "\"Current Linkage\" is the net electric current through a surface delimited by a closed loop."^^qudt:LatexString ;
+    qudt:applicableUnit unit:A,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:expression "$current-linkage$"^^qudt:LatexString ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=121-11-60"^^xsd:anyURI ;
+    qudt:latexSymbol "$\\Theta$"^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Current Linkage\" is the net electric current through a surface delimited by a closed loop." ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q77995703> ;
+    rdfs:comment "Applicable units are those of quantitykind:CurrentLinkage" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
 quantitykind:DutyCycle a qudt:QuantityKind ;
     rdfs:label "Duty Cycle"@en ;
     dcterms:description "A duty cycle or power cycle is the fraction of one period in which a signal or system is active."^^qudt:LatexString ;
@@ -429,6 +577,38 @@ quantitykind:DutyCycle a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
 
+quantitykind:Duv a qudt:QuantityKind ;
+    rdfs:label "Delta u,v"@en ;
+    dcterms:description "Duv is a metric that is short for Delta u,v (not to be confused with Delta u',v') and describes the distance of a light color point from the black body curve."^^qudt:LatexString ;
+    qudt:applicableUnit unit:UNITLESS ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://www.waveformlighting.com/tech/calculate-duv-from-cie-1931-xy-coordinates"^^xsd:anyURI,
+        "https://www1.eere.energy.gov/buildings/publications/pdfs/ssl/led-color-characteristics-factsheet.pdf"^^xsd:anyURI ;
+    qudt:plainTextDescription "Duv is a metric that is short for Delta u,v (not to be confused with Delta u',v') and describes the distance of a light color point from the black body curve." ;
+    rdfs:comment "Applicable units are those of quantitykind:Duv" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:CorrelatedColorTemperature .
+
+quantitykind:ElectricCurrentPhasor a qudt:QuantityKind ;
+    rdfs:label "Electric Current Phasor"@en ;
+    dcterms:description "\"Electric Current Phasor\" is a representation of current as a sinusoidal integral quantity using a complex quantity whose argument is equal to the initial phase and whose modulus is equal to the root-mean-square value. A phasor is a constant complex number, usually expressed in exponential form, representing the complex amplitude (magnitude and phase) of a sinusoidal function of time. Phasors are used by electrical engineers to simplify computations involving sinusoids, where they can often reduce a differential equation problem to an algebraic one."^^qudt:LatexString ;
+    qudt:applicableUnit unit:A,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=131-11-26"^^xsd:anyURI,
+        "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Phasor_(electronics)"^^xsd:anyURI ;
+    qudt:latexDefinition "When $i = \\hat{I} \\cos{(\\omega t + \\alpha)}$, where $i$ is the electric current, $\\omega$ is angular frequence, $t$ is time, and $\\alpha$ is initial phase, then $\\underline{I} = Ie^{ja}$."^^qudt:LatexString ;
+    qudt:latexSymbol "$\\underline{I}$"^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Electric Current Phasor\" is a representation of current as a sinusoidal integral quantity using a complex quantity whose argument is equal to the initial phase and whose modulus is equal to the root-mean-square value. A phasor is a constant complex number, usually expressed in exponential form, representing the complex amplitude (magnitude and phase) of a sinusoidal function of time. Phasors are used by electrical engineers to simplify computations involving sinusoids, where they can often reduce a differential equation problem to an algebraic one." ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q78514596> ;
+    rdfs:comment "Applicable units are those of quantitykind:ElectricCurrentPhasor" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
 quantitykind:Emissivity a qudt:QuantityKind ;
     rdfs:label "Emissivity"@en ;
     dcterms:description "Emissivity of a material (usually written $\\varepsilon$ or e) is the relative ability of its surface to emit energy by radiation."^^qudt:LatexString ;
@@ -442,72 +622,23 @@ quantitykind:Emissivity a qudt:QuantityKind ;
     rdfs:comment "Applicable units are those of quantitykind:Emissivity" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
 
-quantitykind:Frequency a qudt:QuantityKind ;
-    rdfs:label "التردد لدى نظام الوحدات الدولي"@ar,
-        "Честота"@bg,
-        "Frekvence"@cs,
-        "Frequenz"@de,
-        "Συχνότητα"@el,
-        "frequency"@en,
-        "frecuencia"@es,
-        "بسامد"@fa,
-        "fréquence"@fr,
-        "תדירות"@he,
-        "आवृत्ति"@hi,
-        "frekvencia"@hu,
-        "frequenza"@it,
-        "周波数"@ja,
-        "frequentia"@la,
-        "Frekuensi"@ms,
-        "częstotliwość"@pl,
-        "frequência"@pt,
-        "frecvență"@ro,
-        "Частота"@ru,
-        "frekvenca"@sl,
-        "frekans"@tr,
-        "频率"@zh ;
-    dcterms:description "\"Frequency\" is the number of occurrences of a repeating event per unit time. The repetition of the events may be periodic (that is. the length of time between event repetitions is fixed) or aperiodic (i.e. the length of time between event repetitions varies). Therefore, we distinguish between periodic and aperiodic frequencies. In the SI system, periodic frequency is measured in hertz (Hz) or multiples of hertz, while aperiodic frequency is measured in becquerel (Bq).  In spectroscopy, $\\nu$ is mostly used. Light passing through different media keeps its frequency, but not its wavelength or wavenumber."^^qudt:LatexString ;
-    qudt:applicableUnit unit:CYC-PER-SEC,
-        unit:GigaHZ,
-        unit:HZ,
-        unit:HectoHZ,
-        unit:KiloHZ,
-        unit:MegaHZ,
-        unit:MilliHZ,
-        unit:NUM-PER-HR,
-        unit:NUM-PER-SEC,
-        unit:NUM-PER-YR,
-        unit:PER-DAY,
-        unit:PER-HR,
-        unit:PER-MIN,
-        unit:PER-MO,
-        unit:PER-MilliSEC,
-        unit:PER-SEC,
-        unit:PER-WK,
-        unit:PER-YR,
-        unit:PERCENT-PER-DAY,
-        unit:PERCENT-PER-HR,
-        unit:PERCENT-PER-MO,
-        unit:PPTH-PER-HR,
-        unit:PetaHZ,
-        unit:PlanckFrequency,
-        unit:SAMPLE-PER-SEC,
-        unit:TeraHZ ;
-    qudt:dbpediaMatch "http://dbpedia.org/resource/Frequency"^^xsd:anyURI ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T-1D0 ;
-    qudt:iec61360Code "0112/2///62720#UAD056" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD056"^^xsd:anyURI ;
-    qudt:latexDefinition """$f = 1/T$, where $T$ is a period.
-
-Alternatively,
-
-$\\nu = 1/T$"""^^qudt:LatexString ;
-    qudt:latexSymbol "$\\nu, f$"^^qudt:LatexString ;
-    qudt:siExactMatch si-quantity:FREQ ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q11652> ;
-    rdfs:comment "Applicable units are those of quantitykind:Frequency" ;
+quantitykind:FlashPoint a qudt:QuantityKind ;
+    rdfs:label "Flash Point Temperature"@en ;
+    dcterms:description "A temperature that is the lowest one at which the vapours of a volatile material will ignite if exposed to an ignition source.  It is frequently used to characterize fire hazards and distinguish different flammable fuels."^^qudt:LatexString ;
+    qudt:applicableUnit unit:DEG_C,
+        unit:DEG_F,
+        unit:DEG_R,
+        unit:DecaK,
+        unit:K,
+        unit:MegaK,
+        unit:MilliDEG_C,
+        unit:MilliK,
+        unit:PlanckTemperature ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:plainTextDescription "A temperature that is the lowest one at which the vapours of a volatile material will ignite if exposed to an ignition source.  It is frequently used to characterize fire hazards and distinguish different flammable fuels." ;
+    rdfs:comment "Applicable units are those of quantitykind:FlashPoint" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
-    skos:broader quantitykind:InverseTime .
+    skos:broader quantitykind:Temperature .
 
 quantitykind:FrictionCoefficient a qudt:QuantityKind ;
     rdfs:label "Friction Coefficient"@en ;
@@ -581,6 +712,29 @@ quantitykind:LengthRatio a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
 
+quantitykind:LiquidVolume a qudt:QuantityKind ;
+    rdfs:label "Liquid Volume"@en ;
+    dcterms:description "Liquid volume is the volume of a given amount of liquid, that is, the amount of space a liquid takes up. There are a number of different units used to measure liquid volume, but most of them fall under either the metric system of measurement or the Imperial system of measurement."^^qudt:LatexString ;
+    qudt:applicableUnit unit:BBL_US,
+        unit:BBL_US_PET,
+        unit:CUP,
+        unit:CUP_US,
+        unit:CentiL,
+        unit:GAL_IMP,
+        unit:GAL_UK,
+        unit:GAL_US,
+        unit:KiloCubicFT,
+        unit:L,
+        unit:OZ_VOL_US,
+        unit:PINT_US,
+        unit:QT_US ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.ehow.com/facts_6371078_liquid-volume_.html"^^xsd:anyURI ;
+    qudt:plainTextDescription "Liquid volume is the volume of a given amount of liquid, that is, the amount of space a liquid takes up. There are a number of different units used to measure liquid volume, but most of them fall under either the metric system of measurement or the Imperial system of measurement." ;
+    rdfs:comment "Applicable units are those of quantitykind:LiquidVolume" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:Volume .
+
 quantitykind:LuminousFluxRatio a qudt:QuantityKind ;
     rdfs:label "Luminous Flux Ratio"@en ;
     dcterms:description "Luminous Flux Ratio (or Relative Luminous Flux or Relative Luminous Power) is the measure of the perceived power of light. It differs from radiant flux, the measure of the total power of light emitted, in that luminous flux is adjusted to reflect the varying sensitivity of the human eye to different wavelengths of light. It is expressed as a percentage or fraction of full power."^^qudt:LatexString ;
@@ -594,6 +748,56 @@ quantitykind:LuminousFluxRatio a qudt:QuantityKind ;
     rdfs:comment "Applicable units are those of quantitykind:LuminousFluxRatio" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
+
+quantitykind:MagneticTension a qudt:QuantityKind ;
+    rdfs:label "Magnetic Tension"@en ;
+    dcterms:description "\"Magnetic Tension\" is a scalar quantity equal to the line integral of the magnetic field strength $\\mathbf{H}$ along a specified path linking two points a and b."^^qudt:LatexString ;
+    qudt:applicableUnit unit:A,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=121-11-57"^^xsd:anyURI,
+        "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI ;
+    qudt:latexDefinition "$U_m = \\int_{r_a(C)}^{r_b} \\mathbf{H} \\cdot dr$, where $\\mathbf{H}$ is magnetic field strength and $r$ is the position vector along a given curve $C$ from point $a$ to point $b$."^^qudt:LatexString ;
+    qudt:plainTextDescription "Magnetic Tension is a scalar quantity equal to the line integral of the magnetic field strength H along a specified path linking two points a and b." ;
+    qudt:symbol "U_m" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q77993836> ;
+    rdfs:comment "Applicable units are those of quantitykind:MagneticTension" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:MagneticFieldStrength .
+
+quantitykind:MagnetomotiveForce a qudt:QuantityKind ;
+    rdfs:label "Magnetomotive Force"@en ;
+    dcterms:description """
+$\\text{Magnetomotive Force}$, also referred to as ($mmf$), is the ability of an electric circuit to produce magnetic flux.\u0020
+  Just as the ability of a battery to produce electric current is called its electromotive force\u0020
+  or emf, mmf is taken as the work required to move a unit magnet pole from any point through any path\u0020
+  which links the electric circuit back the same point in the presence of the magnetic force produced\u0020
+  by the electric current in the circuit.\u0020
+$\\text{Magnetomotive Force}$ is the scalar line integral of the magnetic field strength along a closed path.
+  """^^qudt:LatexString ;
+    qudt:applicableUnit unit:A,
+        unit:AT,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GI,
+        unit:GigaA,
+        unit:OERSTED-CentiM,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Magnetomotive_force"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=121-11-60"^^xsd:anyURI,
+        "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI ;
+    qudt:latexDefinition "$F_m = \\oint \\mathbf{H} \\cdot dr$, where $\\mathbf{H}$ is magnetic field strength and $r$ is position vector along a given curve $C$ from point $a$ to point $b$."^^qudt:LatexString ;
+    qudt:latexSymbol "$F_m $"^^qudt:LatexString ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q1266982> ;
+    rdfs:comment "Applicable units are those of quantitykind:MagnetomotiveForce" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:MagneticFieldStrength .
 
 quantitykind:MassConcentration a qudt:QuantityKind ;
     rdfs:label "Mass Concentration"@en ;
@@ -631,6 +835,24 @@ quantitykind:MassNumber a qudt:QuantityKind ;
     rdfs:comment "Applicable units are those of quantitykind:MassNumber" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:Count .
+
+quantitykind:MeltingPoint a qudt:QuantityKind ;
+    rdfs:label "Melting Point Temperature"@en ;
+    dcterms:description "A temperature that is the one at which a substance will change its physical state from a solid to a liquid.  It is also the temperature where the solid and liquid forms of a pure substance can exist in equilibrium."^^qudt:LatexString ;
+    qudt:applicableUnit unit:DEG_C,
+        unit:DEG_F,
+        unit:DEG_R,
+        unit:DecaK,
+        unit:K,
+        unit:MegaK,
+        unit:MilliDEG_C,
+        unit:MilliK,
+        unit:PlanckTemperature ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:plainTextDescription "A temperature that is the one at which a substance will change its physical state from a solid to a liquid.  It is also the temperature where the solid and liquid forms of a pure substance can exist in equilibrium." ;
+    rdfs:comment "Applicable units are those of quantitykind:MeltingPoint" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:Temperature .
 
 quantitykind:NeutronNumber a qudt:QuantityKind ;
     rdfs:label "عدد النيوترونات"@ar,
@@ -940,134 +1162,6 @@ quantitykind:StoichiometricNumber a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:Dimensionless .
 
-quantitykind:ThermodynamicTemperature a qudt:QuantityKind ;
-    rdfs:label "درجة الحرارة المطلقة"@ar,
-        "Термодинамична температура"@bg,
-        "Termodynamická teplota"@cs,
-        "thermodynamische Temperatur"@de,
-        "Απόλυτη"@el,
-        "thermodynamic temperature"@en,
-        "temperatura"@es,
-        "دمای ترمودینامیکی"@fa,
-        "température thermodynamique"@fr,
-        "טמפרטורה מוחלטת"@he,
-        "ऊष्मगतिकीय तापमान"@hi,
-        "abszolút hőmérséklet"@hu,
-        "temperatura termodinamica"@it,
-        "熱力学温度"@ja,
-        "temperatura thermodynamica absoluta"@la,
-        "Suhu termodinamik"@ms,
-        "temperatura"@pl,
-        "temperatura"@pt,
-        "temperatură termodinamică"@ro,
-        "Термодинамическая температура"@ru,
-        "temperatura"@sl,
-        "termodinamik sıcaklık"@tr,
-        "热力学温度"@zh ;
-    dcterms:description """Thermodynamic temperature is the absolute measure of temperature and is one of the principal parameters of thermodynamics.
-Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold.
-In thermodynamics, in a system of which the entropy is considered as an independent externally controlled variable, absolute, or thermodynamic temperature is defined as the derivative of the internal energy with respect to the entropy. This is a base quantity in the International System of Quantities, ISQ, on which the International System of Units, SI, is based.""" ;
-    qudt:applicableUnit unit:DEG_R,
-        unit:DecaK,
-        unit:K,
-        unit:MegaK,
-        unit:MilliK,
-        unit:PlanckTemperature ;
-    qudt:dbpediaMatch "http://dbpedia.org/page/Thermodynamic_temperature"^^xsd:anyURI ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
-    qudt:iec61360Code "0112/2///62720#UAD196" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD196"^^xsd:anyURI ;
-    qudt:latexSymbol "$\\Theta$"^^qudt:LatexString ;
-    qudt:plainTextDescription """Thermodynamic temperature is the absolute measure of temperature and is one of the principal parameters of thermodynamics.
-Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold.
-In thermodynamics, in a system of which the entropy is considered as an independent externally controlled variable, absolute, or thermodynamic temperature is defined as the derivative of the internal energy with respect to the entropy. This is a base quantity in the International System of Quantities, ISQ, on which the International System of Units, SI, is based.""" ;
-    qudt:siExactMatch si-quantity:TEMT ;
-    qudt:symbol "T" ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q264647> ;
-    rdfs:comment "Applicable units are those of quantitykind:ThermodynamicTemperature" ;
-    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
-    rdfs:seeAlso quantitykind:Temperature ;
-    skos:altLabel "Θερμοδυναμική Θερμοκρασία"@el,
-        "temperatura assoluta"@it ;
-    skos:broader quantitykind:Temperature .
-
-quantitykind:Time a qudt:QuantityKind ;
-    rdfs:label "زمن"@ar,
-        "Време"@bg,
-        "Čas"@cs,
-        "Zeit"@de,
-        "Χρόνος"@el,
-        "time"@en,
-        "tiempo"@es,
-        "زمان"@fa,
-        "temps"@fr,
-        "זמן"@he,
-        "समय"@hi,
-        "idő"@hu,
-        "tempo"@it,
-        "時間"@ja,
-        "tempus"@la,
-        "Masa"@ms,
-        "czas"@pl,
-        "tempo"@pt,
-        "timp"@ro,
-        "Время"@ru,
-        "čas"@sl,
-        "zaman"@tr,
-        "时间"@zh ;
-    dcterms:description "Time is a basic component of the measuring system used to sequence events, to compare the durations of events and the intervals between them, and to quantify the motions of objects."^^qudt:LatexString ;
-    qudt:applicableUnit unit:AttoSEC,
-        unit:CentiPOISE-PER-BAR,
-        unit:DAY,
-        unit:DAY_Sidereal,
-        unit:DeciSEC,
-        unit:FemtoSEC,
-        unit:H-PER-KiloOHM,
-        unit:H-PER-OHM,
-        unit:HR,
-        unit:HR_Sidereal,
-        unit:KiloSEC,
-        unit:KiloYR,
-        unit:MIN,
-        unit:MIN_Sidereal,
-        unit:MO,
-        unit:MO_MeanGREGORIAN,
-        unit:MO_MeanJulian,
-        unit:MO_Synodic,
-        unit:MegaSEC,
-        unit:MegaYR,
-        unit:MicroH-PER-KiloOHM,
-        unit:MicroH-PER-OHM,
-        unit:MicroSEC,
-        unit:MilliH-PER-KiloOHM,
-        unit:MilliH-PER-OHM,
-        unit:MilliPA-SEC-PER-BAR,
-        unit:MilliSEC,
-        unit:NanoSEC,
-        unit:PA-SEC-PER-BAR,
-        unit:POISE-PER-BAR,
-        unit:POISE-PER-PA,
-        unit:PicoSEC,
-        unit:PlanckTime,
-        unit:SEC,
-        unit:SH,
-        unit:WK,
-        unit:YR,
-        unit:YR_Common,
-        unit:YR_Metrology,
-        unit:YR_Sidereal,
-        unit:YR_TROPICAL ;
-    qudt:dbpediaMatch "http://dbpedia.org/resource/Time"^^xsd:anyURI ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T1D0 ;
-    qudt:iec61360Code "0112/2///62720#UAD197" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD197"^^xsd:anyURI ;
-    qudt:plainTextDescription "Time is a basic component of the measuring system used to sequence events, to compare the durations of events and the intervals between them, and to quantify the motions of objects." ;
-    qudt:siExactMatch si-quantity:TIME ;
-    qudt:symbol "t" ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q2199864> ;
-    rdfs:comment "Applicable units are those of quantitykind:Time" ;
-    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
-
 quantitykind:TimeRatio a qudt:QuantityKind ;
     rdfs:label "Time Ratio"@en ;
     qudt:applicableUnit unit:HR-PER-YR,
@@ -1095,6 +1189,39 @@ quantitykind:TotalAngularMomentumQuantumNumber a qudt:QuantityKind ;
     skos:closeMatch quantitykind:MagneticQuantumNumber,
         quantitykind:PrincipalQuantumNumber,
         quantitykind:SpinQuantumNumber .
+
+quantitykind:TotalCurrent a qudt:QuantityKind ;
+    rdfs:label "Total Current"@en ;
+    dcterms:description "\"Total Current\" is the sum of the electric current that is flowing through a surface and the displacement current."^^qudt:LatexString ;
+    qudt:altSymbol "I_t" ;
+    qudt:applicableUnit unit:A,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI ;
+    qudt:latexDefinition "$I_{tot}= I + I_D$, where $I$ is electric current and $I_D$ is displacement current."^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Total Current\" is the sum of the electric current that is flowing through a surface and the displacement current." ;
+    qudt:symbol "I_{tot}" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q77679732> ;
+    rdfs:comment "Applicable units are those of quantitykind:TotalCurrent" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:DisplacementCurrent,
+        quantitykind:ElectricCurrent .
+
+quantitykind:Turbidity a qudt:QuantityKind ;
+    rdfs:label "Turbidity"@en ;
+    dcterms:description "Turbidity is the cloudiness or haziness of a fluid, or of air, caused by individual particles (suspended solids) that are generally invisible to the naked eye, similar to smoke in air. Turbidity in open water is often caused by phytoplankton and the measurement of turbidity is a key test of water quality. The higher the turbidity, the higher the risk of the drinkers developing gastrointestinal diseases, especially for immune-compromised people, because contaminants like virus or bacteria can become attached to the suspended solid. The suspended solids interfere with water disinfection with chlorine because the particles act as shields for the virus and bacteria. Similarly suspended solids can protect bacteria from UV sterilisation of water. Fluids can contain suspended solid matter consisting of particles of many different sizes. While some suspended material will be large enough and heavy enough to settle rapidly to the bottom container if a liquid sample is left to stand (the settleable solids), very small particles will settle only very slowly or not at all if the sample is regularly agitated or the particles are colloidal. These small solid particles cause the liquid to appear turbid."^^qudt:LatexString ;
+    qudt:applicableUnit unit:NTU ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Turbidity"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Turbidity"^^xsd:anyURI ;
+    qudt:plainTextDescription "Turbidity is the cloudiness or haziness of a fluid, or of air, caused by individual particles (suspended solids) that are generally invisible to the naked eye, similar to smoke in air. Turbidity in open water is often caused by phytoplankton and the measurement of turbidity is a key test of water quality. The higher the turbidity, the higher the risk of the drinkers developing gastrointestinal diseases, especially for immune-compromised people, because contaminants like virus or bacteria can become attached to the suspended solid. The suspended solids interfere with water disinfection with chlorine because the particles act as shields for the virus and bacteria. Similarly suspended solids can protect bacteria from UV sterilisation of water. Fluids can contain suspended solid matter consisting of particles of many different sizes. While some suspended material will be large enough and heavy enough to settle rapidly to the bottom container if a liquid sample is left to stand (the settleable solids), very small particles will settle only very slowly or not at all if the sample is regularly agitated or the particles are colloidal. These small solid particles cause the liquid to appear turbid." ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q898574> ;
+    rdfs:comment "Applicable units are those of quantitykind:Turbidity" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
 
 quantitykind:Unknown a qudt:QuantityKind ;
     rdfs:label "Unknown"@en ;
@@ -1569,34 +1696,86 @@ quantitykind:VoltageRatio a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:DimensionlessRatio .
 
-unit:HR a qudt:Unit ;
-    rdfs:label "Hour",
-        "Hour"@en ;
-    dcterms:description "The hour (common symbol: h or h) is a unit of measurement of time. In modern usage, an hour comprises 60 minutes, or 3,600 seconds. It is approximately 1/24 of a mean solar day. An hour in the Universal Coordinated Time (UTC) time standard can include a negative or positive leap second, and may therefore have a duration of 3,599 or 3,601 seconds for adjustment purposes. Although it is not a standard defined by the International System of Units, the hour is a unit accepted for use with SI, represented by the symbol h."^^rdf:HTML ;
-    qudt:applicableSystem sou:CGS,
-        sou:CGS-EMU,
-        sou:CGS-GAUSS,
-        sou:IMPERIAL,
-        sou:SI,
-        sou:USCS ;
-    qudt:conversionMultiplier 3600.0 ;
-    qudt:conversionMultiplierSN 3.6e+03 ;
-    qudt:dbpediaMatch "http://dbpedia.org/resource/Hour"^^xsd:anyURI ;
+quantitykind:Volume a qudt:QuantityKind ;
+    rdfs:label "Volume"@en ;
+    dcterms:description "The volume of a solid object is the three-dimensional concept of how much space it occupies, often quantified numerically. One-dimensional figures (such as lines) and two-dimensional shapes (such as squares) are assigned zero volume in the three-dimensional space."^^qudt:LatexString ;
+    qudt:applicableUnit unit:AC-FT,
+        unit:AC-FT_US,
+        unit:ANGSTROM3,
+        unit:BBL,
+        unit:BBL_UK_PET,
+        unit:BU_US_DRY,
+        unit:CentiM3,
+        unit:DecaL,
+        unit:DecaM3,
+        unit:DeciL,
+        unit:DeciM3,
+        unit:FBM,
+        unit:FT3,
+        unit:FemtoL,
+        unit:GI_UK,
+        unit:GI_US,
+        unit:HectoL,
+        unit:IN3,
+        unit:KiloCubicFT,
+        unit:KiloL,
+        unit:L,
+        unit:M3,
+        unit:MI3,
+        unit:MI_UK3,
+        unit:MegaL,
+        unit:MicroL,
+        unit:MicroM3,
+        unit:MilliL,
+        unit:MilliM3,
+        unit:NanoL,
+        unit:OZ_VOL_UK,
+        unit:PINT,
+        unit:PINT_UK,
+        unit:PK_UK,
+        unit:PicoL,
+        unit:PlanckVolume,
+        unit:QT_UK,
+        unit:QT_US,
+        unit:STANDARD,
+        unit:STR,
+        unit:TBSP,
+        unit:TON_SHIPPING_UK,
+        unit:TON_SHIPPING_US,
+        unit:TSP,
+        unit:YD3 ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Volume"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T0D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD238" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD238"^^xsd:anyURI ;
+    qudt:plainTextDescription "The volume of a solid object is the three-dimensional concept of how much space it occupies, often quantified numerically. One-dimensional figures (such as lines) and two-dimensional shapes (such as squares) are assigned zero volume in the three-dimensional space." ;
+    qudt:siExactMatch si-quantity:VOLU ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q39297> ;
+    rdfs:comment "Applicable units are those of quantitykind:Volume" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+unit:GAL_US a qudt:Unit ;
+    rdfs:label "Us Gallon",
+        "Us Gallon"@en ;
+    dcterms:description "\"US Gallon\" is a unit for  'Liquid Volume' expressed as $galUS$."^^qudt:LatexString ;
+    qudt:applicableSystem sou:USCS ;
+    qudt:conversionMultiplier 0.003785411784 ;
+    qudt:conversionMultiplierSN 3.785412e-03 ;
     qudt:definedUnitOfSystem sou:USCS ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T1D0 ;
-    qudt:hasQuantityKind quantitykind:Time ;
-    qudt:iec61360Code "0112/2///62720#UAA525" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA525"^^xsd:anyURI,
-        "https://en.wikipedia.org/wiki/Hour?oldid=495040268"^^xsd:anyURI ;
-    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/hour> ;
-    qudt:scalingOf unit:SEC ;
-    qudt:siExactMatch si-unit:hour ;
-    qudt:symbol "h" ;
-    qudt:ucumCode "h"^^qudt:UCUMcs ;
-    qudt:udunitsCode "h" ;
-    qudt:uneceCommonCode "HUR" ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q25235> ;
-    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+    qudt:factorUnitScalar 231.0 ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T0D0 ;
+    qudt:hasFactorUnit [ a qudt:FactorUnit ;
+            qudt:exponent 3 ;
+            qudt:hasUnit unit:IN ] ;
+    qudt:hasQuantityKind quantitykind:LiquidVolume ;
+    qudt:iec61360Code "0112/2///62720#UAA505" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA505"^^xsd:anyURI ;
+    qudt:symbol "gal{US}" ;
+    qudt:ucumCode "[gal_us]"^^qudt:UCUMcs ;
+    qudt:uneceCommonCode "GLL" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q23925413> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> ;
+    skos:altLabel "Queen Anne's wine gallon" .
 
 unit:HZ a qudt:DerivedUnit,
         qudt:Unit ;
@@ -1658,6 +1837,18 @@ unit:HZ a qudt:DerivedUnit,
     qudt:wikidataMatch <http://www.wikidata.org/entity/Q39369> ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
 
+unit:NTU a qudt:Unit ;
+    rdfs:label "Nephelometry Turbidity Unit",
+        "Nephelometry Turbidity Unit"@en ;
+    dcterms:description "\"Nephelometry Turbidity Unit\" is a C.G.S System unit for  'Turbidity' expressed as $NTU$."^^qudt:LatexString ;
+    qudt:applicableSystem sou:CGS ;
+    qudt:conversionMultiplier 0.0 ;
+    qudt:conversionMultiplierSN 0e+00 ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:symbol "NTU" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
 unit:UNKNOWN a qudt:Unit ;
     rdfs:label "Unknown",
         "Unknown"@en ;
@@ -1668,6 +1859,199 @@ unit:UNKNOWN a qudt:Unit ;
     qudt:hasQuantityKind quantitykind:Unknown ;
     qudt:symbol "Unknown" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+qudt:hasQuantityKind a owl:ObjectProperty ;
+    rdfs:label "has quantity kind" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:range qudt:QuantityKind .
+
+quantitykind:Acidity a qudt:QuantityKind ;
+    rdfs:label "Acidity"@en ;
+    dcterms:description """
+  Chemicals or substances having a pH less than 7 are said to be acidic;
+   lower pH means higher acidity.
+  """^^qudt:LatexString ;
+    qudt:applicableUnit unit:PH ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Acid"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/PH"^^xsd:anyURI,
+        "https://iupac.org/wp-content/uploads/2019/05/IUPAC-GB3-2012-2ndPrinting-PDFsearchable.pdf"^^xsd:anyURI ;
+    qudt:plainTextDescription "Chemicals or substances having a pH less than 7 are said to be acidic; lower pH means higher acidity." ;
+    rdfs:comment "Applicable units are those of quantitykind:Acidity" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:Basicity .
+
+quantitykind:Basicity a qudt:QuantityKind ;
+    rdfs:label "Basicity"@en ;
+    dcterms:description """
+  Chemicals or substances having a $pH$ higher than 7 are said to be basic;
+   higher $pH$ means higher basicity.
+  """^^qudt:LatexString ;
+    qudt:applicableUnit unit:PH ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:informativeReference "https://en.wikipedia.org/wiki/Base_(chemistry)"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/PH"^^xsd:anyURI,
+        "https://iupac.org/wp-content/uploads/2019/05/IUPAC-GB3-2012-2ndPrinting-PDFsearchable.pdf"^^xsd:anyURI ;
+    qudt:plainTextDescription "Chemicals or substances having a pH higher than 7 are said to be basic; higher pH means higher basicity." ;
+    rdfs:comment "Applicable units are those of quantitykind:Basicity" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:Acidity .
+
+quantitykind:DisplacementCurrent a qudt:QuantityKind ;
+    rdfs:label "Displacement Current"@en ;
+    dcterms:description "\"Displacement Current\" is a quantity appearing in Maxwell's equations that is defined in terms of the rate of change of electric displacement field. Displacement current has the units of electric current density, and it has an associated magnetic field just as actual currents do. However it is not an electric current of moving charges, but a time-varying electric field. In materials, there is also a contribution from the slight motion of charges bound in atoms, dielectric polarization."^^qudt:LatexString ;
+    qudt:applicableUnit unit:A,
+        unit:AttoA,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:PetaA,
+        unit:TeraA ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:informativeReference "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Displacement_current"^^xsd:anyURI ;
+    qudt:latexDefinition "$I_D= \\int_S J_D \\cdot e_n dA$, over a surface $S$, where $J_D$ is displacement current density and $e_n dA$ is the vector surface element."^^qudt:LatexString ;
+    qudt:plainTextDescription "\"Displacement Current\" is a quantity appearing in Maxwell's equations that is defined in terms of the rate of change of electric displacement field. Displacement current has the units of electric current density, and it has an associated magnetic field just as actual currents do. However it is not an electric current of moving charges, but a time-varying electric field. In materials, there is also a contribution from the slight motion of charges bound in atoms, dielectric polarization." ;
+    qudt:symbol "I_D" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q853178> ;
+    rdfs:comment "Applicable units are those of quantitykind:DisplacementCurrent" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:ElectricFluxDensity .
+
+quantitykind:ElectricCurrent a qudt:QuantityKind ;
+    rdfs:label "تيار كهربائي"@ar,
+        "Електрически ток"@bg,
+        "Elektrický proud"@cs,
+        "elektrische Stromstärke"@de,
+        "Ένταση ηλεκτρικού ρεύματος"@el,
+        "electric current"@en,
+        "corriente eléctrica"@es,
+        "جریان الکتریکی"@fa,
+        "intensité de courant électrique"@fr,
+        "זרם חשמלי"@he,
+        "विद्युत धारा"@hi,
+        "elektromos áramerősség"@hu,
+        "corrente elettrica"@it,
+        "電流"@ja,
+        "fluxio electrica"@la,
+        "Arus elektrik"@ms,
+        "prąd elektryczny"@pl,
+        "corrente elétrica"@pt,
+        "curent electric"@ro,
+        "Сила электрического тока"@ru,
+        "električni tok"@sl,
+        "elektrik akımı"@tr,
+        "电流"@zh ;
+    dcterms:description """
+  The quantity kind $\\textit{Electric Current}$ is the flow (movement) of electric charge.\u0020
+  The amount of electric current through some surface, for example, a section through a copper conductor,
+   is defined as the amount of electric charge flowing through that surface over time.\u0020
+  Current is a scalar-valued quantity.\u0020
+  Electric current is one of the base quantities in the International System of Quantities, ISQ,
+   on which the International System of Units, SI, is based.
+  """^^rdf:HTML ;
+    qudt:applicableUnit unit:A,
+        unit:A_Ab,
+        unit:A_Stat,
+        unit:AttoA,
+        unit:BIOT,
+        unit:FemtoA,
+        unit:GigaA,
+        unit:KiloA,
+        unit:MegaA,
+        unit:MicroA,
+        unit:MilliA,
+        unit:NanoA,
+        unit:PetaA,
+        unit:PicoA,
+        unit:PlanckCurrent,
+        unit:TeraA ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Electric_current"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD039" ;
+    qudt:informativeReference "http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=31891"^^xsd:anyURI,
+        "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD039"^^xsd:anyURI ;
+    qudt:plainTextDescription "\"Electric Current\" is the flow (movement) of electric charge. The amount of electric current through some surface, for example, a section through a copper conductor, is defined as the amount of electric charge flowing through that surface over time. Current is a scalar-valued quantity. Electric current is one of the base quantities in the International System of Quantities, ISQ, on which the International System of Units, SI, is based. " ;
+    qudt:siExactMatch si-quantity:ELCU ;
+    qudt:symbol "I" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q29996> ;
+    rdfs:comment "Applicable units are those of quantitykind:ElectricCurrent" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:Length a qudt:QuantityKind ;
+    rdfs:label "طول"@ar,
+        "Дължина"@bg,
+        "Délka"@cs,
+        "Länge"@de,
+        "Μήκος"@el,
+        "length"@en,
+        "longitud"@es,
+        "طول"@fa,
+        "longueur"@fr,
+        "אורך"@he,
+        "लम्बाई"@hi,
+        "hossz"@hu,
+        "lunghezza"@it,
+        "長さ"@ja,
+        "longitudo"@la,
+        "Panjang"@ms,
+        "długość"@pl,
+        "comprimento"@pt,
+        "lungime"@ro,
+        "Длина"@ru,
+        "dolžina"@sl,
+        "uzunluk"@tr,
+        "长度"@zh ;
+    dcterms:description "In geometric measurements, length most commonly refers to the longest dimension of an object. In some contexts, the term \"length\" is reserved for a certain dimension of an object along which the length is measured."^^qudt:LatexString ;
+    qudt:applicableUnit unit:ANGSTROM,
+        unit:AU,
+        unit:BTU_IT-PER-LB_F,
+        unit:CHAIN,
+        unit:CHAIN_US,
+        unit:CentiM,
+        unit:DecaM,
+        unit:DeciM,
+        unit:FATH,
+        unit:FM,
+        unit:FT,
+        unit:FT_US,
+        unit:FUR,
+        unit:FemtoM,
+        unit:GAUGE_FR,
+        unit:GA_Charriere,
+        unit:HectoM,
+        unit:IN,
+        unit:KiloM,
+        unit:LY,
+        unit:M,
+        unit:MI,
+        unit:MI_N,
+        unit:MI_UK,
+        unit:MI_US,
+        unit:MicroIN,
+        unit:MicroM,
+        unit:MilLength,
+        unit:MilliIN,
+        unit:MilliM,
+        unit:NanoM,
+        unit:PARSEC,
+        unit:PCA,
+        unit:PT,
+        unit:PicoM,
+        unit:PlanckLength,
+        unit:ROD,
+        unit:YD,
+        unit:ZOLL ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Length"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L1I0M0H0T0D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD072" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD072"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Length"^^xsd:anyURI ;
+    qudt:plainTextDescription "In geometric measurements, length most commonly refers to the longest dimension of an object. In some contexts, the term \"length\" is reserved for a certain dimension of an object along which the length is measured." ;
+    qudt:siExactMatch si-quantity:LENG ;
+    qudt:symbol "l" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q36253> ;
+    rdfs:comment "Applicable units are those of quantitykind:Length" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
 
 quantitykind:MassDensity a qudt:QuantityKind ;
     rdfs:label "الكثافة"@ar,
@@ -1832,28 +2216,506 @@ quantitykind:RelativePartialPressure a qudt:QuantityKind ;
     skos:altLabel "RH" ;
     skos:broader quantitykind:PressureRatio .
 
-quantitykind:Temperature a qudt:QuantityKind ;
-    rdfs:label "Temperature"@en ;
-    dcterms:description "Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold. Objects of low temperature are cold, while various degrees of higher temperatures are referred to as warm or hot. Heat spontaneously flows from bodies of a higher temperature to bodies of lower temperature, at a rate that increases with the temperature difference and the thermal conductivity."^^qudt:LatexString ;
-    qudt:applicableUnit unit:DEG_C,
-        unit:DEG_C_GROWING_CEREAL,
-        unit:DEG_F,
-        unit:DEG_R,
-        unit:DecaK,
-        unit:K,
-        unit:MegaK,
-        unit:MilliDEG_C,
-        unit:MilliK,
-        unit:PlanckTemperature ;
-    qudt:dbpediaMatch "http://dbpedia.org/resource/Temperature"^^xsd:anyURI ;
-    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
-    qudt:iec61360Code "0112/2///62720#UAD374" ;
-    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD374"^^xsd:anyURI ;
-    qudt:plainTextDescription "Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold. Objects of low temperature are cold, while various degrees of higher temperatures are referred to as warm or hot. Heat spontaneously flows from bodies of a higher temperature to bodies of lower temperature, at a rate that increases with the temperature difference and the thermal conductivity." ;
-    qudt:wikidataMatch <http://www.wikidata.org/entity/Q11466> ;
-    rdfs:comment "Applicable units are those of quantitykind:Temperature" ;
-    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
-    rdfs:seeAlso quantitykind:ThermodynamicTemperature .
+quantitykind:Time a qudt:QuantityKind ;
+    rdfs:label "زمن"@ar,
+        "Време"@bg,
+        "Čas"@cs,
+        "Zeit"@de,
+        "Χρόνος"@el,
+        "time"@en,
+        "tiempo"@es,
+        "زمان"@fa,
+        "temps"@fr,
+        "זמן"@he,
+        "समय"@hi,
+        "idő"@hu,
+        "tempo"@it,
+        "時間"@ja,
+        "tempus"@la,
+        "Masa"@ms,
+        "czas"@pl,
+        "tempo"@pt,
+        "timp"@ro,
+        "Время"@ru,
+        "čas"@sl,
+        "zaman"@tr,
+        "时间"@zh ;
+    dcterms:description "Time is a basic component of the measuring system used to sequence events, to compare the durations of events and the intervals between them, and to quantify the motions of objects."^^qudt:LatexString ;
+    qudt:applicableUnit unit:AttoSEC,
+        unit:CentiPOISE-PER-BAR,
+        unit:DAY,
+        unit:DAY_Sidereal,
+        unit:DeciSEC,
+        unit:FemtoSEC,
+        unit:H-PER-KiloOHM,
+        unit:H-PER-OHM,
+        unit:HR,
+        unit:HR_Sidereal,
+        unit:KiloSEC,
+        unit:KiloYR,
+        unit:MIN,
+        unit:MIN_Sidereal,
+        unit:MO,
+        unit:MO_MeanGREGORIAN,
+        unit:MO_MeanJulian,
+        unit:MO_Synodic,
+        unit:MegaSEC,
+        unit:MegaYR,
+        unit:MicroH-PER-KiloOHM,
+        unit:MicroH-PER-OHM,
+        unit:MicroSEC,
+        unit:MilliH-PER-KiloOHM,
+        unit:MilliH-PER-OHM,
+        unit:MilliPA-SEC-PER-BAR,
+        unit:MilliSEC,
+        unit:NanoSEC,
+        unit:PA-SEC-PER-BAR,
+        unit:POISE-PER-BAR,
+        unit:POISE-PER-PA,
+        unit:PicoSEC,
+        unit:PlanckTime,
+        unit:SEC,
+        unit:SH,
+        unit:WK,
+        unit:YR,
+        unit:YR_Common,
+        unit:YR_Metrology,
+        unit:YR_Sidereal,
+        unit:YR_TROPICAL ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Time"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T1D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD197" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD197"^^xsd:anyURI ;
+    qudt:plainTextDescription "Time is a basic component of the measuring system used to sequence events, to compare the durations of events and the intervals between them, and to quantify the motions of objects." ;
+    qudt:siExactMatch si-quantity:TIME ;
+    qudt:symbol "t" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q2199864> ;
+    rdfs:comment "Applicable units are those of quantitykind:Time" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:VolumeFlowRate a qudt:QuantityKind ;
+    rdfs:label "Volume Flow Rate"@en ;
+    dcterms:description "Volumetric Flow Rate, (also known as volume flow rate, rate of fluid flow or volume velocity) is the volume of fluid which passes through a given surface per unit time."^^qudt:LatexString ;
+    qudt:applicableUnit unit:BBL_UK_PET-PER-DAY,
+        unit:BBL_UK_PET-PER-HR,
+        unit:BBL_UK_PET-PER-MIN,
+        unit:BBL_UK_PET-PER-SEC,
+        unit:BBL_US-PER-DAY,
+        unit:BBL_US-PER-MIN,
+        unit:BBL_US_PET-PER-HR,
+        unit:BBL_US_PET-PER-SEC,
+        unit:BU_UK-PER-DAY,
+        unit:BU_UK-PER-HR,
+        unit:BU_UK-PER-MIN,
+        unit:BU_UK-PER-SEC,
+        unit:BU_US_DRY-PER-DAY,
+        unit:BU_US_DRY-PER-HR,
+        unit:BU_US_DRY-PER-MIN,
+        unit:BU_US_DRY-PER-SEC,
+        unit:CentiM3-PER-DAY,
+        unit:CentiM3-PER-HR,
+        unit:CentiM3-PER-MIN,
+        unit:CentiM3-PER-SEC,
+        unit:DeciM3-PER-DAY,
+        unit:DeciM3-PER-HR,
+        unit:DeciM3-PER-MIN,
+        unit:DeciM3-PER-SEC,
+        unit:FT3-PER-DAY,
+        unit:FT3-PER-HR,
+        unit:FT3-PER-MIN,
+        unit:FT3-PER-SEC,
+        unit:GAL_UK-PER-DAY,
+        unit:GAL_UK-PER-HR,
+        unit:GAL_UK-PER-MIN,
+        unit:GAL_UK-PER-SEC,
+        unit:GAL_US-PER-DAY,
+        unit:GAL_US-PER-HR,
+        unit:GAL_US-PER-MIN,
+        unit:GAL_US-PER-SEC,
+        unit:GI_UK-PER-DAY,
+        unit:GI_UK-PER-HR,
+        unit:GI_UK-PER-MIN,
+        unit:GI_UK-PER-SEC,
+        unit:GI_US-PER-DAY,
+        unit:GI_US-PER-HR,
+        unit:GI_US-PER-MIN,
+        unit:GI_US-PER-SEC,
+        unit:IN3-PER-HR,
+        unit:IN3-PER-MIN,
+        unit:IN3-PER-SEC,
+        unit:KiloL-PER-HR,
+        unit:L-PER-DAY,
+        unit:L-PER-HR,
+        unit:L-PER-MIN,
+        unit:L-PER-SEC,
+        unit:M3-PER-DAY,
+        unit:M3-PER-HR,
+        unit:M3-PER-MIN,
+        unit:M3-PER-SEC,
+        unit:M3-PER-YR,
+        unit:MilliL-PER-DAY,
+        unit:MilliL-PER-HR,
+        unit:MilliL-PER-MIN,
+        unit:MilliL-PER-SEC,
+        unit:OZ_VOL_UK-PER-DAY,
+        unit:OZ_VOL_UK-PER-HR,
+        unit:OZ_VOL_UK-PER-MIN,
+        unit:OZ_VOL_UK-PER-SEC,
+        unit:OZ_VOL_US-PER-DAY,
+        unit:OZ_VOL_US-PER-HR,
+        unit:OZ_VOL_US-PER-MIN,
+        unit:OZ_VOL_US-PER-SEC,
+        unit:PINT_UK-PER-DAY,
+        unit:PINT_UK-PER-HR,
+        unit:PINT_UK-PER-MIN,
+        unit:PINT_UK-PER-SEC,
+        unit:PINT_US-PER-DAY,
+        unit:PINT_US-PER-HR,
+        unit:PINT_US-PER-MIN,
+        unit:PINT_US-PER-SEC,
+        unit:PK_UK-PER-DAY,
+        unit:PK_UK-PER-HR,
+        unit:PK_UK-PER-MIN,
+        unit:PK_UK-PER-SEC,
+        unit:PK_US_DRY-PER-DAY,
+        unit:PK_US_DRY-PER-HR,
+        unit:PK_US_DRY-PER-MIN,
+        unit:PK_US_DRY-PER-SEC,
+        unit:QT_UK-PER-DAY,
+        unit:QT_UK-PER-HR,
+        unit:QT_UK-PER-MIN,
+        unit:QT_UK-PER-SEC,
+        unit:QT_US-PER-DAY,
+        unit:QT_US-PER-HR,
+        unit:QT_US-PER-MIN,
+        unit:QT_US-PER-SEC,
+        unit:YD3-PER-DAY,
+        unit:YD3-PER-HR,
+        unit:YD3-PER-MIN,
+        unit:YD3-PER-SEC ;
+    qudt:exactMatch quantitykind:VolumePerTime ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T-1D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD239" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD239"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Volumetric_flow_rate"^^xsd:anyURI ;
+    qudt:isoNormativeReference "http://www.iso.org/iso/catalogue_detail?csnumber=31889"^^xsd:anyURI ;
+    qudt:latexDefinition "$q_V = \\frac{dV}{dt}$, where $V$ is volume and $t$ is time."^^qudt:LatexString ;
+    qudt:plainTextDescription "Volumetric Flow Rate, (also known as volume flow rate, rate of fluid flow or volume velocity) is the volume of fluid which passes through a given surface per unit time." ;
+    qudt:symbol "q_V" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q1134348> ;
+    rdfs:comment "Applicable units are those of quantitykind:VolumeFlowRate" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:VolumePerTime a qudt:QuantityKind ;
+    rdfs:label "Volume per Time"@en ;
+    qudt:applicableUnit unit:BBL_UK_PET-PER-DAY,
+        unit:BBL_UK_PET-PER-HR,
+        unit:BBL_UK_PET-PER-MIN,
+        unit:BBL_UK_PET-PER-SEC,
+        unit:BBL_US-PER-DAY,
+        unit:BBL_US-PER-MIN,
+        unit:BBL_US_PET-PER-HR,
+        unit:BBL_US_PET-PER-SEC,
+        unit:BU_UK-PER-DAY,
+        unit:BU_UK-PER-HR,
+        unit:BU_UK-PER-MIN,
+        unit:BU_UK-PER-SEC,
+        unit:BU_US_DRY-PER-DAY,
+        unit:BU_US_DRY-PER-HR,
+        unit:BU_US_DRY-PER-MIN,
+        unit:BU_US_DRY-PER-SEC,
+        unit:CentiM3-PER-DAY,
+        unit:CentiM3-PER-HR,
+        unit:CentiM3-PER-MIN,
+        unit:CentiM3-PER-SEC,
+        unit:DeciM3-PER-DAY,
+        unit:DeciM3-PER-HR,
+        unit:DeciM3-PER-MIN,
+        unit:DeciM3-PER-SEC,
+        unit:FT3-PER-DAY,
+        unit:FT3-PER-HR,
+        unit:FT3-PER-MIN,
+        unit:FT3-PER-SEC,
+        unit:GAL_UK-PER-DAY,
+        unit:GAL_UK-PER-HR,
+        unit:GAL_UK-PER-MIN,
+        unit:GAL_UK-PER-SEC,
+        unit:GAL_US-PER-DAY,
+        unit:GAL_US-PER-HR,
+        unit:GAL_US-PER-MIN,
+        unit:GAL_US-PER-SEC,
+        unit:GI_UK-PER-DAY,
+        unit:GI_UK-PER-HR,
+        unit:GI_UK-PER-MIN,
+        unit:GI_UK-PER-SEC,
+        unit:GI_US-PER-DAY,
+        unit:GI_US-PER-HR,
+        unit:GI_US-PER-MIN,
+        unit:GI_US-PER-SEC,
+        unit:IN3-PER-HR,
+        unit:IN3-PER-MIN,
+        unit:IN3-PER-SEC,
+        unit:KiloL-PER-HR,
+        unit:L-PER-DAY,
+        unit:L-PER-HR,
+        unit:L-PER-MIN,
+        unit:L-PER-SEC,
+        unit:M3-PER-DAY,
+        unit:M3-PER-HR,
+        unit:M3-PER-MIN,
+        unit:M3-PER-SEC,
+        unit:M3-PER-YR,
+        unit:MilliL-PER-DAY,
+        unit:MilliL-PER-HR,
+        unit:MilliL-PER-MIN,
+        unit:MilliL-PER-SEC,
+        unit:OZ_VOL_UK-PER-DAY,
+        unit:OZ_VOL_UK-PER-HR,
+        unit:OZ_VOL_UK-PER-MIN,
+        unit:OZ_VOL_UK-PER-SEC,
+        unit:OZ_VOL_US-PER-DAY,
+        unit:OZ_VOL_US-PER-HR,
+        unit:OZ_VOL_US-PER-MIN,
+        unit:OZ_VOL_US-PER-SEC,
+        unit:PINT_UK-PER-DAY,
+        unit:PINT_UK-PER-HR,
+        unit:PINT_UK-PER-MIN,
+        unit:PINT_UK-PER-SEC,
+        unit:PINT_US-PER-DAY,
+        unit:PINT_US-PER-HR,
+        unit:PINT_US-PER-MIN,
+        unit:PINT_US-PER-SEC,
+        unit:PK_UK-PER-DAY,
+        unit:PK_UK-PER-HR,
+        unit:PK_UK-PER-MIN,
+        unit:PK_UK-PER-SEC,
+        unit:PK_US_DRY-PER-DAY,
+        unit:PK_US_DRY-PER-HR,
+        unit:PK_US_DRY-PER-MIN,
+        unit:PK_US_DRY-PER-SEC,
+        unit:QT_UK-PER-DAY,
+        unit:QT_UK-PER-HR,
+        unit:QT_UK-PER-MIN,
+        unit:QT_UK-PER-SEC,
+        unit:QT_US-PER-DAY,
+        unit:QT_US-PER-HR,
+        unit:QT_US-PER-MIN,
+        unit:QT_US-PER-SEC,
+        unit:YD3-PER-DAY,
+        unit:YD3-PER-HR,
+        unit:YD3-PER-MIN,
+        unit:YD3-PER-SEC ;
+    qudt:exactMatch quantitykind:VolumeFlowRate ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T-1D0 ;
+    qudt:qkdvDenominator qkdv:A0E0L0I0M0H0T1D0 ;
+    qudt:qkdvNumerator qkdv:A0E0L3I0M0H0T0D0 ;
+    rdfs:comment "Applicable units are those of quantitykind:VolumePerTime" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+unit:FT3-PER-MIN a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "Cubic Foot per Minute",
+        "Cubic Foot per Minute"@en ;
+    dcterms:description "\"Cubic Foot per Minute\" is an Imperial unit for  'Volume Per Unit Time' expressed as $ft^3/min$."^^qudt:LatexString ;
+    qudt:applicableSystem sou:IMPERIAL,
+        sou:USCS ;
+    qudt:conversionMultiplier 0.0004719474432000000000000000000000001 ;
+    qudt:conversionMultiplierSN 4.719474e-04 ;
+    qudt:definedUnitOfSystem sou:IMPERIAL,
+        sou:USCS ;
+    qudt:expression "$ft^{3}/min$"^^qudt:LatexString ;
+    qudt:hasDimensionVector qkdv:A0E0L3I0M0H0T-1D0 ;
+    qudt:hasFactorUnit [ a qudt:FactorUnit ;
+            qudt:exponent -1 ;
+            qudt:hasUnit unit:MIN ],
+        [ a qudt:FactorUnit ;
+            qudt:exponent 3 ;
+            qudt:hasUnit unit:FT ] ;
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate,
+        quantitykind:VolumePerTime ;
+    qudt:iec61360Code "0112/2///62720#UAA461" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA461"^^xsd:anyURI ;
+    qudt:symbol "ft³/min" ;
+    qudt:ucumCode "[ft_i]3.min-1"^^qudt:UCUMcs ;
+    qudt:uneceCommonCode "2L" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q856240> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+unit:HR a qudt:Unit ;
+    rdfs:label "Hour",
+        "Hour"@en ;
+    dcterms:description "The hour (common symbol: h or h) is a unit of measurement of time. In modern usage, an hour comprises 60 minutes, or 3,600 seconds. It is approximately 1/24 of a mean solar day. An hour in the Universal Coordinated Time (UTC) time standard can include a negative or positive leap second, and may therefore have a duration of 3,599 or 3,601 seconds for adjustment purposes. Although it is not a standard defined by the International System of Units, the hour is a unit accepted for use with SI, represented by the symbol h."^^rdf:HTML ;
+    qudt:applicableSystem sou:CGS,
+        sou:CGS-EMU,
+        sou:CGS-GAUSS,
+        sou:IMPERIAL,
+        sou:SI,
+        sou:USCS ;
+    qudt:conversionMultiplier 3600.0 ;
+    qudt:conversionMultiplierSN 3.6e+03 ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Hour"^^xsd:anyURI ;
+    qudt:definedUnitOfSystem sou:USCS ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T1D0 ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:iec61360Code "0112/2///62720#UAA525" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA525"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Hour?oldid=495040268"^^xsd:anyURI ;
+    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/hour> ;
+    qudt:scalingOf unit:SEC ;
+    qudt:siExactMatch si-unit:hour ;
+    qudt:symbol "h" ;
+    qudt:ucumCode "h"^^qudt:UCUMcs ;
+    qudt:udunitsCode "h" ;
+    qudt:uneceCommonCode "HUR" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q25235> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+unit:MIN a qudt:Unit ;
+    rdfs:label "Minute",
+        "Minute"@en ;
+    dcterms:description """
+  A minute is a unit of measurement of time, equal to 1/60 (the first sexagesimal fraction) of an hour or 60 seconds. In the UTC time scale, a minute on rare occasions has 59 or 61 seconds; see leap second.
+  The minute is not an SI unit; however, it is accepted for use with SI units. The SI symbol for minute or minutes is min.
+  Not to be confused with the arcminute (unit:ARCMIN, i.e. unit:MIN_Angle), which is a unit of measurement of angle, equal to 1/60 of a degree.
+  The usage of the ' symbol, though sometimes applied to the minute, should be limited to the arcminute to avoid confusion.
+  """^^rdf:HTML ;
+    qudt:applicableSystem sou:CGS,
+        sou:CGS-EMU,
+        sou:CGS-GAUSS,
+        sou:IMPERIAL,
+        sou:SI,
+        sou:USCS ;
+    qudt:conversionMultiplier 60.0 ;
+    qudt:conversionMultiplierSN 6e+01 ;
+    qudt:definedUnitOfSystem sou:USCS ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T1D0 ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:iec61360Code "0112/2///62720#UAA842" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA842"^^xsd:anyURI ;
+    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/minute-Time> ;
+    qudt:scalingOf unit:SEC ;
+    qudt:siExactMatch si-unit:minute ;
+    qudt:symbol "min" ;
+    qudt:ucumCode "min"^^qudt:UCUMcs ;
+    qudt:udunitsCode "min" ;
+    qudt:uneceCommonCode "MIN" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q7727> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+unit:NUM-PER-HR a qudt:Unit ;
+    rdfs:label "Number per Hour",
+        "Number per Hour"@en ;
+    qudt:conversionMultiplier 0.0002777777777777777777777777777777778 ;
+    qudt:conversionMultiplierSN 2.777778e-04 ;
+    qudt:exactMatch unit:PER-HR ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T-1D0 ;
+    qudt:hasFactorUnit [ a qudt:FactorUnit ;
+            qudt:exponent 1 ;
+            qudt:hasUnit unit:NUM ],
+        [ a qudt:FactorUnit ;
+            qudt:exponent -1 ;
+            qudt:hasUnit unit:HR ] ;
+    qudt:hasQuantityKind quantitykind:CountRate,
+        quantitykind:Frequency ;
+    qudt:hasReciprocalUnit unit:HR-PER-NUM ;
+    qudt:symbol "#/h" ;
+    qudt:ucumCode "{#}.h-1"^^qudt:UCUMcs ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+unit:NanoM a qudt:Unit ;
+    rdfs:label "Nanometre",
+        "Nanometr"@cs,
+        "Nanometer"@de,
+        "Nanometre"@en,
+        "Nanometer"@en-US,
+        "Nanometro"@es,
+        "Nanomètre"@fr,
+        "Nanométer"@hu,
+        "Nanometro"@it,
+        "Nanometer"@ms,
+        "Nanometr"@pl,
+        "Nanometru"@ro,
+        "Nanometer"@sl,
+        "Nanometre"@tr ;
+    dcterms:description "0.000000001-fold of the SI base unit metre"^^rdf:HTML ;
+    qudt:applicableSystem sou:CGS,
+        sou:CGS-EMU,
+        sou:CGS-GAUSS,
+        sou:SI ;
+    qudt:conversionMultiplier 0.000000001 ;
+    qudt:conversionMultiplierSN 1e-09 ;
+    qudt:hasDimensionVector qkdv:A0E0L1I0M0H0T0D0 ;
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:iec61360Code "0112/2///62720#UAA912" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA912"^^xsd:anyURI ;
+    qudt:plainTextDescription "0.000000001-fold of the SI base unit metre" ;
+    qudt:prefix prefix:Nano ;
+    qudt:scalingOf unit:M ;
+    qudt:symbol "nm" ;
+    qudt:ucumCode "nm"^^qudt:UCUMcs ;
+    qudt:uneceCommonCode "C45" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q178674> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+unit:PH a qudt:Unit ;
+    rdfs:label "Acidity",
+        "Acidity"@en ;
+    dcterms:description """
+  In chemistry the unit $\\textit{pH}$, also referred to as $\\textit{acidity}$ or $\\textit{basicity}$,
+   is the negative logarithm (base 10) of the concentration of free protons (or hydronium ions).
+  The definition of $pH$ in terms of hydrogen ions in solution is:
+
+  $$\\text{pH}=-\\log_{10}(a_{H^+})\\equiv-\\log_{10}\\left(\\left[H^+\\right]\\right)$$
+
+  Where $a_{H^+}$ is the equilibrium molar concentration of $H^+$ in the solution, the activity of
+   the hydrogen ion in the solution.
+  $$$$
+  This definition is appropriate for concentrations equal to, or less than $1\\ mol/l$,
+   where $aH+ \\equiv [H+]$, that is, $1\\ mol/L\\ HCl$ has a $pH$ of zero.
+  $$$$
+  To relate this to standard molality ($b^\\circ$), typically taken as $1 \\ mol/kg$,
+   consideration is given to the activity ($a_{H^+}$) of the hydrogen ions.
+  $$$$
+  The activity can be expressed as:
+
+  $$a_{H^+} = \\gamma_{H^+} \\times m_{H^+}$$
+
+  Where, $\\gamma_{H^+}$ is the activity coefficient, which adjusts the molality to account for
+   non-ideal behavior due to interactions between ions in the solution.
+  $m_{H^+}$ is the molality of hydrogen ions in the solution relative to the standard molality,
+   expressed in $mol/kg$.
+  $$$$
+  The expansion of $pH$ then becomes:
+
+  $$\\text{pH} = -log_{10}\\left(m_{H+}\\times\\gamma_{H^+}\\right)$$
+
+  $$$$
+  This definition is relevant in more concentrated solutions or when precise thermodynamic calculations are required.
+  It reflects how the properties of the solution deviate from ideal behavior and provides a more accurate understanding of the $pH$ under various conditions.
+  $$$$
+  While $pH$ is a universally recognized scale for expressing hydrogen ion activity,
+  its appropriateness and accuracy can diminish under conditions of extremely high
+  ionic strength, non-aqueous environments, high temperatures, or very high or low $pH$ values.
+  In such cases, alternative measurement strategies might be required to obtain meaningful and accurate descriptions of acidity or basicity.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem sou:ASU,
+        sou:CGS,
+        sou:CGS-EMU,
+        sou:CGS-ESU,
+        sou:CGS-GAUSS,
+        sou:IMPERIAL,
+        sou:PLANCK,
+        sou:SI ;
+    qudt:conversionMultiplier 0.0 ;
+    qudt:conversionMultiplierSN 0e+00 ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:hasQuantityKind quantitykind:Acidity,
+        quantitykind:Basicity ;
+    qudt:informativeReference "https://iupac.org/wp-content/uploads/2019/05/IUPAC-GB3-2012-2ndPrinting-PDFsearchable.pdf"^^xsd:anyURI ;
+    qudt:symbol "pH" ;
+    qudt:ucumCode "[pH]"^^qudt:UCUMcs ;
+    rdfs:comment "Unsure about dimensionality of pH; conversion requires a log function not just a multiplier"@en ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
 
 quantitykind:Density a qudt:QuantityKind ;
     rdfs:label "Density"@en ;
@@ -1935,6 +2797,101 @@ quantitykind:Density a qudt:QuantityKind ;
     vaem:todo "belongs to SOQ-ISO" ;
     rdfs:comment "Applicable units are those of quantitykind:Density" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+quantitykind:Frequency a qudt:QuantityKind ;
+    rdfs:label "التردد لدى نظام الوحدات الدولي"@ar,
+        "Честота"@bg,
+        "Frekvence"@cs,
+        "Frequenz"@de,
+        "Συχνότητα"@el,
+        "frequency"@en,
+        "frecuencia"@es,
+        "بسامد"@fa,
+        "fréquence"@fr,
+        "תדירות"@he,
+        "आवृत्ति"@hi,
+        "frekvencia"@hu,
+        "frequenza"@it,
+        "周波数"@ja,
+        "frequentia"@la,
+        "Frekuensi"@ms,
+        "częstotliwość"@pl,
+        "frequência"@pt,
+        "frecvență"@ro,
+        "Частота"@ru,
+        "frekvenca"@sl,
+        "frekans"@tr,
+        "频率"@zh ;
+    dcterms:description "\"Frequency\" is the number of occurrences of a repeating event per unit time. The repetition of the events may be periodic (that is. the length of time between event repetitions is fixed) or aperiodic (i.e. the length of time between event repetitions varies). Therefore, we distinguish between periodic and aperiodic frequencies. In the SI system, periodic frequency is measured in hertz (Hz) or multiples of hertz, while aperiodic frequency is measured in becquerel (Bq).  In spectroscopy, $\\nu$ is mostly used. Light passing through different media keeps its frequency, but not its wavelength or wavenumber."^^qudt:LatexString ;
+    qudt:applicableUnit unit:CYC-PER-SEC,
+        unit:GigaHZ,
+        unit:HZ,
+        unit:HectoHZ,
+        unit:KiloHZ,
+        unit:MegaHZ,
+        unit:MilliHZ,
+        unit:NUM-PER-HR,
+        unit:NUM-PER-SEC,
+        unit:NUM-PER-YR,
+        unit:PER-DAY,
+        unit:PER-HR,
+        unit:PER-MIN,
+        unit:PER-MO,
+        unit:PER-MilliSEC,
+        unit:PER-SEC,
+        unit:PER-WK,
+        unit:PER-YR,
+        unit:PERCENT-PER-DAY,
+        unit:PERCENT-PER-HR,
+        unit:PERCENT-PER-MO,
+        unit:PPTH-PER-HR,
+        unit:PetaHZ,
+        unit:PlanckFrequency,
+        unit:SAMPLE-PER-SEC,
+        unit:TeraHZ ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Frequency"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T-1D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD056" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD056"^^xsd:anyURI ;
+    qudt:latexDefinition """$f = 1/T$, where $T$ is a period.
+
+Alternatively,
+
+$\\nu = 1/T$"""^^qudt:LatexString ;
+    qudt:latexSymbol "$\\nu, f$"^^qudt:LatexString ;
+    qudt:siExactMatch si-quantity:FREQ ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q11652> ;
+    rdfs:comment "Applicable units are those of quantitykind:Frequency" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    skos:broader quantitykind:InverseTime .
+
+unit:PPM a qudt:Unit ;
+    rdfs:label "Parts per Million",
+        "Parts per Million"@en ;
+    dcterms:description "Dimensionless unit for concentration. Recommended practice is to use specific units such as $ug/l$."^^qudt:LatexString ;
+    qudt:applicableSystem sou:ASU,
+        sou:CGS,
+        sou:CGS-EMU,
+        sou:CGS-ESU,
+        sou:CGS-GAUSS,
+        sou:IMPERIAL,
+        sou:PLANCK,
+        sou:SI ;
+    qudt:conversionMultiplier 0.000001 ;
+    qudt:conversionMultiplierSN 1e-06 ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H0T0D1 ;
+    qudt:hasQuantityKind quantitykind:AmountOfSubstanceFraction,
+        quantitykind:DimensionlessRatio ;
+    qudt:iec61360Code "0112/2///62720#UAD925" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAD925"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Parts-per_notation"^^xsd:anyURI ;
+    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/partsPerMillion> ;
+    qudt:scalingOf unit:NUM ;
+    qudt:symbol "PPM" ;
+    qudt:ucumCode "[ppm]"^^qudt:UCUMcs ;
+    qudt:uneceCommonCode "59" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q21006887> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
 
 quantitykind:ElectricPotential a qudt:QuantityKind ;
     rdfs:label "كمون كهربائي"@ar,
@@ -2085,6 +3042,29 @@ quantitykind:OrbitalAngularMomentumQuantumNumber a qudt:QuantityKind ;
         quantitykind:PrincipalQuantumNumber,
         quantitykind:SpinQuantumNumber .
 
+quantitykind:Temperature a qudt:QuantityKind ;
+    rdfs:label "Temperature"@en ;
+    dcterms:description "Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold. Objects of low temperature are cold, while various degrees of higher temperatures are referred to as warm or hot. Heat spontaneously flows from bodies of a higher temperature to bodies of lower temperature, at a rate that increases with the temperature difference and the thermal conductivity."^^qudt:LatexString ;
+    qudt:applicableUnit unit:DEG_C,
+        unit:DEG_C_GROWING_CEREAL,
+        unit:DEG_F,
+        unit:DEG_R,
+        unit:DecaK,
+        unit:K,
+        unit:MegaK,
+        unit:MilliDEG_C,
+        unit:MilliK,
+        unit:PlanckTemperature ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Temperature"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:iec61360Code "0112/2///62720#UAD374" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/ListsOfUnitsAllVersions/0112-2---62720%23UAD374"^^xsd:anyURI ;
+    qudt:plainTextDescription "Temperature is a physical property of matter that quantitatively expresses the common notions of hot and cold. Objects of low temperature are cold, while various degrees of higher temperatures are referred to as warm or hot. Heat spontaneously flows from bodies of a higher temperature to bodies of lower temperature, at a rate that increases with the temperature difference and the thermal conductivity." ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q11466> ;
+    rdfs:comment "Applicable units are those of quantitykind:Temperature" ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
+    rdfs:seeAlso quantitykind:ThermodynamicTemperature .
+
 quantitykind:Voltage a qudt:QuantityKind ;
     rdfs:label "Voltage"@en ;
     dcterms:description """$\\textit{Voltage}$, also referred to as $\\textit{Electric Tension}$, is the difference between electrical potentials of two points. For an electric field within a medium, $U_{ab} = - \\int_{r_a}^{r_b} E . {dr}$, where $E$ is electric field strength.
@@ -2117,6 +3097,72 @@ For an irrotational electric field, the voltage is independent of the path betwe
     qudt:wikidataMatch <http://www.wikidata.org/entity/Q25428> ;
     rdfs:comment "Applicable units are those of quantitykind:Voltage" ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> .
+
+unit:DEG_C a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "Degree Celsius",
+        "درجة مئوية"@ar,
+        "Градус Целзий"@bg,
+        "Stupně Celsia"@cs,
+        "Grad Celsius"@de,
+        "Βαθμός Κελσίου"@el,
+        "Degree Celsius"@en,
+        "Grado Celsius"@es,
+        "درجه سانتی گراد/سلسیوس"@fa,
+        "Degré Celsius"@fr,
+        "צלזיוס"@he,
+        "सेल्सियस"@hi,
+        "Celsius-fok"@hu,
+        "Grado Celsius"@it,
+        "セルシウス度"@ja,
+        "Gradus Celsii"@la,
+        "Darjah Celsius"@ms,
+        "Stopień Celsjusza"@pl,
+        "Grau Celsius"@pt,
+        "Grad Celsius"@ro,
+        "Градус Цельсия"@ru,
+        "Stopinja Celzija"@sl,
+        "Celsius"@tr,
+        "摄氏度"@zh ;
+    dcterms:description """
+  The unit $\\textit{Celsius}$, also known as centigrade, is a scale and unit of measurement for temperature.
+  It can refer to a specific temperature on the Celsius scale as well as a unit to indicate a temperature interval,
+  a difference between two temperatures or an uncertainty.
+  This definition fixes the magnitude of both the degree Celsius and the kelvin as precisely 1 part
+  in 273.16 (approximately 0.00366) of the difference between absolute zero and the triple point of water.
+  Thus, it sets the magnitude of one degree Celsius and that of one kelvin as exactly the same.
+  Additionally, it establishes the difference between the two scales' null points as being precisely $273.15^{\\circ}\\text{C}$.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem sou:CGS,
+        sou:SI ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:conversionMultiplierSN 1e+00 ;
+    qudt:conversionOffset 273.15 ;
+    qudt:conversionOffsetSN 2.7315e+02 ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Celsius"^^xsd:anyURI ;
+    qudt:expression "$degC$"^^qudt:LatexString ;
+    qudt:guidance "<p>See NIST section <a href=\"http://physics.nist.gov/Pubs/SP811/sec04.html#4.2.1.1\">SP811 section 4.2.1.1</a>"^^rdf:HTML,
+        "<p>See NIST section <a href=\"http://physics.nist.gov/Pubs/SP811/sec06.html#6.2.8\">SP811 section 6.2.8</a>"^^rdf:HTML ;
+    qudt:hasDimensionVector qkdv:A0E0L0I0M0H1T0D0 ;
+    qudt:hasQuantityKind quantitykind:BoilingPoint,
+        quantitykind:FlashPoint,
+        quantitykind:MeltingPoint,
+        quantitykind:Temperature ;
+    qudt:iec61360Code "0112/2///62720#UAA033" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA033"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Celsius?oldid=494152178"^^xsd:anyURI ;
+    qudt:latexDefinition "$\\,^{\\circ}{C}$"^^qudt:LatexString ;
+    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/degreeCelsius> ;
+    qudt:scalingOf unit:K ;
+    qudt:siExactMatch si-unit:degreeCelsius ;
+    qudt:symbol "°C" ;
+    qudt:ucumCode "Cel"^^qudt:UCUMcs ;
+    qudt:udunitsCode "°C",
+        "℃" ;
+    qudt:uneceCommonCode "CEL" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q25267> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> ;
+    skos:altLabel "degree-centigrade" .
 
 unit:MilliGM-PER-L a qudt:Unit ;
     rdfs:label "Milligram per Litre",
@@ -2333,6 +3379,68 @@ quantitykind:QuantumNumber a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:Dimensionless .
 
+unit:A a qudt:Unit ;
+    rdfs:label "Ampere",
+        "أمبير"@ar,
+        "Ампер"@bg,
+        "Ampér"@cs,
+        "Ampere"@de,
+        "Αμπέρ"@el,
+        "Ampere"@en,
+        "Amperio"@es,
+        "آمپر"@fa,
+        "Ampère"@fr,
+        "אמפר"@he,
+        "एम्पीयर"@hi,
+        "Amper"@hu,
+        "Ampere"@it,
+        "アンペア"@ja,
+        "Amperium"@la,
+        "Ampere"@ms,
+        "Amper"@pl,
+        "Ampere"@pt,
+        "Amper"@ro,
+        "Ампер"@ru,
+        "Amper"@sl,
+        "Amper"@tr,
+        "安培"@zh ;
+    dcterms:description """$\\textit{Ampere}$, often shortened to $\\text{amp}$,
+is the SI unit of electric current and is one of the seven SI base units defined as:
+
+$$\\text{A} \\equiv \\frac{\\textit{C}}{\\textit{s}}
+\\equiv \\frac{\\textit{coulomb}}{\\textit{second}}
+\\equiv \\frac{\\text{joule}}{\\text{weber}}$$
+
+Note that SI supports only the use of symbols and deprecates the use of any abbreviations for units.
+"""^^qudt:LatexString ;
+    qudt:applicableSystem sou:CGS-EMU,
+        sou:CGS-GAUSS,
+        sou:PLANCK,
+        sou:SI ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:conversionMultiplierSN 1e+00 ;
+    qudt:dbpediaMatch "http://dbpedia.org/resource/Ampere"^^xsd:anyURI ;
+    qudt:hasDimensionVector qkdv:A0E1L0I0M0H0T0D0 ;
+    qudt:hasQuantityKind quantitykind:CurrentLinkage,
+        quantitykind:DisplacementCurrent,
+        quantitykind:ElectricCurrent,
+        quantitykind:ElectricCurrentPhasor,
+        quantitykind:MagneticTension,
+        quantitykind:MagnetomotiveForce,
+        quantitykind:TotalCurrent ;
+    qudt:iec61360Code "0112/2///62720#UAA101" ;
+    qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA101"^^xsd:anyURI,
+        "https://en.wikipedia.org/wiki/Ampere?oldid=494026699"^^xsd:anyURI ;
+    qudt:omUnit <http://www.ontology-of-units-of-measure.org/resource/om-2/ampere> ;
+    qudt:siExactMatch si-unit:ampere ;
+    qudt:symbol "A" ;
+    qudt:ucumCode "A"^^qudt:UCUMcs ;
+    qudt:udunitsCode "A" ;
+    qudt:uneceCommonCode "AMP" ;
+    qudt:wikidataMatch <http://www.wikidata.org/entity/Q25272> ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> ;
+    skos:altLabel "amp" .
+
 unit:PERCENT a qudt:Unit ;
     rdfs:label "Percent",
         "Percent"@en ;
@@ -2399,6 +3507,140 @@ quantitykind:DimensionlessRatio a qudt:QuantityKind ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/quantitykind> ;
     skos:broader quantitykind:Dimensionless .
 
+qudt:Unit a owl:Class ;
+    rdfs:label "Unit" ;
+    dcterms:description """
+  A unit of measure, or unit, is a particular quantity value that has been chosen as a scale for measuring other quantities the same kind (more generally of equivalent dimension).\u0020
+  For example, the meter is a quantity of length that has been rigorously defined and standardized by the BIPM (International Board of Weights and Measures).\u0020
+  Any measurement of the length can be expressed as a number multiplied by the unit meter.\u0020
+  More formally, the value of a physical quantity Q with respect to a unit (U) is expressed as the scalar multiple of a real number (n) and U, as  $Q = nU$.
+  """^^qudt:LatexString ;
+    qudt:informativeReference "http://dbpedia.org/resource/Category:Units_of_measure"^^xsd:anyURI,
+        "http://www.allmeasures.com/Fullconversion.asp"^^xsd:anyURI ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:conversionOffsetSN ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfUnits ;
+            owl:onProperty qudt:applicableSystem ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:qkdvNumerator ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfUnits ;
+            owl:onProperty qudt:isUnitOfSystem ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKind ;
+            owl:onProperty qudt:hasQuantityKind ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:qkdvNumerator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:conversionOffset ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:ucumCode ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfUnits ;
+            owl:onProperty qudt:derivedCoherentUnitOfSystem ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:mathMLdefinition ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:double ;
+            owl:onProperty qudt:conversionOffsetSN ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:factorUnitScalar ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfUnits ;
+            owl:onProperty qudt:derivedUnitOfSystem ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:mathMLdefinition ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:conversionMultiplierSN ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:double ;
+            owl:onProperty qudt:conversionMultiplierSN ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:conversionMultiplier ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:siUnitsExpression ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:latexSymbol ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:latexDefinition ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:iec61360Code ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:decimal ;
+            owl:onProperty qudt:conversionOffset ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:prefix ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:qkdvDenominator ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Prefix ;
+            owl:onProperty qudt:prefix ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfUnits ;
+            owl:onProperty qudt:definedUnitOfSystem ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:decimal ;
+            owl:onProperty qudt:conversionMultiplier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:scalingOf ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:qkdvDenominator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:scalingOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:uneceCommonCode ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:hasReciprocalUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:siUnitsExpression ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasQuantityKind ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:udunitsCode ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:decimal ;
+            owl:onProperty qudt:factorUnitScalar ],
+        qudt:Concept,
+        qudt:Verifiable .
+
 unit:NUM a qudt:CountingUnit,
         qudt:Unit ;
     rdfs:label "Number",
@@ -2443,3 +3685,111 @@ unit:NUM a qudt:CountingUnit,
     qudt:symbol "#" ;
     qudt:ucumCode "{#}"^^qudt:UCUMcs ;
     rdfs:isDefinedBy <http://qudt.org/3.3.0/vocab/unit> .
+
+qudt:QuantityKind a owl:Class ;
+    rdfs:label "Quantity Kind" ;
+    dcterms:description """
+  <p>A <em>Quantity Kind</em> is any observable property that can be  measured and quantified numerically.\u0020
+  Familiar examples include physical properties such as length, mass, time, force, energy, power, electric charge, etc.\u0020
+  Less familiar examples include currency, interest rate, price to earning ratio, and information capacity.
+  """^^rdf:HTML ;
+    qudt:informativeReference "http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=112-01-04"^^xsd:anyURI ;
+    rdfs:isDefinedBy <http://qudt.org/3.3.0/schema/qudt> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:baseImperialUnitDimensions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:baseSIUnitDimensions ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:iec61360Code ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty qudt:mathMLdefinition ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:latexDefinition ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableISOUnit ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableCGSUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableUnit ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableImperialUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableSIUnit ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:baseISOUnitDimensions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:qkdvDenominator ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableUSCustomaryUnit ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableISOUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:Unit ;
+            owl:onProperty qudt:applicableCGSUnit ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableSIUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:qkdvDenominator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:baseUSCustomaryUnitDimensions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:dimensionVectorForSI ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableUSCustomaryUnit ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector_SI ;
+            owl:onProperty qudt:dimensionVectorForSI ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:SystemOfQuantityKinds ;
+            owl:onProperty qudt:belongsToSystemOfQuantities ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:hasDimensionVector ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:mathMLdefinition ],
+        [ a owl:Restriction ;
+            owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:applicableImperialUnit ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:qkdvNumerator ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty qudt:baseCGSUnitDimensions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom qudt:QuantityKindDimensionVector ;
+            owl:onProperty qudt:qkdvNumerator ],
+        qudt:AbstractQuantityKind,
+        qudt:Verifiable .

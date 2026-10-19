@@ -1,9 +1,10 @@
 """Extract the QUDT 3.3.0 descriptions used by the offline test suite.
 
 Download https://qudt.org/3.3.0/vocab/unit and
-https://qudt.org/3.3.0/vocab/quantitykind as Turtle, then run:
+https://qudt.org/3.3.0/vocab/quantitykind and
+https://qudt.org/3.3.0/schema/qudt as Turtle, then run:
 
-    uv run python scripts/extract_test_qudt.py units.ttl quantitykinds.ttl
+    uv run python scripts/extract_test_qudt.py units.ttl quantitykinds.ttl schema.ttl
 """
 
 import argparse
@@ -11,6 +12,7 @@ import re
 from pathlib import Path
 
 from rdflib import BNode, Graph, Namespace, URIRef
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,20 +20,25 @@ QUDT = Namespace("http://qudt.org/schema/qudt/")
 VOCABULARIES = (
     "http://qudt.org/vocab/unit/",
     "http://qudt.org/vocab/quantitykind/",
+    "http://qudt.org/schema/qudt/",
 )
 
 
 def referenced_terms() -> set[URIRef]:
     """Find vocabulary IRIs in our source graphs and the bundled 223P graphs."""
     terms = set()
+    graphs = []
     for directory in ("ontology", "examples", "s223"):
         for path in sorted((ROOT / directory).rglob("*.ttl")):
-            graph = Graph().parse(path)
-            terms.update(
-                node for node in graph.all_nodes()
-                if isinstance(node, URIRef)
-                and str(node).startswith(VOCABULARIES)
-            )
+            graphs.append(Graph().parse(path))
+    for path in sorted((ROOT / "libraries/templates").glob("*.yml")):
+        for template in yaml.safe_load(path.read_text()).values():
+            graphs.append(Graph().parse(data=template["body"], format="turtle"))
+    for graph in graphs:
+        terms.update(
+            node for triple in graph for node in triple
+            if isinstance(node, URIRef) and str(node).startswith(VOCABULARIES)
+        )
     return terms
 
 
@@ -69,8 +76,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("units", type=Path)
     parser.add_argument("quantitykinds", type=Path)
+    parser.add_argument("schema", type=Path)
     args = parser.parse_args()
-    vocabularies = [Graph().parse(path) for path in (args.units, args.quantitykinds)]
+    vocabularies = [
+        Graph().parse(path) for path in (args.units, args.quantitykinds, args.schema)
+    ]
     terms = referenced_terms()
     subset = extract(vocabularies, terms)
     destination = ROOT / "tests/fixtures/qudt-3.3.0.ttl"
@@ -79,6 +89,7 @@ def main() -> None:
         "# QUDT.org, CC BY 4.0: https://creativecommons.org/licenses/by/4.0/\n"
         "# Extracted from https://qudt.org/3.3.0/vocab/unit and\n"
         "# https://qudt.org/3.3.0/vocab/quantitykind.\n"
+        "# Schema: https://qudt.org/3.3.0/schema/qudt.\n"
         "# This is a test vocabulary subset, not either complete ontology.\n"
         "# Regenerate with scripts/extract_test_qudt.py.\n\n"
     )

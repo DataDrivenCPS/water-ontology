@@ -1,0 +1,28 @@
+@prefix : <urn:example/gravity-thickener-outlets#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/gravity-thickener-outlets>
+    a owl:Ontology ;
+    rdfs:label "Gravity thickener with liquid and sludge outlets" ;
+    owl:imports <https://watermetadata.org/ontology/watr> .
+
+# Process and objective are supplied by class defaults; ports are explicit.
+:thickener a watr:GravityThickener ;
+    s223:hasConnectionPoint :feed, :supernatant, :sludge .
+
+:feed a s223:InletConnectionPoint ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .
+
+:supernatant a s223:OutletConnectionPoint ;
+    rdfs:label "Separated liquid outlet" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :thickener .
+
+:sludge a s223:OutletConnectionPoint ;
+    rdfs:label "Settled sludge withdrawal" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :thickener .

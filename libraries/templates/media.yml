@@ -4,6 +4,7 @@ brine:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     
@@ -29,13 +30,14 @@ constituent-salt:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;
-      s223:ofConstituent watr:Constituent-NaCl ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      s223:ofConstituent watr:Salt-NaCl ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     .
 constituent-water:
   body: >
@@ -43,11 +45,12 @@ constituent-water:
     @prefix s223: <http://data.ashrae.org/standard223#> .
     @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
     @prefix qudt: <http://qudt.org/schema/qudt/> .
+    @prefix unit: <http://qudt.org/vocab/unit/> .
     @prefix watr: <https://watermetadata.org/ontology/watr#> .
     P:name
       a s223:QuantifiableProperty ;
       s223:hasValue P:value ;
-      s223:ofConstituent s223:Constituent-H20 ;
-      s223:hasQuantityKind quantitykind:MassFraction ;
-      qudt:hasUnit qudt:PERCENT ;
+      s223:ofConstituent s223:Constituent-H2O ;
+      qudt:hasQuantityKind quantitykind:MassFraction ;
+      qudt:hasUnit unit:PERCENT ;
     .

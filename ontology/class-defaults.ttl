@@ -1,0 +1,84 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<https://watermetadata.org/ontology/modules/class-defaults>
+    a owl:Ontology ;
+    rdfs:label "NAWI Water Class Defaults" ;
+    rdfs:comment "SHACL-AF rules that infer missing annotated class defaults and the treatment objectives achieved by an equipment or system's processes." .
+
+# Defaults are annotations, separate from validation requirements. A supplied
+# property value suppresses its defaults, and subclass defaults replace the
+# ancestor set for that property. Topology is always supplied by the model.
+# shifty.validate runs these rules before validation by default. Excluding this
+# module from the import closure leaves requirements enforceable without defaults.
+watr:ClassDefaultsRule
+  a sh:NodeShape ;
+  rdfs:label "Class Defaults Rule" ;
+  rdfs:comment "Infers explicitly annotated sh:defaultValue values on simple property paths when an instance has no value for that property. Defaults are inherited through rdfs:subClassOf; a more specific class's defaults replace ancestor defaults for the same property. Explicit instance values are preserved and remain subject to validation. Defaults from unrelated classes are combined." ;
+  sh:targetSubjectsOf rdf:type ;
+  sh:rule [
+    a sh:SPARQLRule ;
+    rdfs:label "Infer missing property values from class defaults" ;
+    sh:construct """
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX sh: <http://www.w3.org/ns/shacl#>
+      CONSTRUCT {
+        $this ?path ?default .
+      }
+      WHERE {
+        $this rdf:type/rdfs:subClassOf* ?class .
+        ?class sh:property ?propertyShape .
+        ?propertyShape sh:path ?path ;
+                       sh:defaultValue ?default .
+        FILTER (isIRI(?path))
+        FILTER NOT EXISTS { ?class sh:deactivated true }
+        FILTER NOT EXISTS { ?propertyShape sh:deactivated true }
+        FILTER NOT EXISTS { $this ?path ?existing }
+
+        # A subclass overrides the whole default set for this property.
+        FILTER NOT EXISTS {
+          $this rdf:type/rdfs:subClassOf* ?specificClass .
+          ?specificClass rdfs:subClassOf+ ?class ;
+                         sh:property ?specificShape .
+          ?specificShape sh:path ?path ;
+                         sh:defaultValue ?specificDefault .
+          FILTER NOT EXISTS { ?specificClass sh:deactivated true }
+          FILTER NOT EXISTS { ?specificShape sh:deactivated true }
+          # Equivalent classes in a subclass cycle do not suppress each other.
+          FILTER NOT EXISTS { ?class rdfs:subClassOf+ ?specificClass }
+        }
+      }
+    """ ;
+  ] ;
+.
+
+# Process-to-objective entailments remain additive: an explicit class-default
+# override does not change the objectives a performed process always achieves.
+# This rule also reaches systems and follows a local process's type/ancestors.
+watr:ProcessObjectiveRule
+    a sh:NodeShape ;
+    rdfs:label "Objective from process" ;
+    rdfs:comment "Materializes watr:hasTreatmentObjective onto anything that performs a process which declares watr:achievesTreatmentObjective." ;
+    sh:targetSubjectsOf watr:hasProcess ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "Infer the treatment objective from the process performed" ;
+        sh:prefixes <https://watermetadata.org/ontology/watr> ;
+        # rdfs:subClassOf* so that a specific process inherits the entailment of
+        # its parent: Process-UCT declares nitrogen and phosphorus removal
+        # through Process-A2O, and organics removal through Process-ActivatedSludge
+        # above that.
+        sh:construct """
+            CONSTRUCT { $this watr:hasTreatmentObjective ?objective . }
+            WHERE {
+                $this watr:hasProcess ?process .
+                ?process rdf:type?/rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
+            }
+        """ ;
+    ] ;
+.

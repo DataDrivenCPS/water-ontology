@@ -12,7 +12,7 @@ ONTOENV_DIR := .ontoenv
 # stay as imports in the published ontology. Pytest uses its own isolated
 # offline environment and a pinned QUDT vocabulary subset.
 $(ONTOENV_DIR):
-	uv run ontoenv init --offline ontology s223
+	uv run ontoenv init --offline ontology libraries
 	uv run ontoenv config set offline true
 	uv run ontoenv config set remote_cache_ttl_secs 31536000
 	uv run ontoenv config add excludes 'build/*'
@@ -43,7 +43,13 @@ install-jupyter-venv:
 	uv add ipykernel
 	uv run ipython kernel install --user --name=nawi-water-ontology
 
-local-docs: | $(ONTOENV_DIR)
+.PHONY: reference-docs
+reference-docs:
+	uv run python scripts/generate_reference_docs.py
+	uv run python scripts/generate-process-objective-map.py
+	uv run python scripts/generate_template_docs.py
+
+local-docs: reference-docs | $(ONTOENV_DIR)
 	uv run jupyter-book build docs
 	uv run jupyter-book build docs
 	uv run python scripts/build_llms_txt.py

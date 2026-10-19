@@ -1,0 +1,63 @@
+@prefix : <urn:example/data-quality#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:t1_temp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Raw temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    watr:hasVariableRange :upperLimit ;
+    watr:hasDropRate :dropRate ;
+    watr:hasProcessedData :hourlyMean, :interpolated .
+:upperLimit a s223:QuantifiableProperty ;
+    rdfs:label "Normal operating upper limit" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect s223:Aspect-HighLimit ;
+    s223:hasValue 100 .
+:dropRate a s223:QuantifiableProperty ;
+    rdfs:label "Expected missing samples per hour" ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:NUM-PER-HR ;
+    s223:hasValue 10 .
+:hourlyMean a s223:QuantifiableProperty ;
+    rdfs:label "Hourly mean temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect watr:Aggregate-Mean ;
+    watr:hasAggregation watr:Aggregation-Mean ;
+    watr:hasTemporalResolution :oneHour .
+:oneHour a s223:QuantifiableProperty ;
+    rdfs:label "Hourly output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR ;
+    s223:hasValue 1 .
+:interpolated a s223:QuantifiableProperty ;
+    rdfs:label "Interpolated temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect watr:Interpolation-Linear ;
+    watr:hasTemporalResolution :oneMinute .
+:oneMinute a s223:QuantifiableProperty ;
+    rdfs:label "One-minute output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:MIN ;
+    s223:hasValue 1 .
+
+# TEMPORARY: this sensor exists only to satisfy S223's warning that an
+# ObservableProperty should be observed by a Sensor. Remove it once the example
+# no longer needs to silence that warning, along with :t1_location.
+:t1_sensor
+    a s223:TemperatureSensor ;
+    rdfs:label "Temperature sensor" ;
+    s223:hasObservationLocation :t1_location ;
+    s223:observes :t1_temp ;
+.
+:t1_location
+    a s223:Equipment ;
+    rdfs:label "Measured equipment" ;
+.

@@ -53,4 +53,4 @@ junction:
       s223:hasMedium P:medium .
     P:out a s223:OutletConnectionPoint ;
       s223:hasMedium P:medium .
-    P:medium a s223:EnumerationKind-Medium .
+    P:medium a s223:Substance-Medium .

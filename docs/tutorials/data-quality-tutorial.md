@@ -1,6 +1,5 @@
 ---
 jupytext:
-  cell_metadata_filter: -all
   formats: md:myst
   text_representation:
     extension: .md
@@ -11,297 +10,157 @@ kernelspec:
   name: python3
 ---
 
-# Data Quality Model Exploration
+# Exploring Data Quality Metadata
 
-```{note}
-The purpose of this tutorial is to explore a wastewater treatment system model with data quality annotations by learning the following:
-1. Parsing (loading) an existing model with data quality metadata
-2. Querying data quality properties in the model
-3. Understanding temporal resolution and data processing aspects
-```
+WaTr describes measurement limits, sampling intervals, processing methods, and
+links to processed data. This tutorial loads temperature metadata, uses its
+configured limit to find an outlier, and compares raw and processed samples.
 
-For this tutorial, we'll use a wastewater treatment system model that includes temperature sensors with data quality annotations using the WATR ontology. This demonstrates how to capture metadata about sensor data quality, including variable ranges, drop rates, temporal resolution, and data processing methods.
+Run these cells in order. The sample rows use a local application vocabulary;
+production systems usually keep time-series values in a historian and link
+properties to that storage using `s223:hasExternalReference`.
 
-## Model Parsing
+## Load the metadata
 
-First, we'll create a new empty graph then parse (load) an existing graph into it using the Python RDFLib library. We'll also load the necessary ontology namespaces to make querying easier down the line.
+```{code-cell} python
+from rdflib import Graph, Literal, Namespace
+from rdflib.namespace import RDF, XSD
 
-```{code-cell}
-from rdflib import Graph, Namespace
-
-# Create a Graph
+EX = Namespace("urn:example/data-quality#")
 g = Graph()
-
-# Define namespaces
-S223 = Namespace("http://data.ashrae.org/standard223#")
-WATR = Namespace("http://data.ashrae.org/watr#")
-QUDT = Namespace("http://qudt.org/schema/qudt/")
-UNIT = Namespace("http://qudt.org/vocab/unit/")
-
-# Bind namespaces for cleaner output
-g.bind("s223", S223)
-g.bind("watr", WATR)
-g.bind("qudt", QUDT)
-g.bind("unit", UNIT)
-
-# Parse in an RDF file (replace with actual model file path)
-# g.parse("wastewater-treatment-model.ttl", format="ttl")
-
-# For this tutorial, we'll create a sample model inline
-sample_model = """
-@prefix : <http://example.org/wastewater#> .
+model = """
+@prefix : <urn:example/data-quality#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <http://data.ashrae.org/watr#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# This node represents the reading from a temperature sensor
 :t1_temp a s223:QuantifiableObservableProperty ;
-    s223:hasQuantityKind qudt:Temperature ;
-    s223:hasUnit unit:DEG_C ;
-
-    # This temperature sensor has various properties defining its expected range during operation
-    watr:hasVariableRange :t1_temp_range ;
-    # Its drop rate, meaning how often it is expected to be missing data
-    watr:hasDropRate :t1_temp_droprate ;
-    # and other processed quantities based on the data stream
-    watr:hasProcessedData :t1_temp_mean, :t1_temp_interpolated ;
-.
-
-# it's expected to never go above 100C
-:t1_temp_range a s223:QuantifiableProperty ;
-    s223:hasValue 100 ;
-    s223:hasAspect s223:Aspect-Maximum ;
-.
-
-# It has a mean quantified value 
-:t1_temp_mean a s223:QuantifiableProperty ;
+    rdfs:label "Raw temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    watr:hasVariableRange :upperLimit ;
+    watr:hasDropRate :dropRate ;
+    watr:hasProcessedData :hourlyMean, :interpolated .
+:upperLimit a s223:QuantifiableProperty ;
+    rdfs:label "Normal operating upper limit" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
+    s223:hasAspect s223:Aspect-HighLimit ;
+    s223:hasValue 100 .
+:dropRate a s223:QuantifiableProperty ;
+    rdfs:label "Expected missing samples per hour" ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:NUM-PER-HR ;
+    s223:hasValue 10 .
+:hourlyMean a s223:QuantifiableProperty ;
+    rdfs:label "Hourly mean temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
     s223:hasAspect watr:Aggregate-Mean ;
-
-    # the temporal resolution of the mean is 1 hour, meaning it represents the average of 1 hour of data
-    watr:hasTemporalResolution [
-        a s223:QuantifiableProperty ;
-        s223:hasUnit unit:HR ;
-        s223:hasValue 1 ;
-    ] ;
-.
-
-# the temperature measurement also has an expected data drop rate of 10 logs per hour 
-:t1_temp_droprate a s223:QuantifiableProperty ;
-    s223:hasValue 10 ;
-    s223:hasUnit unit:NUM-PER-HR ;
-.
-
-# Because there is data loss, we also generate an interpolated version of the data
-:t1_temp_interpolated a s223:QuantifiableProperty ;
+    watr:hasAggregation watr:Aggregation-Mean ;
+    watr:hasTemporalResolution :oneHour .
+:oneHour a s223:QuantifiableProperty ;
+    rdfs:label "Hourly output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR ;
+    s223:hasValue 1 .
+:interpolated a s223:QuantifiableProperty ;
+    rdfs:label "Interpolated temperature" ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C ;
     s223:hasAspect watr:Interpolation-Linear ;
-    # This external reference may link this property to a database where the timeseries data is stored
-    s223:hasExternalReference :t1_temp_1min ;  
-    # This interpolated data is calculated every minute
-    watr:hasTemporalResolution [
-        a s223:QuantifiableProperty ;
-        s223:hasUnit unit:MIN ;
-        s223:hasValue 1 ;
-    ] ;
-.
+    watr:hasTemporalResolution :oneMinute .
+:oneMinute a s223:QuantifiableProperty ;
+    rdfs:label "One-minute output interval" ;
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:MIN ;
+    s223:hasValue 1 .
 """
-
-g.parse(data=sample_model, format="turtle")
+g.parse(data=model, format="turtle")
+print(f"Loaded {len(g)} metadata statements.")
 ```
 
+The temperature limit uses `s223:Aspect-HighLimit`. Quantity kinds and units use
+`qudt:hasQuantityKind` and `qudt:hasUnit`. The hourly mean records both its
+processing method and aggregation semantics; the one-hour and one-minute
+properties describe output intervals. These annotations do not perform the
+aggregation or interpolation.
 
-Finally, let's look at our model to make sure it loaded correctly.
+## Add illustrative samples
 
+The samples below represent data already returned by a historian or processing
+pipeline. The local `:Reading`, `:forProperty`, `:value`, and `:timestamp` terms
+identify rows for this demonstration.
 
-```{code-cell}
-# Print out the entire Graph in the RDF Turtle format
-print(g.serialize(format="turtle"))
+```{code-cell} python
+samples = [
+    ("raw1", EX.t1_temp, 72.5, "2024-01-15T10:00:00"),
+    ("raw2", EX.t1_temp, 73.2, "2024-01-15T10:05:00"),
+    ("raw3", EX.t1_temp, 74.1, "2024-01-15T10:10:00"),
+    ("raw4", EX.t1_temp, 150.0, "2024-01-15T10:15:00"),
+    ("raw5", EX.t1_temp, 73.8, "2024-01-15T10:20:00"),
+    ("mean1", EX.hourlyMean, 73.4, "2024-01-15T10:00:00"),
+    ("interpolated1", EX.interpolated, 72.64, "2024-01-15T10:01:00"),
+    ("interpolated2", EX.interpolated, 72.78, "2024-01-15T10:02:00"),
+]
+for name, property_node, value, timestamp in samples:
+    reading = EX[name]
+    g.add((reading, RDF.type, EX.Reading))
+    g.add((reading, EX.forProperty, property_node))
+    g.add((reading, EX.value, Literal(value)))
+    g.add((reading, EX.timestamp, Literal(timestamp, datatype=XSD.dateTime)))
 ```
 
-## Understanding Data Quality Aspects
+## Query the configured operating limit
 
-Theis tutorial uses a few of the data quality and processing elements of the WATR ontology:
+The query reads the limit from the metadata. It returns the 150°C sample because
+it exceeds the configured upper limit of 100°C.
 
-1. **watr:hasVariableRange** - Defines the expected range of values for a sensor
-2. **watr:hasProcessedData** - Links to processed versions of the raw data
-3. **watr:hasTemporalResolution** - Specifies the time interval for aggregated or interpolated data
-4. **watr:hasDropRate** - Indicates the rate at which data points are missing
-5. **s223:hasAspect** - Describes additional informatino about properties, in this case, the type of processing (e.g., Mean aggregation, Linear interpolation)
-
-These annotations enable better understanding of data quality, processing methods, and potential issues in wastewater treatment system monitoring.
-
-## Working with Sensor Data
-
-Now let's explore how to use these data quality properties in practice. We'll add some dummy sensor readings and demonstrate how to validate data against expected ranges and compare different data processing methods.
-
-This processing would most often be done in python, however, we will accomplish simple examples of filtering and querying using SPARQL. 
-
-
-```{note}
-In production systems, sensor data is typically stored in time-series/relational databases and linked to the ontology model via external references. For this tutorial, we'll include sample data directly in the graph for demonstration purposes.
-```
-
-### Adding Sample Sensor Data
-
-Let's extend our model with actual temperature readings:
-
-```{code-cell}
-# Add sample sensor data to the graph
-sample_data = """
-@prefix : <http://example.org/wastewater#> .
-@prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-# Raw sensor readings (5-minute intervals)
-:reading_1 a s223:ObservationEvent ;
-    s223:observes :t1_temp ;
-    s223:hasValue 72.5 ;
-    s223:hasTimestamp "2024-01-15T10:00:00"^^xsd:dateTime ;
-.
-
-:reading_2 a s223:ObservationEvent ;
-    s223:observes :t1_temp ;
-    s223:hasValue 73.2 ;
-    s223:hasTimestamp "2024-01-15T10:05:00"^^xsd:dateTime ;
-.
-
-:reading_3 a s223:ObservationEvent ;
-    s223:observes :t1_temp ;
-    s223:hasValue 74.1 ;
-    s223:hasTimestamp "2024-01-15T10:10:00"^^xsd:dateTime ;
-.
-
-:reading_4 a s223:ObservationEvent ;
-    s223:observes :t1_temp ;
-    s223:hasValue 150.0 ;  # Outlier - outside expected range!
-    s223:hasTimestamp "2024-01-15T10:15:00"^^xsd:dateTime ;
-.
-
-:reading_5 a s223:ObservationEvent ;
-    s223:observes :t1_temp ;
-    s223:hasValue 73.8 ;
-    s223:hasTimestamp "2024-01-15T10:20:00"^^xsd:dateTime ;
-.
-
-# Hourly mean (aggregated from raw data)
-:hourly_mean_1 a s223:ObservationEvent ;
-    s223:observes :t1_temp_mean ;
-    s223:hasValue 73.4 ;  # Mean of valid readings
-    s223:hasTimestamp "2024-01-15T10:00:00"^^xsd:dateTime ;
-.
-
-# Resampled data (1-minute intervals via linear interpolation)
-:resampled_1 a s223:ObservationEvent ;
-    s223:observes :t1_temp_interpolated ;
-    s223:hasValue 72.64 ;
-    s223:hasTimestamp "2024-01-15T10:01:00"^^xsd:dateTime ;
-.
-
-:resampled_2 a s223:ObservationEvent ;
-    s223:observes :t1_temp_interpolated ;
-    s223:hasValue 72.78 ;
-    s223:hasTimestamp "2024-01-15T10:02:00"^^xsd:dateTime ;
-.
-"""
-
-g.parse(data=sample_data, format="turtle")
-print(f"Graph now has {len(g)} statements after adding sensor data.")
-```
-
-### Validating Data Against Expected Ranges
-
-Let's query for readings that fall outside the expected variable range:
-
-```{code-cell}
-# Query to find outliers based on variable range
-q_outliers = """
+```{code-cell} python
+outliers = list(g.query("""
+PREFIX : <urn:example/data-quality#>
 PREFIX s223: <http://data.ashrae.org/standard223#>
-PREFIX watr: <http://data.ashrae.org/watr#>
-
-SELECT ?reading ?value ?timestamp ?minRange ?maxRange WHERE {
-  # Get the sensor and its range
-  ?sensor watr:hasVariableRange ?range .
-  ?range s223:hasValue ?rangeValue .
-  
-  # Get readings for this sensor
-  ?reading s223:observes ?sensor ;
-           s223:hasValue ?value ;
-           s223:hasTimestamp ?timestamp .
-  
-  # Bind range value
-  BIND(?rangeValue AS ?maxRange)
-  
-  # Filter for values outside the range
-  FILTER(?value > 100)
+PREFIX watr: <https://watermetadata.org/ontology/watr#>
+SELECT ?reading ?value ?timestamp ?upper WHERE {
+  ?property watr:hasVariableRange ?limit .
+  ?limit s223:hasAspect s223:Aspect-HighLimit; s223:hasValue ?upper .
+  ?reading :forProperty ?property; :value ?value; :timestamp ?timestamp .
+  FILTER (?value > ?upper)
 }
 ORDER BY ?timestamp
-"""
-
-print("Outlier Detection - Readings Outside Expected Range:")
-print("=" * 60)
-for r in g.query(q_outliers):
-    print(f"Reading: {r.reading}")
-    print(f"Value: {r.value}°C (Expected < 100°C)")
-    print(f"Timestamp: {r.timestamp}")
-    print()
+"""))
+assert len(outliers) == 1 and outliers[0].reading == EX.raw4
+for row in outliers:
+    print(f"{row.timestamp}: {row.value}°C exceeds {row.upper}°C")
 ```
 
-### Comparing Raw, Aggregated, and Resampled Data
+This query compares samples with an operating limit. SHACL validation of the
+metadata graph is a separate check, and WaTr does not infer permit compliance
+from these annotations.
 
-Now let's compare the different data representations:
+## Compare raw and processed samples
 
-```{code-cell}
-# Query to get all three types of data
-q_compare = """
-PREFIX s223: <http://data.ashrae.org/standard223#>
-PREFIX watr: <http://data.ashrae.org/watr#>
-
-SELECT ?dataType ?value ?timestamp WHERE {
-  {
-    # Raw sensor data
-    ?reading s223:observes :t1_temp ;
-             s223:hasValue ?value ;
-             s223:hasTimestamp ?timestamp .
-    BIND("Raw" AS ?dataType)
+```{code-cell} python
+comparison = list(g.query("""
+PREFIX : <urn:example/data-quality#>
+SELECT ?kind ?value ?timestamp WHERE {
+  VALUES (?property ?kind) {
+    (:t1_temp "Raw")
+    (:hourlyMean "Hourly mean")
+    (:interpolated "Interpolated")
   }
-  UNION
-  {
-    # Hourly mean
-    ?reading s223:observes :t1_temp_mean ;
-             s223:hasValue ?value ;
-             s223:hasTimestamp ?timestamp .
-    BIND("Hourly Mean" AS ?dataType)
-  }
-  UNION
-  {
-    # Resampled (interpolated)
-    ?reading s223:observes :t1_temp_interpolated ;
-             s223:hasValue ?value ;
-             s223:hasTimestamp ?timestamp .
-    BIND("Resampled (1-min)" AS ?dataType)
-  }
+  ?reading :forProperty ?property; :value ?value; :timestamp ?timestamp .
 }
-ORDER BY ?timestamp ?dataType
-"""
-
-print("Comparison of Data Processing Methods:")
-print("=" * 60)
-for r in g.query(q_compare):
-    print(f"{r.timestamp} | {r.dataType:20s} | {r.value}°C")
+ORDER BY ?timestamp ?kind
+"""))
+assert len(comparison) == len(samples)
+for row in comparison:
+    print(f"{row.timestamp} | {row.kind}: {row.value}°C")
 ```
 
-## Summary
-
-In this tutorial, we:
-- Loaded a wastewater treatment system model with data quality annotations
-- Queried for observable properties (measured data) and their metadata
-- Extracted variable ranges, processed data configurations, and drop rates
-- Learned about the WATR ontology's data quality properties
-- Added sample sensor data and validated it against expected ranges
-- Compared raw, aggregated, and resampled data representations
-
-This approach can be extended to more complex wastewater treatment systems with multiple sensors, actuators, and data processing pipelines. In production wastewater treatment systems, these data quality annotations enable:
-- Automated anomaly detection
-- Data validation pipelines
-- Informed selection of appropriate data resolution for analysis
-- Tracking of data processing provenance
+See [Data Quality Metadata](../explanation/data_quality.md) for the relations and
+processing vocabulary, and [Creating a Model](creating-models.md) for SHACL
+validation and inference.

@@ -1,60 +1,70 @@
-
 uv-reactor
-##########
+==========
 
-.. tabs::
+Generated from ``libraries/templates`` by
+``scripts/generate_template_docs.py``. Bind the ``P:`` parameters
+before using these graph fragments as a plant model.
 
-    .. tab:: Turtle
+Template
+--------
 
-        .. code:: turtle
+.. code-block:: turtle
 
-           @prefix P: <urn:___param___#> .
-           @prefix ns1: <http://data.ashrae.org/standard223#> .
-           @prefix ns2: <https://watermetadata.org/ontology/watr#> .
-           
-           P:name a ns2:UltravioletLightUnit ;
-               ns1:hasConnectionPoint P:in,
-                   P:out ;
-               ns1:hasRole P:role .
-           
-           
+    @prefix P: <urn:___param___#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-    .. tab:: With Inline Dependencies
+    P:name a watr:UltravioletLightUnit ;
+        rdfs:label P:label ;
+        s223:hasConnectionPoint P:in,
+            P:out ;
+        s223:hasRole P:role .
 
-        .. code:: turtle
 
-            @prefix P: <urn:___param___#> .
-            @prefix ns1: <http://data.ashrae.org/standard223#> .
+With dependencies
+-----------------
 
-            P:name a <https://watermetadata.org/ontology/watr#UltravioletLightUnit> ;
-                ns1:hasConnectionPoint P:in,
-                    P:out ;
-                ns1:hasRole P:role .
+.. code-block:: turtle
 
-            P:in a ns1:InletConnectionPoint ;
-                ns1:hasMedium P:in-medium ;
-                ns1:mapsTo P:in-mapsto .
+    @prefix P: <urn:___param___#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix s223: <http://data.ashrae.org/standard223#> .
+    @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
-            P:in-mapsto a ns1:InletConnectionPoint ;
-                ns1:hasMedium P:in-medium .
+    P:name a watr:UltravioletLightUnit ;
+        rdfs:label P:label ;
+        s223:hasConnectionPoint P:in,
+            P:out ;
+        s223:hasRole P:role .
 
-            P:out a ns1:OutletConnectionPoint ;
-                ns1:hasMedium P:out-medium ;
-                ns1:mapsTo P:out-mapsto .
+    P:in a s223:InletConnectionPoint ;
+        s223:hasMedium P:in-medium ;
+        s223:mapsTo P:in-mapsto .
 
-            P:out-mapsto a ns1:OutletConnectionPoint ;
-                ns1:hasMedium P:out-medium .
+    P:in-mapsto a s223:InletConnectionPoint ;
+        s223:hasMedium P:in-medium .
 
+    P:out a s223:OutletConnectionPoint ;
+        s223:hasMedium P:out-medium ;
+        s223:mapsTo P:out-mapsto .
+
+    P:out-mapsto a s223:OutletConnectionPoint ;
+        s223:hasMedium P:out-medium .
 
 
 Parameters
 ----------
 
-- in is a :doc:`inlet-cp`
-- out is a :doc:`outlet-cp`
-- name
-- role
-
+- ``in``
+- ``in-mapsto``
+- ``in-medium``
+- ``label``
+- ``name``
+- ``out``
+- ``out-mapsto``
+- ``out-medium``
+- ``role``
 
 Dependencies
 ------------
@@ -62,65 +72,25 @@ Dependencies
 - :doc:`inlet-cp`
 - :doc:`outlet-cp`
 
+Graph
+-----
 
-Dependents
-----------
+.. graphviz::
 
-Nothing depends on this template.
-
-Graph Visualization
---------------------
-
-.. tabs::
-
-    .. tab:: Template
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
-            node0 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node0 -> node4 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>UltravioletLightUnit</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#UltravioletLightUnit' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#UltravioletLightUnit</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
-            }
-            
-
-    .. tab:: With Inline Dependencies
-
-        .. graphviz::
-
-                digraph G {
-            node [fontname="DejaVu Sans"];
-            node0 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node2 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node4 -> node2 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node4 -> node5 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasConnectionPoint</font> >];
-            node6 -> node3 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node4 -> node7 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node4 -> node8 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasRole</font> >];
-            node5 -> node1 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:hasMedium</font> >];
-            node5 -> node0 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
-            node2 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node6 -> node9 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node2 -> node6 [color=BLACK, label=< <font point-size='10' color='#336633'>ns1:mapsTo</font> >];
-            node5 -> node10 [color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> >];
-            node0 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-mapsto</B></td></tr><tr><td href='urn:___param___#out-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-mapsto</font></td></tr></table> >];
-            node1 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out-medium</B></td></tr><tr><td href='urn:___param___#out-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out-medium</font></td></tr></table> >];
-            node2 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> >];
-            node3 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-medium</B></td></tr><tr><td href='urn:___param___#in-medium' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-medium</font></td></tr></table> >];
-            node4 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>name</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> >];
-            node5 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> >];
-            node6 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in-mapsto</B></td></tr><tr><td href='urn:___param___#in-mapsto' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in-mapsto</font></td></tr></table> >];
-            node7 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>UltravioletLightUnit</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#UltravioletLightUnit' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#UltravioletLightUnit</font></td></tr></table> >];
-            node8 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> >];
-            node9 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>InletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#InletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#InletConnectionPoint</font></td></tr></table> >];
-            node10 [shape=none, color=black, label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>OutletConnectionPoint</B></td></tr><tr><td href='http://data.ashrae.org/standard223#OutletConnectionPoint' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>http://data.ashrae.org/standard223#OutletConnectionPoint</font></td></tr></table> >];
-            }
-            
+    digraph {
+     node [ fontname="DejaVu Sans" ] ;
+        node0 -> node1 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasConnectionPoint</font> > ] ;
+        node0 -> node2 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasConnectionPoint</font> > ] ;
+        node0 -> node3 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasRole</font> > ] ;
+        node0 -> node4 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
+    # urn:___param___#name node0
+    node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>urn:___param___#label</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
+    # urn:___param___#in node1
+    node1 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>in</B></td></tr><tr><td href='urn:___param___#in' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#in</font></td></tr></table> > ]
+    # urn:___param___#out node2
+    node2 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>out</B></td></tr><tr><td href='urn:___param___#out' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#out</font></td></tr></table> > ]
+    # urn:___param___#role node3
+    node3 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> > ]
+    # https://watermetadata.org/ontology/watr#UltravioletLightUnit node4
+    node4 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>UltravioletLightUnit</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#UltravioletLightUnit' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#UltravioletLightUnit</font></td></tr></table> > ]
+    }
