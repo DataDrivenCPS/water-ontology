@@ -38,7 +38,7 @@ from rdflib.namespace import DCTERMS, XSD, SH
 
 # Bump this when cutting a release. Two-part, per QUDT: patch-level changes
 # ship as an updated "latest" without minting a new versioned document.
-ONTOLOGY_VERSION = "0.2"
+ONTOLOGY_VERSION = "0.3.rc1"
 
 BASE = "https://watermetadata.org/ontology"
 WATR = rdflib.Namespace(f"{BASE}/watr#")
