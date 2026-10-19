@@ -1,5 +1,5 @@
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23087794.svg)](https://doi.org/10.5281/zenodo.23087794)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23087793.svg)](https://doi.org/10.5281/zenodo.23087793)
 
 # Water Treatment (WaTr) Ontology
 

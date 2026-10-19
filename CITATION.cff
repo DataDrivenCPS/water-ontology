@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this ontology, please cite it as below."
-title: "NAWI Water Ontology"
+title: "Water Treatment (WaTr) Ontology"
 type: software
 authors:
   - family-names: "Fierro"
