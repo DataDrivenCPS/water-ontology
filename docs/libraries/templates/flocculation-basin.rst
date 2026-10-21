@@ -25,8 +25,7 @@ Template
             P:in,
             P:out,
             P:overflow ;
-        s223:hasRole P:role ;
-        watr:hasProcess watr:Process-Flocculation .
+        s223:hasRole P:role .
 
 
 With dependencies
@@ -49,8 +48,7 @@ With dependencies
             P:in,
             P:out,
             P:overflow ;
-        s223:hasRole P:role ;
-        watr:hasProcess watr:Process-Flocculation .
+        s223:hasRole P:role .
 
     P:drain-mapsto a s223:OutletConnectionPoint ;
         s223:hasMedium P:drain-medium .
@@ -123,7 +121,6 @@ Graph
         node0 -> node4 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasConnectionPoint</font> > ] ;
         node0 -> node5 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasRole</font> > ] ;
         node0 -> node6 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
-        node0 -> node7 [ color=BLACK, label=< <font point-size='10' color='#336633'>watr:hasProcess</font> > ] ;
     # urn:___param___#name node0
     node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>urn:___param___#label</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
     # urn:___param___#drain node1
@@ -138,6 +135,4 @@ Graph
     node5 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> > ]
     # https://watermetadata.org/ontology/watr#FlocculationBasin node6
     node6 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>FlocculationBasin</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#FlocculationBasin' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#FlocculationBasin</font></td></tr></table> > ]
-    # https://watermetadata.org/ontology/watr#Process-Flocculation node7
-    node7 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Process-Flocculation</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Process-Flocculation' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Process-Flocculation</font></td></tr></table> > ]
     }

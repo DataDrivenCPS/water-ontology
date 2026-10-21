@@ -1,0 +1,39 @@
+@prefix : <urn:example/class-defaults#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/class-defaults>
+    a owl:Ontology ;
+    rdfs:label "Class defaults and explicit overrides" ;
+    owl:imports <https://watermetadata.org/ontology/watr> .
+
+# Infer watr:hasProcess watr:Process-Mixing from the StaticMixer default.
+:mixer a watr:StaticMixer ;
+    s223:hasConnectionPoint :inlet, :outlet .
+
+:inlet a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :mixer .
+
+:outlet a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :mixer .
+
+# An explicitly supplied process suppresses the default for this mixer.
+:customMixer a watr:StaticMixer ;
+    watr:hasProcess :siteMixingProcess ;
+    s223:hasConnectionPoint :customInlet, :customOutlet .
+
+:siteMixingProcess a watr:Process-Mixing ;
+    rdfs:label "Site mixing process" ;
+    rdfs:comment "A site-specific mixing process that overrides the class default." .
+
+:customInlet a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :customMixer .
+
+:customOutlet a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Mix-Fluid ;
+    s223:isConnectionPointOf :customMixer .

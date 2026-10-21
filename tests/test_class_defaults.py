@@ -109,7 +109,9 @@ def test_the_objective_follows_from_the_process(ontology_shapes_graph):
         "    watr:hasProcess watr:Process-Denitrification .\n",
         ontology_shapes_graph,
     )
-    assert (EX.anoxic, WATR.hasProcess, WATR["Process-Mixing"]) in out
+    assert set(out.objects(EX.anoxic, WATR.hasProcess)) == {
+        WATR["Process-Denitrification"]
+    }
     assert (
         EX.anoxic,
         WATR.hasTreatmentObjective,

@@ -58,6 +58,13 @@ run the test suite. Neither needs a separate setup step: the OntoEnv
 environment in `.ontoenv/` is created on first use, and refreshed
 (incrementally) before each compile.
 
+`uv run pytest tests` also runs directly, without an existing `.ontoenv/`.
+Tests index the source ontologies and bundled 223P in a temporary offline
+environment. A [pinned QUDT vocabulary subset](tests/fixtures/README.md)
+provides the unit and quantity-kind definitions used by validation and
+inference, so the suite does not depend on network access or a developer's
+ontology cache.
+
 One compile emits both published documents:
 
 - `build/watr.ttl` — the unversioned "latest" copy

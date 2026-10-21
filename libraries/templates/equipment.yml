@@ -1,3 +1,4 @@
+# Infer process and objective defaults with shifty before BuildingMOTIF compilation.
 tank:
   body: >
     @prefix P: <urn:___param___#> .
@@ -107,8 +108,8 @@ membrane:
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
     P:name a s223:Equipment ;
-      watr:hasProcess watr:Process-MembraneProcess ;
       rdfs:label P:label ;
+      watr:hasProcess watr:Process-MembraneProcess ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -285,7 +286,6 @@ uv-reactor:
 
     P:name a watr:UltravioletLightUnit ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-UVDisinfection ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -356,7 +356,6 @@ flocculation-basin:
 
     P:name a watr:FlocculationBasin ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Flocculation ;
       s223:hasConnectionPoint P:in, P:out, P:drain, P:overflow ;
       s223:cnx P:in, P:out, P:drain, P:overflow ;
       s223:hasRole P:role .
@@ -380,7 +379,6 @@ sedimentation-tank:
 
     P:name a watr:SedimentationTank ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Settling ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -400,7 +398,6 @@ filtration:
 
     P:name a watr:Filter ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Filtration ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:
@@ -439,7 +436,6 @@ chlorination-unit:
 
     P:name a watr:ChlorinationUnit ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-Chlorination ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:cnx P:in, P:out ;
       s223:hasRole P:role .
@@ -459,7 +455,6 @@ rapid-sand-filter:
 
     P:name a watr:RapidSandFilter ;
       rdfs:label P:label ;
-      watr:hasProcess watr:Process-RapidSandFiltration ;
       s223:hasConnectionPoint P:in, P:out ;
       s223:hasRole P:role .
   dependencies:

@@ -19,8 +19,7 @@ Template
         rdfs:label P:label ;
         s223:hasConnectionPoint P:in,
             P:out ;
-        s223:hasRole P:role ;
-        watr:hasProcess watr:Process-RapidSandFiltration .
+        s223:hasRole P:role .
 
 
 With dependencies
@@ -37,8 +36,7 @@ With dependencies
         rdfs:label P:label ;
         s223:hasConnectionPoint P:in,
             P:out ;
-        s223:hasRole P:role ;
-        watr:hasProcess watr:Process-RapidSandFiltration .
+        s223:hasRole P:role .
 
     P:in a s223:InletConnectionPoint ;
         s223:hasMedium P:in-medium ;
@@ -85,7 +83,6 @@ Graph
         node0 -> node2 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasConnectionPoint</font> > ] ;
         node0 -> node3 [ color=BLACK, label=< <font point-size='10' color='#336633'>s223:hasRole</font> > ] ;
         node0 -> node4 [ color=BLACK, label=< <font point-size='10' color='#336633'>rdf:type</font> > ] ;
-        node0 -> node5 [ color=BLACK, label=< <font point-size='10' color='#336633'>watr:hasProcess</font> > ] ;
     # urn:___param___#name node0
     node0 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>urn:___param___#label</B></td></tr><tr><td href='urn:___param___#name' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#name</font></td></tr></table> > ]
     # urn:___param___#in node1
@@ -96,6 +93,4 @@ Graph
     node3 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>role</B></td></tr><tr><td href='urn:___param___#role' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>urn:___param___#role</font></td></tr></table> > ]
     # https://watermetadata.org/ontology/watr#RapidSandFilter node4
     node4 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>RapidSandFilter</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#RapidSandFilter' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#RapidSandFilter</font></td></tr></table> > ]
-    # https://watermetadata.org/ontology/watr#Process-RapidSandFiltration node5
-    node5 [ shape=none, color=black label=< <table color='#666666' cellborder='0' cellspacing='0' border='1'><tr><td colspan='2' bgcolor='grey'><B>Process-RapidSandFiltration</B></td></tr><tr><td href='https://watermetadata.org/ontology/watr#Process-RapidSandFiltration' bgcolor='#eeeeee' colspan='2'><font point-size='10' color='#6666ff'>https://watermetadata.org/ontology/watr#Process-RapidSandFiltration</font></td></tr></table> > ]
     }

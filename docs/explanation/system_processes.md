@@ -84,7 +84,7 @@ itself.
 `ProcessObjectiveRule` gives the system the objectives its process implies:
 `Process-A2O` brings nitrogen and phosphorus removal, and organics removal through
 `Process-ActivatedSludge`. State any other objective explicitly.
-`ClassDefaultsRule` targets equipment, so a system receives nothing from a class,
+The built-in equipment-class defaults do not apply to a system,
 but its equipment members still do. Whether the steps are covered is checked
 below.
 

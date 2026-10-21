@@ -88,8 +88,8 @@ the source figure gives no pump or valve counts.""" ;
     a watr:MixingBasin ;
     rdfs:label "Anaerobic Zone" ;
     s223:hasRole watr:Role-Anaerobic ;
-    # Process-Mixing is supplied by the MixingBasin class default (omitted).
-    watr:hasProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    # An explicit process set includes mixing as well as the biological step.
+    watr:hasProcess watr:Process-Mixing, watr:Process-EnhancedBiologicalPhosphorusRemoval ;
     # EBPR achieves PhosphorusRemoval; stated here for TreatmentObjectiveCompleteness.
     watr:hasTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval ;
     s223:hasConnectionPoint :anaerobicInfluentInlet, :anaerobicRasInlet,
@@ -100,8 +100,8 @@ the source figure gives no pump or valve counts.""" ;
     a watr:MixingBasin ;
     rdfs:label "Anoxic Zone" ;
     s223:hasRole watr:Role-Anoxic ;
-    # Process-Mixing is supplied by the MixingBasin class default (omitted).
-    watr:hasProcess watr:Process-Denitrification ;
+    # An explicit process set includes mixing as well as the biological step.
+    watr:hasProcess watr:Process-Mixing, watr:Process-Denitrification ;
     # Denitrification achieves NitrogenRemoval; stated here for TreatmentObjectiveCompleteness.
     watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
     s223:hasConnectionPoint :anoxicForwardInlet, :anoxicRecycleInlet,
@@ -112,8 +112,8 @@ the source figure gives no pump or valve counts.""" ;
     a watr:AerationBasin ;
     rdfs:label "Aerobic Zone" ;
     s223:hasRole watr:Role-Aerobic ;
-    # Process-Aeration is supplied by the AerationBasin class default (omitted).
-    watr:hasProcess watr:Process-Nitrification ;
+    # An explicit process set includes aeration as well as nitrification.
+    watr:hasProcess watr:Process-Aeration, watr:Process-Nitrification ;
     # Nitrification achieves AmmoniaRemoval (not NitrogenRemoval); stated here
     # for TreatmentObjectiveCompleteness.
     watr:hasTreatmentObjective watr:TreatmentObjective-AmmoniaControl ;
