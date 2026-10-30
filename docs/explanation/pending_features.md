@@ -66,6 +66,22 @@ reports each pump that relies on this at `sh:Info`. See
 If the S223 pump shape accepts any `Mix-Fluid`, remove the workaround in
 `ontology/equipment.ttl` and make `watr:Pump` a subclass of `s223:Pump` again.
 
+## WaTr filters as S223 filters
+
+**Status:** Workaround in place; waiting on S223.
+
+`watr:Filter` should be a subclass of `s223:Filter`. It is not, because S223's
+filter shape requires every pair of a filter's connection points to carry
+compatible media, and a treatment filter has air scour, aeration and vent ports
+beside its water ports. `watr:Filter` instead restates the S223 checks over the
+non-air connection points, types conforming filters as `s223:Filter` by rule,
+and reports each filter that relies on this at `sh:Info`. See
+[filters](treatment_model_summary.md#filters).
+
+If the S223 filter shape allows a second medium on a filter, remove the
+workaround in `ontology/equipment.ttl` and make `watr:Filter` a subclass of
+`s223:Filter` again.
+
 ## Equipment/process plausibility checks
 
 **Status:** Deferred; removed from PR #39 during review preparation.

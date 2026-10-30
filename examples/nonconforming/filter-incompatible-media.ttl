@@ -1,0 +1,30 @@
+@prefix : <urn:example/filter-incompatible-media#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/filter-incompatible-media>
+    a owl:Ontology ;
+    rdfs:label "Nonconforming Filter Example With Incompatible Media" ;
+    rdfs:comment "Water in and oil out. watr:Filter leaves only air ports out of the medium comparison, so the S223 check restated on it still reports water and oil as incompatible." ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+.
+
+:filter
+    a watr:Filter ;
+    watr:hasProcess watr:Process-Filtration ;
+    s223:hasConnectionPoint :inlet, :outlet ;
+.
+
+:inlet
+    a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :filter ;
+.
+
+:outlet
+    a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Oil ;
+    s223:isConnectionPointOf :filter ;
+.

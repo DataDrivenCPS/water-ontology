@@ -965,8 +965,27 @@ watr:Filter
     a  sh:NodeShape ;
     a watr:Class ;
     rdfs:label "Filter" ;
-    rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
-    rdfs:subClassOf s223:Filter, watr:UnitProcess ;
+    rdfs:comment "An equipment used to remove impurities from liquids or gases. Unlike s223:Filter, which asks every connection point to carry one compatible medium, it lets air ports for scouring, aeration or venting sit beside the liquid ports." ;
+    # WORKAROUND, not the intended modeling. A filter should be a subclass of
+    # s223:Filter, but SHACL cannot relax a constraint a superclass imposes and
+    # s223:Filter requires every pair of its connection points to carry
+    # compatible media. A treatment filter also has air ports: a biologically
+    # active filter or GAC column is air scoured, aerated and vented, so it has
+    # s223:Fluid-Air next to s223:Fluid-Water, which S223 reports as
+    # incompatible. So watr:Filter sits beside s223:Filter:
+    #   - the checks below restate the S223 filter checks with the air ports
+    #     left out of the medium comparison;
+    #   - the sh:rule at the end types a watr:Filter as s223:Filter when it
+    #     conforms to the S223 shape, so single-medium filters stay s223:Filters;
+    #   - the sh:Info constraint below flags every filter that needs the
+    #     workaround.
+    # Unlike the watr:Pump workaround, s223:Filter is not declared a subclass of
+    # watr:Filter: a watr:Filter is a UnitProcess that must state a filtration
+    # process, which S223 filters outside water treatment, such as an air
+    # filter, do not.
+    # Remove all of it, and make watr:Filter a subclass of s223:Filter again,
+    # once the S223 filter shape allows a second medium on a filter.
+    rdfs:subClassOf s223:Equipment, watr:UnitProcess ;
     # A subclass may narrow this slot to a specific filtration process. One
     # such process satisfies both this slot and the subclass's own.
     sh:property [
@@ -974,6 +993,207 @@ watr:Filter
         sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ;
         sh:qualifiedMinCount 1 ;
         sh:message "Instances of Filter must have at least one Filtration process." ;
+    ] ;
+    # WORKAROUND, pending a change to the S223 filter shape (see above).
+    # Report, at sh:Info, each filter that relies on it: one with an air
+    # connection point beside a connection point carrying another medium. Such
+    # a filter is not reflected as an s223:Filter, so it is checked only by the
+    # restated shapes here.
+    sh:property [
+      sh:path s223:hasConnectionPoint ;
+      sh:severity sh:Info ;
+      sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Workaround: {$this} has an air connection point beside a connection point with medium {?medium}, which s223:Filter does not accept next to air. It is validated as a watr:Filter only and is not typed s223:Filter. This workaround can be removed if the S223 filter shape allows a second medium on a filter." ;
+        sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT DISTINCT $this ?medium
+WHERE {
+  $this s223:hasConnectionPoint ?air, ?cp .
+  ?air s223:hasMedium ?airMedium .
+  ?airMedium a/rdfs:subClassOf* s223:Fluid-Air .
+  ?cp s223:hasMedium ?medium .
+  FILTER (NOT EXISTS {?medium a/rdfs:subClassOf* s223:Fluid-Air}) .
+}
+""" ;
+      ] ;
+    ] ;
+    # The three S223 medium-compatibility cases, restated over the connection
+    # points that do not carry air. Two media are compatible when both are pure
+    # and one subclasses the other, when both have constituents and share one
+    # (or one's constituent subclasses the other's), or when one is pure and is
+    # a constituent of the other. Each case keeps its S223 wording.
+    sh:property [
+        rdfs:comment "Incompatible Medium. Case 1: Two pure mediums on the non-air connection points." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:sparql [
+            a sh:SPARQLConstraint ;
+            sh:message "s223: {$this} with inlet medium {?m2} is incompatible with outlet medium {?m1}." ;
+            sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT $this ?m2 ?m1
+WHERE {
+  $this s223:hasConnectionPoint ?cp1, ?cp2 .
+  FILTER (?cp1 != ?cp2) .
+  ?cp1 s223:hasMedium ?m1 .
+  ?cp2 s223:hasMedium ?m2 .
+  FILTER (NOT EXISTS {?m1 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  FILTER (NOT EXISTS {?m2 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+  FILTER NOT EXISTS {?m2 s223:composedOf ?c2} .
+  FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+  FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+}
+""" ;
+        ] ;
+    ] ;
+    sh:property [
+        rdfs:comment "Incompatible Medium. Case 2: A medium with constituents and a pure medium on the non-air connection points." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:sparql [
+            a sh:SPARQLConstraint ;
+            sh:message "s223: {$this} has an incompatible medium {?m1} with any constituent of {?m2}." ;
+            sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT $this ?m2 ?m1
+WHERE {
+  $this s223:hasConnectionPoint ?cp1, ?cp2 .
+  FILTER (?cp1 != ?cp2) .
+  ?cp1 s223:hasMedium ?m1 .
+  ?cp2 s223:hasMedium ?m2 .
+  FILTER (NOT EXISTS {?m1 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  FILTER (NOT EXISTS {?m2 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+  FILTER NOT EXISTS {
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+    sh:property [
+        rdfs:comment "Incompatible Medium. Case 3: Two mediums with constituents on the non-air connection points." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:sparql [
+            a sh:SPARQLConstraint ;
+            sh:message "s223: For `Filter` {$this} there is no compatible substance between medium {?m2} and medium {?m1}." ;
+            sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT $this ?m2 ?m1
+WHERE {
+  $this s223:hasConnectionPoint ?cp1, ?cp2 .
+  FILTER (?cp1 != ?cp2) .
+  ?cp1 s223:hasMedium ?m1 .
+  ?cp2 s223:hasMedium ?m2 .
+  FILTER (NOT EXISTS {?m1 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  FILTER (NOT EXISTS {?m2 a/rdfs:subClassOf* s223:Fluid-Air}) .
+  ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+  ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+    FILTER (?s11 = ?s12) .
+  }
+  FILTER NOT EXISTS {
+    ?m1 s223:composedOf/s223:ofConstituent ?s21 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s22 .
+    {?s22 rdfs:subClassOf* ?s21} UNION {?s21 rdfs:subClassOf* ?s22} .
+  }
+}
+""" ;
+        ] ;
+    ] ;
+    sh:property [
+        rdfs:comment "A Filter shall have at least one inlet." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ] ;
+        sh:message "s223: A `Filter` shall have at least one inlet." ;
+    ] ;
+    sh:property [
+        rdfs:comment "A Filter shall have at least one outlet." ;
+        sh:path s223:hasConnectionPoint ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ] ;
+        sh:message "s223: A `Filter` shall have at least one outlet." ;
+    ] ;
+    # Reflect a watr:Filter into s223:Filter when it meets the S223 shape, so
+    # tools that select s223:Filter still find single-medium filters. A filter
+    # with air ports does not meet it, so it stays out and draws no S223
+    # violation. The condition restates the S223 filter shape over
+    # s223:hasConnectionPoint rather than naming s223:Filter: the S223 medium
+    # checks walk s223:cnx, which a model that states only hasConnectionPoint
+    # gains by inference after the rules run, so s223:Filter as the condition
+    # would reflect every filter and S223 would then flag the air ports anyway.
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object s223:Filter ;
+        sh:condition [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path s223:hasConnectionPoint ;
+                sh:qualifiedMinCount 1 ;
+                sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ] ;
+            ] ;
+            sh:property [
+                sh:path s223:hasConnectionPoint ;
+                sh:qualifiedMinCount 1 ;
+                sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ] ;
+            ] ;
+            sh:sparql [
+                a sh:SPARQLConstraint ;
+                rdfs:comment "The three S223 incompatible-medium cases on any pair of connection points, air included." ;
+                sh:message "{$this} has connection points with media {?m1} and {?m2} that s223:Filter reports as incompatible." ;
+                sh:select """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX s223: <http://data.ashrae.org/standard223#>
+SELECT $this ?m1 ?m2
+WHERE {
+  {
+    $this s223:hasConnectionPoint ?cp1, ?cp2 .
+    FILTER (?cp1 != ?cp2) .
+    ?cp1 s223:hasMedium ?m1 .
+    ?cp2 s223:hasMedium ?m2 .
+    FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+    FILTER NOT EXISTS {?m2 s223:composedOf ?c2} .
+    FILTER (NOT EXISTS {?m2 rdfs:subClassOf* ?m1}) .
+    FILTER (NOT EXISTS {?m1 rdfs:subClassOf* ?m2}) .
+  } UNION {
+    $this s223:hasConnectionPoint ?cp1, ?cp2 .
+    FILTER (?cp1 != ?cp2) .
+    ?cp1 s223:hasMedium ?m1 .
+    ?cp2 s223:hasMedium ?m2 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+    FILTER NOT EXISTS {?m1 s223:composedOf ?c1} .
+    FILTER NOT EXISTS {
+      ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+      {?s12 rdfs:subClassOf* ?m1} UNION {?m1 rdfs:subClassOf* ?s12} .
+    }
+  } UNION {
+    $this s223:hasConnectionPoint ?cp1, ?cp2 .
+    FILTER (?cp1 != ?cp2) .
+    ?cp1 s223:hasMedium ?m1 .
+    ?cp2 s223:hasMedium ?m2 .
+    ?m1 s223:composedOf/s223:ofConstituent ?s1 .
+    ?m2 s223:composedOf/s223:ofConstituent ?s2 .
+    FILTER NOT EXISTS {
+      ?m1 s223:composedOf/s223:ofConstituent ?s11 .
+      ?m2 s223:composedOf/s223:ofConstituent ?s12 .
+      {?s12 rdfs:subClassOf* ?s11} UNION {?s11 rdfs:subClassOf* ?s12} .
+    }
+  }
+}
+""" ;
+            ] ;
+        ] ;
     ] .
 
 watr:ReverseOsmosisMembrane

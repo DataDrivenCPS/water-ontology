@@ -146,7 +146,7 @@ ancestors' requirements:
 
 | Class | Subclass of | Required process | Required objective |
 |---|---|---|---|
-| `Filter` | `s223:Filter`, `UnitProcess` | a `Process-Filtration` | none |
+| `Filter` | `s223:Equipment`, `UnitProcess` | a `Process-Filtration` | none |
 | `ReverseOsmosisMembrane` | `Filter` | a `Process-ReverseOsmosis` | none |
 | `NanofiltrationUnit` | `Filter` | inherited only | none |
 | `MembraneBioreactor` | `Filter`, `Reactor`, `SeparationTank` | exactly one of microfiltration or ultrafiltration, and a `Process-Biofiltration` | none |

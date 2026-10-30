@@ -1,0 +1,67 @@
+@prefix : <urn:example/air-scoured-filter#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/air-scoured-filter>
+    a owl:Ontology ;
+    rdfs:label "Air-Scoured Filter Example" ;
+    rdfs:comment "A biologically active filter carries water through two bidirectional ports (feed in and effluent out in service, backwash the other way) and has an air scour inlet and an air vent outlet. s223:Filter would report the air and water media as incompatible. watr:Filter sits beside s223:Filter and compares only the non-air media, so this filter validates; an sh:Info result marks that it relies on the workaround and is not typed s223:Filter." ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+.
+
+:baf
+    a watr:BiologicalAeratedFilter ;
+    rdfs:label "BAF #1" ;
+    watr:hasProcess watr:Process-BiologicallyActiveFiltration ;
+    s223:hasConnectionPoint :baf-top, :baf-bottom, :baf-air-in, :baf-air-vent ;
+.
+
+:baf-top
+    a s223:BidirectionalConnectionPoint ;
+    rdfs:label "Feed in, backwash waste out" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :baf ;
+.
+
+:baf-bottom
+    a s223:BidirectionalConnectionPoint ;
+    rdfs:label "Effluent out, backwash feed in" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :baf ;
+.
+
+:baf-air-in
+    a s223:InletConnectionPoint ;
+    rdfs:label "Air scour" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :baf ;
+.
+
+:baf-air-vent
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Air vent" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :baf ;
+.
+
+# A single-medium filter conforms to s223:Filter and is reflected into it.
+:cartridge
+    a watr:CartridgeFiltrationUnit ;
+    rdfs:label "Influent pre-filter" ;
+    watr:hasProcess watr:Process-Filtration ;
+    s223:hasConnectionPoint :cartridge-in, :cartridge-out ;
+.
+
+:cartridge-in
+    a s223:InletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :cartridge ;
+.
+
+:cartridge-out
+    a s223:OutletConnectionPoint ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :cartridge ;
+.
