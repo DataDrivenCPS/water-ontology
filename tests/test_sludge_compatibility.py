@@ -1,8 +1,7 @@
 """watr:Fluid-Sludge is a s223:Mix-Fluid, not a s223:Fluid-Water. What keeps it
 compatible with water on S223 connection points is the s223:Constituent-H2O it
-is composedOf. S223 reports a medium mismatch on a Filter's connection points at
-severity sh:Warning, which test_examples_validate ignores, so these tests look at
-every severity."""
+is composedOf. watr:Filter restates S223's Filter medium checks over its non-air
+connection points; these tests look at every severity."""
 
 from pathlib import Path
 

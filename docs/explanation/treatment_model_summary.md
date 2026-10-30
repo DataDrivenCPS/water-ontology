@@ -135,6 +135,58 @@ carry mixed liquor and sludge and produce this Info finding. Validation of the
 medium is a topology check only; it does not certify that a pump suits a
 particular sludge.
 
+## Filters
+
+### Requirements
+
+`watr:Filter` is a subclass of `s223:Equipment` and `watr:UnitProcess`. It needs
+at least one inlet, at least one outlet and at least one `Process-Filtration`.
+Its connection points, other than those carrying `s223:Fluid-Air`, must carry
+compatible media.
+
+### Rationale
+
+A WaTr filter should be a subclass of `s223:Filter`. S223's filter shape,
+however, requires every pair of a filter's connection points to carry compatible
+media, and a treatment filter has air ports beside its water ports: a
+biologically active filter or a GAC column is air scoured, aerated and vented.
+Air is a pure medium and water is composed of H2O, so S223 reports the pair as
+incompatible. A subclass cannot relax a constraint its superclass imposes, so
+`watr:Filter` sits beside `s223:Filter` and restates the S223 checks with the
+air ports left out of the medium comparison. This is a workaround. It goes away,
+and `watr:Filter` becomes a subclass of `s223:Filter` again, once the S223 filter
+shape allows a second medium on a filter.
+
+### Validation
+
+The inlet and outlet checks and the three medium-compatibility cases are
+violations, matching S223's, and keep S223's messages. The cases compare only
+connection points whose medium is not an `s223:Fluid-Air`, so water next to oil
+is still reported. Two further pieces keep the two filter classes aligned. A
+SHACL-AF triple rule on `watr:Filter` types a filter as `s223:Filter` when it
+has an inlet, an outlet and no pair of connection points, air included, that the
+S223 cases report as incompatible, so tools that select `s223:Filter` still find
+single-medium filters. The rule's condition restates those cases over
+`s223:hasConnectionPoint` instead of naming `s223:Filter`, because the S223
+checks walk `s223:cnx`, which a model that states only `hasConnectionPoint`
+gains by inference after the rules have run. An air-scoured filter does not
+meet the condition, so it is not typed `s223:Filter` and draws no S223
+violation. Instead, an `sh:Info` finding
+marks each filter that relies on the workaround: "Workaround: {$this} has an
+air connection point beside a connection point with medium {?medium}, which
+s223:Filter does not accept next to air. It is validated as a watr:Filter only
+and is not typed s223:Filter."
+
+Unlike the pump workaround, `s223:Filter` is not declared a subclass of
+`watr:Filter`: a WaTr filter is a unit process that must state a filtration
+process, which an S223 filter outside water treatment, such as an air filter,
+does not.
+
+See the {download}`air-scoured filter <../../examples/air-scoured-filter.ttl>`,
+whose BAF produces the Info finding and whose cartridge filter is reflected into
+`s223:Filter`, and the
+{download}`nonconforming filter with water in and oil out <../../examples/nonconforming/filter-incompatible-media.ttl>`.
+
 ## Filtration and membrane processes
 
 ### Definitions
@@ -269,8 +321,8 @@ met and the model must change, such as a clarifier with no sludge outlet or a
 composition percentage above 100. A `sh:Warning` means the description is
 incomplete or worth checking, such as a system claiming a compound process that no
 member performs. An `sh:Info` is advisory and may be intentional, such as an
-unconnected port at a model boundary, or a pump relying on the `watr:Pump`
-workaround.
+unconnected port at a model boundary, or a pump or filter relying on the
+`watr:Pump` or `watr:Filter` workaround.
 
 Severity classifies a finding; the caller decides which levels fail validation.
 This repository requires conforming examples to have no warnings or violations
