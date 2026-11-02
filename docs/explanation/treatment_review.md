@@ -83,7 +83,7 @@ composition, material balance, membrane selectivity, or equipment suitability.
 For example, a sludge medium on pump ports does not certify that a particular
 pump is suitable for that sludge. `watr:Pump` accepts any `s223:Mix-Fluid` so that
 sludge pumps validate, as a workaround for S223's narrower pump shape; see
-[pumps](treatment_model_summary.md#pumps). It is not a suitability check.
+[pumps](equipment_classes.md#pumps). It is not a suitability check.
 
 The documentation includes local process/objective instances, explicit target
 overrides in constituent queries, and system coverage through contained regions.

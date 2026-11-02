@@ -20,7 +20,7 @@ describe the equipment and travel with it; the role describes one installation.
 
 The fragments on this page show function only. A complete model also needs the
 connection points each class requires, such as a clarifier's water and sludge
-outlets; see [equipment classes](treatment_model_summary.md).
+outlets; see [equipment classes](equipment_classes.md).
 
 ## Treatment objective and process
 
@@ -288,7 +288,7 @@ built with diffusers is still an aeration basin, which is why `Role-Anoxic` is
 allowed there. Both are violations, and both allow further roles such as
 `Role-Primary`. On
 tanks and reactors, connection point roles constrain the port they mark; see
-[tanks and reactors](treatment_model_summary.md#tanks-reactors-and-separation-tanks).
+[tanks and reactors](equipment_classes.md#tanks-reactors-and-separation-tanks).
 Nothing checks a role against readings: a dissolved-oxygen reading near zero does
 not withdraw `Role-Aerobic`.
 

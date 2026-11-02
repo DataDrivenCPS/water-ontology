@@ -272,7 +272,7 @@
 
 ## Filter
 
-**Description:** An equipment used to remove impurities from liquids or gases. Unlike s223:Filter, which asks every connection point to carry one compatible medium, it lets air ports for scouring, aeration or venting sit beside the liquid ports.
+**Description:** An equipment used to remove impurities from liquids or gases. Unlike s223:Filter, which asks every connection point to carry one compatible medium, it lets air ports for scouring, aeration or venting, and electrical ports, sit beside the liquid ports.
 
 **Superclasses:** `s223:Equipment`, `watr:UnitProcess`
 

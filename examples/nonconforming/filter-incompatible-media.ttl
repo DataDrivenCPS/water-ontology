@@ -7,7 +7,7 @@
 <urn:example/filter-incompatible-media>
     a owl:Ontology ;
     rdfs:label "Nonconforming Filter Example With Incompatible Media" ;
-    rdfs:comment "Water in and oil out. watr:Filter leaves only air ports out of the medium comparison, so the S223 check restated on it still reports water and oil as incompatible." ;
+    rdfs:comment "Water in and oil out. watr:Filter skips only air and electrical ports in the medium comparison, so water and oil are still incompatible." ;
     owl:imports <https://watermetadata.org/ontology/watr> ;
 .
 

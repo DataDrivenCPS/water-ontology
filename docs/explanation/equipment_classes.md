@@ -101,91 +101,80 @@ and the {download}`nonconforming thickener with two sludge outlets <../../exampl
 
 ### Requirements
 
-`watr:Pump` is a subclass of `s223:Equipment`. It needs at least one inlet and at
-least one outlet whose medium is an `s223:Mix-Fluid`, such as water, oil or
-sludge, or an `s223:Constituent-Refrigerant`. Its connection points, other than
-electrical ones, must carry compatible media.
+| Class | Subclass of | Requires |
+|---|---|---|
+| `watr:Pump` | `s223:Equipment` | an inlet and an outlet carrying an `s223:Mix-Fluid` or `s223:Constituent-Refrigerant`; compatible media on non-electrical ports |
+| `s223:Pump` | `watr:Pump` | S223's pump shape |
 
 ### Rationale
 
-A WaTr pump should be a subclass of `s223:Pump`. S223's pump shape, however,
-warns on any medium other than water, oil or refrigerant, and a wastewater plant
-pumps sludge and mixed liquor. A subclass cannot relax a constraint its superclass
-imposes, so `watr:Pump` sits beside `s223:Pump` and restates the S223 checks with
-the medium widened to any fluid mixture. This is a workaround. It goes away, and
-`watr:Pump` becomes a subclass of `s223:Pump` again, once the S223 pump shape
-accepts any `Mix-Fluid`.
+A treatment plant pumps sludge and mixed liquor. S223's pump shape accepts only
+water, oil or refrigerant, and a subclass cannot relax that. `watr:Pump`
+therefore sits beside `s223:Pump` instead of under it. This is a workaround; see
+[pending features](pending_features.md#watr-pumps-as-s223-pumps).
 
 ### Validation
 
-The inlet and outlet checks are warnings, matching S223's. The media
-compatibility check is a violation. Three further pieces keep the two pump classes
-aligned. The axiom `s223:Pump rdfs:subClassOf watr:Pump` makes every S223 pump a
-WaTr pump, so a query for `watr:Pump` finds both. A SHACL-AF triple rule on
-`watr:Pump` types a pump as `s223:Pump` when it conforms to the S223 pump shape,
-so tools that select `s223:Pump` still find water pumps. A sludge pump does not
-conform, so it is not typed `s223:Pump` and draws no S223 warning. Instead, an
-`sh:Info` finding marks each pump that relies on the workaround: "Workaround:
-{$this} has a connection point with medium {?medium}, which s223:Pump does not
-accept (water, oil or refrigerant). It is validated as a watr:Pump only and is
-not typed s223:Pump."
+- **Compatible media** (Violation): no two non-electrical ports carry media
+  where neither is a subclass of the other.
+- **Fluid inlet / outlet** (Warning, matching S223): "A Pump shall have at least
+  one inlet using a Mix-Fluid (water, oil, sludge) or Constituent-Refrigerant
+  medium", and the same for outlets.
+- **Reflection rule** (SHACL-AF triple rule): types a `watr:Pump` as `s223:Pump`
+  when it conforms to `s223:Pump`. A sludge pump does not conform, so it is not
+  typed `s223:Pump` and draws no S223 warning.
+- **Workaround marker** (Info): a fluid port whose medium is not water, oil or
+  refrigerant. "Workaround: {$this} has a connection point with medium
+  {?medium}, which s223:Pump does not accept (water, oil or refrigerant)."
 
-The recycle pumps in {download}`a2o-train.ttl <../../examples/a2o-train.ttl>`
-carry mixed liquor and sludge and produce this Info finding. Validation of the
-medium is a topology check only; it does not certify that a pump suits a
-particular sludge.
+These checks cover topology only. They do not certify that a pump suits a
+particular sludge. Example: the recycle pumps in
+{download}`a2o-train.ttl <../../examples/a2o-train.ttl>` get the Info finding.
 
 ## Filters
 
 ### Requirements
 
-`watr:Filter` is a subclass of `s223:Equipment` and `watr:UnitProcess`. It needs
-at least one inlet, at least one outlet and at least one `Process-Filtration`.
-Its connection points, other than those carrying `s223:Fluid-Air`, must carry
-compatible media.
+| Class | Subclass of | Requires |
+|---|---|---|
+| `watr:Filter` | `s223:Equipment`, `watr:UnitProcess` | a `Process-Filtration`; a liquid inlet and a liquid outlet; compatible media on ports other than air and electrical |
+| `s223:Filter` | `watr:Filter` | S223's filter shape |
+
+A liquid port carries a medium other than `s223:Fluid-Air` or
+`s223:Constituent-Electricity`. A bidirectional port counts as an inlet or an
+outlet.
 
 ### Rationale
 
-A WaTr filter should be a subclass of `s223:Filter`. S223's filter shape,
-however, requires every pair of a filter's connection points to carry compatible
-media, and a treatment filter has air ports beside its water ports: a
-biologically active filter or a GAC column is air scoured, aerated and vented.
-Air is a pure medium and water is composed of H2O, so S223 reports the pair as
-incompatible. A subclass cannot relax a constraint its superclass imposes, so
-`watr:Filter` sits beside `s223:Filter` and restates the S223 checks with the
-air ports left out of the medium comparison. This is a workaround. It goes away,
-and `watr:Filter` becomes a subclass of `s223:Filter` again, once the S223 filter
-shape allows a second medium on a filter.
+A treatment filter has air ports for scour, aeration or venting, and may be
+powered. S223 requires every pair of a filter's ports to carry compatible media,
+so it rejects these filters, and a subclass cannot relax that. `watr:Filter`
+therefore sits beside `s223:Filter` instead of under it. This is a workaround;
+see [pending features](pending_features.md#watr-filters-as-s223-filters).
 
 ### Validation
 
-The inlet and outlet checks and the three medium-compatibility cases are
-violations, matching S223's, and keep S223's messages. The cases compare only
-connection points whose medium is not an `s223:Fluid-Air`, so water next to oil
-is still reported. Two further pieces keep the two filter classes aligned. A
-SHACL-AF triple rule on `watr:Filter` types a filter as `s223:Filter` when it
-has an inlet, an outlet and no pair of connection points, air included, that the
-S223 cases report as incompatible, so tools that select `s223:Filter` still find
-single-medium filters. The rule's condition restates those cases over
-`s223:hasConnectionPoint` instead of naming `s223:Filter`, because the S223
-checks walk `s223:cnx`, which a model that states only `hasConnectionPoint`
-gains by inference after the rules have run. An air-scoured filter does not
-meet the condition, so it is not typed `s223:Filter` and draws no S223
-violation. Instead, an `sh:Info` finding
-marks each filter that relies on the workaround: "Workaround: {$this} has an
-air connection point beside a connection point with medium {?medium}, which
-s223:Filter does not accept next to air. It is validated as a watr:Filter only
-and is not typed s223:Filter."
+- **Medium cases 1–3** (Violation): S223's three incompatible-medium checks,
+  copied with S223's messages, skipping air and electrical ports. Water beside
+  oil is still reported.
+- **Liquid inlet / outlet** (Violation): "A Filter shall have at least one inlet
+  or bidirectional connection point carrying a medium other than air or
+  electricity", and the same for outlets. Air ports alone do not satisfy it.
+- **Filtration process** (Violation): at least one `Process-Filtration`.
+  `watr:ClassDefaultsRule` supplies it when none is stated.
+- **Reflection rule** (SHACL-AF triple rule): types a `watr:Filter` as
+  `s223:Filter` when it conforms to `s223:Filter`. It has `sh:order 1` so that it
+  runs after the S223 rules infer the `s223:cnx` links that the S223 medium
+  checks walk. A filter with air or electrical ports does not conform, so it is
+  not typed `s223:Filter` and draws no S223 violation.
+- **Workaround marker** (Info): a filter that is not typed `s223:Filter` and has
+  an air or electrical port. "Workaround: {$this} has a connection point with
+  medium {?medium}, which s223:Filter does not accept beside another medium."
 
-Unlike the pump workaround, `s223:Filter` is not declared a subclass of
-`watr:Filter`: a WaTr filter is a unit process that must state a filtration
-process, which an S223 filter outside water treatment, such as an air filter,
-does not.
-
-See the {download}`air-scoured filter <../../examples/air-scoured-filter.ttl>`,
-whose BAF produces the Info finding and whose cartridge filter is reflected into
-`s223:Filter`, and the
-{download}`nonconforming filter with water in and oil out <../../examples/nonconforming/filter-incompatible-media.ttl>`.
+Examples: the {download}`air-scoured filter <../../examples/air-scoured-filter.ttl>`
+has a BAF, which gets the Info finding, and a cartridge filter, which is reflected.
+In the {download}`nonconforming filter <../../examples/nonconforming/filter-incompatible-media.ttl>`,
+water flows in and oil flows out.
 
 ## Filtration and membrane processes
 
