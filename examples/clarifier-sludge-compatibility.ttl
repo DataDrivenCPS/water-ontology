@@ -41,8 +41,9 @@
     s223:connectsTo :thickener ;
     s223:connectsAt :clarifier-underflow, :thickener-feed .
 
-# Sludge in, sludge and water out. A watr:Filter inherits the S223 Filter
-# rule that every pair of its connection points must carry compatible media.
+# Sludge in, sludge and water out. A watr:Filter restates the S223 Filter
+# rule that every pair of its non-air connection points must carry compatible
+# media.
 :thickener a watr:Filter ;
     rdfs:label "Membrane thickener" ;
     watr:hasProcess watr:Process-Filtration ;
