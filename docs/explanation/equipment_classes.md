@@ -123,8 +123,8 @@ therefore sits beside `s223:Pump` instead of under it. This is a workaround; see
 - **Reflection rule** (SHACL-AF triple rule): types a `watr:Pump` as `s223:Pump`
   when it conforms to `s223:Pump`. A sludge pump does not conform, so it is not
   typed `s223:Pump` and draws no S223 warning.
-- **Workaround marker** (Info): a fluid port whose medium is not water, oil or
-  refrigerant. "Workaround: {$this} has a connection point with medium
+- **Workaround marker** (Info): a pump that is not typed `s223:Pump` and has a
+  fluid port whose medium is not water, oil or refrigerant. "Workaround: {$this} has a connection point with medium
   {?medium}, which s223:Pump does not accept (water, oil or refrigerant)."
 
 These checks cover topology only. They do not certify that a pump suits a
