@@ -2,6 +2,8 @@
 the S223 filter shape, so a filter with air scour, vent or electrical ports
 beside its water ports stays clear of the S223 medium violation."""
 
+from pathlib import Path
+
 import shifty
 from rdflib import RDF, RDFS, Graph, Namespace
 
@@ -147,3 +149,16 @@ def test_watr_filter_sits_beside_s223_filter(water_graph: Graph):
     assert (WATR.Filter, RDFS.subClassOf, S223.Filter) not in water_graph
     assert (WATR.Filter, RDFS.subClassOf, S223.Equipment) in water_graph
     assert (S223.Filter, RDFS.subClassOf, WATR.Filter) in water_graph
+
+
+def test_air_scoured_rapid_sand_filter_example(ontology_shapes_graph: Graph):
+    """Directional water ports plus an air scour inlet: conforms, is not
+    reflected, and reports the workaround."""
+    path = Path(__file__).resolve().parents[1] / "examples" / "air-scoured-rapid-sand-filter.ttl"
+    data = Graph().parse(path, format="ttl")
+    rsf = Namespace("urn:example/air-scoured-rapid-sand-filter#").rsf
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    assert (rsf, RDF.type, S223.Filter) not in inferred
+    results = _results(data, ontology_shapes_graph, rsf)
+    assert {severity for severity, _ in results} <= {SH.Info}
+    assert any("Workaround" in message for _, message in results)

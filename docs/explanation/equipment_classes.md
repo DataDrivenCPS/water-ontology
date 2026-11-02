@@ -173,6 +173,9 @@ see [pending features](pending_features.md#watr-filters-as-s223-filters).
 
 Examples: the {download}`air-scoured filter <../../examples/air-scoured-filter.ttl>`
 has a BAF, which gets the Info finding, and a cartridge filter, which is reflected.
+The {download}`air-scoured rapid sand filter <../../examples/air-scoured-rapid-sand-filter.ttl>`
+has directional service and backwash ports and an air scour inlet, and gets the
+Info finding.
 In the {download}`nonconforming filter <../../examples/nonconforming/filter-incompatible-media.ttl>`,
 water flows in and oil flows out.
 

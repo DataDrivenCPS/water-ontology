@@ -1,0 +1,58 @@
+@prefix : <urn:example/air-scoured-rapid-sand-filter#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+<urn:example/air-scoured-rapid-sand-filter>
+    a owl:Ontology ;
+    rdfs:label "Air-Scoured Rapid Sand Filter Example" ;
+    rdfs:comment "A rapid sand filter with directional water ports for service and backwash, and an air scour inlet. It conforms as a watr:Filter; the air port keeps it from being typed s223:Filter, which an sh:Info result reports." ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+.
+
+# Not typed s223:Filter: the air port fails S223's medium checks.
+:rsf
+    a watr:RapidSandFilter ;
+    rdfs:label "Rapid sand filter #1" ;
+    watr:hasProcess watr:Process-RapidSandFiltration ;
+    s223:hasConnectionPoint :rsf-feed, :rsf-effluent, :rsf-backwash-in, :rsf-backwash-waste, :rsf-air-scour ;
+.
+
+# Service flow: these two meet the liquid inlet and outlet requirement.
+:rsf-feed
+    a s223:InletConnectionPoint ;
+    rdfs:label "Settled water in" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rsf ;
+.
+
+:rsf-effluent
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Filtered water out" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rsf ;
+.
+
+# Backwash flow: directional, so modeled as separate ports.
+:rsf-backwash-in
+    a s223:InletConnectionPoint ;
+    rdfs:label "Backwash water in" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rsf ;
+.
+
+:rsf-backwash-waste
+    a s223:OutletConnectionPoint ;
+    rdfs:label "Backwash waste out" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :rsf ;
+.
+
+# Air is skipped in the medium checks and draws the Info marker.
+:rsf-air-scour
+    a s223:InletConnectionPoint ;
+    rdfs:label "Air scour in" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :rsf ;
+.
