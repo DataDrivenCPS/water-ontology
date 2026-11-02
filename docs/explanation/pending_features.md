@@ -56,31 +56,25 @@ Origin: [Daly's recirculation question on PR #39](https://github.com/DataDrivenC
 
 **Status:** Workaround in place; waiting on S223.
 
-`watr:Pump` should be a subclass of `s223:Pump`. It is not, because S223's pump
-shape warns on any medium other than water, oil or refrigerant, and a treatment
-plant pumps sludge and mixed liquor. `watr:Pump` instead restates the S223 checks
-for any `s223:Mix-Fluid`, types conforming pumps as `s223:Pump` by rule, and
-reports each pump that relies on this at `sh:Info`. See
-[pumps](treatment_model_summary.md#pumps).
+`watr:Pump` should be a subclass of `s223:Pump`. S223 warns on any pump medium
+other than water, oil or refrigerant, so `watr:Pump` restates the S223 checks for
+any `s223:Mix-Fluid`, and conforming pumps are typed `s223:Pump` by rule. See
+[pumps](equipment_classes.md#pumps).
 
-If the S223 pump shape accepts any `Mix-Fluid`, remove the workaround in
-`ontology/equipment.ttl` and make `watr:Pump` a subclass of `s223:Pump` again.
+Once S223 accepts any `Mix-Fluid` on a pump, remove the workaround from
+`ontology/equipment.ttl`.
 
 ## WaTr filters as S223 filters
 
 **Status:** Workaround in place; waiting on S223.
 
-`watr:Filter` should be a subclass of `s223:Filter`. It is not, because S223's
-filter shape requires every pair of a filter's connection points to carry
-compatible media, and a treatment filter has air scour, aeration and vent ports
-beside its water ports. `watr:Filter` instead restates the S223 checks over the
-non-air connection points, types conforming filters as `s223:Filter` by rule,
-and reports each filter that relies on this at `sh:Info`. See
-[filters](treatment_model_summary.md#filters).
+`watr:Filter` should be a subclass of `s223:Filter`. S223 rejects a filter with
+air or electrical ports beside its water ports, so `watr:Filter` restates the
+S223 checks without those ports, and conforming filters are typed `s223:Filter`
+by rule. See [filters](equipment_classes.md#filters).
 
-If the S223 filter shape allows a second medium on a filter, remove the
-workaround in `ontology/equipment.ttl` and make `watr:Filter` a subclass of
-`s223:Filter` again.
+Once S223 allows a second medium on a filter, remove the workaround from
+`ontology/equipment.ttl`.
 
 ## Equipment/process plausibility checks
 

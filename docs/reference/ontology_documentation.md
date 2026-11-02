@@ -11,5 +11,5 @@ definitions and their complete lists of parent classes:
 - [Processes and objectives](process_objective_map.md)
 - [Substances and enumerations](substances_documentation.md)
 
-The [treatment model](../explanation/treatment_model_summary.md) explains how
+The [equipment function](../explanation/equipment_function.md) page explains how
 instances inherit processes and objectives and what the modeler states explicitly.

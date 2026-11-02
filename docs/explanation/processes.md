@@ -106,7 +106,7 @@ carry compatible media (see below), or S223 reports a violation.
 
 WaTr adds port requirements per equipment class. `watr:PlugFlowReactor` and every
 `watr:Reactor` need a fluid inlet and a fluid outlet, which the reactor's two
-mapped ports satisfy. See [equipment classes](treatment_model_summary.md#tanks-reactors-and-separation-tanks)
+mapped ports satisfy. See [equipment classes](equipment_classes.md#tanks-reactors-and-separation-tanks)
 for the rest.
 
 ## Media and constituents
@@ -186,7 +186,7 @@ joined to either kind of connection point. See
 {download}`clarifier-sludge-compatibility.ttl <../../examples/clarifier-sludge-compatibility.ttl>`,
 which shows validation in both directions. Sludge is a mixture rather than a kind of water,
 so a sludge port never stands in for a water port, and S223's pump shape does not
-accept it; see [pumps](treatment_model_summary.md#pumps).
+accept it; see [pumps](equipment_classes.md#pumps).
 
 A shared constituent establishes topology compatibility and nothing more. It does
 not claim equivalent composition, a material balance, membrane selectivity, or

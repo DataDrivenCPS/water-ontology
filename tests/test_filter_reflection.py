@@ -1,6 +1,8 @@
 """watr:Filter is not an s223:Filter, but is reflected into one when it meets
-the S223 filter shape, so a filter with air scour or vent ports beside its water
-ports stays clear of the S223 medium violation."""
+the S223 filter shape, so a filter with air scour, vent or electrical ports
+beside its water ports stays clear of the S223 medium violation."""
+
+from pathlib import Path
 
 import shifty
 from rdflib import RDF, RDFS, Graph, Namespace
@@ -39,6 +41,28 @@ ex:oil a watr:Filter ; watr:hasProcess watr:Process-Filtration ;
     s223:hasConnectionPoint ex:oilIn, ex:oilOut .
 ex:oilIn a s223:InletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
 ex:oilOut a s223:OutletConnectionPoint ; s223:hasMedium s223:Fluid-Oil .
+"""
+
+POWERED_FILTER = """
+ex:powered a watr:Filter ; watr:hasProcess watr:Process-Filtration ;
+    s223:hasConnectionPoint ex:poweredIn, ex:poweredOut, ex:poweredElec .
+ex:poweredIn a s223:InletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
+ex:poweredOut a s223:OutletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
+ex:poweredElec a s223:InletConnectionPoint ; s223:hasMedium s223:Constituent-Electricity .
+"""
+
+AIR_OUTLET_ONLY_FILTER = """
+ex:vented a watr:Filter ; watr:hasProcess watr:Process-Filtration ;
+    s223:hasConnectionPoint ex:ventedIn, ex:ventedVent .
+ex:ventedIn a s223:InletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
+ex:ventedVent a s223:OutletConnectionPoint ; s223:hasMedium s223:Fluid-Air .
+"""
+
+S223_FILTER = """
+ex:plain a s223:Filter ;
+    s223:hasConnectionPoint ex:plainIn, ex:plainOut .
+ex:plainIn a s223:InletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
+ex:plainOut a s223:OutletConnectionPoint ; s223:hasMedium s223:Fluid-Water .
 """
 
 
@@ -88,7 +112,53 @@ def test_non_air_media_are_still_compared(ontology_shapes_graph: Graph):
     )
 
 
-def test_watr_filter_is_not_an_s223_filter(water_graph: Graph):
-    """The workaround: watr:Filter sits beside s223:Filter, not under it."""
+def test_powered_filter_is_not_reflected_and_draws_no_violation(
+    ontology_shapes_graph: Graph,
+):
+    data = _data(POWERED_FILTER)
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    assert (EX.powered, RDF.type, S223.Filter) not in inferred
+    results = _results(data, ontology_shapes_graph, EX.powered)
+    assert {severity for severity, _ in results} <= {SH.Info}
+    assert any("Workaround" in message for _, message in results)
+
+
+def test_air_ports_do_not_meet_the_inlet_outlet_requirement(
+    ontology_shapes_graph: Graph,
+):
+    results = _results(_data(AIR_OUTLET_ONLY_FILTER), ontology_shapes_graph, EX.vented)
+    assert any(
+        severity == SH.Violation and "at least one outlet" in message
+        for severity, message in results
+    )
+
+
+def test_s223_filter_is_a_watr_filter(ontology_shapes_graph: Graph):
+    """An S223 filter gets Process-Filtration from the class defaults and
+    conforms as a watr:Filter."""
+    data = _data(S223_FILTER)
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    assert (EX.plain, WATR.hasProcess, WATR["Process-Filtration"]) in inferred
+    severities = {severity for severity, _ in _results(data, ontology_shapes_graph, EX.plain)}
+    assert SH.Violation not in severities
+
+
+def test_watr_filter_sits_beside_s223_filter(water_graph: Graph):
+    """The workaround: watr:Filter is not under s223:Filter; s223:Filter is
+    under watr:Filter."""
     assert (WATR.Filter, RDFS.subClassOf, S223.Filter) not in water_graph
     assert (WATR.Filter, RDFS.subClassOf, S223.Equipment) in water_graph
+    assert (S223.Filter, RDFS.subClassOf, WATR.Filter) in water_graph
+
+
+def test_air_scoured_rapid_sand_filter_example(ontology_shapes_graph: Graph):
+    """Directional water ports plus an air scour inlet: conforms, is not
+    reflected, and reports the workaround."""
+    path = Path(__file__).resolve().parents[1] / "examples" / "air-scoured-rapid-sand-filter.ttl"
+    data = Graph().parse(path, format="ttl")
+    rsf = Namespace("urn:example/air-scoured-rapid-sand-filter#").rsf
+    inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
+    assert (rsf, RDF.type, S223.Filter) not in inferred
+    results = _results(data, ontology_shapes_graph, rsf)
+    assert {severity for severity, _ in results} <= {SH.Info}
+    assert any("Workaround" in message for _, message in results)

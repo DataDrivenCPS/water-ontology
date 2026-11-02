@@ -11,6 +11,7 @@
     owl:imports <https://watermetadata.org/ontology/watr> ;
 .
 
+# Not typed s223:Filter: the air ports fail S223's medium checks.
 :baf
     a watr:BiologicalAeratedFilter ;
     rdfs:label "BAF #1" ;
@@ -18,6 +19,7 @@
     s223:hasConnectionPoint :baf-top, :baf-bottom, :baf-air-in, :baf-air-vent ;
 .
 
+# Bidirectional water ports count as both liquid inlet and liquid outlet.
 :baf-top
     a s223:BidirectionalConnectionPoint ;
     rdfs:label "Feed in, backwash waste out" ;
@@ -32,6 +34,7 @@
     s223:isConnectionPointOf :baf ;
 .
 
+# Air is skipped in the medium checks and draws the Info marker.
 :baf-air-in
     a s223:InletConnectionPoint ;
     rdfs:label "Air scour" ;
@@ -46,7 +49,7 @@
     s223:isConnectionPointOf :baf ;
 .
 
-# A single-medium filter conforms to s223:Filter and is reflected into it.
+# Water only: conforms to s223:Filter, so the rule types it s223:Filter.
 :cartridge
     a watr:CartridgeFiltrationUnit ;
     rdfs:label "Influent pre-filter" ;

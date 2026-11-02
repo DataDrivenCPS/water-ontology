@@ -71,3 +71,12 @@ def test_sludge_pump_reports_the_workaround_at_info(ontology_shapes_graph: Graph
 def test_water_pump_does_not_report_the_workaround(ontology_shapes_graph: Graph):
     data = _data(_pump("water", "s223:Fluid-Water"))
     assert not _info_messages(data, ontology_shapes_graph, EX.water)
+
+
+def test_stated_s223_pump_does_not_report_the_workaround(ontology_shapes_graph: Graph):
+    """A pump stated as s223:Pump is not relying on the workaround; S223 warns
+    on its medium instead."""
+    data = _data(_pump("stated", "watr:Fluid-Sludge"))
+    data.add((EX.stated, RDF.type, S223.Pump))
+    messages = _info_messages(data, ontology_shapes_graph, EX.stated)
+    assert not [m for m in messages if "Workaround" in m]
