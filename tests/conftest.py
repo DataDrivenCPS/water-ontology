@@ -17,6 +17,7 @@ EXAMPLES_DIR = ROOT / "examples"
 NONCONFORMING_EXAMPLES_DIR = EXAMPLES_DIR / "nonconforming"
 LOCAL_DPR_EXAMPLE = EXAMPLES_DIR / "union-dpr-model.ttl"
 WATER_DIR = ROOT / "ontology"
+QUDT_FIXTURE = ROOT / "tests/fixtures/qudt-3.3.0.ttl"
 
 CLASS_DEFAULTS_FILE = WATER_DIR / "class-defaults.ttl"
 CLASS_DEFAULTS_URI = URIRef("https://watermetadata.org/ontology/modules/class-defaults")
@@ -126,26 +127,16 @@ def water_graph_without_class_defaults() -> Graph:
 def _test_environment(root: Path, temporary_root: Path):
     """Resolve current sources without writing to the development environment.
 
-    Reuse only downloaded vocabulary from its cache. Local models and compiled
-    graphs are excluded, and source modules are always indexed afresh.
+    Local models, compiled graphs, and remote caches are excluded. Source modules
+    are indexed afresh; unit metadata is supplied by the pinned QUDT fixture.
     """
-    cached_graphs = []
-    options = {}
+    options = {"offline": True}
     if (root / ".ontoenv").is_dir():
         with OntoEnv.connect(str(root), read_only=True) as existing:
             options = {
-                "offline": existing.is_offline(),
+                "offline": True,
                 "remote_cache_ttl_secs": existing.remote_cache_ttl_secs(),
             }
-            cache = temporary_root / "vocabulary-cache"
-            cache.mkdir(parents=True)
-            for name in sorted(existing.get_ontology_names()):
-                location = str(existing.get_ontology(name).location)
-                if not location.startswith(("http://", "https://")):
-                    continue
-                path = cache / f"{len(cached_graphs)}.ttl"
-                existing.copy_graph(name).serialize(path, format="turtle")
-                cached_graphs.append((name, path))
 
     with OntoEnv.create(
         str(temporary_root / "resolver"),
@@ -153,57 +144,68 @@ def _test_environment(root: Path, temporary_root: Path):
         includes=["*.ttl"],
         **options,
     ) as env:
-        for name, path in cached_graphs:
-            env.add_no_imports(str(path), rename=name)
         env.update(force=True)
         yield env
 
 
 @pytest.fixture(scope="session")
 def ontoenv(tmp_path_factory):
-    """One isolated resolver for the session, with reusable remote vocabulary."""
+    """One isolated offline resolver for the current source ontologies."""
     with _test_environment(ROOT, tmp_path_factory.mktemp("ontoenv")) as env:
         yield env
 
 
 def _external_imports(water_graph: Graph) -> Graph:
-    """A graph importing only the non-watr ontologies that ``water_graph`` imports."""
+    """Import bundled dependencies; QUDT is supplied by the pinned snapshot."""
     external = Graph()
     root = URIRef("urn:watr-tests:external-imports")
     external.add((root, RDF.type, OWL.Ontology))
     for imported in set(water_graph.objects(None, OWL.imports)):
-        if not str(imported).startswith(WATR_ONTOLOGY_PREFIX):
-            external.add((root, OWL.imports, imported))
+        if str(imported).startswith((WATR_ONTOLOGY_PREFIX, "http://qudt.org/")):
+            continue
+        if imported == URIRef(str(SH)):
+            continue
+        external.add((root, OWL.imports, imported))
     return external
 
 
 @pytest.fixture(scope="session")
-def ontology_shapes_graph(water_graph: Graph, ontoenv: OntoEnv) -> Graph:
+def qudt_graph() -> Graph:
+    """Load pinned upstream vocabulary without relying on a remote cache."""
+    return Graph().parse(QUDT_FIXTURE)
+
+
+@pytest.fixture(scope="session")
+def ontology_shapes_graph(
+    water_graph: Graph, ontoenv: OntoEnv, qudt_graph: Graph
+) -> Graph:
     """Resolve the water ontology's full import closure once per session.
 
-    Only the external imports (223P, QUDT, SHACL) are resolved through OntoEnv;
-    the watr modules come from ``water_graph``. Resolving the modules as well
+    Bundled 223P is resolved through OntoEnv; QUDT uses the pinned snapshot,
+    and watr modules come from ``water_graph``. Resolving the modules as well
     would load each one twice, and since every load mints fresh blank nodes,
     each watr property shape would appear twice. Two identical qualified value
     shapes on one class are siblings, so ``sh:qualifiedValueShapesDisjoint``
     would then reject every value.
     """
     shapes_graph, _imported = ontoenv.get_dependencies(
-        _external_imports(water_graph), fetch_missing=True
+        _external_imports(water_graph), fetch_missing=False
     )
     shapes_graph += water_graph
+    shapes_graph += qudt_graph
     return shapes_graph
 
 
 @pytest.fixture(scope="session")
 def shapes_graph_without_class_defaults(
-    water_graph_without_class_defaults: Graph, ontoenv: OntoEnv
+    water_graph_without_class_defaults: Graph, ontoenv: OntoEnv, qudt_graph: Graph
 ) -> Graph:
     """The same closure resolved from a graph that does not import the rule."""
     shapes_graph, _imported = ontoenv.get_dependencies(
-        _external_imports(water_graph_without_class_defaults), fetch_missing=True
+        _external_imports(water_graph_without_class_defaults), fetch_missing=False
     )
     shapes_graph += water_graph_without_class_defaults
+    shapes_graph += qudt_graph
     return shapes_graph
 
 

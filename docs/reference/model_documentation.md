@@ -6,9 +6,9 @@
 
 **Superclasses:** `rdfs:Class`
 
-## Class defaults
+## Class Defaults Rule
 
-**Description:** Materializes watr:hasProcess and watr:hasTreatmentObjective onto an instance from the qualified requirements of its class and that class's ancestors.
+**Description:** Infers explicitly annotated sh:defaultValue values on simple property paths when an instance has no value for that property. Defaults are inherited through rdfs:subClassOf; a more specific class's defaults replace ancestor defaults for the same property. Explicit instance values are preserved and remain subject to validation. Defaults from unrelated classes are combined.
 
 ## A constituent-removal objective names its constituent
 

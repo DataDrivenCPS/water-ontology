@@ -194,35 +194,53 @@ combinations. See [pending features](pending_features.md#equipmentprocess-plausi
 Each requirement is a property shape on the class, reported as a violation with a
 message such as "Instances of GravityThickener must have a Settling process."
 
-`ClassDefaultsRule` in `class-defaults.ttl` is a SHACL-AF rule that fills these
-requirements in first. For each requirement it copies the required type onto the
-instance as a `hasProcess` or `hasTreatmentObjective` value, unless a stated value
-already meets it. After inference this model has `Process-Settling` and
-`TreatmentObjective-Thickening`, the latter from `Thickener`:
+`ClassDefaultsRule` in `class-defaults.ttl` fills missing properties from
+`sh:defaultValue` annotations on class property shapes. Equipment classes carry
+defaults for their fixed processes and treatment objectives. A subclass's defaults
+replace its ancestors' defaults for the same property; defaults from unrelated
+classes are combined. Any explicit instance value suppresses the whole default
+set for that property, while other missing properties can still receive defaults.
+
+For example, a bare clarifier receives its settling process and clarification
+objective from its class hierarchy:
 
 ```ttl
-:sludgeThickener a watr:GravityThickener .
+:clarifier a watr:Clarifier .
 ```
 
-Because the rule runs before the constraints, a requirement for a specific process
-or objective type cannot fail for an instance that declares only its type. It
-fails only when inference is off (`infer=False`) and the value is not stated. The
-`UnitProcess` requirement names no type, so the rule cannot fill it: a bare
-`:t a watr:Thickener` fails it, and also fails
-`TreatmentObjectiveRequiresProcessShape` once its thickening objective is
-inferred. Choose the subclass that names the mechanism, or state the process.
-Likewise a `MembraneBioreactor` must state whether it uses microfiltration or
-ultrafiltration, since the rule cannot choose between them. The rule targets
-`s223:Equipment`, so it does not apply to systems. Run inference before querying
-for class-supplied values: a triplestore loaded from the Turtle source alone does
-not contain them.
+An explicit, more specific process is preserved without an additional link to
+`Process-Settling` or `Process-Separation`:
 
-When adding a class, write each requirement as an `sh:qualifiedValueShape` with
-`sh:qualifiedMinCount 1`, as the existing classes do. A bare `sh:class` or an
-`sh:maxCount` would apply to every value and forbid additional processes, and
-`sh:qualifiedValueShapesDisjoint` would stop one value from meeting both a
-parent's requirement and a child's. `ClassDefaultsRule` fills in only qualified
-requirements that name a single class with `sh:class`.
+```ttl
+:clarifier a watr:Clarifier ;
+    watr:hasProcess :plantSettling .
+:plantSettling a watr:Process-Settling .
+```
+
+An explicit treatment objective suppresses that property's class defaults in the
+same way. `ProcessObjectiveRule` remains additive: the objectives always achieved
+by a performed process are still inferred, including broad constituent removal.
+That entailment is separate from an overridable class default.
+
+Explicit values must still satisfy the validation requirements. For equipment
+requiring several independent processes, state the complete process set when
+overriding it. Physical ports are always modeled explicitly. A bare
+`watr:Thickener` receives its thickening objective but has no default mechanism;
+it still needs a process. A `MembraneBioreactor` must state whether its membrane
+separation is microfiltration or ultrafiltration, since the rule cannot choose.
+
+Run inference before querying for class-supplied values; loading Turtle alone
+does not add them. `shifty.validate` runs inference before validation by default.
+Use `infer=False`, or a closure without the class-defaults module, to check only
+values already stated in the input graph.
+
+When adding a class, keep validation requirements as qualified property shapes
+and add explicit `sh:defaultValue` annotations where a default is intended.
+Constraints such as `sh:class`, `sh:in`, and qualified cardinality alone do not
+choose defaults. The rule also supports application-defined properties with
+simple predicate paths. Deactivated class/property shapes and complex paths are
+ignored. Rerun inference from the authored graph after editing an override so
+that defaults from an earlier run are not retained.
 
 `ProcessAndRoleConstraintsReferenceDefinedClasses` checks the ontology itself:
 every class named in a `hasProcess`, `hasTreatmentObjective` or `hasRole`

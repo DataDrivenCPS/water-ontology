@@ -259,7 +259,9 @@ it does itself.
 
 ### Validation
 
-The process and objective shapes and the class-default rules are explained in
+Equipment templates omit fixed process values supplied by class defaults.
+An explicit process set overrides those defaults. The process and objective
+shapes and the class-default rules are explained in
 [Equipment Type, Treatment Objective, Process, and Role](equipment_function.md).
 Processes performed by a group of equipment, such as a treatment train, are in
 [Processes Performed by Systems](system_processes.md).

@@ -36,13 +36,10 @@ def test_compound_process_is_on_the_system_not_a_tank(ontology_shapes_graph):
 
 
 def test_class_defaults_are_materialized(ontology_shapes_graph):
-    """The brief omits the class-fixed processes and outcomes on purpose, so
-    they must appear only after SHACL-AF inference."""
+    """The clarifier omits its fixed process and objective; both appear
+    after SHACL-AF inference. Zones declare complete process overrides."""
     inf = _inferred(ontology_shapes_graph)
     defaults = [
-        (EX.anaerobicZone, WATR.hasProcess, WATR["Process-Mixing"]),
-        (EX.anoxicZone, WATR.hasProcess, WATR["Process-Mixing"]),
-        (EX.aerobicZone, WATR.hasProcess, WATR["Process-Aeration"]),
         (EX.clarifier, WATR.hasProcess, WATR["Process-Settling"]),
         (EX.clarifier, WATR.hasTreatmentObjective, WATR["TreatmentObjective-Clarification"]),
     ]
@@ -55,6 +52,9 @@ def test_installation_specific_processes_are_stated_not_inferred(ontology_shapes
     are in the source file as well as in the inferred graph."""
     data = Graph().parse(EXAMPLE)
     stated = [
+        (EX.anaerobicZone, WATR.hasProcess, WATR["Process-Mixing"]),
+        (EX.anoxicZone, WATR.hasProcess, WATR["Process-Mixing"]),
+        (EX.aerobicZone, WATR.hasProcess, WATR["Process-Aeration"]),
         (EX.anaerobicZone, WATR.hasProcess, WATR["Process-EnhancedBiologicalPhosphorusRemoval"]),
         (EX.anoxicZone, WATR.hasProcess, WATR["Process-Denitrification"]),
         (EX.aerobicZone, WATR.hasProcess, WATR["Process-Nitrification"]),

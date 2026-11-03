@@ -8,11 +8,11 @@ ONTOENV_DIR := .ontoenv
 
 # --- ontology environment -------------------------------------------------
 
-# Created once here; `update-environment` below keeps it current. It resolves
-# both the external dependencies (223P, QUDT, SHACL) and the internal module
-# imports the compile walks.
+# Index source modules and bundled 223P for compilation. External vocabularies
+# stay as imports in the published ontology. Pytest uses its own isolated
+# offline environment and a pinned QUDT vocabulary subset.
 $(ONTOENV_DIR):
-	uv run ontoenv init ontology libraries
+	uv run ontoenv init --offline ontology libraries
 	uv run ontoenv config set offline true
 	uv run ontoenv config set remote_cache_ttl_secs 31536000
 	uv run ontoenv config add excludes 'build/*'

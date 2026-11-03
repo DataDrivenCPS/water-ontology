@@ -3,7 +3,7 @@
 import pytest
 import shifty
 from rdflib import Graph, Namespace
-from rdflib.namespace import RDFS
+from rdflib.namespace import RDFS, SH
 
 WATR = Namespace("https://watermetadata.org/ontology/watr#")
 EX = Namespace("urn:membrane-classification#")
@@ -34,7 +34,7 @@ def test_membrane_process_families(process, filtration, solid_liquid, water_grap
     ("MembraneDistillation", False),
     ("Electrodialysis", False),
 ])
-def test_filter_defaults_require_actual_filtration(process, satisfies_filtration,
+def test_explicit_process_overrides_filter_default(process, satisfies_filtration,
                                                    ontology_shapes_graph):
     # Additional processes are allowed on filters. A membrane process that is
     # not filtration cannot replace the class's required filtration process.
@@ -46,7 +46,14 @@ def test_filter_defaults_require_actual_filtration(process, satisfies_filtration
     inferred = shifty.infer(data, shapes_graph=ontology_shapes_graph).graph()
     processes = set(inferred.objects(EX.filter, WATR.hasProcess))
     assert WATR[f"Process-{process}"] in processes
-    assert (WATR["Process-Filtration"] in processes) != satisfies_filtration
+    assert processes == {WATR[f"Process-{process}"]}
+    _, report, _ = shifty.validate(data, shacl_graph=ontology_shapes_graph)
+    missing_filtration = any(
+        report.value(result, SH.focusNode) == EX.filter
+        and report.value(result, SH.resultPath) == WATR.hasProcess
+        for result in report.subjects(SH.resultSeverity, SH.Violation)
+    )
+    assert missing_filtration != satisfies_filtration
 
 
 def test_membrane_example_inherits_only_general_removal(ontology_shapes_graph):
