@@ -23,7 +23,7 @@ def test_resolver_preserves_configuration_and_reindexes_only_sources(tmp_path):
     root = tmp_path / "project"
     _source(root / "ontology/source.ttl", "Current source")
     _source(root / "models/compiled.ttl", "Unrelated model")
-    (root / "s223").mkdir()
+    (root / "libraries").mkdir()
     with OntoEnv.create(str(root), search_directories=[str(root / "models")],
                         offline=True, remote_cache_ttl_secs=12345,
                         excludes=["build/*"]) as existing:
@@ -47,7 +47,7 @@ def test_resolver_preserves_configuration_and_reindexes_only_sources(tmp_path):
 def test_resolver_does_not_create_a_development_cache(tmp_path):
     root = tmp_path / "project"
     _source(root / "ontology/source.ttl", "Source")
-    (root / "s223").mkdir()
+    (root / "libraries").mkdir()
     with _test_environment(root, tmp_path / "isolated") as env:
         assert ONTOLOGY in env.get_ontology_names()
     assert not (root / ".ontoenv").exists()

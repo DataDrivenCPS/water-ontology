@@ -149,7 +149,7 @@ def _test_environment(root: Path, temporary_root: Path):
 
     with OntoEnv.create(
         str(temporary_root / "resolver"),
-        search_directories=[str(root / "ontology"), str(root / "s223")],
+        search_directories=[str(root / "ontology"), str(root / "libraries")],
         includes=["*.ttl"],
         **options,
     ) as env:
