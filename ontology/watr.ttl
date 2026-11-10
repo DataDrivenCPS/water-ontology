@@ -16,8 +16,8 @@
   dcterms:license <https://github.com/DataDrivenCPS/water-ontology/blob/main/LICENSE> ;
   rdfs:seeAlso <https://watermetadata.org> ;
   owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-  owl:imports <http://qudt.org/3.3.0/vocab/unit> ;
-  owl:imports <http://qudt.org/3.3.0/vocab/quantitykind> ;
+  owl:imports <http://qudt.org/3.4.0/vocab/unit> ;
+  owl:imports <http://qudt.org/3.4.0/vocab/quantitykind> ;
   owl:imports <https://watermetadata.org/ontology/modules/equipment> ;
   owl:imports <https://watermetadata.org/ontology/modules/processtypes> ;
   owl:imports <https://watermetadata.org/ontology/modules/objectives> ;
